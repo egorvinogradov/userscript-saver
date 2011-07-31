@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+	<title></title>
+
+	<script src="core/less.js"></script>
+	<script src="core/Router.js"></script>
+	<script src="core/bundleEmbedder.js"></script>
+
+	<script>
+		var requests = {
+			getBundles: function(request, sender, callback) {
+				var url = request.url
+
+				Router.getBundles(url, function(bundles) {
+					processBundles(bundles, sender.tab.id)
+				})
+
+				callback({})
+			}
+		}
+		// routing requests
+		function processRequest(request, sender, sendResponse) {
+			requests[request.action](request, sender, sendResponse)
+		}
+
+		// listening to requests
+		chrome.extension.onRequest.addListener(processRequest)
+	</script>
+
+	<script>
+		var routes = {
+			'lenta\\.ru': {
+				css: '.hidden { display: none !important }',
+				jslib: [],
+				js: "var settings = {\n\tpreferred: ['/science/', '/internet/', '/digital/', '/game/']\n}\n\nvar nav = document.querySelector('td.nav')\nvar groups = [].slice.call(nav.querySelectorAll('div.group'), 0)\n\ngroups.forEach(function(group) {\n\tvar links = [].slice.call(group.querySelectorAll('a'), 0)\n\tvar hiddenCount = 0\n\tlinks.forEach(function(link) {\n\t\tvar href = link.getAttribute('href')\n\t\tif (settings.preferred.indexOf(href) == -1) {\n\t\t\tlink.parentNode.className += ' hidden'\n\t\t\thiddenCount++\n\t\t}\n\t})\n\n\tif (hiddenCount == links.length) {\n\t\tgroup.className += ' hidden'\n\t}\n})"
+			}
+		}
+
+		localStorage.setItem('routes', JSON.stringify(routes))
+	</script>
+
+</head>
+<body>
+
+</body>
+</html>

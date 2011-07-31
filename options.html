@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<title>Tai.st settings</title>
+
+	<style>
+		label, select, textarea {
+			display: block;
+		}
+
+	</style>
+
+	<script src="lib/jquery.js"></script>
+
+	<script>
+		function renderPage() {
+			var routes = JSON.parse(localStorage.getItem('routes'))
+
+			var links = ''
+			for (var route in routes) {
+				links = links.concat('<li class="bundles-item"><strong>' + route + '</strong></li>')
+			}
+
+			var routesList = $('ul.bundles')
+			routesList.html(links)
+
+
+			var frm = $('form')
+
+			frm.bind('submit', function(evt) {
+				evt.preventDefault()
+
+				var route = frm.find('input[name="route"]').val()
+				if (!route) {
+					alert('Please, specify route')
+				}
+
+				var bundle = routes[route]
+
+				bundle.LESS = frm.find('textarea[name="less"]').val()
+				bundle.css = frm.find('textarea[name="css"]').val()
+				bundle.js = frm.find('textarea[name="js"]').val()
+
+				var libs = frm.find('input[name="jslib"]')
+
+				bundle.jslib = []
+				libs.each(function(index, node) {
+					var lib = libs.eq(index)
+					if (lib.attr('checked')) {
+						bundle.jslib.push( lib.val() )
+					}
+				})
+
+				localStorage.setItem('routes', JSON.stringify(routes))
+			})
+
+			routesList.delegate('li.bundles-item strong', 'click', function(evt) {
+				var li = $(evt.target).closest('li.bundles-item')
+				var route = $(evt.target).text()
+				var bundle = routes[route]
+
+				frm.hide()
+				frm.find('input[name="route"]').val(route)
+				frm.find('textarea[name="less"]').val(bundle.LESS)
+				frm.find('textarea[name="css"]').val(bundle.css)
+				frm.find('textarea[name="js"]').val(bundle.js)
+
+				var libs = frm.find('input[name="jslib"]')
+				libs.removeAttr('checked')
+
+				libs.each(function(index, node) {
+					var lib = libs.eq(index)
+					if (bundle.jslib.indexOf(lib.val()) > -1 ) {
+						lib.attr('checked', 'checked')
+					}
+				})
+
+				frm.appendTo(li)
+				frm.show()
+			})
+		}
+
+
+		$(renderPage)
+	</script>
+</head>
+<body>
+
+	<ul class="bundles"></ul>
+
+
+	<form style="display: none;">
+		<label>
+			<p>Route</p>
+			<input type="text" name="route"/>
+		</label>
+
+		<fieldset>
+			<legend>Styles</legend>
+			<label>
+				<p>LESS</p>
+				<textarea name="less"></textarea>
+			</label>
+
+			<label>
+				<p>CSS</p>
+				<textarea name="css"></textarea>
+			</label>
+		</fieldset>
+
+
+		<fieldset>
+			<legend>Scripts</legend>
+
+			<fieldset>
+				<legend>Libraries (from Google's CDN)</legend>
+
+				<label>
+					<input type="checkbox" name="jslib" value="https://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js"/> Dojo 1.6.1
+				</label>
+				<label>
+					<input type="checkbox" name="jslib" value="https://ajax.googleapis.com/ajax/libs/ext-core/3.1.0/ext-core.js"/> Ext Core 3.1.0
+				</label>
+				<label>
+					<input type="checkbox" name="jslib" value="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"/> jQuery 1.6.2
+				</label>
+				<label>
+					<input type="checkbox" name="jslib" value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"/> jQuery UI 1.8.14
+				</label>
+				<label>
+					<input type="checkbox" name="jslib" value="https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js"/> MooTools 1.3.1
+				</label>
+				<label>
+					<input type="checkbox" name="jslib" value="https://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js"/> Prototype 1.7.0.0
+				</label>
+				<label>
+					<input type="checkbox" name="jslib" value="https://ajax.googleapis.com/ajax/libs/scriptaculous/1.9.0/scriptaculous.js"/> script.aculo.us 1.9.0
+				</label>
+				<label>
+					<input type="checkbox" name="jslib" value="https://ajax.googleapis.com/ajax/libs/yui/3.3.0/build/yui/yui-min.js"/> Yahoo! User Interface Library (YUI) 3.3.0
+				</label>
+				<label>
+					<input type="checkbox" name="jslib" value="https://ajax.googleapis.com/ajax/libs/webfont/1.0.21/webfont.js"/> <a href="http://code.google.com/apis/webfonts/docs/webfont_loader.html">WebFont Loader</a> 1.0.21
+				</label>
+			</fieldset>
+
+			<label>
+				<p>JS</p>
+				<textarea name="js"></textarea>
+			</label>
+
+		</fieldset>
+
+		<input type="submit" value="Save"/>
+	</form>
+
+</body>
+</html>

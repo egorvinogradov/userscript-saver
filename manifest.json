@@ -1,0 +1,17 @@
+{
+    "name": "Tai.st",
+    "version":  "0.1",
+    "description": "Tai.st platform",
+	"background_page": "background.html",
+	"permissions":	["tabs", "<all_urls>"],
+
+    "content_scripts": [
+        {
+			"matches": ["<all_urls>"],
+			"js": ["core/Embed.js", "taist.js"],
+			"run_at": "document_end"
+        }
+    ],
+
+	 "options_page": "options.html"
+}
