@@ -9,18 +9,7 @@
 	<script src="TaistiesStorage.js"></script>
 	<script src="bundleEmbedder.js"></script>
 
-	<script>
-		function taistTabUp(tab) {
-			var taistiesForUrl = TaistiesStorage.getTaistiesForUrl(tab.url);
-			insertTaistiesToPage(taistiesForUrl, tab.id);
-		}
-
-		// listening to requests
-		chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-			taistTabUp(sender.tab);
-
-			sendResponse({});
-		})
+	<script src="init.js">
 	</script>
 
 </head>
