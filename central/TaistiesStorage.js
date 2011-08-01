@@ -7,7 +7,7 @@ var TaistiesStorage = (function() {
 		//TODO: вынести проверку url в taistie
 		for (var currentTaistieUrlRegexpString in allTaistiesByUrlRegexps) {
 			var currentTaistieUrlRegexp = new RegExp(currentTaistieUrlRegexpString, 'g')
-			if (routeRE.test(url)) {
+			if (currentTaistieUrlRegexp.test(url)) {
 				taistiesForUrl.push(allTaistiesByUrlRegexps[currentTaistieUrlRegexpString])
 			}
 		}
