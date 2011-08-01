@@ -1,5 +1,5 @@
-var Router = (function() {
-	function getTaisties(url, callBack) {
+var TaistiesStorage = (function() {
+	function getTaistiesForUrl(url, callBack) {
 		var taisties = []
 
 		var routes = JSON.parse(localStorage.getItem('routes'))
@@ -14,6 +14,6 @@ var Router = (function() {
 	}
 
 	return {
-		getTaisties: getTaisties
+		getTaistiesForUrl: getTaistiesForUrl
 	}
 })()

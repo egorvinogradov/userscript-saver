@@ -14,7 +14,7 @@
 			getTaisties: function(request, sender, callback) {
 				var url = request.url
 
-				Router.getTaisties(url, function(bundles) {
+				TaistiesStorage.getTaistiesForUrl(url, function(bundles) {
 					insertTaistiesToPage(bundles, sender.tab.id)
 				})
 
