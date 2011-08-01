@@ -1,29 +1,29 @@
-function processBundles(bundles, embedTo) {
-	bundles.forEach(function(bundle) {
-		if ('LESS' in bundle) {
+function insertTaistiesToPage(taisties, pageToInsertTaisties) {
+	taisties.forEach(function(currentTaistie) {
+		if ('LESS' in currentTaistie) {
 			var lessParser = new (less.Parser)
-			lessParser.parse(bundle.LESS, function(err, tree) {
+			lessParser.parse(currentTaistie.LESS, function(err, tree) {
 				if (err) {
 					console.log(err)
 				}
 				else {
-					chrome.tabs.sendRequest(embedTo, {action: 'bundleReady', type: 'css', body: tree.toCSS()})
+					chrome.tabs.sendRequest(pageToInsertTaisties, {action: 'bundleReady', type: 'css', body: tree.toCSS()})
 				}
 			})
 		}
 
-		if ('css' in bundle) {
-			chrome.tabs.sendRequest(embedTo, {action: 'bundleReady', type: 'css', body: bundle.css})
+		if ('css' in currentTaistie) {
+			chrome.tabs.sendRequest(pageToInsertTaisties, {action: 'bundleReady', type: 'css', body: currentTaistie.css})
 		}
 
-		if ('jslib' in bundle) {
-			bundle.jslib.forEach(function(lib) {
-				chrome.tabs.sendRequest(embedTo, {action: 'bundleReady', type: 'jslib', body: lib})
+		if ('jslib' in currentTaistie) {
+			currentTaistie.jslib.forEach(function(lib) {
+				chrome.tabs.sendRequest(pageToInsertTaisties, {action: 'bundleReady', type: 'jslib', body: lib})
 			})
 		}
 
-		if ('js' in bundle) {
-			chrome.tabs.sendRequest(embedTo, {action: 'bundleReady', type: 'js', body: bundle.js})
+		if ('js' in currentTaistie) {
+			chrome.tabs.sendRequest(pageToInsertTaisties, {action: 'bundleReady', type: 'js', body: currentTaistie.js})
 		}
 	})
 }

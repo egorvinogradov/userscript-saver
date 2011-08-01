@@ -7,4 +7,4 @@ function req_dispatcher(request, sender, callback) {
 }
 chrome.extension.onRequest.addListener(req_dispatcher);
 
-chrome.extension.sendRequest({action: 'getBundles', url: document.location.href})
+chrome.extension.sendRequest({action: 'getTaisties', url: document.location.href})

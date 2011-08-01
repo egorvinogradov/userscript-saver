@@ -1,19 +1,19 @@
 var Router = (function() {
-	function getBundles(url, callBack) {
-		var bundles = []
+	function getTaisties(url, callBack) {
+		var taisties = []
 
 		var routes = JSON.parse(localStorage.getItem('routes'))
 		for (var route in routes) {
 			var routeRE = new RegExp(route, 'g')
 			if (routeRE.test(url)) {
-				bundles.push(routes[route])
+				taisties.push(routes[route])
 			}
 		}
 
-		callBack(bundles)
+		callBack(taisties)
 	}
 
 	return {
-		getBundles: getBundles
+		getTaisties: getTaisties
 	}
 })()

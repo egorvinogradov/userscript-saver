@@ -11,11 +11,11 @@
 
 	<script>
 		var requests = {
-			getBundles: function(request, sender, callback) {
+			getTaisties: function(request, sender, callback) {
 				var url = request.url
 
-				Router.getBundles(url, function(bundles) {
-					processBundles(bundles, sender.tab.id)
+				Router.getTaisties(url, function(bundles) {
+					insertTaistiesToPage(bundles, sender.tab.id)
 				})
 
 				callback({})
