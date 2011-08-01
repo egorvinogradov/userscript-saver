@@ -10,24 +10,18 @@
 	<script src="bundleEmbedder.js"></script>
 
 	<script>
-		var requests = {
-			getTaisties: function(request, sender, callback) {
-				var url = request.url
-
-				TaistiesStorage.getTaistiesForUrl(url, function(bundles) {
-					insertTaistiesToPage(bundles, sender.tab.id)
-				})
-
-				callback({})
-			}
-		}
-		// routing requests
-		function processRequest(request, sender, sendResponse) {
-			requests[request.action](request, sender, sendResponse)
+		function taistTabUp(tab) {
+			TaistiesStorage.getTaistiesForUrl(tab.url, function(bundles) {
+				insertTaistiesToPage(bundles, tab.id)
+			})
 		}
 
 		// listening to requests
-		chrome.extension.onRequest.addListener(processRequest)
+		chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+			taistTabUp(sender.tab);
+
+			sendResponse({});
+		})
 	</script>
 
 	<script>
