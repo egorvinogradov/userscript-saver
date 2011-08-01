@@ -1,5 +1,5 @@
 var TaistiesStorage = (function() {
-	function getTaistiesForUrl(url, callBack) {
+	function getTaistiesForUrl(url) {
 		var taistiesForUrl = []
 
 		var allTaistiesByUrlRegexps = this.getAllTaisties();
