@@ -1,17 +1,17 @@
 var TaistiesStorage = (function() {
 	function getTaistiesForUrl(url, callBack) {
-		var taisties = []
+		var taistiesForUrl = []
 
 		var allTaistiesByUrlRegexps = this.getAllTaisties();
 
 		for (var route in allTaistiesByUrlRegexps) {
 			var routeRE = new RegExp(route, 'g')
 			if (routeRE.test(url)) {
-				taisties.push(allTaistiesByUrlRegexps[route])
+				taistiesForUrl.push(allTaistiesByUrlRegexps[route])
 			}
 		}
 
-		callBack(taisties)
+		callBack(taistiesForUrl)
 	}
 
 	function getAllTaisties() {
