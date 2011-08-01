@@ -11,7 +11,7 @@ var TaistiesStorage = (function() {
 			}
 		}
 
-		callBack(taistiesForUrl)
+		return taistiesForUrl;
 	}
 
 	function getAllTaisties() {

@@ -11,9 +11,8 @@
 
 	<script>
 		function taistTabUp(tab) {
-			TaistiesStorage.getTaistiesForUrl(tab.url, function(bundles) {
-				insertTaistiesToPage(bundles, tab.id)
-			})
+			var taistiesForUrl = TaistiesStorage.getTaistiesForUrl(tab.url);
+			insertTaistiesToPage(taistiesForUrl, tab.id);
 		}
 
 		// listening to requests
