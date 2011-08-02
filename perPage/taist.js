@@ -1,6 +1,6 @@
 function req_dispatcher(request, sender, callback) {
 	if (request.action == 'bundleReady') {
-		Taist.Embed[request.type](document, request.body)
+		Taist.Embed(document, request.type, request.body)
 	}
 
 	callback({})
