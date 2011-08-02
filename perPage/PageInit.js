@@ -1,7 +1,8 @@
 (function() {
-	taistieEmbedder = new TaistieEmbedder();
+	var taistieEmbedder = new TaistieEmbedder();
 
-	function req_dispatcher(request, sender, callback) {
+	//noinspection JSUnusedLocalSymbols
+	function req_dispatcher(request, unusedSender, callback) {
 		if (request.action == 'bundleReady') {
 			taistieEmbedder.embedTaistie(document, request.type, request.body)
 		}
