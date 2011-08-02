@@ -8,7 +8,7 @@
     "content_scripts": [
         {
 			"matches": ["<all_urls>"],
-			"js": ["perPage/Embed.js", "perPage/initPage.js"],
+			"js": ["perPage/TaistieEmbedder.js", "perPage/initPage.js"],
 			"run_at": "document_end"
         }
     ],

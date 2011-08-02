@@ -1,7 +1,6 @@
-var Taist = {};
+function TaistieEmbedder() {}
 
-Taist.Embed = (function() {
-
+TaistieEmbedder.prototype.embedTaistie = (function (){
 	var contentTypeInsertionParameters = {
 		css : {
 			tagName : 'style',
@@ -20,7 +19,7 @@ Taist.Embed = (function() {
 		}
 	};
 
-	function insert(doc, contentType, content) {
+	function embedTaistie(doc, contentType, content) {
 
 		var insertionParameters = contentTypeInsertionParameters[contentType];
 
@@ -30,5 +29,5 @@ Taist.Embed = (function() {
 		doc.querySelector('body').appendChild(toEmbed)
 	}
 
-	return insert;
+	return embedTaistie;
 })();
