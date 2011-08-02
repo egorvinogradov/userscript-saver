@@ -1,5 +1,7 @@
+taistiesStorage = new TaistiesStorage();
+
 function taistTabUp(tab) {
-	var taistiesForUrl = TaistiesStorage.getTaistiesForUrl(tab.url);
+	var taistiesForUrl = taistiesStorage.getTaistiesForUrl(tab.url);
 	insertTaistiesToPage(taistiesForUrl, tab.id);
 }
 
