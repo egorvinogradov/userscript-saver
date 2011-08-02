@@ -1,4 +1,4 @@
-taistiesStorage = new TaistiesStorage();
+taistiesStorage = new CentralTaistiesStorage();
 pageTaistier = new CentralPageTaistier();
 function taistTabUp(tab) {
 	var taistiesForUrl = taistiesStorage.getTaistiesForUrl(tab.url);

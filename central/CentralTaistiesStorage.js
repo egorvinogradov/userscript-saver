@@ -1,6 +1,6 @@
-function TaistiesStorage() {}
+function CentralTaistiesStorage() {}
 
-TaistiesStorage.prototype.getTaistiesForUrl = function(url) {
+CentralTaistiesStorage.prototype.getTaistiesForUrl = function(url) {
 	var taistiesForUrl = []
 
 	var allTaistiesByUrlRegexps = this.getAllTaisties();
@@ -16,7 +16,7 @@ TaistiesStorage.prototype.getTaistiesForUrl = function(url) {
 	return taistiesForUrl;
 };
 
-TaistiesStorage.prototype.getAllTaisties = function () {
+CentralTaistiesStorage.prototype.getAllTaisties = function () {
 	var allTaistiesByUrlRegExps = {
 		'lenta\\.ru': {
 			css: '.hidden { display: none !important }',
