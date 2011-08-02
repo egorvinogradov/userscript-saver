@@ -3,7 +3,7 @@
 
 	//noinspection JSUnusedLocalSymbols
 	function req_dispatcher(request, unusedSender, callback) {
-		if (request.action == 'bundleReady') {
+		if (request.action == 'embedTaistiePart') {
 			taistieEmbedder.embedTaistiePart(document, request.type, request.body)
 		}
 
@@ -12,5 +12,5 @@
 
 	chrome.extension.onRequest.addListener(req_dispatcher);
 
-	chrome.extension.sendRequest({action: 'getTaisties', url: document.location.href});
+	chrome.extension.sendRequest({action: 'startTaistingUp', url: document.location.href});
 }());

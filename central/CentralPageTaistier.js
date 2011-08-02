@@ -7,7 +7,7 @@ CentralPageTaister.prototype.TaistTabUp = function(taisties, taistedTabId) {
 
 		//TODO: работу с Хромом вынести в отдельную обертку API Хрома
 		//TODO: работу с различными action так же инкапсулировать отдельно
-		chrome.tabs.sendRequest(taistedTabId, {action: 'bundleReady', type: taistiePartType, body: taistiePartContent});
+		chrome.tabs.sendRequest(taistedTabId, {action: 'embedTaistiePart', type: taistiePartType, body: taistiePartContent});
 	};
 
 	//TODO: мб вынести логику применения конкретной части в TaistiePart
