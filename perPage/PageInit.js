@@ -4,7 +4,7 @@
 	//noinspection JSUnusedLocalSymbols
 	function req_dispatcher(request, unusedSender, callback) {
 		if (request.action == 'bundleReady') {
-			taistieEmbedder.embedTaistie(document, request.type, request.body)
+			taistieEmbedder.embedTaistiePart(document, request.type, request.body)
 		}
 
 		callback({});
