@@ -1,33 +1,23 @@
 var Taist = {};
 
 Taist.Embed = (function() {
-	function insert(doc, elem) {
-		doc.querySelector('body').appendChild(elem)
+	function insert(doc, content, contentTagName, contentType, contentInsertionAttribute) {
+		var toEmbed = doc.createElement(contentTagName)
+		toEmbed.setAttribute('type', contentType)
+		toEmbed[contentInsertionAttribute] = content
+		doc.querySelector('body').appendChild(toEmbed)
 	}
-
+	
 	function insertCSS(doc, stylesheet) {
-		var toEmbed = doc.createElement('style')
-		toEmbed.setAttribute('type', 'text/css')
-		toEmbed.textContent = stylesheet
-
-		// guarantee that our styles will override
-		insert(doc, toEmbed)
+		insert(doc, stylesheet, 'style', 'text/css', 'textContent')
 	}
 
 	function insertJS(doc, script) {
-		var toEmbed = doc.createElement('script')
-		toEmbed.setAttribute('type', 'text/javascript')
-		toEmbed.textContent = script
-
-		insert(doc, toEmbed)
+		insert(doc, script, 'script', 'text/javascript', 'textContent')
 	}
 
 	function insertJSLib(doc, path) {
-		var toEmbed = doc.createElement('script')
-		toEmbed.setAttribute('type', 'text/javascript')
-		toEmbed.src = path
-
-		insert(doc, toEmbed)
+		insert(doc, path, 'script', 'text/javascript', 'src')
 	}
 
 	return {
