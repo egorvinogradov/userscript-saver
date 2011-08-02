@@ -26,7 +26,8 @@ PageTaistiePartEmbedder.prototype.embedTaistie = (function (){
 		var toEmbed = doc.createElement(insertionParameters.tagName);
 		toEmbed.setAttribute('type', insertionParameters.typeAttribute);
 		toEmbed[insertionParameters.insertedProperty] = content;
-		doc.querySelector('body').appendChild(toEmbed)
+		//noinspection ChainedFunctionCallJS
+		doc.querySelector('body').appendChild(toEmbed);
 	}
 
 	return embedTaistie;

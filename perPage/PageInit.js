@@ -7,10 +7,10 @@
 			taistieEmbedder.embedTaistie(document, request.type, request.body)
 		}
 
-		callback({})
+		callback({});
 	}
 
 	chrome.extension.onRequest.addListener(req_dispatcher);
 
-	chrome.extension.sendRequest({action: 'getTaisties', url: document.location.href})
+	chrome.extension.sendRequest({action: 'getTaisties', url: document.location.href});
 }());

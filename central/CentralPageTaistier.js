@@ -1,9 +1,9 @@
-CentralPageTaistier = function(){}
+CentralPageTaistier = function(){};
 
 CentralPageTaistier.prototype.TaistTabUp = function(taisties, taistedTabId) {
 	taisties.forEach(function(currentTaistie) {
 		if ('LESS' in currentTaistie) {
-			var lessParser = new (less.Parser)
+			var lessParser = new (less.Parser);
 			lessParser.parse(currentTaistie.LESS, function(err, tree) {
 				if (err) {
 					console.log(err)
@@ -28,4 +28,4 @@ CentralPageTaistier.prototype.TaistTabUp = function(taisties, taistedTabId) {
 			chrome.tabs.sendRequest(taistedTabId, {action: 'bundleReady', type: 'js', body: currentTaistie.js})
 		}
 	})
-}
+};
