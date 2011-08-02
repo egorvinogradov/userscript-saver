@@ -1,6 +1,6 @@
 (function() {
 	var taistiesStorage = new CentralTaistiesStorage();
-	var pageTaistier = new CentralPageTaistier();
+	var pageTaistier = new CentralPageTaister();
 
 	//todo: вынести в PageTaistier
 	function taistTabUp(tab) {

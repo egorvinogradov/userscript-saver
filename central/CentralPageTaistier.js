@@ -1,6 +1,17 @@
-CentralPageTaistier = function(){};
+CentralPageTaister = function(){};
 
-CentralPageTaistier.prototype.TaistTabUp = function(taisties, taistedTabId) {
+//TODO: мб логику применения Taistie вынести в саму Taistie
+CentralPageTaister.prototype.TaistTabUp = function(taisties, taistedTabId) {
+
+	var requestTaistiePartEmbed = function(taistiePartType, taistiePartContent) {
+
+		//TODO: работу с Хромом вынести в отдельную обертку API Хрома
+		//TODO: работу с различными action так же инкапсулировать отдельно
+		chrome.tabs.sendRequest(taistedTabId, {action: 'bundleReady', type: taistiePartType, body: taistiePartContent});
+	};
+
+	//TODO: мб вынести логику применения конкретной части в TaistiePart
+
 	taisties.forEach(function(currentTaistie) {
 		if ('LESS' in currentTaistie) {
 			var lessParser = new (less.Parser);
@@ -9,23 +20,23 @@ CentralPageTaistier.prototype.TaistTabUp = function(taisties, taistedTabId) {
 					console.log(err)
 				}
 				else {
-					chrome.tabs.sendRequest(taistedTabId, {action: 'bundleReady', type: 'css', body: tree.toCSS()})
+					requestTaistiePartEmbed('css', tree.toCSS());
 				}
 			})
 		}
 
 		if ('css' in currentTaistie) {
-			chrome.tabs.sendRequest(taistedTabId, {action: 'bundleReady', type: 'css', body: currentTaistie.css})
+			requestTaistiePartEmbed('css', currentTaistie.css);
 		}
 
 		if ('jslib' in currentTaistie) {
 			currentTaistie.jslib.forEach(function(lib) {
-				chrome.tabs.sendRequest(taistedTabId, {action: 'bundleReady', type: 'jslib', body: lib})
+				requestTaistiePartEmbed(taistedTabId, 'jslib', lib);
 			})
 		}
 
 		if ('js' in currentTaistie) {
-			chrome.tabs.sendRequest(taistedTabId, {action: 'bundleReady', type: 'js', body: currentTaistie.js})
+			requestTaistiePartEmbed('js', currentTaistie.js);
 		}
 	})
 };
