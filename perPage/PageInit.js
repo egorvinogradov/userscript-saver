@@ -1,5 +1,5 @@
 (function() {
-	var taistieEmbedder = new TaistieEmbedder();
+	var taistieEmbedder = new PageTaistiePartEmbedder();
 
 	//noinspection JSUnusedLocalSymbols
 	function req_dispatcher(request, unusedSender, callback) {

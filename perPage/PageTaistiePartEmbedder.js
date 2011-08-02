@@ -1,6 +1,6 @@
-function TaistieEmbedder() {}
+function PageTaistiePartEmbedder() {}
 
-TaistieEmbedder.prototype.embedTaistie = (function (){
+PageTaistiePartEmbedder.prototype.embedTaistie = (function (){
 	var contentTypeInsertionParameters = {
 		css : {
 			tagName : 'style',
