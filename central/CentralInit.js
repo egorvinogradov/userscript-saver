@@ -1,13 +1,15 @@
-taistiesStorage = new CentralTaistiesStorage();
-pageTaistier = new CentralPageTaistier();
-function taistTabUp(tab) {
-	var taistiesForUrl = taistiesStorage.getTaistiesForUrl(tab.url);
-	pageTaistier.TaistTabUp(taistiesForUrl, tab.id);
-}
+(function() {
+	var taistiesStorage = new CentralTaistiesStorage();
+	var pageTaistier = new CentralPageTaistier();
+	function taistTabUp(tab) {
+		var taistiesForUrl = taistiesStorage.getTaistiesForUrl(tab.url);
+		pageTaistier.TaistTabUp(taistiesForUrl, tab.id);
+	}
 
-// listening to requests
-chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-	taistTabUp(sender.tab);
+	// listening to requests
+	chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+		taistTabUp(sender.tab);
 
-	sendResponse({});
+		sendResponse({});
+	});
 })
