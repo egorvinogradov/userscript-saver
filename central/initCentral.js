@@ -1,8 +1,8 @@
 taistiesStorage = new TaistiesStorage();
-
+pageTaistier = new CentralPageTaistier();
 function taistTabUp(tab) {
 	var taistiesForUrl = taistiesStorage.getTaistiesForUrl(tab.url);
-	insertTaistiesToPage(taistiesForUrl, tab.id);
+	pageTaistier.TaistTabUp(taistiesForUrl, tab.id);
 }
 
 // listening to requests
