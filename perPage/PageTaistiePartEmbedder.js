@@ -1,7 +1,9 @@
-function PageTaistiePartEmbedder() {}
-
-PageTaistiePartEmbedder.prototype.embedTaistiePart = (function (){
-	var contentTypeInsertionParameters = {
+function PageTaistiePartEmbedder(docInstance) {
+	this.doc = docInstance
+	this.appendTo = doc.querySelector('body')
+}
+PageTaistiePartEmbedder.prototype = {
+	insertionParams: {
 		css : {
 			tagName : 'style',
 			typeAttribute : 'text/css',
@@ -17,18 +19,15 @@ PageTaistiePartEmbedder.prototype.embedTaistiePart = (function (){
 			typeAttribute : 'text/javascript',
 			insertedProperty : 'textContent'
 		}
-	};
+	},
 
-	function embedTaistie(doc, contentType, content) {
+	embedTaistiePart: function(contentType, content) {
+		var insertionParams = this.insertionParams[contentType]
 
-		var insertionParameters = contentTypeInsertionParameters[contentType];
+		var toEmbed = this.doc.createElement(insertionParams.tagName);
+		toEmbed.setAttribute('type', insertionParams.typeAttribute);
+		toEmbed[insertionParams.insertedProperty] = content;
 
-		var toEmbed = doc.createElement(insertionParameters.tagName);
-		toEmbed.setAttribute('type', insertionParameters.typeAttribute);
-		toEmbed[insertionParameters.insertedProperty] = content;
-		//noinspection ChainedFunctionCallJS
-		doc.querySelector('body').appendChild(toEmbed);
+		this.appendTo.appendChild(toEmbed);
 	}
-
-	return embedTaistie;
-})();
+}
