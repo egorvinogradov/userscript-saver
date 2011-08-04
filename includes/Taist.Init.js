@@ -3,8 +3,8 @@
 // @include https://*/*
 // ==/UserScript==
 
-(function() {
-	var taistieEmbedder = new PageTaistiePartEmbedder();
+Taist.Init = (function() {
+	var taistieEmbedder = new Taist.Embedder();
 
 	//noinspection JSUnusedLocalSymbols
 	function req_dispatcher(request, unusedSender, callback) {
@@ -18,4 +18,6 @@
 	chrome.extension.onRequest.addListener(req_dispatcher);
 
 	chrome.extension.sendRequest({action: 'startTaistingUp', url: document.location.href});
+
+	return this
 }());

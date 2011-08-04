@@ -3,11 +3,11 @@
 // @include https://*/*
 // ==/UserScript==
 
-function PageTaistiePartEmbedder(docInstance) {
+Taist.Embedder = function (docInstance) {
 	this.doc = docInstance
 	this.appendTo = doc.querySelector('body')
 }
-PageTaistiePartEmbedder.prototype = {
+Taist.Embedder.prototype = {
 	insertionParams: {
 		css : {
 			tagName : 'style',
