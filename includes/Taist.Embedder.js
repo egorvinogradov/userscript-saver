@@ -3,9 +3,9 @@
 // @include https://*/*
 // ==/UserScript==
 
-Taist.Embedder = function (docInstance) {
+Taist.Embedder = function(docInstance) {
 	this.doc = docInstance
-	this.appendTo = doc.querySelector('body')
+	this.appendTo = this.doc.querySelector('body')
 }
 Taist.Embedder.prototype = {
 	insertionParams: {

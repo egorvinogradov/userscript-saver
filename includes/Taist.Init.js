@@ -4,7 +4,7 @@
 // ==/UserScript==
 
 Taist.Init = (function() {
-	var taistieEmbedder = new Taist.Embedder();
+	var taistieEmbedder = new Taist.Embedder(document);
 
 	//noinspection JSUnusedLocalSymbols
 	function req_dispatcher(request, unusedSender, callback) {
@@ -20,4 +20,4 @@ Taist.Init = (function() {
 	chrome.extension.sendRequest({action: 'startTaistingUp', url: document.location.href});
 
 	return this
-}());
+}).call({});
