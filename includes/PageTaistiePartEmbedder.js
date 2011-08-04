@@ -1,3 +1,8 @@
+// ==UserScript==
+// @include http://*/*
+// @include https://*/*
+// ==/UserScript==
+
 function PageTaistiePartEmbedder(docInstance) {
 	this.doc = docInstance
 	this.appendTo = doc.querySelector('body')

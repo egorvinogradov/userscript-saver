@@ -1,3 +1,8 @@
+// ==UserScript==
+// @include http://*/*
+// @include https://*/*
+// ==/UserScript==
+
 (function() {
 	var taistieEmbedder = new PageTaistiePartEmbedder();
 
