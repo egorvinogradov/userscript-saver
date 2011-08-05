@@ -8,7 +8,7 @@
     "content_scripts": [
         {
 			"matches": ["<all_urls>"],
-			"js": ["includes/Taist.js", "includes/Taist.Embedder.js", "includes/Taist.Message.chrome.js", "includes/Taist.Init.js"],
+			"js": ["includes/Taist.Message.chrome.js", "includes/Taist.Init.js"],
 			"run_at": "document_end"
         }
     ],
