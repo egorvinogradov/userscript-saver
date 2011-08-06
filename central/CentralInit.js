@@ -3,14 +3,15 @@
 	var pageTaistier = new CentralPageTaister();
 
 	//todo: вынести в PageTaistier
-	function taistTabUp(tab) {
-		var taistiesForUrl = taistiesStorage.getTaistiesForUrl(tab.url);
-		pageTaistier.TaistTabUp(taistiesForUrl, tab.id);
+	function taistTabUp(tabInfo) {
+		var taistiesForUrl = taistiesStorage.getTaistiesForUrl(tabInfo.url);
+		pageTaistier.TaistTabUp(taistiesForUrl, tabInfo.id);
 	}
 
 	// listening to requests
-	chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-		taistTabUp(sender.tab);
-		sendResponse({});
+	chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, Info) {
+		if(changeInfo.status == 'complete') {
+			taistTabUp(Info);
+		}
 	});
 }());
