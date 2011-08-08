@@ -35,7 +35,7 @@ CentralPageTaister.prototype.TaistTabUp = function(taisties, taistedTabId) {
 
 		taistiePartValuesList.forEach(function(taistiePartValue) {
 			//некоторые части тейсти могут быть пустыми - пропустим их
-			if (insertionParams.source.length > 0) {
+			if (taistiePartValue.length > 0) {
 				var details = {};
 				details[insertionParams.source] = taistiePartValue;
 				chrome.tabs[insertionParams.method](taistedTabId, details)
