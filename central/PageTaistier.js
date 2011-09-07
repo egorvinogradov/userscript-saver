@@ -7,7 +7,7 @@ CentralPageTaistier.prototype.setTaistiesStorage = function(taistiesStorage) {
 
 CentralPageTaistier.prototype.TaistTabUp = function(url, tabId) {
 
-	var taisties = this._taistiesStorage.getTaistiesForUrl(url)
+	var taisties = this.getTaistiesForUrl(url)
 
 	var insertionParamsByTaistiePartType = {
 		'css': {
@@ -28,12 +28,12 @@ CentralPageTaistier.prototype.TaistTabUp = function(url, tabId) {
 		var orderedTaistiePartTypes = ['jslib', 'css', 'js'];
 		orderedTaistiePartTypes.forEach(function(taistiePartType) {
 			if (taistiePartType in currentTaistie) {
-				insertTaistiePart(tabId, taistiePartType, currentTaistie[taistiePartType])
+				_insertTaistiePart(tabId, taistiePartType, currentTaistie[taistiePartType])
 			}
 		})
 	})
 
-	function insertTaistiePart(taistedTabId, taistiePartType, uncheckedTaistiePartValuesList) {
+	function _insertTaistiePart(taistedTabId, taistiePartType, uncheckedTaistiePartValuesList) {
 
 		//только библиотеки (jslib) содержат список значений, css и js - единичные значения
 		//поэтому для простоты все приведем к единому виду - списку
@@ -50,4 +50,20 @@ CentralPageTaistier.prototype.TaistTabUp = function(url, tabId) {
 			}
 		});
 	}
+};
+
+CentralPageTaistier.prototype.getTaistiesForUrl = function(url) {
+	var taistiesForUrl = [];
+
+	var allTaistiesByUrlRegexps = this._taistiesStorage.getAllTaisties();
+
+	//TODO: вынести проверку url в taistie
+	for (var currentTaistieUrlRegexpString in allTaistiesByUrlRegexps) {
+		var currentTaistieUrlRegexp = new RegExp(currentTaistieUrlRegexpString, 'g');
+		if (currentTaistieUrlRegexp.test(url)) {
+			taistiesForUrl.push(allTaistiesByUrlRegexps[currentTaistieUrlRegexpString])
+		}
+	}
+
+	return taistiesForUrl;
 };
