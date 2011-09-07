@@ -1,11 +1,11 @@
-CentralPageTaister = function() {
+CentralPageTaistier = function() {
 };
 
-CentralPageTaister.prototype.setTaistiesStorage = function(taistiesStorage) {
+CentralPageTaistier.prototype.setTaistiesStorage = function(taistiesStorage) {
 	this._taistiesStorage = taistiesStorage;
 }
 
-CentralPageTaister.prototype.TaistTabUp = function(url, tabId) {
+CentralPageTaistier.prototype.TaistTabUp = function(url, tabId) {
 
 	var taisties = this._taistiesStorage.getTaistiesForUrl(url)
 

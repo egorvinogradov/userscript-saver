@@ -1,6 +1,6 @@
 (function() {
 	var taistiesStorage = new CentralTaistiesStorage();
-	var pageTaistier = new CentralPageTaister();
+	var pageTaistier = new CentralPageTaistier();
 
 	pageTaistier.setTaistiesStorage(taistiesStorage);
 
