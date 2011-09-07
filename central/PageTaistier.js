@@ -1,6 +1,14 @@
-CentralPageTaister = function() {};
+CentralPageTaister = function() {
+};
 
-CentralPageTaister.prototype.TaistTabUp = function(taisties, taistedTabId) {
+CentralPageTaister.prototype.setTaistiesStorage = function(taistiesStorage) {
+	this._taistiesStorage = taistiesStorage;
+}
+
+CentralPageTaister.prototype.TaistTabUp = function(url, tabId) {
+
+	var taisties = this._taistiesStorage.getTaistiesForUrl(url)
+
 	var insertionParamsByTaistiePartType = {
 		'css': {
 			method: 'insertCSS',
@@ -20,7 +28,7 @@ CentralPageTaister.prototype.TaistTabUp = function(taisties, taistedTabId) {
 		var orderedTaistiePartTypes = ['jslib', 'css', 'js'];
 		orderedTaistiePartTypes.forEach(function(taistiePartType) {
 			if (taistiePartType in currentTaistie) {
-				insertTaistiePart(taistedTabId, taistiePartType, currentTaistie[taistiePartType])
+				insertTaistiePart(tabId, taistiePartType, currentTaistie[taistiePartType])
 			}
 		})
 	})
