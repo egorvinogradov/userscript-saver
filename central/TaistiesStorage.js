@@ -7,7 +7,7 @@ CentralTaistiesStorage.prototype.getAllTaisties = function () {
 	}
 
 	//include locally developed function
-	var currentDevelopedTaistie = DevelopedTaistie();
+	var currentDevelopedTaistie = getDevelopedTaistieData();
 	allTaistiesByUrlRegExps[currentDevelopedTaistie.siteRegexp] = currentDevelopedTaistie.contents;
 
 	//сохраним в локальном хранилище - пока просто для демонстрации его работы (используется в options.html)
