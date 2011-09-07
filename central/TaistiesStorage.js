@@ -1,18 +1,25 @@
-function CentralTaistiesStorage() {}
+function CentralTaistiesStorage() {
+}
 
 CentralTaistiesStorage.prototype.getAllTaisties = function () {
 
-	//пока храним все тейсти прямо в коде, затем сделаем хранение на сервере
-	var allTaistiesByUrlRegExps = {
+	if (this._allTaisties === undefined) {
+		this._allTaisties = []
+
+		//for the beginning store all taisties in the code
+		var allTaistiesData = []
+
+		//include locally developed function
+		var developedTaistieData = getDevelopedTaistieData();
+		allTaistiesData.push(developedTaistieData);
+
+		var allTaisties = this._allTaisties;
+
+		allTaistiesData.forEach(function(taistieData){
+			var taistie = new Taistie(taistieData)
+			allTaisties.push(taistie)
+		})
 	}
 
-	//include locally developed function
-	var currentDevelopedTaistie = getDevelopedTaistieData();
-	allTaistiesByUrlRegExps[currentDevelopedTaistie.siteRegexp] = currentDevelopedTaistie.contents;
-
-	//сохраним в локальном хранилище - пока просто для демонстрации его работы (используется в options.html)
-	localStorage.setItem('routes', JSON.stringify(allTaistiesByUrlRegExps));
-
-	return allTaistiesByUrlRegExps;
-
+	return this._allTaisties
 };

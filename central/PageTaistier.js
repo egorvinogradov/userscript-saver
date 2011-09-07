@@ -1,8 +1,8 @@
 CentralPageTaistier = function() {
-};
+}
 
 CentralPageTaistier.prototype.setTaistiesStorage = function(taistiesStorage) {
-	this._taistiesStorage = taistiesStorage;
+	this._taistiesStorage = taistiesStorage
 }
 
 CentralPageTaistier.prototype.TaistTabUp = function(url, tabId) {
@@ -22,13 +22,13 @@ CentralPageTaistier.prototype.TaistTabUp = function(url, tabId) {
 			method: 'executeScript',
 			source: 'file'
 		}
-	};
+	}
 
 	taisties.forEach(function(currentTaistie) {
-		var orderedTaistiePartTypes = ['jslib', 'css', 'js'];
+		var orderedTaistiePartTypes = ['jslib', 'css', 'js']
 		orderedTaistiePartTypes.forEach(function(taistiePartType) {
-			if (taistiePartType in currentTaistie) {
-				_insertTaistiePart(tabId, taistiePartType, currentTaistie[taistiePartType])
+			if (taistiePartType in currentTaistie._contents) {
+				_insertTaistiePart(tabId, taistiePartType, currentTaistie._contents[taistiePartType])
 			}
 		})
 	})
@@ -38,32 +38,30 @@ CentralPageTaistier.prototype.TaistTabUp = function(url, tabId) {
 		//только библиотеки (jslib) содержат список значений, css и js - единичные значения
 		//поэтому для простоты все приведем к единому виду - списку
 		var taistiePartValuesList = (taistiePartType == 'jslib' ? uncheckedTaistiePartValuesList : [
-			uncheckedTaistiePartValuesList]);
-		var insertionParams = insertionParamsByTaistiePartType[taistiePartType];
+			uncheckedTaistiePartValuesList])
+		var insertionParams = insertionParamsByTaistiePartType[taistiePartType]
 
 		taistiePartValuesList.forEach(function(taistiePartValue) {
 			//некоторые части тейсти могут быть пустыми - пропустим их
 			if (taistiePartValue.length > 0) {
-				var details = {};
-				details[insertionParams.source] = taistiePartValue;
+				var details = {}
+				details[insertionParams.source] = taistiePartValue
 				chrome.tabs[insertionParams.method](taistedTabId, details)
 			}
-		});
+		})
 	}
-};
+}
 
 CentralPageTaistier.prototype.getTaistiesForUrl = function(url) {
-	var taistiesForUrl = [];
 
-	var allTaistiesByUrlRegexps = this._taistiesStorage.getAllTaisties();
+	var allTaisties = this._taistiesStorage.getAllTaisties()
+	var taistiesForUrl = []
 
-	//TODO: вынести проверку url в taistie
-	for (var currentTaistieUrlRegexpString in allTaistiesByUrlRegexps) {
-		var currentTaistieUrlRegexp = new RegExp(currentTaistieUrlRegexpString, 'g');
-		if (currentTaistieUrlRegexp.test(url)) {
-			taistiesForUrl.push(allTaistiesByUrlRegexps[currentTaistieUrlRegexpString])
+	allTaisties.forEach(function(checkedTaistie) {
+		if (checkedTaistie.fitsUrl(url)) {
+			taistiesForUrl.push(checkedTaistie)
 		}
-	}
+	})
 
-	return taistiesForUrl;
-};
+	return taistiesForUrl
+}
