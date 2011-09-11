@@ -1,64 +1,50 @@
-CentralPageTaistier = function() {
+PageTaistier = function() {
 }
 
-CentralPageTaistier.prototype.setTaistiesStorage = function(taistiesStorage) {
+PageTaistier.prototype.setTaistiesStorage = function(taistiesStorage) {
 	this._taistiesStorage = taistiesStorage
 }
 
-CentralPageTaistier.prototype.TaistTabUp = function(url, tabId) {
+PageTaistier.prototype.TaistTabUp = function(taistedTab) {
 
-	var taisties = this.getTaistiesForUrl(url)
-
-	var insertionParamsByTaistiePartType = {
-		'css': {
-			method: 'insertCSS',
-			source: 'code'
-		},
-		'js': {
-			method: 'executeScript',
-			source: 'code'
-		},
-		'jslib': {
-			method: 'executeScript',
-			source: 'file'
-		}
-	}
+	var taisties = this._getTaistiesForTab(taistedTab)
 
 	taisties.forEach(function(currentTaistie) {
-		var orderedTaistiePartTypes = ['jslib', 'css', 'js']
-		orderedTaistiePartTypes.forEach(function(taistiePartType) {
-			if (taistiePartType in currentTaistie._contents) {
-				_insertTaistiePart(tabId, taistiePartType, currentTaistie._contents[taistiePartType])
-			}
+
+		//js-библиотеки и css нужно вставить до использующего их js-кода
+		currentTaistie.getJsLibs().forEach(function(jsLibFileName) {
+			taistedTab.insertJsFile(jsLibFileName)
 		})
+
+		var insertedCodeTypes = ['Css', 'Js']
+		insertedCodeTypes.forEach(function(insertedCodeType) {
+			this._insertCodeByType(insertedCodeType, currentTaistie, taistedTab);
+		})
+
 	})
 
-	function _insertTaistiePart(taistedTabId, taistiePartType, uncheckedTaistiePartValuesList) {
+}
 
-		//только библиотеки (jslib) содержат список значений, css и js - единичные значения
-		//поэтому для простоты все приведем к единому виду - списку
-		var taistiePartValuesList = (taistiePartType == 'jslib' ? uncheckedTaistiePartValuesList : [
-			uncheckedTaistiePartValuesList])
-		var insertionParams = insertionParamsByTaistiePartType[taistiePartType]
+PageTaistier.prototype._insertCodeByType = function(codeType, currentTaistie, tab) {
+	var insertMethodName = 'insert' + codeType
+	var code = currentTaistie['get' + codeType]()
 
-		taistiePartValuesList.forEach(function(taistiePartValue) {
-			//некоторые части тейсти могут быть пустыми - пропустим их
-			if (taistiePartValue.length > 0) {
-				var details = {}
-				details[insertionParams.source] = taistiePartValue
-				chrome.tabs[insertionParams.method](taistedTabId, details)
-			}
-		})
+	//js и css могут быть пустыми строками - такие просто пропускаем
+	if (code.length > 0) {
+		tab[insertMethodName](code)
 	}
 }
 
-CentralPageTaistier.prototype.getTaistiesForUrl = function(url) {
+
+PageTaistier.prototype._getTaistiesForTab = function(tab) {
+
+	var tabUrl = tab.getUrl()
 
 	var allTaisties = this._taistiesStorage.getAllTaisties()
 	var taistiesForUrl = []
 
 	allTaisties.forEach(function(checkedTaistie) {
-		if (checkedTaistie.fitsUrl(url)) {
+		if (checkedTaistie.fitsUrl(tabUrl)) {
 			taistiesForUrl.push(checkedTaistie)
 		}
 	})

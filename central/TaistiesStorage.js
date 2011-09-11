@@ -1,7 +1,7 @@
-function CentralTaistiesStorage() {
+function TaistiesStorage() {
 }
 
-CentralTaistiesStorage.prototype.getAllTaisties = function () {
+TaistiesStorage.prototype.getAllTaisties = function () {
 
 	if (this._allTaisties === undefined) {
 		this._allTaisties = []
@@ -10,8 +10,9 @@ CentralTaistiesStorage.prototype.getAllTaisties = function () {
 		var allTaistiesData = []
 
 		//include locally developed function
-		var developedTaistieData = getDevelopedTaistieData();
-		allTaistiesData.push(developedTaistieData);
+		if (DevelopedTaistie.use) {
+			allTaistiesData.push(DevelopedTaistie.developedTaistieData)
+		}
 
 		var allTaisties = this._allTaisties;
 
