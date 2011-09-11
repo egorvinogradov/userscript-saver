@@ -14,7 +14,7 @@ TaistiesStorage.prototype.getAllTaisties = function () {
 			allTaistiesData.push(DevelopedTaistie.developedTaistieData)
 		}
 
-		var allTaisties = this._allTaisties;
+		var allTaisties = this._allTaisties
 
 		allTaistiesData.forEach(function(taistieData){
 			var taistie = new Taistie(taistieData)
@@ -23,4 +23,4 @@ TaistiesStorage.prototype.getAllTaisties = function () {
 	}
 
 	return this._allTaisties
-};
+}

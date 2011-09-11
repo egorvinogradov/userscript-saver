@@ -18,7 +18,7 @@ PageTaistier.prototype.TaistTabUp = function(taistedTab) {
 
 		var insertedCodeTypes = ['Css', 'Js']
 		insertedCodeTypes.forEach(function(insertedCodeType) {
-			this._insertCodeByType(insertedCodeType, currentTaistie, taistedTab);
+			this._insertCodeByType(insertedCodeType, currentTaistie, taistedTab)
 		})
 
 	})

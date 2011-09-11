@@ -17,13 +17,13 @@ DevelopedTaistie = {
 
 							//TODO: isn't supported in IE - need workaround like history.js
 							window.history.pushState({}, "next Page", $(this).attr('href'))
-							var jqContentBlock = $(contentBlock);
-							var contentBlockOffset = jqContentBlock.offset();
+							var jqContentBlock = $(contentBlock)
+							var contentBlockOffset = jqContentBlock.offset()
 
 							var contentBlockTop = contentBlockOffset.top
-							var contentBlockLeft = contentBlockOffset.left;
-							var contentBlockHeight = jqContentBlock.height();
-							var contentBlockWidth = jqContentBlock.width();
+							var contentBlockLeft = contentBlockOffset.left
+							var contentBlockHeight = jqContentBlock.height()
+							var contentBlockWidth = jqContentBlock.width()
 
 							$('body').scrollTop(contentBlockTop)
 							jqContentBlock.prepend('<div style="' + 'position: absolute; top: ' + contentBlockTop
@@ -56,7 +56,7 @@ DevelopedTaistie = {
 						})
 					}
 
-					initAllScrollers();
+					initAllScrollers()
 				}
 
 		var js = '(' + jsFunction.toString() + ')()'

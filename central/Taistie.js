@@ -1,5 +1,5 @@
 Taistie = function(taistieData) {
-	this._siteRegExp = taistieData.siteRegexp;
+	this._siteRegExp = taistieData.siteRegexp
 
 	this._extractTaistieContents(taistieData.contents)
 }
@@ -12,7 +12,7 @@ Taistie.prototype._extractTaistieContents = function(rawContents) {
 	this._css = getContentOrDefault('css', '')
 
 	function getContentOrDefault(contentType, defaultValue) {
-		var content = rawContents[contentType];
+		var content = rawContents[contentType]
 		return (content === undefined || content === null) ? defaultValue : content
 	}
 }
