@@ -1,3 +1,4 @@
+//Tab Implementation for Chrome
 TabChrome = function(tabId, tabUrl) {
 	this._id = tabId
 	this._url = tabUrl
