@@ -10,17 +10,9 @@ PageTaistier.prototype.TaistTabUp = function(taistedTab) {
 	var taisties = this._getTaistiesForTab(taistedTab)
 
 	taisties.forEach(function(currentTaistie) {
-
-		//js-библиотеки и css нужно вставить до использующего их js-кода
-		currentTaistie.getJsLibs().forEach(function(jsLibFileName) {
-			taistedTab.insertJsFile(jsLibFileName)
-		})
-
-		var insertedCodeTypes = ['Css', 'Js']
-		insertedCodeTypes.forEach(function(insertedCodeType) {
-			this._insertCodeByType(insertedCodeType, currentTaistie, taistedTab)
-		})
-
+		//css вставляем до использующего их js-кода
+		this._insertCodeByType('Css', currentTaistie, taistedTab)
+		this._insertCodeByType('Js', currentTaistie, taistedTab)
 	})
 
 }
@@ -37,11 +29,9 @@ PageTaistier.prototype._insertCodeByType = function(codeType, currentTaistie, ta
 
 
 PageTaistier.prototype._getTaistiesForTab = function(tab) {
-
 	var tabUrl = tab.getUrl()
-
-	var allTaisties = this._taistiesStorage.getAllTaisties()
 	var taistiesForUrl = []
+	var allTaisties = this._taistiesStorage.getAllTaisties()
 
 	allTaisties.forEach(function(checkedTaistie) {
 		if (checkedTaistie.fitsUrl(tabUrl)) {

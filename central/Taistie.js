@@ -1,29 +1,13 @@
 Taistie = function(taistieData) {
 	this._siteRegExp = taistieData.siteRegexp
 
-	this._extractTaistieContents(taistieData.contents)
-}
-
-Taistie.prototype._extractTaistieContents = function(rawContents) {
-
-	assert(rawContents !== undefined && rawContents !== null, "taistieData should contain 'contents'")
-	this._jslibs = getContentOrDefault('jslibs', [])
-	this._js = getContentOrDefault('js', '')
-	this._css = getContentOrDefault('css', '')
-
-	function getContentOrDefault(contentType, defaultValue) {
-		var content = rawContents[contentType]
-		return (content === undefined || content === null) ? defaultValue : content
-	}
+	this._js = taistieData.js === undefined ? '' : taistieData.js
+	this._css = taistieData.css === undefined ? '' : taistieData.css
 }
 
 Taistie.prototype.fitsUrl = function(url) {
 	var urlRegexp = new RegExp(this._siteRegExp, 'g')
 	return urlRegexp.test(url)
-}
-
-Taistie.prototype.getJsLibs = function() {
-	return this._jslibs
 }
 
 Taistie.prototype.getCss = function() {
