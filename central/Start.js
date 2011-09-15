@@ -1,11 +1,12 @@
 (function() {
 	var taistiesStorage = new TaistiesStorage()
-	var pageTaistier = new TaistieCombiner()
+	var taistieCombiner = new TaistieCombiner()
+	var tabTaister = new TabTaister()
 
-	pageTaistier.setTaistiesStorage(taistiesStorage)
+	taistieCombiner.setTaistiesStorage(taistiesStorage)
 
-	TabApi.subscribeToTabChange(function(tabUrl, tabDescriptor){
-		var allTaistiesCode = pageTaistier.getAllCssAndJsForUrl(tabUrl)
-		TabApi.insertJsToTab(allTaistiesCode, tabDescriptor)
-	})
+	tabTaister.setTaistieCombiner(taistieCombiner)
+	tabTaister.setTabApi(TabApi)
+
+	tabTaister.startListeningToTabChange()
 }())
