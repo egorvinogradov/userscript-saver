@@ -1,12 +1,12 @@
-describe("PageTaistier", function() {
+describe("TaistieCombiner", function() {
 	var taistieCombiner
 	beforeEach(function() {
 		taistieCombiner = new TaistieCombiner()
 	})
 	it("gets whole js and css code for taisties", function() {
-		var taistie1 = new Taistie({urlRegexp: '.*', css: 'taistie1 {color: red}', js: ''})
-		var taistie2 = new Taistie({urlRegexp: '.*', css: '', js: 'alert(taistie2)'})
-		var taistie3 = new Taistie({urlRegexp: '.*', css: 'taistie3 {color: blue}', js: 'alert(taistie3)'})
+		var taistie1 = new Taistie({urlRegexp: '.*', css: '|css1|', js: ''})
+		var taistie2 = new Taistie({urlRegexp: '.*', css: '', js: '|js2|'})
+		var taistie3 = new Taistie({urlRegexp: '.*', css: '|css3|', js: '|js3|'})
 
 		taistieCombiner.setTaistiesStorage({
 			getAllTaisties: function() {
