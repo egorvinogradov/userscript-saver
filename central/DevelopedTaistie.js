@@ -6,68 +6,46 @@ DevelopedTaistie = {
 	use: true,
 
 	developedTaistieData: (function() {
+		//insert js code here
 		var siteRegexp = 'lenta\\.ru',
 				css = '',
-				jslib = ['lib/jquery.js'],
 				jsFunction = function() {
-					//place js code here
+					var contentBlock = '#gallery', linkBlock = '#gallery a'
+					initScroller()
 
-					function initScroller(contentBlock, linkBlock) {
+					function initScroller() {
 						$(linkBlock).click(function() {
-
-							//TODO: isn't supported in IE - need workaround like history.js
-							window.history.pushState({}, "next Page", $(this).attr('href'))
-							var jqContentBlock = $(contentBlock)
-							var contentBlockOffset = jqContentBlock.offset()
-
-							var contentBlockTop = contentBlockOffset.top
-							var contentBlockLeft = contentBlockOffset.left
-							var contentBlockHeight = jqContentBlock.height()
-							var contentBlockWidth = jqContentBlock.width()
-
-							$('body').scrollTop(contentBlockTop)
-							jqContentBlock.prepend('<div style="' + 'position: absolute; top: ' + contentBlockTop
-									                       + 'px; left: ' + contentBlockLeft + 'px; width: '
-									                       + contentBlockWidth + 'px; height: ' + contentBlockHeight
-									                       + 'px; display: block; background-color: black; -moz-opacity: 0.5; opacity:.5;  filter: alpha(opacity=50);">'
-									                       + '</div>')
-							$(contentBlock).load($(this).attr('href') + ' ' + contentBlock + ' > *', function() {
-								initAllScrollers()
-							})
+							loadNewPicturePage($(this).attr('href'))
 							return false
 						})
 					}
 
-					function initAllScrollers() {
-						var scrolledBlockDescriptions = [
-							{
-								contentBlock: '#gallery',
-								linkBlock: '#gallery a'
-							}
-							//                    'habrahabr\\.ru'
-							//                    {
-							//                        contentBlock: '#main-content',
-							//                        linkBlock: '.page-nav a'
-							//                    }
-						]
+					function loadNewPicturePage(newPicturePageLink) {
+						window.history.pushState({}, "next Page", $(this).attr('href'))
+						var jqContentBlock = $(contentBlock)
+						var contentBlockOffset = jqContentBlock.offset()
 
-						$.each(scrolledBlockDescriptions, function(index, scrolledBlockDescription) {
-							initScroller(scrolledBlockDescription.contentBlock, scrolledBlockDescription.linkBlock)
-						})
+						var contentBlockTop = contentBlockOffset.top
+						var contentBlockLeft = contentBlockOffset.left
+						var contentBlockHeight = jqContentBlock.height()
+						var contentBlockWidth = jqContentBlock.width()
+
+						$('body').scrollTop(contentBlockTop)
+						jqContentBlock.prepend('<div style="' + 'position: absolute; top: ' + contentBlockTop
+								                       + 'px; left: ' + contentBlockLeft + 'px; width: '
+								                       + contentBlockWidth + 'px; height: ' + contentBlockHeight
+								                       + 'px; display: block; background-color: black; -moz-opacity: 0.5; opacity:.5;  filter: alpha(opacity=50);">'
+								                       + '</div>')
+						$(contentBlock).load(newPicturePageLink + ' ' + contentBlock + ' > *', initScroller)
 					}
-
-					initAllScrollers()
 				}
 
 		var js = '(' + jsFunction.toString() + ')()'
 
 		return {
 			siteRegexp: siteRegexp,
-			contents: {
-				css: css,
-				jslib: jslib,
-				js: js
-			}
+			css: css,
+			js: js
 		}
 	})()
 }
