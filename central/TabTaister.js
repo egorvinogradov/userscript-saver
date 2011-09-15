@@ -18,10 +18,10 @@ TabTaister.prototype.startListeningToTabChange = function() {
 }
 
 TabTaister.prototype._taistTab = function(tabUrl, tabDescriptor) {
-	var allTaistiesCssAndJs = self._taistieCombiner.getAllCssAndJsForUrl(tabUrl)
+	var allTaistiesCssAndJs = this._taistieCombiner.getAllCssAndJsForUrl(tabUrl)
 	var finalCodeToInsert = this._getCodeToInsert(allTaistiesCssAndJs)
 
-	self._tabApi.insertJsToTab(finalCodeToInsert, tabDescriptor)
+	this._tabApi.insertJsToTab(finalCodeToInsert, tabDescriptor)
 }
 
 TabTaister.prototype._getCodeToInsert = function(cssAndJsCode) {
