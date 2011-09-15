@@ -1,6 +1,6 @@
 (function() {
 	var taistiesStorage = new TaistiesStorage()
-	var pageTaistier = new PageTaistier()
+	var pageTaistier = new TaistieCombiner()
 
 	pageTaistier.setTaistiesStorage(taistiesStorage)
 

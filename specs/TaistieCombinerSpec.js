@@ -1,20 +1,20 @@
 describe("PageTaistier", function() {
-	var pageTaistier
+	var taistieCombiner
 	beforeEach(function() {
-		pageTaistier = new PageTaistier()
+		taistieCombiner = new TaistieCombiner()
 	})
 	it("gets whole js and css code for taisties", function() {
 		var taistie1 = new Taistie({urlRegexp: '.*', css: 'taistie1 {color: red}', js: ''})
 		var taistie2 = new Taistie({urlRegexp: '.*', css: '', js: 'alert(taistie2)'})
 		var taistie3 = new Taistie({urlRegexp: '.*', css: 'taistie3 {color: blue}', js: 'alert(taistie3)'})
 
-		pageTaistier.setTaistiesStorage({
+		taistieCombiner.setTaistiesStorage({
 			getAllTaisties: function() {
 				return [taistie1, taistie2,taistie3]
 			}
 		})
 
-		expect(pageTaistier.getAllCssAndJsForUrl('some_url')).toEqual({
+		expect(taistieCombiner.getAllCssAndJsForUrl('some_url')).toEqual({
 			css: taistie1.getCss() + taistie3.getCss(),
 			js: taistie2.getJs() + taistie3.getJs()
 		})
@@ -24,7 +24,7 @@ describe("PageTaistier", function() {
 		var fittingTaistie = new Taistie({urlRegexp: 'fitting\\.com', css: 'fittingTaistie {color: green}', js: 'alert(fittingTaistie)'})
 		var nonFittingTaistie = new Taistie({urlRegexp: 'nonfitting\\.com', css: 'nonFittingTaistie {color: red}', js: 'alert(nonFittingTaistie)'})
 
-		pageTaistier.setTaistiesStorage({
+		taistieCombiner.setTaistiesStorage({
 			getAllTaisties: function() {
 				return [
 					fittingTaistie,
@@ -33,15 +33,15 @@ describe("PageTaistier", function() {
 			}
 		})
 
-		expect(pageTaistier.getAllCssAndJsForUrl('fitting.com')).toEqual({
+		expect(taistieCombiner.getAllCssAndJsForUrl('fitting.com')).toEqual({
 			css: fittingTaistie.getCss(),
 			js: fittingTaistie.getJs()
 		})
 	})
 
 	it('takes valid non-empty url', function() {
-		expect(function(){pageTaistier.getAllCssAndJsForUrl(null)}).toThrow(new AssertException('url should be given'))
-		expect(function(){pageTaistier.getAllCssAndJsForUrl('')}).toThrow(new AssertException('url should be given'))
+		expect(function(){taistieCombiner.getAllCssAndJsForUrl(null)}).toThrow(new AssertException('url should be given'))
+		expect(function(){taistieCombiner.getAllCssAndJsForUrl('')}).toThrow(new AssertException('url should be given'))
 	})
 
 })

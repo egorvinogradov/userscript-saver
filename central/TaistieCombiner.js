@@ -1,11 +1,11 @@
-PageTaistier = function() {
+TaistieCombiner = function() {
 }
 
-PageTaistier.prototype.setTaistiesStorage = function(taistiesStorage) {
+TaistieCombiner.prototype.setTaistiesStorage = function(taistiesStorage) {
 	this._taistiesStorage = taistiesStorage
 }
 
-PageTaistier.prototype.getAllCssAndJsForUrl = function(url) {
+TaistieCombiner.prototype.getAllCssAndJsForUrl = function(url) {
 	var taisties = this._getTaistiesForUrl(url)
 	var allCssString = ''
 	var allJsString = ''
@@ -19,7 +19,7 @@ PageTaistier.prototype.getAllCssAndJsForUrl = function(url) {
 	return {js: allJsString, css: allCssString}
 }
 
-PageTaistier.prototype._getTaistiesForUrl = function(url) {
+TaistieCombiner.prototype._getTaistiesForUrl = function(url) {
 	assert(!!url, 'url should be given')
 	var taistiesForUrl = []
 	var allTaisties = this._taistiesStorage.getAllTaisties()
