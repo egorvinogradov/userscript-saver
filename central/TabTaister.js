@@ -1,4 +1,4 @@
-TabTaister = function(){
+TabTaister = function() {
 }
 
 TabTaister.prototype.setTaistieCombiner = function(taistieCombiner) {
@@ -12,23 +12,25 @@ TabTaister.prototype.setTabApi = function(tabApi) {
 TabTaister.prototype.startListeningToTabChange = function() {
 	var self = this
 
-	this._tabApi.subscribeToTabChange(function(tabUrl, tabDescriptor){
+	this._tabApi.subscribeToTabChange(function(tabUrl, tabDescriptor) {
 		self._taistTab(tabUrl, tabDescriptor)
 	})
 }
 
 TabTaister.prototype._taistTab = function(tabUrl, tabDescriptor) {
 	var allTaistiesCssAndJs = this._taistieCombiner.getAllCssAndJsForUrl(tabUrl)
-	var finalCodeToInsert = this._getCodeToInsert(allTaistiesCssAndJs)
 
-	this._tabApi.insertJsToTab(finalCodeToInsert, tabDescriptor)
+	if (allTaistiesCssAndJs.js.length > 0 || allTaistiesCssAndJs.css.length > 0) {
+		var finalCodeToInsert = this._getCodeToInsert(allTaistiesCssAndJs)
+		this._tabApi.insertJsToTab(finalCodeToInsert, tabDescriptor)
+	}
 }
 
 TabTaister.prototype._getCodeToInsert = function(cssAndJsCode) {
-	return '(' + this._insertFunctionCode + ')(' + cssAndJsCode.toString() + ')'
+	return '(' + this._insertFunction.toString() + ')(' + JSON.stringify(cssAndJsCode) + ')'
 }
 
-TabTaister.prototype._insertFunctionCode = function(cssAndJsCode){
+TabTaister.prototype._insertFunction = function(cssAndJsCode) {
 	var insertedElementDescriptors = {
 		css: {
 			tagName: 'style',
@@ -40,8 +42,9 @@ TabTaister.prototype._insertFunctionCode = function(cssAndJsCode){
 		}
 	}
 
-	['css', 'js'].forEach(function(codeType){
-		insertCode(insertedElementDescriptors[codeType], cssAndJsCode[codeType])
+			['css','js'].forEach(function(codeType) {
+		if (cssAndJsCode[codeType].length
+				> 0) { insertCode(insertedElementDescriptors[codeType], cssAndJsCode[codeType])}
 	})
 
 	function insertCode(elementDescriptor, code) {
@@ -50,4 +53,4 @@ TabTaister.prototype._insertFunctionCode = function(cssAndJsCode){
 		insertedElement.textContent = code
 		document.querySelector('body').appendChild(insertedElement)
 	}
-}.toString()
+}
