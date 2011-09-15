@@ -7,7 +7,7 @@ DevelopedTaistie = {
 
 	developedTaistieData: (function() {
 		//insert js code here
-		var siteRegexp = 'lenta\\.ru',
+		var urlRegexp = 'lenta\\.ru',
 				css = '',
 				jsFunction = function() {
 					var contentBlock = '#gallery', linkBlock = '#gallery a'
@@ -43,7 +43,7 @@ DevelopedTaistie = {
 		var js = '(' + jsFunction.toString() + ')()'
 
 		return {
-			siteRegexp: siteRegexp,
+			urlRegexp: urlRegexp,
 			css: css,
 			js: js
 		}

@@ -5,36 +5,27 @@ PageTaistier.prototype.setTaistiesStorage = function(taistiesStorage) {
 	this._taistiesStorage = taistiesStorage
 }
 
-PageTaistier.prototype.TaistTabUp = function(taistedTab) {
-
-	var taisties = this._getTaistiesForTab(taistedTab)
+PageTaistier.prototype.getAllCssAndJsForUrl = function(url) {
+	var taisties = this._getTaistiesForUrl(url)
+	var allCssString = ''
+	var allJsString = ''
 
 	taisties.forEach(function(currentTaistie) {
 		//css вставляем до использующего их js-кода
-		this._insertCodeByType('Css', currentTaistie, taistedTab)
-		this._insertCodeByType('Js', currentTaistie, taistedTab)
+		allCssString += currentTaistie.getCss()
+		allJsString += currentTaistie.getJs()
 	})
 
+	return {js: allJsString, css: allCssString}
 }
 
-PageTaistier.prototype._insertCodeByType = function(codeType, currentTaistie, tab) {
-	var insertMethodName = 'insert' + codeType
-	var code = currentTaistie['get' + codeType]()
-
-	//js и css могут быть пустыми строками - такие просто пропускаем
-	if (code.length > 0) {
-		tab[insertMethodName](code)
-	}
-}
-
-
-PageTaistier.prototype._getTaistiesForTab = function(tab) {
-	var tabUrl = tab.getUrl()
+PageTaistier.prototype._getTaistiesForUrl = function(url) {
+	assert(!!url, 'url should be given')
 	var taistiesForUrl = []
 	var allTaisties = this._taistiesStorage.getAllTaisties()
 
 	allTaisties.forEach(function(checkedTaistie) {
-		if (checkedTaistie.fitsUrl(tabUrl)) {
+		if (checkedTaistie.fitsUrl(url)) {
 			taistiesForUrl.push(checkedTaistie)
 		}
 	})

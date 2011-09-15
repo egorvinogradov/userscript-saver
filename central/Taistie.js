@@ -1,12 +1,13 @@
 Taistie = function(taistieData) {
-	this._siteRegExp = taistieData.siteRegexp
+	assert(!!taistieData.urlRegexp, 'url regexp shoul be given')
+	this._urlRegExp = taistieData.urlRegexp
 
-	this._js = taistieData.js === undefined ? '' : taistieData.js
-	this._css = taistieData.css === undefined ? '' : taistieData.css
+	this._js = !taistieData.js ? '' : taistieData.js
+	this._css = !taistieData.css ? '' : taistieData.css
 }
 
 Taistie.prototype.fitsUrl = function(url) {
-	var urlRegexp = new RegExp(this._siteRegExp, 'g')
+	var urlRegexp = new RegExp(this._urlRegExp, 'g')
 	return urlRegexp.test(url)
 }
 
@@ -15,5 +16,5 @@ Taistie.prototype.getCss = function() {
 }
 
 Taistie.prototype.getJs = function() {
-	return this._js
+	return this._js == '' ? '' : '(function(){' + this._js + '})();'
 }

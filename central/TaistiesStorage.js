@@ -1,9 +1,10 @@
 function TaistiesStorage() {
+	this._allTaisties = null
 }
 
 TaistiesStorage.prototype.getAllTaisties = function () {
 
-	if (this._allTaisties === undefined) {
+	if (this._allTaisties === null) {
 		this._allTaisties = []
 
 		//for the beginning store all taisties in the code
