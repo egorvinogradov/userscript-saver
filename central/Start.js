@@ -2,11 +2,11 @@
 	var taistiesStorage = new TaistiesStorage()
 	var taistieCombiner = new TaistieCombiner()
 	var tabTaister = new TaistieWrapper()
-	var tabListener = new TabListener()
+	var tabListener = new TabTaister()
 
 	taistieCombiner.setTaistiesStorage(taistiesStorage)
 	tabListener.setTaistieCombiner(taistieCombiner)
-	tabListener.setTabTaister(tabTaister)
+	tabListener.setTaistieWrapper(tabTaister)
 
 	tabListener.startListeningToTabChange()
 }())
