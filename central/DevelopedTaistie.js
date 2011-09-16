@@ -10,7 +10,7 @@ DevelopedTaistie = {
 		var urlRegexp = 'lenta\\.ru',
 				css = '',
 				jsFunction = function() {
-					var contentBlock = '#gallery', linkBlock = '#gallery a'
+					var contentBlock = '#gallery', linkBlock = '#gallery a', picBlock = '.onepic img'
 					initScroller()
 
 					function initScroller() {
@@ -22,20 +22,11 @@ DevelopedTaistie = {
 
 					function loadNewPicturePage(newPicturePageLink) {
 						window.history.pushState({}, "next Page", $(this).attr('href'))
-						var jqContentBlock = $(contentBlock)
-						var contentBlockOffset = jqContentBlock.offset()
+						var jqPicBlock = $(picBlock)
+						var picBlockOffset = $(jqPicBlock).offset()
+						var scrollTo = picBlockOffset.top - 10
 
-						var contentBlockTop = contentBlockOffset.top
-						var contentBlockLeft = contentBlockOffset.left
-						var contentBlockHeight = jqContentBlock.height()
-						var contentBlockWidth = jqContentBlock.width()
-
-						$('body').scrollTop(contentBlockTop)
-						jqContentBlock.prepend('<div style="' + 'position: absolute; top: ' + contentBlockTop
-								                       + 'px; left: ' + contentBlockLeft + 'px; width: '
-								                       + contentBlockWidth + 'px; height: ' + contentBlockHeight
-								                       + 'px; display: block; background-color: black; -moz-opacity: 0.5; opacity:.5;  filter: alpha(opacity=50);">'
-								                       + '</div>')
+						if ($('body').scrollTop() > scrollTo) { $('body').scrollTop(scrollTo)}
 						$(contentBlock).load(newPicturePageLink + ' ' + contentBlock + ' > *', initScroller)
 					}
 				}
