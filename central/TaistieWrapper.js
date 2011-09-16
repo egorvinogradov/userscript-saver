@@ -3,15 +3,16 @@ TaistieWrapper = function() {
 
 TaistieWrapper.prototype.wrapTaistiesCodeToJs = function(allTaistiesCssAndJs) {
 	return (allTaistiesCssAndJs.js.length > 0 || allTaistiesCssAndJs.css.length
-			> 0) ? this._getCodeToInsert(allTaistiesCssAndJs) : null
+			> 0) ? this._getPlainCodeToInsertToDocument(allTaistiesCssAndJs) : null
 }
 
-TaistieWrapper.prototype._getCodeToInsert = function(cssAndJsCode) {
-	return '(' + this._insertFunction.toString() + ')(document, ' + JSON.stringify(cssAndJsCode) + ')'
+TaistieWrapper.prototype._getPlainCodeToInsertToDocument = function(cssAndJsCode) {
+	return '(' + this._addCodeToDocument.toString() + ')(' + JSON.stringify(cssAndJsCode) + ', '
+			       + this._insertCodeNode.toString() + ')'
 }
 
-TaistieWrapper.prototype._insertFunction = function(documentObject, cssAndJsCode) {
-	var insertedElementDescriptors = {
+TaistieWrapper.prototype._addCodeToDocument = function(cssAndJsCode, insertNodeFunction) {
+	var insertedNodeDescriptors = {
 		css: {
 			tagName: 'style',
 			type: 'text/css'
@@ -25,14 +26,15 @@ TaistieWrapper.prototype._insertFunction = function(documentObject, cssAndJsCode
 	var codeTypes = ['css','js']
 	codeTypes.forEach(function(codeType) {
 		if (cssAndJsCode[codeType].length > 0) {
-			insertCode(insertedElementDescriptors[codeType], cssAndJsCode[codeType])
+			var insertedNodeDescriptor = insertedNodeDescriptors[codeType]
+			insertNodeFunction(insertedNodeDescriptor.tagName, insertedNodeDescriptor.type, cssAndJsCode[codeType])
 		}
 	})
+}
 
-	function insertCode(elementDescriptor, code) {
-		var insertedElement = documentObject.createElement(elementDescriptor.tagName)
-		insertedElement.setAttribute('type', elementDescriptor.type)
-		insertedElement.textContent = code
-		documentObject.querySelector('body').appendChild(insertedElement)
-	}
+TaistieWrapper.prototype._insertCodeNode = function (tagName, type, code) {
+	var insertedElement = document.createElement(tagName)
+	insertedElement.setAttribute('type', type)
+	insertedElement.textContent = code
+	document.querySelector('body').appendChild(insertedElement)
 }

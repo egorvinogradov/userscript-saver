@@ -1,4 +1,4 @@
-TabListener.prototype._subscribeToTabChange = function(tabTaistCallback) {
+TabTaister.prototype._subscribeToTabChange = function(tabTaistCallback) {
 	chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tabInfo) {
 		if (changeInfo.status == 'complete') {
 			tabTaistCallback(tabInfo.url, tabId)
@@ -6,7 +6,7 @@ TabListener.prototype._subscribeToTabChange = function(tabTaistCallback) {
 	})
 }
 
-TabListener.prototype._insertJsToTab = function(jsCode, tabDescriptor) {
+TabTaister.prototype._insertJsToTab = function(jsCode, tabDescriptor) {
 	var tabId = tabDescriptor
 	chrome.tabs.executeScript(tabId, {code: jsCode})
 }
