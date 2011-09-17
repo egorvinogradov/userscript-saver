@@ -1,12 +1,6 @@
 TabTaister = function() {
-}
-
-TabTaister.prototype.setTaistieWrapper = function (taistieWrapper) {
-	this._taistieWrapper = taistieWrapper
-}
-
-TabTaister.prototype.setTaistieCombiner = function(taistieCombiner) {
-	this._taistieCombiner = taistieCombiner
+	this._dTaistieCombiner = null
+	this._dTaistieWrapper = null
 }
 
 TabTaister.prototype.startListeningToTabChange = function() {
@@ -18,8 +12,8 @@ TabTaister.prototype.startListeningToTabChange = function() {
 }
 
 TabTaister.prototype._taistTab = function(tabUrl, tabDescriptor) {
-	var allTaistiesCssAndJs = this._taistieCombiner.getAllCssAndJsForUrl(tabUrl)
-	var insertedJs = this._taistieWrapper.wrapTaistiesCodeToJs(allTaistiesCssAndJs)
+	var allTaistiesCssAndJs = this._dTaistieCombiner.getAllCssAndJsForUrl(tabUrl)
+	var insertedJs = this._dTaistieWrapper.wrapTaistiesCodeToJs(allTaistiesCssAndJs)
 	if(insertedJs !== null) {
 		this._insertJsToTab(insertedJs, tabDescriptor)
 	}

@@ -1,8 +1,5 @@
 TaistieCombiner = function() {
-}
-
-TaistieCombiner.prototype.setTaistiesStorage = function(taistiesStorage) {
-	this._taistiesStorage = taistiesStorage
+	this._dTaistiesStorage = null
 }
 
 TaistieCombiner.prototype.getAllCssAndJsForUrl = function(url) {
@@ -22,7 +19,7 @@ TaistieCombiner.prototype.getAllCssAndJsForUrl = function(url) {
 TaistieCombiner.prototype._getTaistiesForUrl = function(url) {
 	assert(!!url, 'url should be given')
 	var taistiesForUrl = []
-	var allTaisties = this._taistiesStorage.getAllTaisties()
+	var allTaisties = this._dTaistiesStorage.getAllTaisties()
 
 	allTaisties.forEach(function(checkedTaistie) {
 		if (checkedTaistie.fitsUrl(url)) {

@@ -4,9 +4,9 @@
 	var tabTaister = new TaistieWrapper()
 	var tabListener = new TabTaister()
 
-	taistieCombiner.setTaistiesStorage(taistiesStorage)
-	tabListener.setTaistieCombiner(taistieCombiner)
-	tabListener.setTaistieWrapper(tabTaister)
+	taistieCombiner._dTaistiesStorage = taistiesStorage
+	tabListener._dTaistieCombiner = taistieCombiner
+	tabListener._dTaistieWrapper = tabTaister
 
 	tabListener.startListeningToTabChange()
 }())
