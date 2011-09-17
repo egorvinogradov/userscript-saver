@@ -16,5 +16,5 @@ Taistie.prototype.getCss = function() {
 }
 
 Taistie.prototype.getJs = function() {
-	return this._js == '' ? '' : '(function(){' + this._js + '})();'
+	return this._js === '' ? '' : '(function(){' + this._js + '})();'
 }
