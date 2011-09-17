@@ -11,9 +11,9 @@ DevelopedTaistie = {
 				css = '',
 				jsFunction = function() {
 					var contentBlock = '#gallery', linkBlock = '#gallery a', picBlock = '.onepic img'
-					initScroller()
+					initPictureScroller()
 
-					function initScroller() {
+					function initPictureScroller() {
 						$(linkBlock).click(function() {
 							loadNewPicturePage($(this).attr('href'))
 							return false
@@ -22,12 +22,13 @@ DevelopedTaistie = {
 
 					function loadNewPicturePage(newPicturePageLink) {
 						window.history.pushState({}, "next Page", $(this).attr('href'))
-						var jqPicBlock = $(picBlock)
-						var picBlockOffset = $(jqPicBlock).offset()
-						var scrollTo = picBlockOffset.top - 10
 
+						var picBlockOffset = $(picBlock).offset()
+						var scrollTo = picBlockOffset.top - 10
 						if ($('body').scrollTop() > scrollTo) { $('body').scrollTop(scrollTo)}
-						$(contentBlock).load(newPicturePageLink + ' ' + contentBlock + ' > *', initScroller)
+
+						//поставляем новое содержимое галереи - из новой страницы
+						$(contentBlock).load(newPicturePageLink + ' ' + contentBlock + ' > *', initPictureScroller)
 					}
 				}
 
