@@ -1,28 +1,13 @@
-<style>
-body {
-  overflow: hidden;
-  margin: 0px;
-  padding: 0px;
-  background: white;
-}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-div {
-  cursor: pointer;
-  text-align: center;
-  font-family: sans-serif;
-  font-size: 0.8em;
-  width: 100px;
-  margin-top: 1px;
-  background: #cccccc;
-}
-div:hover {
-  background: #aaaaaa;
-}
-</style>
-<script>
-function click() {
-  chrome.tabs.create({url: "options.html"});
-  window.close();
-}
-</script>
-<div onclick="click()">New Taistie</div>
+<script type="text/javascript" src="../lib/jquery.js"></script>
+<script type="text/javascript" src="PopupTopWidget.js"></script>
+<script type="text/javascript" src="PopupOpenOptionsWidget.js"></script>
+<script type="text/javascript" src="StartPopup.js"></script>
+</head>
+<body>
+</body>
+</html>
