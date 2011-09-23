@@ -1,5 +1,6 @@
 Widget = function() {}
 
 Widget.prototype.show = function() {
-	$(this._parentTagName).append(this._)
+	//TODO: обобщить здесь текущую логику виджетов в Popup
+	//$(this._parentTagName).append(this._)
 }
