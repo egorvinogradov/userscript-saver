@@ -677,7 +677,7 @@ jasmine.util.argsToArray = function(args) {
   return arrayOfArgs;
 };
 
-jasmine.util.extend = function(destination, source) {
+jasmine.util.inherit = function(destination, source) {
   for (var property in source) destination[property] = source[property];
   return destination;
 };

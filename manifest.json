@@ -2,7 +2,11 @@
     "name": "Tai.st",
     "version":  "0.1",
     "description": "Tai.st platform",
-	"background_page": "central/background.html",
+	"background_page": "background/background.html",
 	"permissions":	["tabs", "<all_urls>"],
-	 "options_page": "options.html"
+	"browser_action": {
+		"default_icon": "icons/browser_action_green_square.png",
+		"default_title": "Tai.st",
+		"default_popup": "popup/popup.html"
+	}
 }
