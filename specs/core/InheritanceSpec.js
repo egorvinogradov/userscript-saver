@@ -2,14 +2,14 @@ describe("Inheritance", function() {
 	describe("inherit", function() {
 		it('inherits parent methods', function() {
 			var Parent = function() {}
-			Parent.prototype.name = function() {return 'Parent.foo'}
+			Parent.prototype.parentMethod = function() {return 'parent method called!'}
 			var Child = function() {}
 			Inheritance.inherit(Child, Parent)
 
-			expect(Child.prototype.name()).toEqual('Parent.foo')
+			expect(Child.prototype.parentMethod()).toEqual('parent method called!')
 		})
 
-		it('obliges to apply parent constructor directly', function() {
+		it('allows to use parent constructor by Child.__parentConstructor.apply(this, ...)', function() {
 			var Parent = function() {
 				this.parentCalled = true
 			}
@@ -20,7 +20,7 @@ describe("Inheritance", function() {
 			expect(disrespectful.parentCalled).toEqual(undefined)
 
 			var RespectfulChild = function() {
-				Parent.apply(this)
+				RespectfulChild.__parentConstructor.apply(this)
 			}
 			Inheritance.inherit(RespectfulChild, Parent)
 
@@ -28,15 +28,20 @@ describe("Inheritance", function() {
 			expect(respectful.parentCalled).toBeTruthy()
 		})
 
-		it('obliges to use overriden parent methods by apllying them directly', function() {
+		it('allows to use overriden parent methods by Child.__parentPrototype.*.apply(this, ...)', function() {
 			var Parent = function() {}
-			Parent.prototype.name = function() {return 'Parent'}
+			Parent.prototype.overridenMethod = function() {return 'Parent'}
 			var Child = function() {}
 			Inheritance.inherit(Child, Parent)
-			Child.prototype.name = function(){return Parent.prototype.name.apply(this) + '.Child'}
+			Child.prototype.overridenMethod = function(){return Child.__parentPrototype.overridenMethod.apply(this) + '.Child'}
 
-			expect(Child.prototype.name()).toEqual('Parent.Child')
+			expect(Child.prototype.overridenMethod()).toEqual('Parent.Child')
 		})
 
+		it('preserves correct \'constructor\' property', function() {
+			var Child = function(){}
+			Inheritance.inherit(Child, function(){})
+			expect((new Child()).constructor).toEqual(Child)
+		})
 	})
 })
