@@ -1,7 +1,9 @@
 $(function() {
 	var popupOptionsWidget = new PopupOpenOptionsWidget()
 
-	popupOptionsWidget._view = new JqueryButton()
-	popupOptionsWidget._jqueryFunction = $
-	popupOptionsWidget.render({createChildElement: function(tagName){return $('body').}})
+	var jqueryButton = new JqueryButton()
+	jqueryButton._jqueryFunction = $
+	popupOptionsWidget._view = jqueryButton
+
+	popupOptionsWidget.render($('body'))
 })

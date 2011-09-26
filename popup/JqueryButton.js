@@ -1,4 +1,6 @@
 JqueryButton = function(){
 }
 
-Inheritance.inherit(JqueryView, JqueryButton)
+Inheritance.inherit(JqueryButton, JqueryView)
+
+JqueryButton.prototype._tagName = 'button'
