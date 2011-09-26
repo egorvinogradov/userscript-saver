@@ -1,5 +1,5 @@
 PopupOpenOptionsWidget = function(){}
 
-PopupOpenOptionsWidget.prototype.show = function(){
-	$('body div').append('<div>OpenOptionsWidget</div>')
-}
+Inheritance.inherit(PopupOpenOptionsWidget, Widget)
+
+PopupOpenOptionsWidget.prototype._tagName = 'div'

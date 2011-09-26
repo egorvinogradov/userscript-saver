@@ -1,4 +1,6 @@
 $(function() {
-	var popupWidget = new PopupWidget()
-	popupWidget.show()
+	var popupOptionsWidget = new PopupOpenOptionsWidget()
+
+	popupOptionsWidget._view = new JqueryButton()
+	popupOptionsWidget.render()
 })
