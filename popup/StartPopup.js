@@ -4,14 +4,14 @@ $(function() {
 	iocContainer.setSchema({
 		topPopupWidget: {
 			ctor: PopupOpenOptionsWidget,
-			dependencies: {_view: 'jqueryButton'}
+			deps: {_view: 'jqueryButton'}
 		},
 		jqueryButton: {
 			ctor: JqueryButton,
-			dependencies: {_jqueryFunction: 'jquery'}
+			deps: {_jqueryFunction: 'jquery'}
 		},
 		jquery: {
-			reference: $
+			ref: $
 		}
 	})
 
