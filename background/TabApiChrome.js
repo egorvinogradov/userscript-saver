@@ -1,3 +1,4 @@
+
 TabTaister.prototype._subscribeToTabChange = function(tabTaistCallback) {
 	chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tabInfo) {
 		if (changeInfo.status == 'complete') {
