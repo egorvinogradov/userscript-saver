@@ -1,12 +1,25 @@
 (function() {
-	var taistiesStorage = new TaistiesStorage()
-	var taistieCombiner = new TaistieCombiner()
-	var tabTaister = new TaistieWrapper()
-	var tabListener = new TabTaister()
 
-	taistieCombiner._dTaistiesStorage = taistiesStorage
-	tabListener._dTaistieCombiner = taistieCombiner
-	tabListener._dTaistieWrapper = tabTaister
+	var iocContainer = new IocContainer()
+	iocContainer.setSchema({
+		tabTaister: {
+			ctor: TabTaister,
+			deps: {
+				_dTaistieCombiner: 'taistieCombiner',
+				_dTaistieWrapper: 'taistieWrapper',
+				_tabApi: 'tabApi'
+			}
+		},
+		taistieCombiner: {
+			ctor: TaistieCombiner,
+			deps: {_dTaistiesStorage: 'taistiesStorage'}
+		},
+		taistiesStorage: {ctor: TaistiesStorage},
+		taistieWrapper: {ctor: TaistieWrapper},
+		tabApi: {ref: TabApi}
+	})
 
-	tabListener.startListeningToTabChange()
+	var tabTaister = iocContainer.getElement('tabTaister')
+
+	tabTaister.startListeningToTabChange()
 }())

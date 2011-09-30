@@ -21,7 +21,8 @@ DevelopedTaistie = {
 					}
 
 					function loadNewPicturePage(newPicturePageLink) {
-						window.history.pushState({}, "next Page", $(this).attr('href'))
+                        //make history universal
+						window.history.pushState({}, "next Page", newPicturePageLink)
 
 						var picBlockOffset = $(picBlock).offset()
 						var scrollTo = picBlockOffset.top - 10
