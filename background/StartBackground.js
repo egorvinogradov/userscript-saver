@@ -1,12 +1,13 @@
 (function() {
 	var taistiesStorage = new TaistiesStorage()
 	var taistieCombiner = new TaistieCombiner()
-	var tabTaister = new TaistieWrapper()
-	var tabListener = new TabTaister()
+	var taistieWrapper = new TaistieWrapper()
+	var tabTaister = new TabTaister()
 
 	taistieCombiner._dTaistiesStorage = taistiesStorage
-	tabListener._dTaistieCombiner = taistieCombiner
-	tabListener._dTaistieWrapper = tabTaister
+	tabTaister._dTaistieCombiner = taistieCombiner
+	tabTaister._dTaistieWrapper = taistieWrapper
+	tabTaister._tabApi = TabApi
 
-	tabListener.startListeningToTabChange()
+	tabTaister.startListeningToTabChange()
 }())
