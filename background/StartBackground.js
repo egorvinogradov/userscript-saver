@@ -1,13 +1,25 @@
 (function() {
-	var taistiesStorage = new TaistiesStorage()
-	var taistieCombiner = new TaistieCombiner()
-	var taistieWrapper = new TaistieWrapper()
-	var tabTaister = new TabTaister()
 
-	taistieCombiner._dTaistiesStorage = taistiesStorage
-	tabTaister._dTaistieCombiner = taistieCombiner
-	tabTaister._dTaistieWrapper = taistieWrapper
-	tabTaister._tabApi = TabApi
+	var iocContainer = new IocContainer()
+	iocContainer.setSchema({
+		tabTaister: {
+			ctor: TabTaister,
+			deps: {
+				_dTaistieCombiner: 'taistieCombiner',
+				_dTaistieWrapper: 'taistieWrapper',
+				_tabApi: 'tabApi'
+			}
+		},
+		taistieCombiner: {
+			ctor: TaistieCombiner,
+			deps: {_dTaistiesStorage: 'taistiesStorage'}
+		},
+		taistiesStorage: {ctor: TaistiesStorage},
+		taistieWrapper: {ctor: TaistieWrapper},
+		tabApi: {ref: TabApi}
+	})
+
+	var tabTaister = iocContainer.getElement('tabTaister')
 
 	tabTaister.startListeningToTabChange()
 }())
