@@ -8,14 +8,18 @@ DevelopedTaistie = {
 	developedTaistieData: (function() {
 		//insert js code here
 		var urlRegexp = 'lenta\\.ru', css = '', jsFunction = function() {
-			var contentBlock = '#gallery', linkBlock = '#gallery .onepic a, #gallery .micro a', picBlock = '#gallery .onepic img'
+			var contentBlock = '#gallery', onePicLink = '#gallery .onepic a', thumbLinks = ' #gallery .micro a', picBlock = '#gallery .onepic img'
 
 			$(document).keyup(function scrollByArrows(e) {
 					//37 - код стрелки влево, 39 - вправо
-					var siblingGetter = {37: 'prev', 39: 'next'}[e.which]
-					if (siblingGetter !== undefined) {
-						var newPicturePageLink = $('td.selected')[siblingGetter]().children('a').attr('href');
-						console.log(siblingGetter + ': ' + newPicturePageLink)
+					var targetLinkOffset = {37: -1, 39: 1}[e.which]
+					if (targetLinkOffset !== undefined) {
+						var picturePageLinks = $(thumbLinks)
+						var currentLinkIndex = picturePageLinks.index($('#gallery td.selected a'))
+						//loop elements: next element for the last one is the first one, and vise versa
+						var newPicturePageLink = picturePageLinks[(currentLinkIndex + targetLinkOffset +
+							picturePageLinks.length) %
+							picturePageLinks.length]
 						loadNewPicturePage(newPicturePageLink)
 					}
 				}
@@ -24,7 +28,7 @@ DevelopedTaistie = {
 			initPictureScroller()
 
 			function initPictureScroller() {
-				$(linkBlock).click(function() {
+				$(onePicLink + ', ' + thumbLinks).click(function() {
 					loadNewPicturePage($(this).attr('href'))
 					return false
 				})
