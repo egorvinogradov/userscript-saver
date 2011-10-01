@@ -8,7 +8,9 @@ DevelopedTaistie = {
 	developedTaistieData: (function() {
 		//insert js code here
 		var urlRegexp = 'lenta\\.ru', css = '', jsFunction = function() {
-			var contentBlock = '#gallery', onePicLink = '#gallery .onepic a', thumbLinks = ' #gallery .micro a', picBlock = '#gallery .onepic img'
+			var onePicLink = $('#gallery .onepic a'), currentImg = onePicLink.children('img'),
+				thumbLinks = $('#gallery .micro a'), selectedClass = 'selected', selectedThumbSelector = '#gallery td' + '.' + selectedClass,
+				descriptionBlockSelector = '#gallery td.onetext'
 
 			$(document).keyup(function scrollByArrows(e) {
 					//37 - left arrow, 39 - right arrow
@@ -16,23 +18,22 @@ DevelopedTaistie = {
 					if (targetLinkOffset !== undefined) loadNeighbourPicture(targetLinkOffset);
 				}
 			)
-			initPictureScroller()
 
-			function initPictureScroller() {
-				$(thumbLinks).click(function() {
-					loadPictureByThumbLink(this)
-					return false
-				})
-				$(onePicLink).click(function(){
-					loadNeighbourPicture('next')
-					return false
-				})
-			}
+			currentImg.removeAttr('width').removeAttr('height')
+
+			thumbLinks.click(function() {
+				loadPictureByThumbLink(this)
+				return false
+			})
+			onePicLink.click(function() {
+				loadNeighbourPicture('next')
+				return false
+			})
 
 			function loadNeighbourPicture(neighbourPosition) {
 				var targetLinkOffset = {prev: -1, next: 1}[neighbourPosition]
 				var picturePageLinks = $(thumbLinks)
-				var currentLinkIndex = picturePageLinks.index($('#gallery td.selected a'))
+				var currentLinkIndex = picturePageLinks.index($(selectedThumbSelector + ' a'))
 				//loop elements: next element for the last one is the first one, and vise versa
 				var picturePageLinkInThumb = picturePageLinks[(currentLinkIndex + targetLinkOffset +
 					picturePageLinks.length) %
@@ -41,12 +42,21 @@ DevelopedTaistie = {
 			}
 
 			function loadPictureByThumbLink(picturePageLinkInThumb) {
-				var picBlockOffset = $(picBlock).offset()
-				var scrollTo = picBlockOffset.top - 10
+				var imgOffset = currentImg.offset()
+				var scrollTo = imgOffset.top - 10
 				if ($('body').scrollTop() > scrollTo) { $('body').scrollTop(scrollTo)}
 
+				//change text
+				$(descriptionBlockSelector).load(picturePageLinkInThumb + ' ' + descriptionBlockSelector)
+
+				var newPictureUrl = 'http://img.lenta.ru' +
+					$(picturePageLinkInThumb).attr('href').replace('_Jpg.htm', '.jpg')
 				//replace old picture with new one
-				$(contentBlock).load(picturePageLinkInThumb + ' ' + contentBlock + ' > *', initPictureScroller)
+				currentImg.attr('src', newPictureUrl)
+
+				//change selected thumbnail
+				$(selectedThumbSelector).removeClass(selectedClass)
+				$(picturePageLinkInThumb).parent('td').addClass(selectedClass)
 			}
 		}
 
