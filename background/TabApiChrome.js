@@ -10,5 +10,9 @@ TabApi = {
 	insertJsToTab: function(jsCode, tabDescriptor) {
 		var tabId = tabDescriptor
 		chrome.tabs.executeScript(tabId, {code: jsCode})
+	},
+
+	openTab: function(url) {
+		chrome.tabs.create({url: url})
 	}
 }

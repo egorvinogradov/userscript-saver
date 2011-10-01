@@ -4,7 +4,7 @@ $(function() {
 	iocContainer.setSchema({
 		topPopupWidget: {
 			ctor: PopupOpenOptionsWidget,
-			deps: {_jqueryFunction: 'jquery'}
+			deps: {_jqueryFunction: 'jquery', _tabApi: TabApi}
 		},
 		jquery: {
 			ref: $
