@@ -11,20 +11,11 @@ DevelopedTaistie = {
 			var contentBlock = '#gallery', onePicLink = '#gallery .onepic a', thumbLinks = ' #gallery .micro a', picBlock = '#gallery .onepic img'
 
 			$(document).keyup(function scrollByArrows(e) {
-					//37 - код стрелки влево, 39 - вправо
-					var targetLinkOffset = {37: -1, 39: 1}[e.which]
-					if (targetLinkOffset !== undefined) {
-						var picturePageLinks = $(thumbLinks)
-						var currentLinkIndex = picturePageLinks.index($('#gallery td.selected a'))
-						//loop elements: next element for the last one is the first one, and vise versa
-						var newPicturePageLink = picturePageLinks[(currentLinkIndex + targetLinkOffset +
-							picturePageLinks.length) %
-							picturePageLinks.length]
-						loadNewPicturePage(newPicturePageLink)
-					}
+					//37 - left arrow, 39 - right arrow
+					var targetLinkOffset = {37: 'prev', 39: 'next'}[e.which]
+					if (targetLinkOffset !== undefined) loadNeighbourPicture(targetLinkOffset);
 				}
 			)
-
 			initPictureScroller()
 
 			function initPictureScroller() {
@@ -32,6 +23,17 @@ DevelopedTaistie = {
 					loadNewPicturePage($(this).attr('href'))
 					return false
 				})
+			}
+
+			function loadNeighbourPicture(neighbourPosition) {
+				var targetLinkOffset = {prev: -1, next: 1}[neighbourPosition]
+				var picturePageLinks = $(thumbLinks)
+				var currentLinkIndex = picturePageLinks.index($('#gallery td.selected a'))
+				//loop elements: next element for the last one is the first one, and vise versa
+				var newPicturePageLink = picturePageLinks[(currentLinkIndex + targetLinkOffset +
+					picturePageLinks.length) %
+					picturePageLinks.length]
+				loadNewPicturePage(newPicturePageLink)
 			}
 
 			function loadNewPicturePage(newPicturePageLink) {
