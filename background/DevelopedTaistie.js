@@ -19,8 +19,12 @@ DevelopedTaistie = {
 			initPictureScroller()
 
 			function initPictureScroller() {
-				$(onePicLink + ', ' + thumbLinks).click(function() {
-					loadNewPicturePage($(this).attr('href'))
+				$(thumbLinks).click(function() {
+					loadPictureByThumbLink(this)
+					return false
+				})
+				$(onePicLink).click(function(){
+					loadNeighbourPicture('next')
 					return false
 				})
 			}
@@ -30,19 +34,19 @@ DevelopedTaistie = {
 				var picturePageLinks = $(thumbLinks)
 				var currentLinkIndex = picturePageLinks.index($('#gallery td.selected a'))
 				//loop elements: next element for the last one is the first one, and vise versa
-				var newPicturePageLink = picturePageLinks[(currentLinkIndex + targetLinkOffset +
+				var picturePageLinkInThumb = picturePageLinks[(currentLinkIndex + targetLinkOffset +
 					picturePageLinks.length) %
 					picturePageLinks.length]
-				loadNewPicturePage(newPicturePageLink)
+				loadPictureByThumbLink(picturePageLinkInThumb)
 			}
 
-			function loadNewPicturePage(newPicturePageLink) {
+			function loadPictureByThumbLink(picturePageLinkInThumb) {
 				var picBlockOffset = $(picBlock).offset()
 				var scrollTo = picBlockOffset.top - 10
 				if ($('body').scrollTop() > scrollTo) { $('body').scrollTop(scrollTo)}
 
-				//поставляем новое содержимое галереи - из новой страницы
-				$(contentBlock).load(newPicturePageLink + ' ' + contentBlock + ' > *', initPictureScroller)
+				//replace old picture with new one
+				$(contentBlock).load(picturePageLinkInThumb + ' ' + contentBlock + ' > *', initPictureScroller)
 			}
 		}
 
