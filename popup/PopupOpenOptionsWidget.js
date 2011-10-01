@@ -7,7 +7,7 @@ PopupOpenOptionsWidget.prototype.render = function(parentElement){
 		text: 'New taistie',
 		click: function(){
 			//TODO: API вынести в отдельную зависимость
-			chrome.tabs.create({url: 'options.html'})
+			chrome.tabs.create({url: 'options/options.html'})
 		}
 	})
 	parentElement.append(this._element)
