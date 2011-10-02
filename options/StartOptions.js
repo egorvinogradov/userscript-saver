@@ -12,10 +12,12 @@ $(function() {
 
 	optionsRoot.prerender()
 
+	var newTaistieWidget = iocContainer.getElement('newTaistieWidget')
+	var controller = new WidgetController()
+	controller.setWidget(newTaistieWidget)
+
 	var newTaistie = iocContainer.getElement('newTaistie')
 	newTaistie.setTaistieData({urlRegexp: '*'})
-
-	var newTaistieWidget = iocContainer.getElement('newTaistieWidget')
 
 	newTaistieWidget.fill()
 })
