@@ -8,7 +8,7 @@ $(function() {
 		controller: {ctor: WidgetController, deps: {_widget: 'newTaistieWidget',
 			_dependencyDispatcher: 'dependencyDispatcher'
 		}},
-		dependencyDispatcher: {ctor: DependencyDispatcher}
+		dependencyDispatcher: {ctor: DependencyDispatcherAdvice}
 	})
 
 	var optionsRoot = iocContainer.getElement('optionsRoot')
