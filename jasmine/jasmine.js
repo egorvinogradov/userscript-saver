@@ -677,7 +677,7 @@ jasmine.util.argsToArray = function(args) {
   return arrayOfArgs;
 };
 
-jasmine.util.inherit = function(destination, source) {
+jasmine.util.extend = function(destination, source) {
   for (var property in source) destination[property] = source[property];
   return destination;
 };
@@ -740,11 +740,12 @@ jasmine.Env.prototype.versionString = function() {
   }
 
   var version = this.version();
-  var dotted_version = version.major + "." + version.minor + "." + version.build;
-  if (version.rc) {
-    dotted_version += ".rc" + version.rc;
+  var versionString = version.major + "." + version.minor + "." + version.build;
+  if (version.release_candidate) {
+    versionString += ".rc" + version.release_candidate;
   }
-  return dotted_version + " revision " + version.revision;
+  versionString += " revision " + version.revision;
+  return versionString;
 };
 
 /**
@@ -2471,6 +2472,5 @@ jasmine.version_= {
   "major": 1,
   "minor": 1,
   "build": 0,
-  "revision": 1308187385,
-  "rc": 1
-}
+  "revision": 1315677058
+};
