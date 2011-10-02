@@ -4,7 +4,11 @@ $(function() {
 	iocContainer.setSchema({
 		optionsRoot: {ctor: OptionsRoot, deps: {_newTaistieWidget: 'newTaistieWidget'}},
 		newTaistieWidget: {ctor: NewTaistieWidget, deps: {_newTaistie: 'newTaistie'}},
-		newTaistie: {ctor: Taistie}
+		newTaistie: {ctor: Taistie},
+		controller: {ctor: WidgetController, deps: {_widget: 'newTaistieWidget',
+			_dependencyDispatcher: 'dependencyDispatcher'
+		}},
+		dependencyDispatcher: {ctor: DependencyDispatcher}
 	})
 
 	var optionsRoot = iocContainer.getElement('optionsRoot')
@@ -12,12 +16,15 @@ $(function() {
 
 	optionsRoot.prerender()
 
-	var newTaistieWidget = iocContainer.getElement('newTaistieWidget')
-	var controller = new WidgetController()
-	controller.setWidget(newTaistieWidget)
+	var controller = iocContainer.getElement('controller')
+	controller.init()
 
 	var newTaistie = iocContainer.getElement('newTaistie')
-	newTaistie.setTaistieData({urlRegexp: '*'})
 
-	newTaistieWidget.fill()
+	newTaistie.setTaistieDataAndChange = function(taistieData){
+		this.setTaistieData(taistieData)
+		this._dependencyDispatcher.onDependencyChanged(this)
+	}
+
+	newTaistie.setTaistieDataAndChange({urlRegexp: '*'})
 })
