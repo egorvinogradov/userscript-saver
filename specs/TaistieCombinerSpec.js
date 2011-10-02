@@ -1,12 +1,17 @@
 describe("TaistieCombiner", function() {
 	var taistieCombiner
+	function createTaistie(taistieData){
+		var taistie = new Taistie()
+		taistie.setTaistieData(taistieData)
+		return taistie
+	}
 	beforeEach(function() {
 		taistieCombiner = new TaistieCombiner()
 	})
 	it("gets whole js and css code for taisties", function() {
-		var taistie1 = new Taistie({urlRegexp: '.*', css: '|css1|', js: ''})
-		var taistie2 = new Taistie({urlRegexp: '.*', css: '', js: '|js2|'})
-		var taistie3 = new Taistie({urlRegexp: '.*', css: '|css3|', js: '|js3|'})
+		var taistie1 = createTaistie({urlRegexp: '.*', css: '|css1|', js: ''})
+		var taistie2 = createTaistie({urlRegexp: '.*', css: '', js: '|js2|'})
+		var taistie3 = createTaistie({urlRegexp: '.*', css: '|css3|', js: '|js3|'})
 
 		taistieCombiner._dTaistiesStorage = {
 			getAllTaisties: function() {
@@ -21,8 +26,8 @@ describe("TaistieCombiner", function() {
 	})
 
 	it("gets css and js only for taisties fitting tab", function() {
-		var fittingTaistie = new Taistie({urlRegexp: 'fitting\\.com', css: 'fittingTaistie {color: green}', js: 'alert(fittingTaistie)'})
-		var nonFittingTaistie = new Taistie({urlRegexp: 'nonfitting\\.com', css: 'nonFittingTaistie {color: red}', js: 'alert(nonFittingTaistie)'})
+		var fittingTaistie = createTaistie({urlRegexp: 'fitting\\.com', css: 'fittingTaistie {color: green}', js: 'alert(fittingTaistie)'})
+		var nonFittingTaistie = createTaistie({urlRegexp: 'nonfitting\\.com', css: 'nonFittingTaistie {color: red}', js: 'alert(nonFittingTaistie)'})
 
 		taistieCombiner._dTaistiesStorage = {
 			getAllTaisties: function() {

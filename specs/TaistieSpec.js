@@ -1,7 +1,8 @@
 describe("Taistie", function() {
 
 	it("defines whether it fits url by regexp", function(){
-		var taistie = new Taistie({urlRegexp: 'targetsite\\.com'})
+		var taistie = new Taistie()
+		taistie.setTaistieData({urlRegexp: 'targetsite\\.com'})
 
 		expect(taistie.fitsUrl('http://targetsite.com')).toBeTruthy()
 		expect(taistie.fitsUrl('http://targetsite.com/subfolder')).toBeTruthy()
@@ -9,18 +10,21 @@ describe("Taistie", function() {
 	})
 
 	it("returns css directly from data", function() {
-		var taistie = new Taistie({urlRegexp: 'stub', css: 'css code'})
+		var taistie = new Taistie()
+		taistie.setTaistieData({urlRegexp: 'stub', css: 'css code'})
 
 		expect(taistie.getCss()).toEqual('css code')
 	})
 
 	it('returns js as functional expression', function() {
-		var taistie = new Taistie({urlRegexp: 'stub', js: 'return true'})
+		var taistie = new Taistie()
+		taistie.setTaistieData({urlRegexp: 'stub', js: 'return true'})
 
 		expect(taistie.getJs()).toEqual('(function(){return true})();')
 	})
 	it("has empty css and js if they are not given", function() {
-		var taistie = new Taistie({urlRegexp: 'stub'})
+		var taistie = new Taistie()
+		taistie.setTaistieData({urlRegexp: 'stub'})
 
 		expect(taistie.getCss()).toEqual('')
 		expect(taistie.getJs()).toEqual('')
