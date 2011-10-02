@@ -14,6 +14,8 @@ $(function() {
 	dependencyAdvice.weave(aspectWeaver, ['setTaistieData'])
 
 	var optionsRoot = iocContainer.getElement('optionsRoot')
+
+	//TODO: вынести в RootWidget
 	optionsRoot._element = $('body')
 
 	optionsRoot.prerender()
