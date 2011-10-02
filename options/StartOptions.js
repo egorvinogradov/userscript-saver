@@ -5,11 +5,13 @@ $(function() {
 		optionsRoot: {ctor: OptionsRoot, deps: {_newTaistieWidget: 'newTaistieWidget'}},
 		newTaistieWidget: {ctor: NewTaistieWidget, deps: {_newTaistie: 'newTaistie'}},
 		newTaistie: {ctor: Taistie},
-		controller: {ctor: WidgetController, deps: {_widget: 'newTaistieWidget',
-			_dependencyDispatcher: 'dependencyDispatcher'
-		}},
-		dependencyDispatcher: {ctor: DependencyAdvice}
+		controller: {ctor: WidgetController, deps: {_widget: 'newTaistieWidget'}}
 	})
+
+	var dependencyAdvice = new DependencyAdvice()
+	var aspectWeaver = new AspectWeaver()
+	aspectWeaver._constructorFunction = Taistie
+	dependencyAdvice.weave(aspectWeaver, ['setTaistieData'])
 
 	var optionsRoot = iocContainer.getElement('optionsRoot')
 	optionsRoot._element = $('body')
@@ -21,10 +23,5 @@ $(function() {
 
 	var newTaistie = iocContainer.getElement('newTaistie')
 
-	newTaistie.setTaistieDataAndChange = function(taistieData){
-		this.setTaistieData(taistieData)
-		this._dependencyDispatcher.onDependencyChanged(this)
-	}
-
-	newTaistie.setTaistieDataAndChange({urlRegexp: '*'})
+	newTaistie.setTaistieData({urlRegexp: '*'})
 })
