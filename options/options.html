@@ -1,50 +1,14 @@
 <html>
 <head><title>My Test Extension Options</title></head>
-<script type="text/javascript">
-
-    // Saves options to localStorage.
-    function save_taistie() {
-        var urlRegexp = $("#urlRegexp");
-        var newTaistie = {}
-        newTaistie.urlRegexp = urlRegexp.val()
-
-        localStorage.setItem("new_taistie", JSON.stringify(newTaistie))
-
-        // Update status to let user know options were saved.
-        var status = document.getElementById("status");
-        status.innerHTML = "Taistie Saved.";
-        setTimeout(function() {
-            status.innerHTML = "";
-        }, 750);
-
-    }
-
-    // Restores select box state to saved value from localStorage.
-    function restore_options() {
-        var newTaistie = JSON.parse(localStorage.getItem("new_taistie"));
-        if (!newTaistie) {
-            return;
-        }
-        var urlRegexp = $("#urlRegexp");
-        urlRegexp.val(newTaistie.urlRegexp)
-    }
-
-</script>
-
-<body onload="restore_options()">
-
-New Taistie:
-<input type="text" id="urlRegexp"/>
-
-<br>
-<button onclick="save_taistie()">Save</button>
-<div id="status"></div>
+<body>
 
 <script type="text/javascript" src="../lib/jquery.js"></script>
 <script type="text/javascript" src="../lib/proton/core/Assert.js"></script>
 <script type="text/javascript" src="../lib/proton/core/Inheritance.js"></script>
 <script type="text/javascript" src="../lib/proton/core/IocContainer.js"></script>
 <script type="text/javascript" src="OptionsRoot.js"></script>
+<script type="text/javascript" src="NewTaistieWidget.js"></script>
+<script type="text/javascript" src="../core/Taistie.js"></script>
 
 <script type="text/javascript" src="StartOptions.js"></script>
 
