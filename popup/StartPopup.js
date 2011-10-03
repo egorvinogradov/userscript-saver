@@ -4,13 +4,15 @@ $(function() {
 	iocContainer.setSchema({
 		topPopupWidget: {
 			ctor: PopupOpenOptionsWidget,
-			deps: {_jqueryFunction: 'jquery', _tabApi: TabApi}
+			deps: {_tabApi: 'tabApi'}
 		},
-		jquery: {
-			ref: $
+		tabApi: {
+			ref: TabApi
 		}
 	})
 
 	var popupOptionsWidget = iocContainer.getElement('topPopupWidget')
-	popupOptionsWidget.render($('body'))
+	popupOptionsWidget._element = $('<' + popupOptionsWidget._tagName + '/>')
+	$('body').append(popupOptionsWidget._element)
+	popupOptionsWidget.prerender()
 })
