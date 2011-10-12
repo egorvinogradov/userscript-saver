@@ -8,7 +8,7 @@ describe 'TaistieStorage', ->
 
 	it 'doesn\'t include developed taistie if it has "use" flag OFF', ->
 		DevelopedTaistie.use = false
-		expect(taistieStorage.getAllTaisties().length).toEqual(0)
+		expect(taistieStorage.getAllTaisties().length).toEqual 0
 
 
 
