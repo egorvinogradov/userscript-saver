@@ -14,4 +14,4 @@ class Taistie
 		return @_css
 
 	getJs: () ->
-		return @_js is '' ? '' : '(function(){' + @_js + '})();'
+		return if @_js is '' then '' else '(function(){' + @_js + '})();'
