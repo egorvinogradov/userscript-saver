@@ -8,7 +8,7 @@ $(function() {
 		controller: {ctor: WidgetController, deps: {_widget: 'newTaistieWidget'}}
 	})
 
-	var dependencyAdvice = new DependencyAdvice()
+	var dependencyAdvice = new DependencyAspect()
 	var aspectWeaver = new AspectWeaver()
 	aspectWeaver._constructorFunction = Taistie
 	dependencyAdvice.weave(aspectWeaver, ['setTaistieData'])
