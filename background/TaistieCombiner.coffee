@@ -1,31 +1,26 @@
-TaistieCombiner = function() {
-	this._dTaistiesStorage = null
-}
+class TaistieCombiner 
 
-TaistieCombiner.prototype.getAllCssAndJsForUrl = function(url) {
-	var taisties = this._getTaistiesForUrl(url)
-	var allCssString = ''
-	var allJsString = ''
+	getAllCssAndJsForUrl: (url) ->
+		taisties = @_getTaistiesForUrl url
+		allCssString = ''
+		allJsString = ''
+	
+		for currentTaistie in taisties
+			do (currentTaistie) ->
+				#css вставляем до использующего их js-кода
+				allCssString += currentTaistie.getCss()
+				allJsString += currentTaistie.getJs()
+	
+		return js: allJsString, css: allCssString
+	
+	_getTaistiesForUrl: (url) ->
+		assert url? and url != '', 'url should be given'
+		taistiesForUrl = []
+		allTaisties = @_dTaistiesStorage.getAllTaisties()
 
-	taisties.forEach(function(currentTaistie) {
-		//css вставляем до использующего их js-кода
-		allCssString += currentTaistie.getCss()
-		allJsString += currentTaistie.getJs()
-	})
+		for checkedTaistie in allTaisties
+			do (checkedTaistie) ->
+				if checkedTaistie.fitsUrl url
+					taistiesForUrl.push checkedTaistie
 
-	return {js: allJsString, css: allCssString}
-}
-
-TaistieCombiner.prototype._getTaistiesForUrl = function(url) {
-	assert(!!url, 'url should be given')
-	var taistiesForUrl = []
-	var allTaisties = this._dTaistiesStorage.getAllTaisties()
-
-	allTaisties.forEach(function(checkedTaistie) {
-		if (checkedTaistie.fitsUrl(url)) {
-			taistiesForUrl.push(checkedTaistie)
-		}
-	})
-
-	return taistiesForUrl
-}
+		return taistiesForUrl
