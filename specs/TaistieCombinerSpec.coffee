@@ -44,5 +44,5 @@ describe "TaistieCombiner", ->
 			js: fittingTaistie.getJs()
 
 	it 'takes valid non-empty url', ->
-		expect(-> taistieCombiner.getAllCssAndJsForUrl).toThrow new AssertException 'url should be given'
+		expect(-> taistieCombiner.getAllCssAndJsForUrl null).toThrow new AssertException 'url should be given'
 		expect(-> taistieCombiner.getAllCssAndJsForUrl '').toThrow new AssertException 'url should be given'
