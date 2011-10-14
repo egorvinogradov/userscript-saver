@@ -37,5 +37,5 @@ class IocContainer
 		if elementDescriptor.ref?
 			return elementDescriptor.ref
 
-	_createFromConstructor = (ctor) ->
+	_createFromConstructor: (ctor) ->
 		return new ctor
