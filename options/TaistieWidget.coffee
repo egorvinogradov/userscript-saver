@@ -21,8 +21,7 @@ class TaistieWidget extends Spine.Controller
 		@
 
 	toggle: ->
-		@item.active = !@item.active
-		@item.save()
+		@item.updateAttributes active: !@item.active
 
 	destroy: =>
 		@el.remove()
