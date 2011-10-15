@@ -1,14 +1,49 @@
 <html>
-<head><title>My Test Extension Options</title></head>
+<head>
+	<title>Todos</title>
+
+	<link rel="stylesheet" href="options.css" type="text/css" charset="utf-8">
+
+	<script type="text/javascript" src="../lib/jquery.js"></script>
+	<script type="text/javascript" src="../lib/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../lib/spine/lib/spine.js"></script>
+	<script type="text/javascript" src="../lib/spine/lib/local.js"></script>
+	<script type="text/javascript" src="../lib/proton/core/Assert.js"></script>
+	<script type="text/javascript" src="../lib/proton/core/IocContainer.js"></script>
+	<script type="text/javascript" src="../core/Taistie.js"></script>
+	<script type="text/javascript" src="StartOptions.js"></script>
+
+	<script type="text/x-jquery-tmpl" id="taskTemplate">
+		<div class="item {{if done}}done{{/if}}">
+			<div class="view" title="Double click to edit...">
+				<input type="checkbox"{{if done}}checked="checked"{{/if}}>
+				<span>${name}</span> <a class="destroy"></a>
+			</div>
+
+			<div class="edit">
+				<input type="text" value="${name}">
+			</div>
+		</div>
+	</script>
+</head>
 <body>
+<div id="views">
+	<div id="tasks">
+		<h1>Todos</h1>
 
-<script type="text/javascript" src="../lib/jquery.js"></script>
-<script type="text/javascript" src="../lib/jquery.tmpl.js"></script>
-<script type="text/javascript" src="../lib/proton/core/Assert.js"></script>
-<script type="text/javascript" src="../lib/proton/core/IocContainer.js"></script>
-<script type="text/javascript" src="../core/Taistie.js"></script>
-<script type="text/javascript" src="StartOptions.js"></script>
+		<form>
+			<input type="text" placeholder="What needs to be done?">
+		</form>
 
+		<div class="items"></div>
+
+		<footer>
+			<a class="clear">Clear completed</a>
+
+			<div class="count"><span class="countVal"></span> left</div>
+		</footer>
+	</div>
+</div>
 </body>
 </html>
 
