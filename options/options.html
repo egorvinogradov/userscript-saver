@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Todos</title>
+	<title>Taisties</title>
 
 	<link rel="stylesheet" href="options.css" type="text/css" charset="utf-8">
 
@@ -14,9 +14,9 @@
 	<script type="text/javascript" src="StartOptions.js"></script>
 
 	<script type="text/x-jquery-tmpl" id="taskTemplate">
-		<div class="item {{if done}}done{{/if}}">
+		<div class="item {{if !active}}inactive{{/if}}">
 			<div class="view" title="Double click to edit...">
-				<input type="checkbox"{{if done}}checked="checked"{{/if}}>
+				<input type="checkbox"{{if active}}checked="checked"{{/if}}>
 				<span>${name}</span> <a class="destroy"></a>
 			</div>
 
@@ -29,16 +29,16 @@
 <body>
 <div id="views">
 	<div id="tasks">
-		<h1>Todos</h1>
+		<h1>Taisties</h1>
 
 		<form>
-			<input type="text" placeholder="What needs to be done?">
+			<input type="text" placeholder="New taistie name">
 		</form>
 
 		<div class="items"></div>
 
 		<footer>
-			<a class="clear">Clear completed</a>
+			<a class="clear">Delete inactive taisties</a>
 
 			<div class="count"><span class="countVal"></span> left</div>
 		</footer>
