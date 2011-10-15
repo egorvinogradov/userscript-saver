@@ -11,7 +11,7 @@ class Task extends Spine.Model
 
 	@destroyDone: -> rec.destroy() for rec in @inactive()
 
-class Tasks extends Spine.Controller
+class TaskWidget extends Spine.Controller
 	events:
 		"change   input[type=checkbox]": "toggle"
 		"click    .destroy":             "remove"
@@ -50,7 +50,7 @@ class Tasks extends Spine.Controller
 		@el.removeClass "editing"
 		@item.updateAttributes name: @input.val()
 
-class TaskApp extends Spine.Controller
+class TaskListWidget extends Spine.Controller
 	events:
 		"submit form":   "create"
 		"click  .clear": "clear"
@@ -69,7 +69,7 @@ class TaskApp extends Spine.Controller
 		Task.fetch()
 
 	addOne: (task) =>
-		view = new Tasks item: task
+		view = new TaskWidget item: task
 		@items.append view.render().el
 
 	addAll: =>
@@ -94,4 +94,4 @@ class TaskApp extends Spine.Controller
 			@clear.show()
 		else @clear.hide()
 
-$ -> new TaskApp el: $("#tasks")
+$ -> new TaskListWidget el: $("#tasks")
