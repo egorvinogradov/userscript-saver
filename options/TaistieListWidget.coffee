@@ -16,8 +16,8 @@ class TaistieListWidget extends Spine.Controller
 		Taistie.bind "refresh change", @renderCount
 		Taistie.fetch()
 
-	addOne: (task) =>
-		view = new TaistieWidget item: task
+	addOne: (taistie) =>
+		view = new TaistieWidget item: taistie
 		@items.append view.render().el
 
 	addAll: =>
