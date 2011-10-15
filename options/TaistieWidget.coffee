@@ -9,7 +9,7 @@ class TaistieWidget extends Spine.Controller
 	elements:
 		".view": "view"
 		".edit": "edit"
-		"input[type=text]": "input"
+		"input[type=text]": "inputTaistieName"
 
 	constructor: ->
 		super
@@ -32,11 +32,11 @@ class TaistieWidget extends Spine.Controller
 	startEditing: ->
 		@edit.show()
 		@view.hide()
-		@input.focus()
+		@inputTaistieName.focus()
 
 	blurOnEnter: (e) -> if e.keyCode is 13 then e.target.blur()
 
 	finishEditing: ->
 		@view.show()
 		@edit.hide()
-		@item.updateAttributes name: @input.val()
+		@item.updateAttributes name: @inputTaistieName.val()
