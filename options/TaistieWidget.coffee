@@ -7,8 +7,8 @@ class TaistieWidget extends Spine.Controller
 		"blur     input[type=text]":     "finishEditing"
 
 	elements:
-		".view": "view"
-		".edit": "edit"
+		".view": "viewDiv"
+		".edit": "editDiv"
 		"input[type=text]": "inputTaistieName"
 
 	constructor: ->
@@ -29,13 +29,18 @@ class TaistieWidget extends Spine.Controller
 	remove: -> @item.destroy()
 
 	startEditing: ->
-		@edit.show()
-		@view.hide()
+		@toggleEditing on
 		@inputTaistieName.focus()
 
 	blurOnEnter: (e) -> if e.keyCode is 13 then e.target.blur()
 
 	finishEditing: ->
-		@view.show()
-		@edit.hide()
+		@toggleEditing off
 		@item.updateAttributes name: @inputTaistieName.val()
+
+	toggleEditing: (editing)->
+#		(if editing then @editDiv else @viewDiv).show()
+#		(if editing then @viewDiv else @editDiv).hide()
+		[activeDiv, inactiveDiv] = if editing then [@editDiv, @viewDiv] else [@viewDiv, @editDiv]
+		activeDiv.show()
+		inactiveDiv.hide()
