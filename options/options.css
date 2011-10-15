@@ -91,8 +91,6 @@ body {
 }
 
 #tasks .item .edit { display: none; }
-#tasks .item.editing .edit { display: block; }
-#tasks .item.editing .view { display: none; }
 
 #tasks footer {
   display: block;

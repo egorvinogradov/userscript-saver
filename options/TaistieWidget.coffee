@@ -2,11 +2,13 @@ class TaistieWidget extends Spine.Controller
 	events:
 		"change   input[type=checkbox]": "toggle"
 		"click    .destroy":             "remove"
-		"dblclick .view":                "edit"
+		"dblclick .view":                "startEditing"
 		"keypress input[type=text]":     "blurOnEnter"
-		"blur     input[type=text]":     "close"
+		"blur     input[type=text]":     "finishEditing"
 
 	elements:
+		".view": "view"
+		".edit": "edit"
 		"input[type=text]": "input"
 
 	constructor: ->
@@ -27,12 +29,14 @@ class TaistieWidget extends Spine.Controller
 
 	remove: -> @item.destroy()
 
-	edit: ->
-		@el.addClass "editing"
+	startEditing: ->
+		@edit.show()
+		@view.hide()
 		@input.focus()
 
 	blurOnEnter: (e) -> if e.keyCode is 13 then e.target.blur()
 
-	close: ->
-		@el.removeClass "editing"
+	finishEditing: ->
+		@view.show()
+		@edit.hide()
 		@item.updateAttributes name: @input.val()
