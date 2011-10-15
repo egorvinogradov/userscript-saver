@@ -24,11 +24,11 @@ class Tasks extends Spine.Controller
 
 	constructor: ->
 		super
-		@item.bind("update",  @render)
-		@item.bind("destroy", @destroy)
+		@item.bind "update",  @render
+		@item.bind "destroy", @destroy
 
 	render: =>
-		@replace($("#taskTemplate").tmpl(@item))
+		@replace $("#taskTemplate").tmpl @item
 		@
 
 	toggle: ->
@@ -41,14 +41,14 @@ class Tasks extends Spine.Controller
 	remove: -> @item.destroy()
 
 	edit: ->
-		@el.addClass("editing")
+		@el.addClass "editing"
 		@input.focus()
 
 	blurOnEnter: (e) -> if e.keyCode is 13 then e.target.blur()
 
 	close: ->
-		@el.removeClass("editing")
-		@item.updateAttributes({name: @input.val()})
+		@el.removeClass "editing"
+		@item.updateAttributes name: @input.val()
 
 class TaskApp extends Spine.Controller
 	events:
@@ -63,24 +63,24 @@ class TaskApp extends Spine.Controller
 
 	constructor: ->
 		super
-		Task.bind("create",  @addOne)
-		Task.bind("refresh", @addAll)
-		Task.bind("refresh change", @renderCount)
+		Task.bind "create",  @addOne
+		Task.bind "refresh", @addAll
+		Task.bind "refresh change", @renderCount
 		Task.fetch()
 
 	addOne: (task) =>
-		view = new Tasks(item: task)
-		@items.append(view.render().el)
+		view = new Tasks item: task
+		@items.append view.render().el
 
 	addAll: =>
-	   	Task.each(@addOne)
+	   	Task.each @addOne
 
 	create: (e) ->
 		e.preventDefault()
 		Task.create
 			name: @input.val()
 			active: true
-		@input.val("")
+		@input.val ""
 
 	clear: ->
 	    Task.destroyDone()
@@ -94,4 +94,4 @@ class TaskApp extends Spine.Controller
 			@clear.show()
 		else @clear.hide()
 
-$ -> new TaskApp(el: $("#tasks"))
+$ -> new TaskApp el: $("#tasks")
