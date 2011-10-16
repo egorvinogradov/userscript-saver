@@ -1,5 +1,5 @@
 class Taistie extends Spine.Model
-	@configure "Taistie", "name", "active"
+	@configure "Taistie", "name", "active", "urlRegexp", "css", "js"
 
 	@extend Spine.Model.Local
 

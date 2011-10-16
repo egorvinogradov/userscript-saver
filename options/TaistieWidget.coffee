@@ -1,15 +1,19 @@
 class TaistieWidget extends Spine.Controller
 	events:
-		"change   input[type=checkbox]": "toggle"
 		"click    .destroy":             "remove"
 		"dblclick .view":                "startEditing"
-		"keypress input[type=text]":     "blurOnEnter"
-		"blur     input[type=text]":     "finishEditing"
+		"click .saveTaistie": "finishEditing"
 
 	elements:
 		".view": "viewDiv"
 		".edit": "editDiv"
-		"input[type=text]": "inputTaistieName"
+		".inputName": "inputName"
+
+	newElements:
+		".inputActive": "active"
+		".inputJs": "js"
+		".inputUrlRegexp": "urlRegexp"
+		".inputCss": "css"
 
 	constructor: ->
 		super
@@ -17,12 +21,20 @@ class TaistieWidget extends Spine.Controller
 		@item.bind "destroy", @destroy
 
 	render: =>
-		@replace $("#taskTemplate").tmpl @item
+		if not @rendered
+			@rendered = true
+			@replace $("#taskTemplate").tmpl @item
+			updateVal = (domElem, propertyName) =>
+				elem = $(domElem)
+				value = if elem.attr('type') is 'checkbox' then elem.is(':checked') else elem.val()
+				console.log propertyName, value, elem
+				@item.updateAttribute propertyName, value
+
+			for selector, propertyName of @newElements
+				do (selector, propertyName) =>
+					@$(selector).change ->
+						updateVal(this, propertyName)
 		@
-
-	toggle: ->
-		@item.updateAttributes active: !@item.active
-
 	destroy: =>
 		@el.remove()
 
@@ -30,17 +42,12 @@ class TaistieWidget extends Spine.Controller
 
 	startEditing: ->
 		@toggleEditing on
-		@inputTaistieName.focus()
-
-	blurOnEnter: (e) -> if e.keyCode is 13 then e.target.blur()
+		@inputName.focus()
 
 	finishEditing: ->
 		@toggleEditing off
-		@item.updateAttributes name: @inputTaistieName.val()
 
 	toggleEditing: (editing)->
-#		(if editing then @editDiv else @viewDiv).show()
-#		(if editing then @viewDiv else @editDiv).hide()
 		[activeDiv, inactiveDiv] = if editing then [@editDiv, @viewDiv] else [@viewDiv, @editDiv]
 		activeDiv.show()
 		inactiveDiv.hide()
