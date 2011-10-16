@@ -15,9 +15,6 @@ class TaistieWidget extends Controller
 		".inputUrlRegexp": "urlRegexp"
 		".inputCss": "css"
 
-	constructor: ->
-		super
-
 	render: =>
 		if not @prerendered
 			@prerendered = true
