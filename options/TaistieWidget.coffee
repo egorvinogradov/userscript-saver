@@ -1,4 +1,4 @@
-class TaistieWidget extends Spine.Controller
+class TaistieWidget extends Controller
 	events:
 		"click    .destroy":             "remove"
 		"dblclick .view":                "startEditing"
@@ -17,8 +17,6 @@ class TaistieWidget extends Spine.Controller
 
 	constructor: ->
 		super
-		@item.bind "update",  @render
-		@item.bind "destroy", @destroy
 
 	render: =>
 		if not @prerendered

@@ -17,7 +17,8 @@ class TaistieListWidget extends Spine.Controller
 		Taistie.fetch()
 
 	addOne: (taistie) =>
-		view = new TaistieWidget item: taistie
+		view = new TaistieWidget
+		view.setModel taistie
 		@items.append view.render().el
 
 	addAll: =>
