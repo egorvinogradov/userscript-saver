@@ -5,3 +5,13 @@ class Controller extends Spine.Controller
 		@item = model
 		@item.bind "update",  @render
 		@item.bind "destroy", @destroy
+
+	render: =>
+		assert @initialRender?, 'should have method @initialRender'
+		if not @prerendered
+			@initialRender()
+			@prerendered = true
+
+		if @refreshRender?
+			@refreshRender()
+		@

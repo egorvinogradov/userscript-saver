@@ -15,24 +15,22 @@ class TaistieWidget extends Controller
 		".inputUrlRegexp": "urlRegexp"
 		".inputCss": "css"
 
-	render: =>
-		if not @prerendered
-			@prerendered = true
-			@replace $("#taskTemplate").tmpl @item
-			updateVal = (domElem, propertyName) =>
-				elem = $(domElem)
-				value = if elem.attr('type') is 'checkbox' then elem.is(':checked') else elem.val()
-				@item.updateAttribute propertyName, value
+	initialRender: ->
+		@replace $("#taskTemplate").tmpl @item
+		updateVal = (domElem, propertyName) =>
+			elem = $(domElem)
+			value = if elem.attr('type') is 'checkbox' then elem.is(':checked') else elem.val()
+			@item.updateAttribute propertyName, value
 
-			for selector, propertyName of @newElements
-				do (selector, propertyName) =>
-					@$(selector).change ->
-						updateVal(this, propertyName)
+		for selector, propertyName of @newElements
+			do (selector, propertyName) =>
+				@$(selector).change ->
+					updateVal(this, propertyName)
 
+	refreshRender: ->
 		activeModifier = if not @item.active then 'addClass' else 'removeClass'
 		@el[activeModifier] 'inactive'
 
-		@
 	destroy: =>
 		@el.remove()
 
