@@ -7,10 +7,22 @@ class Controller extends Spine.Controller
 		@item.bind "destroy", @destroy
 
 	render: =>
-		assert @initialRender?, 'should have method @initialRender'
 		if not @prerendered
 			@initialRender()
 			@prerendered = true
 
 		if @refreshRender?
 			@refreshRender()
+
+	initialRender: ->
+		@el = $(".#{@selector}.template").clone().removeClass('template')
+		@delegateEvents()
+		@refreshElements()
+
+		for selector, propertyName of @newElements
+			do (selector, propertyName) =>
+				jqueryControl = new JqueryControl
+				jqueryControl.setJqueryElement @$(selector)
+				jqueryControl.setValueChangeListener (jqueryControl, newValue) =>
+					@item.updateAttribute propertyName, newValue
+
