@@ -18,7 +18,7 @@ class TaistieWidget extends Controller
 		".inputCss": "css"
 
 	initialRender: ->
-		@replace $("#taskTemplate").tmpl @item
+		@replace $(".item.template").clone()
 		updateVal = (domElem, propertyName) =>
 			elem = $(domElem)
 			value = if elem.attr('type') is 'checkbox' then elem.is(':checked') else elem.val()
