@@ -10,10 +10,8 @@ describe 'Controller', ->
 			fire: (eventName) ->
 				this[eventName]()
 
-		controller.render = ->
-			return 'rendered'
-		controller.destroy = ->
-			return 'destroyed'
+		controller.render = -> return 'rendered'
+		controller.destroy = -> return 'destroyed'
 
 		controller.setModel model
 
