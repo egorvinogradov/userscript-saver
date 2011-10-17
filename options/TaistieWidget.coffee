@@ -17,20 +17,6 @@ class TaistieWidget extends Controller
 		".inputUrlRegexp": "urlRegexp"
 		".inputCss": "css"
 
-	initialRender: ->
-		@el = $(".item.template").clone().removeClass('template')
-		@delegateEvents()
-		@refreshElements()
-		updateVal = (domElem, propertyName) =>
-			elem = $(domElem)
-			value = if elem.attr('type') is 'checkbox' then elem.is(':checked') else elem.val()
-			@item.updateAttribute propertyName, value
-
-		for selector, propertyName of @newElements
-			do (selector, propertyName) =>
-				@$(selector).change ->
-					updateVal(this, propertyName)
-
 	refreshRender: ->
 		activeModifier = if not @item.active then 'addClass' else 'removeClass'
 		@el[activeModifier] 'inactive'

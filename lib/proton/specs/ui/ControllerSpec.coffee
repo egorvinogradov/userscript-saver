@@ -27,23 +27,13 @@ describe 'Controller', ->
 		controller.destroy = ->
 		controller.setModel	bind: ->
 
-	it '@render calls mandatory @prerender once and optional @refreshRender every time', ->
-		callCounter =
-			initialRender: 0
-			refreshRender: 0
+	it '@render calls @prerender once and optional @refreshRender every time', ->
+		refreshRenderCalls = 0
 
-		expect(-> controller.render()).toThrow new AssertException 'should have method @initialRender'
-
-		controller = new Controller()
-		controller.initialRender = -> callCounter.initialRender++
-		controller.refreshRender = -> callCounter.refreshRender++
+		controller.refreshRender = -> refreshRenderCalls++
 
 		controller.render()
-		expect(callCounter).toEqual
-			initialRender: 1
-			refreshRender: 1
+		expect(refreshRenderCalls).toEqual 1
 
 		controller.render()
-		expect(callCounter).toEqual
-			initialRender: 1
-			refreshRender: 2
+		expect(refreshRenderCalls).toEqual 2
