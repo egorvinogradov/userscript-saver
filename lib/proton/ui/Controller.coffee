@@ -14,4 +14,3 @@ class Controller extends Spine.Controller
 
 		if @refreshRender?
 			@refreshRender()
-		@
