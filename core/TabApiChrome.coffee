@@ -6,7 +6,7 @@ TabApi =
 
 	insertJsToTab: (jsCode, tabDescriptor) ->
 		tabId = tabDescriptor
-		chrome.tabs.executeScrip tabId, code: jsCode
+		chrome.tabs.executeScript tabId, code: jsCode
 
 	openTab: (url) ->
 		chrome.tabs.create url: url
