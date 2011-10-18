@@ -45,10 +45,24 @@ DevelopedTaistie =
 				oldUrl = newUrl
 
 			renewBlock = (blockSelector, oldUrl, newUrl) ->
+				jqBlock = $(blockSelector)
+				offset = jqBlock.offset()
+				scrollTo = offset.top - 10
+				if $('body').scrollTop() > scrollTo
+					$('body').scrollTop(scrollTo)
 				storeInCache blockSelector, oldUrl
+
 				renewed = renewFromCache blockSelector, newUrl
 				if not renewed
-					$(blockSelector).load newUrl + ' '+ blockSelector + ' > *', ->
+					blockWidth = jqBlock.width()
+					blockHeight = jqBlock.height()
+					jqBlock.append('<div style="' +
+							'width: ' + blockWidth +
+							'px; height: ' + blockHeight +
+							'px; display: block; background-color: black; -moz-opacity: 0.2; opacity:.2;  filter: alpha(opacity=20);">' +
+							'</div>'
+					)
+					jqBlock.load newUrl + ' '+ blockSelector + ' > *', ->
 						initPager blockSelector
 
 			renewFromCache = (blockSelector, loadedLink) ->
