@@ -5,68 +5,84 @@
 DevelopedTaistie =
 	use: true
 	developedTaistieData: do ->
-		urlRegexp = 'lenta\\.ru'
+		urlRegexp = 'web-ready\\.ru'
 		css = ''
 		jsFunction = ->
-			#insert js code here
-			onePicLink = $ '#gallery .onepic a'
-			currentImg = onePicLink.children 'img'
-			thumbLinks = $ '#gallery .micro a'
-			selectedClass = 'selected'
-			selectedThumbSelector = '#gallery td' + '.' + selectedClass
-			descriptionBlockSelector = '#gallery td.onetext'
+			cachedBlocksInfo = {}
+			cachedBlocks = $('<div class="cached_blocks" style="display: none;"></>')
+			$('body').append(cachedBlocks)
 
-			$(document).keyup (e) ->
-				#37 - left arrow, 39 - right arrow
-				neighbourPositionsByArrowKeyCodes =
-					37: 'prev'
-					39: 'next'
-				targetLinkOffset = neighbourPositionsByArrowKeyCodes[e.which]
-				if targetLinkOffset isnt undefined
-					loadNeighbourPicture targetLinkOffset
+			oldUrl = window.location.href
+			loadedBlockSelectors = ['.Mainmenu', '.Pagetext[style]']
+			fancyBoxLoader = ->
+				$.ajax
+					url: $(this).attr('href')
+					data: "mode=ajax"
+					success: (html) ->
+						$.fancybox(
+							html
+							'width' : 520
+							'height': 520
+							'autoDimensions': false)
+				false
 
-			currentImg.removeAttr 'width'
-			currentImg.removeAttr 'height'
+			initPager = (ancestorSelector) ->
+				if ancestorSelector?
+					$(ancestorSelector + ' .ajax_popup').click(fancyBoxLoader)
 
-			thumbLinks.click ->
-				loadPictureByThumbLink this
-				return false
+				ancestorSelector ?= ''
+				for listPageLink in $(ancestorSelector + ' a[href^="\\?"]')
+					$(listPageLink).attr('href', '/podannye_zayavki_2011/' + $(listPageLink).attr('href'))
+				$(ancestorSelector + ' a[href^="/"]').add(ancestorSelector + ' a[href*="web-ready.ru/"]').not('.ajax_popup').click ->
+					renewPageForLink @
+					false
 
-			onePicLink.click ->
-				loadNeighbourPicture 'next'
-				return false
+			renewPageForLink = (link) ->
+				newUrl = $(link).attr('href')
+				renewBlock(blockSelector, oldUrl, newUrl) for blockSelector in loadedBlockSelectors
+				console.log(cachedBlocks)
+				console.log(cachedBlocksInfo)
+				oldUrl = newUrl
 
-			loadNeighbourPicture = (neighbourPosition) ->
-				linkOffsetsByNeighbourPositions =
-					prev: -1
-					next: 1
+			renewBlock = (blockSelector, oldUrl, newUrl) ->
+				storeInCache blockSelector, oldUrl
+				renewed = renewFromCache blockSelector, newUrl
+				if not renewed
+					$(blockSelector).load newUrl + ' '+ blockSelector + ' > *', ->
+						initPager blockSelector
 
-				linkOffset = linkOffsetsByNeighbourPositions[neighbourPosition]
-				picturePageLinks = $ thumbLinks
-				currentLinkIndex = picturePageLinks.index $ selectedThumbSelector + ' a'
+			renewFromCache = (blockSelector, loadedLink) ->
+				blockKey = getBlockKey blockSelector, loadedLink
+				cachedBlockInfo = cachedBlocksInfo[blockKey]
+				if not cachedBlockInfo?
+					return false
+				newBlock = $(cachedBlocks.children()[cachedBlockInfo.blockIndex])
+				if newBlock.children().length = 0
+					return false
+				
+				$(blockSelector).append(newBlock.children())
+				return true
 
-				#loop elements: next element for the last one is the first one, and vise versa
-				loadedLinkIndex = currentLinkIndex + linkOffset + picturePageLinks.length
-				loadedLink = picturePageLinks[loadedLinkIndex % picturePageLinks.length]
+			storeInCache = (blockSelector, url) ->
+				blockKey = getBlockKey blockSelector, url
+				cachedBlockInfo = cachedBlocksInfo[blockKey]
+				cachedBlock = null
+				if not cachedBlockInfo?
+					cachedBlock = $('<div></div>')
+					cachedBlock.appendTo(cachedBlocks)
+					cachedBlocksInfo[blockKey] =
+						blockIndex: cachedBlocks.children().length - 1
+				else
+					cachedBlock = $(cachedBlocks.children()[cachedBlockInfo.blockIndex])
+				cachedBlock.append($(blockSelector + ' > *'))
 
-				loadPictureByThumbLink loadedLink
+			getBlockKey = (blockSelector, url) ->
+				key = blockSelector + ' : ' + url.replace('http://', '').replace('www.', '').replace('web-ready.ru/', '/')
+				if key.substr(key.length - 4) == '?p=0'
+					key = key.substr(0, key.length - 4)
+				return key
 
-			loadPictureByThumbLink = (picturePageLinkInThumb) ->
-				imgOffset = currentImg.offset()
-				scrollTo = imgOffset.top - 10
-				if $('body').scrollTop() > scrollTo
-					$('body').scrollTop scrollTo
-
-				#change text
-				$(descriptionBlockSelector).load picturePageLinkInThumb + ' ' + descriptionBlockSelector
-
-				newPictureUrl = 'http:#img.lenta.ru' + $(picturePageLinkInThumb).attr('href').replace '_Jpg.htm', '.jpg'
-				#replace old picture with new one
-				currentImg.attr 'src', newPictureUrl
-
-				#change selected thumbnail
-				$(selectedThumbSelector).removeClass selectedClass
-				$(picturePageLinkInThumb).parent('td').addClass selectedClass
+			initPager(null)
 
 		js = '(' + jsFunction.toString() + ')()'
 
@@ -75,4 +91,3 @@ DevelopedTaistie =
 			css: css
 			js: js
 		}
-#		#TODO: вызвать сразу
