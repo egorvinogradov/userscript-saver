@@ -3,10 +3,9 @@
     "version":  "0.1",
     "description": "Tai.st platform",
 	"background_page": "background/background.html",
-    "options_page": "options/options.html",
 	"permissions":	["tabs", "<all_urls>"],
 	"browser_action": {
-		"default_icon": "icons/browser_action_green_square.png",
+		"default_icon": "icons/browser_action_taistie_disabled.png",
 		"default_title": "Tai.st",
 		"default_popup": "popup/popup.html"
 	}

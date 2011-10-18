@@ -23,5 +23,6 @@ class TaistieCombiner
 			do (checkedTaistie) ->
 				if checkedTaistie.fitsUrl url
 					taistiesForUrl.push checkedTaistie
-
 		return taistiesForUrl
+
+	existTaistiesForUrl: (url) -> @_getTaistiesForUrl(url).length > 0
