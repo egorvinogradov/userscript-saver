@@ -4,14 +4,23 @@ class Taistie
 
 		@_urlRegexp = taistieData.urlRegexp
 		@_js = taistieData.js ? ''
-		@_css = taistieData.css ? '' 
+		@_css = taistieData.css ? ''
+		#TODO: проверять, что имя задано
+		@_name = taistieData.name
+		@_active = taistieData.active
 
 	fitsUrl: (url) ->
 		urlRegexp = new RegExp(@_urlRegexp, 'g')
 		return urlRegexp.test(url)
 
 	getCss: () ->
-		return @_css
+		@_css
 
 	getJs: () ->
-		return if @_js is '' then '' else '(function(){' + @_js + '})();'
+		if @_js is '' then '' else '(function(){' + @_js + '})();'
+
+	getName: () ->
+		@_name
+
+	getActive: () ->
+		@_active

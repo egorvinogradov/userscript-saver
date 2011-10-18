@@ -7,9 +7,10 @@ class TaistieCombiner
 	
 		for currentTaistie in taisties
 			do (currentTaistie) ->
-				#css вставляем до использующего их js-кода
-				allCssString += currentTaistie.getCss()
-				allJsString += currentTaistie.getJs()
+				if currentTaistie.getActive()
+					#css вставляем до использующего их js-кода
+					allCssString += currentTaistie.getCss()
+					allJsString += currentTaistie.getJs()
 	
 		return js: allJsString, css: allCssString
 	

@@ -7,6 +7,8 @@ DevelopedTaistie =
 	developedTaistieData: do ->
 		urlRegexp = 'web-ready\\.ru'
 		css = ''
+		name = 'Ускоритель: моментальная повторная загрузка страниц'
+		active = on
 		jsFunction = ->
 			cachedBlocksInfo = {}
 			cachedBlocks = $('<div class="cached_blocks" style="display: none;"></>')
@@ -64,6 +66,7 @@ DevelopedTaistie =
 				if not cachedBlockInfo?
 					return false
 				newBlock = $(cachedBlocks.children()[cachedBlockInfo.blockIndex])
+				
 				if newBlock.children().length = 0
 					return false
 				
@@ -95,6 +98,8 @@ DevelopedTaistie =
 
 		return {
 			urlRegexp: urlRegexp
+			name: name
 			css: css
 			js: js
+			active: active
 		}
