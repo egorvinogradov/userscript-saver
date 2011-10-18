@@ -1,4 +1,4 @@
-class TaistieWidget extends Spine.Controller
+class TaistieWidget extends Controller
 	events:
 		"click    .destroy":             "remove"
 		"dblclick .view":                "startEditing"
@@ -10,34 +10,25 @@ class TaistieWidget extends Spine.Controller
 		".inputName": "inputName"
 
 	newElements:
+		".viewName": "name"
+		".inputName": "name"
 		".inputActive": "active"
 		".inputJs": "js"
 		".inputUrlRegexp": "urlRegexp"
 		".inputCss": "css"
 
-	constructor: ->
-		super
-		@item.bind "update",  @render
-		@item.bind "destroy", @destroy
-
-	render: =>
-		if not @prerendered
-			@prerendered = true
-			@replace $("#taskTemplate").tmpl @item
-			updateVal = (domElem, propertyName) =>
-				elem = $(domElem)
-				value = if elem.attr('type') is 'checkbox' then elem.is(':checked') else elem.val()
-				@item.updateAttribute propertyName, value
-
-			for selector, propertyName of @newElements
-				do (selector, propertyName) =>
-					@$(selector).change ->
-						updateVal(this, propertyName)
-
+	refreshRender: ->
 		activeModifier = if not @item.active then 'addClass' else 'removeClass'
 		@el[activeModifier] 'inactive'
 
-		@
+		for selector, propertyName of @newElements
+			do (selector, propertyName) =>
+				val = @item[propertyName]
+				elem = @$(selector)
+				if elem.attr('type') is 'checkbox' then elem.attr('checked', val)
+				else if elem[0].tagName.toLowerCase() is 'input' then elem.val(val)
+				else elem.text(val)
+
 	destroy: =>
 		@el.remove()
 

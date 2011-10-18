@@ -9,28 +9,14 @@
 	<script type="text/javascript" src="../lib/spine/lib/spine.js"></script>
 	<script type="text/javascript" src="../lib/spine/lib/local.js"></script>
 	<script type="text/javascript" src="../lib/proton/core/Assert.js"></script>
+	<script type="text/javascript" src="../lib/proton/ui/Controller.js"></script>
+	<script type="text/javascript" src="../lib/proton/ui/JqueryControl.js"></script>
 	<script type="text/javascript" src="../lib/proton/core/IocContainer.js"></script>
 	<script type="text/javascript" src="Taistie.js"></script>
 	<script type="text/javascript" src="TaistieWidget.js"></script>
 	<script type="text/javascript" src="TaistieListWidget.js"></script>
 	<script type="text/javascript" src="StartOptions.js"></script>
 
-	<script type="text/x-jquery-tmpl" id="taskTemplate">
-		<div class="item">
-			<div class="view" title="Double click to edit...">
-				<input type="checkbox" class="inputActive"{{if active}}checked="checked"{{/if}}>
-				<span>${name}</span> <a class="destroy"></a>
-			</div>
-
-			<div class="edit">
-				<span>name: </span><input type="text" class="inputName" value="${name}">
-				<span>url regexp: </span><input type="text" class="inputUrlRegexp" value="${urlRegexp}">
-				<span>css: </span><input type="text" class="inputCss" value="${css}">
-				<span>js: </span><input type="text" class="inputJs" value="${js}">
-				<a class="button saveTaistie">Save</a>
-			</div>
-		</div>
-	</script>
 </head>
 <body>
 <div id="views">
@@ -48,6 +34,22 @@
 
 			<div class="count"><span class="countVal"></span> left</div>
 		</footer>
+	</div>
+</div>
+<div id="templates" style="display: none;">
+	<div class="item template">
+		<div class="view" title="Double click to edit...">
+			<input type="checkbox" class="inputActive">
+			<span class="viewName"></span> <a class="destroy"></a>
+		</div>
+
+		<div class="edit">
+			<span>name: </span><input type="text" class="inputName">
+			<span>url regexp: </span><input type="text" class="inputUrlRegexp">
+			<span>css: </span><input type="text" class="inputCss">
+			<span>js: </span><input type="text" class="inputJs">
+			<a class="button saveTaistie">Save</a>
+		</div>
 	</div>
 </div>
 </body>
