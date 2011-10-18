@@ -54,14 +54,7 @@ DevelopedTaistie =
 
 				renewed = renewFromCache blockSelector, newUrl
 				if not renewed
-					blockWidth = jqBlock.width()
-					blockHeight = jqBlock.height()
-					jqBlock.append('<div style="' +
-							'width: ' + blockWidth +
-							'px; height: ' + blockHeight +
-							'px; display: block; background-color: black; -moz-opacity: 0.2; opacity:.2;  filter: alpha(opacity=20);">' +
-							'</div>'
-					)
+					jqBlock.append('<img src="http://www.mobileciti.com.au/skin/frontend/default/mobileciti_v2/images/ajax-loader.gif" />')
 					jqBlock.load newUrl + ' '+ blockSelector + ' > *', ->
 						initPager blockSelector
 
