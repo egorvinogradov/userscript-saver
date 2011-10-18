@@ -12,7 +12,11 @@ $(function() {
 	})
 
 	var popupOptionsWidget = iocContainer.getElement('topPopupWidget')
-	popupOptionsWidget._element = $('<' + popupOptionsWidget._tagName + '/>')
-	$('body').append(popupOptionsWidget._element)
+	popupOptionsWidget._element = $('<input type = "checkbox" id="taistieEnabled">')
+	popupOptionsWidget._element.css({
+		'text-align': 'left'
+	})
+	$('.popupWidget').append(popupOptionsWidget._element)
+	$('.popupWidget').append($('<label for="taistieEnabled">Ускоритель: быстрая повторная загрузка</label>'))
 	popupOptionsWidget.prerender()
 })
