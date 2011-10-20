@@ -2,12 +2,10 @@
 # to use this file:
 # 1) set 'use' = true
 # 2) write needed code in corresponding local variables in _getDevelopedTaistieData (write js code in js_func function body)
-DevelopedTaistie =
-	use: true
-	developedTaistieData: do ->
+DevelopedTaistie = do ->
 		urlRegexp = 'web-ready\\.ru'
 		css = ''
-		name = 'Ускоритель: моментальная повторная загрузка страниц'
+		name = 'Accelerator: instant repeated page loading'
 		active = on
 		jsFunction = ->
 			cachedBlocksInfo = {}

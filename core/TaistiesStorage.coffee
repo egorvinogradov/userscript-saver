@@ -9,8 +9,7 @@ class TaistiesStorage
 			allTaistiesData = []
 
 			#include locally developed function
-			if DevelopedTaistie.use
-				allTaistiesData.push(DevelopedTaistie.developedTaistieData)
+			allTaistiesData.push DevelopedTaistie
 
 			allTaistiesData.forEach (taistieData) =>
 				taistie = new Taistie
