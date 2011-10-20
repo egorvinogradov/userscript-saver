@@ -12,8 +12,8 @@ TabApi =
 		chrome.tabs.create url: url
 
 	onTabSelected: (selectedTabCallBack) ->
-		chrome.tabs.onSelectionChanged.addListener () =>
-			chrome.tabs.getSelected null, (tab) =>
+		chrome.tabs.onSelectionChanged.addListener () ->
+			chrome.tabs.getSelected null, (tab) ->
 				selectedTabCallBack tab.url
 
 	setIcon: (iconPath) ->
