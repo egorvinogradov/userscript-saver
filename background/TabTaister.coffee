@@ -30,6 +30,7 @@ class TabTaister
 		existTaisties = @_dTaistieCombiner.existTaistiesForUrl(tabUrl)
 		popupResourcePaths = @_popupResourcePaths[if existTaisties then 'enabled' else 'disabled']
 
-		#TODO: вынести в зависимости
 		@_tabApi.setIcon popupResourcePaths.icon
 		@_tabApi.setPopup popupResourcePaths.page
+
+	
