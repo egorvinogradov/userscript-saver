@@ -1,12 +1,11 @@
 class TabTaister
 
 	startListeningToTabChange: ->
-		@_tabApi.subscribeToTabChange (tabUrl, tabDescriptor) =>
+		@_tabApi.onTabUrlChanged (tabUrl, tabDescriptor) =>
 			@_taistTab tabUrl, tabDescriptor
 
-		chrome.tabs.onSelectionChanged.addListener () =>
-			chrome.tabs.getSelected null, (tab) =>
-				@_setIcon tab.url
+		@_tabApi.onTabSelected (tabUrl) =>
+				@_setIcon tabUrl
 
 
 	_taistTab: (tabUrl, tabDescriptor) ->
