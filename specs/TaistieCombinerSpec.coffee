@@ -4,6 +4,7 @@ describe "TaistieCombiner", ->
 	createTaistie = (taistieData) ->
 		taistie = new Taistie
 		taistie.setTaistieData taistieData
+		taistie._active = on
 		return taistie
 
 	beforeEach ->
