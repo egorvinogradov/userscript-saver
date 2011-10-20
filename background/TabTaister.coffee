@@ -1,16 +1,23 @@
 class TabTaister
+	constructor: ->
+		@_tabApi = null
+		@_dTaistieCombiner = null
+		@_dTaistiesStorage = null
+		@_popupResourcePaths = null
 
 	startListeningToTabChange: ->
 		@_tabApi.onTabUrlChanged (tabUrl, tabDescriptor) =>
+			@updatePopup tabUrl
 			@_taistTab tabUrl, tabDescriptor
 
 		@_tabApi.onTabSelected (tabUrl) =>
-				@_setIcon tabUrl
+				@updatePopup tabUrl
 
 
 	_taistTab: (tabUrl, tabDescriptor) ->
-		@_setIcon tabUrl
 		allTaistiesCssAndJs = @_dTaistieCombiner.getAllCssAndJsForUrl tabUrl
+
+		#TODO: maybe check and continue only if have any taistie
 		insertedJs = @_dTaistieWrapper.wrapTaistiesCodeToJs allTaistiesCssAndJs
 
 		storage = new LocalStorage
@@ -19,8 +26,10 @@ class TabTaister
 		if taistiesEnabled and insertedJs isnt null
 			@_tabApi.insertJsToTab insertedJs, tabDescriptor
 	
-	_setIcon: (tabUrl) ->
+	updatePopup: (tabUrl) ->
 		existTaisties = @_dTaistieCombiner.existTaistiesForUrl(tabUrl)
-		@_tabApi.setIcon '../icons/browser_action_taistie_' + (if existTaisties then 'enabled' else 'disabled') + '.png'
+		popupResourcePaths = @_popupResourcePaths[if existTaisties then 'enabled' else 'disabled']
 
-		@_tabApi.setPopup (if existTaisties then 'popup/popup.html' else '')
+		#TODO: вынести в зависимости
+		@_tabApi.setIcon popupResourcePaths.icon
+		@_tabApi.setPopup popupResourcePaths.page
