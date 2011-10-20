@@ -30,9 +30,9 @@ describe 'TabTaister', ->
 
 		tabTaister.updatePopup urlWithTaisties
 		expect(checkedUrl).toEqual urlWithTaisties
-		expect(iconPath).toEqual popupResourcePaths.enabled.icon
-		expect(pagePath).toEqual popupResourcePaths.enabled.page
+		expect(iconPath).toEqual 'enabledIcon.png'
+		expect(pagePath).toEqual 'enabledPage.html'
 
 		tabTaister.updatePopup urlWithoutTaisties
-		expect(iconPath).toEqual popupResourcePaths.disabled.icon
-		expect(pagePath).toEqual popupResourcePaths.disabled.page
+		expect(iconPath).toEqual 'disabledIcon.png'
+		expect(pagePath).toEqual 'disabledPage.html'

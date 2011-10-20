@@ -22,5 +22,5 @@ class Taistie
 	getName: () ->
 		@_name
 
-	getActive: () ->
+	isActive: () ->
 		@_active

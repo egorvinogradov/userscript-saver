@@ -11,7 +11,7 @@ describe 'Taistie', ->
 		taistie.setTaistieData urlRegexp: 'stub', css: 'css code'
 		expect(taistie.getCss()).toEqual 'css code'
 
-	it 'returns js as functional expression', ->
+	it 'returns js as functional expression text', ->
 		taistie = new Taistie
 		taistie.setTaistieData urlRegexp: 'stub', js: 'return true'
 		expect(taistie.getJs()).toEqual '(function(){return true})();'

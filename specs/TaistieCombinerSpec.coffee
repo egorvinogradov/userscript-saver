@@ -4,45 +4,60 @@ describe "TaistieCombiner", ->
 	createTaistie = (taistieData) ->
 		taistie = new Taistie
 		taistie.setTaistieData taistieData
-		taistie._active = on
+
+		#by default turn taistie on
+		taistie._active ?= on
 		return taistie
 
 	beforeEach ->
 		taistieCombiner = new TaistieCombiner()
 
 	it "gets whole js and css code for taisties", ->
-		taistie1 = createTaistie urlRegexp: '.*', css: '|css1|', js: ''
-		taistie2 = createTaistie urlRegexp: '.*', css: '', js: '|js2|'
-		taistie3 = createTaistie urlRegexp: '.*', css: '|css3|', js: '|js3|'
+		cssOnly = createTaistie urlRegexp: '.*', css: '|css1|', js: ''
+		jsOnly = createTaistie urlRegexp: '.*', css: '', js: '|js2|'
+		jsAndCss = createTaistie urlRegexp: '.*', css: '|css3|', js: '|js3|'
 
 		taistieCombiner._dTaistiesStorage =
-			getAllTaisties: -> return [taistie1, taistie2,taistie3]
+			getAllTaisties: -> return [cssOnly, jsOnly,jsAndCss]
 
 		expect(taistieCombiner.getAllCssAndJsForUrl 'some_url').toEqual
-			css: taistie1.getCss() + taistie3.getCss(),
-			js: taistie2.getJs() + taistie3.getJs()
+			css: cssOnly.getCss() + '\n\n' + jsAndCss.getCss(),
+			js: jsOnly.getJs() + '\n\n' + jsAndCss.getJs()
 
-	it "gets css and js only for taisties fitting tab", ->
-		fittingTaistie = createTaistie
-			urlRegexp: 'fitting\\.com',
-			css: 'fittingTaistie {color: green}',
-			js: 'alert(fittingTaistie)'
-
+	it "gets css and js only for taisties fitting tab and active; joins them with newlines", ->
 		nonFittingTaistie = createTaistie
-			urlRegexp: 'nonfitting\\.com',
-			css: 'nonFittingTaistie {color: red}',
+			urlRegexp: 'nonfitting\\.com'
+			css: 'nonFittingTaistie'
 			js: 'alert(nonFittingTaistie)'
+
+		fittingActiveTaistie1 = createTaistie
+			urlRegexp: 'fitting\\.com'
+			css: 'fitting active 1'
+			js: 'alert(\'fitting active 1\')'
+
+		fittingActiveTaistie2 = createTaistie
+			urlRegexp: 'fitting\\.com'
+			css: 'fitting active 2'
+			js: 'alert(\'fitting active 2\')'
+
+		fittingInactiveTaistie = createTaistie
+			urlRegexp: 'fitting\\.com'
+			css: 'fitting inactive'
+			js: 'alert(\'fitting inactive\')'
+			active: false
 
 		taistieCombiner._dTaistiesStorage =
 			getAllTaisties: ->
 				return [
-					fittingTaistie,
-					nonFittingTaistie
+					fittingInactiveTaistie,
+					fittingActiveTaistie1,
+					nonFittingTaistie,
+					fittingActiveTaistie2
 				]
 
 		expect(taistieCombiner.getAllCssAndJsForUrl 'fitting.com').toEqual
-			css: fittingTaistie.getCss(),
-			js: fittingTaistie.getJs()
+			css: fittingActiveTaistie1.getCss() + '\n\n' + fittingActiveTaistie2.getCss()
+			js: fittingActiveTaistie1.getJs() + '\n\n' + fittingActiveTaistie2.getJs()
 
 	it 'takes valid non-empty url', ->
 		expect(-> taistieCombiner.getAllCssAndJsForUrl null).toThrow new AssertException 'url should be given'
