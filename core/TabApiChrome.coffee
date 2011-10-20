@@ -16,4 +16,11 @@ TabApi =
 			chrome.tabs.getSelected null, (tab) =>
 				selectedTabCallBack tab.url
 
+	setIcon: (iconPath) ->
+		chrome.browserAction.setIcon
+			path: iconPath
+
+	setPopup: (popupPath) ->
+		chrome.browserAction.setPopup
+			popup: popupPath
 

@@ -21,7 +21,6 @@ class TabTaister
 	
 	_setIcon: (tabUrl) ->
 		existTaisties = @_dTaistieCombiner.existTaistiesForUrl(tabUrl)
-		chrome.browserAction.setIcon
-		      path: '../icons/browser_action_taistie_' + (if existTaisties then 'enabled' else 'disabled') + '.png'
-		chrome.browserAction.setPopup
-			popup: if existTaisties then 'popup/popup.html' else ''
+		@_tabApi.setIcon '../icons/browser_action_taistie_' + (if existTaisties then 'enabled' else 'disabled') + '.png'
+
+		@_tabApi.setPopup (if existTaisties then 'popup/popup.html' else '')
