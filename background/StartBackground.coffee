@@ -13,6 +13,10 @@ do ->
 			deps: _dTaistiesStorage: 'taistiesStorage'
 		taistiesStorage:
 			ctor: TaistiesStorage
+			deps:
+				_developedTaistie: 'developedTaistie'
+        developedTaistie:
+	        ref: DevelopedTaistie
 		taistieWrapper:
 			ctor: TaistieWrapper
 		tabApi:

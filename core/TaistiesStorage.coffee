@@ -8,8 +8,7 @@ class TaistiesStorage
 			#for the beginning store all taisties in the code
 			allTaistiesData = []
 
-			#include locally developed function
-			allTaistiesData.push DevelopedTaistie
+			allTaistiesData.push @_developedTaistie
 
 			allTaistiesData.forEach (taistieData) =>
 				taistie = new Taistie
