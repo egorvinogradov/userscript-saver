@@ -15,8 +15,8 @@ do ->
 			ctor: TaistiesStorage
 			deps:
 				_developedTaistie: 'developedTaistie'
-        developedTaistie:
-	        ref: DevelopedTaistie
+		developedTaistie:
+			ref: DevelopedTaistie
 		taistieWrapper:
 			ctor: TaistieWrapper
 		tabApi:
