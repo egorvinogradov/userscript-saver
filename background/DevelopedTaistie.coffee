@@ -25,7 +25,6 @@ DevelopedTaistie =
 
 				renewPageForLink = (newUrl) ->
 					if oldUrl != newUrl
-						window.history.pushState null, null, newUrl
 						renewBlock(blockSelector, oldUrl, newUrl) for blockSelector in loadedBlockSelectors
 						oldUrl = newUrl
 
@@ -71,9 +70,5 @@ DevelopedTaistie =
 					if key.substr(key.length - 4) == '?p=0'
 						key = key.substr(0, key.length - 4)
 					return key
-
-				window.onpopstate = ->
-#					renewPageForLink document.location.href
-#					false
 
 				initPager()
