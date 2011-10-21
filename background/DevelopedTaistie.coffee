@@ -3,7 +3,7 @@
 # 1) set 'use' = true
 # 2) write needed code in corresponding local variables in _getDevelopedTaistieData (write js code in js_func function body)
 DevelopedTaistie =
-		urlRegexp: 'web-ready\\.ru'
+		urlRegexp: 'www\\.techstars\\.com'
 		css: ''
 		name: 'Accelerator: instant repeated page loading'
 		active: on
@@ -15,43 +15,23 @@ DevelopedTaistie =
 				$('body').append(cachedBlocks)
 
 				oldUrl = window.location.href
-				loadedBlockSelectors = ['.Mainmenu', '.Pagetext[style]']
-				fancyBoxLoader = ->
-					$.ajax
-						url: $(this).attr('href')
-						data: "mode=ajax"
-						success: (html) ->
-							$.fancybox(
-								html
-								'width' : 520
-								'height': 520
-								'autoDimensions': false)
-					false
+				loadedBlockSelectors = ['#menu-primary-navigation', '#main']
 
-				initPager = (ancestorSelector) ->
-					if ancestorSelector?
-						$(ancestorSelector + ' .ajax_popup').click(fancyBoxLoader)
-
-					ancestorSelector ?= ''
-					for listPageLink in $(ancestorSelector + ' a[href^="\\?"]')
-						$(listPageLink).attr('href', '/podannye_zayavki_2011/' + $(listPageLink).attr('href'))
-					$(ancestorSelector + ' a[href^="/"]').add(ancestorSelector + ' a[href*="web-ready.ru/"]').not('.ajax_popup').click ->
-						renewPageForLink @
+				initPager = (ancestorSelector = '') ->
+					watchedLinks = $(ancestorSelector + ' a[href^="/"]').add(ancestorSelector + ' a[href*="www.techstars.com/"]')
+					watchedLinks.click ->
+						renewPageForLink $(@).attr('href')
 						false
 
-				renewPageForLink = (link) ->
-					newUrl = $(link).attr('href')
-					renewBlock(blockSelector, oldUrl, newUrl) for blockSelector in loadedBlockSelectors
-					console.log(cachedBlocks)
-					console.log(cachedBlocksInfo)
-					oldUrl = newUrl
+				renewPageForLink = (newUrl) ->
+					if oldUrl != newUrl
+						window.history.pushState null, null, newUrl
+						renewBlock(blockSelector, oldUrl, newUrl) for blockSelector in loadedBlockSelectors
+						oldUrl = newUrl
 
 				renewBlock = (blockSelector, oldUrl, newUrl) ->
 					jqBlock = $(blockSelector)
-					offset = jqBlock.offset()
-					scrollTo = offset.top - 10
-					if $('body').scrollTop() > scrollTo
-						$('body').scrollTop(scrollTo)
+					$('body').scrollTop 0
 					storeInCache blockSelector, oldUrl
 
 					renewed = renewFromCache blockSelector, newUrl
@@ -87,9 +67,13 @@ DevelopedTaistie =
 					cachedBlock.append($(blockSelector + ' > *'))
 
 				getBlockKey = (blockSelector, url) ->
-					key = blockSelector + ' : ' + url.replace('http://', '').replace('www.', '').replace('web-ready.ru/', '/')
+					key = blockSelector + ' : ' + url.replace('http://', '').replace('www.', '').replace('techstars.com/', '/')
 					if key.substr(key.length - 4) == '?p=0'
 						key = key.substr(0, key.length - 4)
 					return key
 
-				initPager(null)
+				window.onpopstate = ->
+#					renewPageForLink document.location.href
+#					false
+
+				initPager()
