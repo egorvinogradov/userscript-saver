@@ -1,4 +1,21 @@
 describe 'TabTaister', ->
+	it 'updates popup by @updatePopup on selected tab change according to tab url', ->
+		selectedTabChangeHandler = null
+		updatedPopupUrl = null
+
+		tabTaister = new TabTaister
+		tabTaister._tabApi =
+			onTabUrlChanged: ->
+			onTabSelected: (handler) ->
+				selectedTabChangeHandler = handler
+		tabTaister.updatePopup = (url) ->
+			updatedPopupUrl = url
+
+		tabTaister.startListeningToTabChange()
+		expect(selectedTabChangeHandler).toBeDefined()
+		selectedTabChangeHandler 'new-url.com'
+		expect(updatedPopupUrl).toEqual 'new-url.com'
+
 	it 'sets icon and popup depending on whether any taisties fit to current page', ->
 		checkedUrl  = null
 		iconPath = null
