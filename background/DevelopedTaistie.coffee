@@ -3,76 +3,72 @@
 # 1) set 'use' = true
 # 2) write needed code in corresponding local variables in _getDevelopedTaistieData (write js code in js_func function body)
 DevelopedTaistie =
-	use: true
-	developedTaistieData: do ->
-		urlRegexp = 'lenta\\.ru'
-		css = ''
-		jsFunction = ->
-			#insert js code here
-			onePicLink = $ '#gallery .onepic a'
-			currentImg = onePicLink.children 'img'
-			thumbLinks = $ '#gallery .micro a'
-			selectedClass = 'selected'
-			selectedThumbSelector = '#gallery td' + '.' + selectedClass
-			descriptionBlockSelector = '#gallery td.onetext'
+		urlRegexp: 'www\\.techstars\\.com'
+		css: ''
+		name: 'Accelerator: instant repeated page loading'
+		active: on
+		js: do ->
+			functionToClosureText = (jsFunction) ->	'(' + jsFunction.toString() + ')()'
+			functionToClosureText ->
+				cachedBlocksInfo = {}
+				cachedBlocks = $('<div class="cached_blocks" style="display: none;"></>')
+				$('body').append(cachedBlocks)
 
-			$(document).keyup (e) ->
-				#37 - left arrow, 39 - right arrow
-				neighbourPositionsByArrowKeyCodes =
-					37: 'prev'
-					39: 'next'
-				targetLinkOffset = neighbourPositionsByArrowKeyCodes[e.which]
-				if targetLinkOffset isnt undefined
-					loadNeighbourPicture targetLinkOffset
+				oldUrl = window.location.href
+				loadedBlockSelectors = ['#menu-primary-navigation', '#main']
 
-			currentImg.removeAttr 'width'
-			currentImg.removeAttr 'height'
+				initPager = (ancestorSelector = '') ->
+					watchedLinks = $(ancestorSelector + ' a[href^="/"]').add(ancestorSelector + ' a[href*="www.techstars.com/"]')
+					watchedLinks.click ->
+						renewPageForLink $(@).attr('href')
+						false
 
-			thumbLinks.click ->
-				loadPictureByThumbLink this
-				return false
+				renewPageForLink = (newUrl) ->
+					if oldUrl != newUrl
+						renewBlock(blockSelector, oldUrl, newUrl) for blockSelector in loadedBlockSelectors
+						oldUrl = newUrl
 
-			onePicLink.click ->
-				loadNeighbourPicture 'next'
-				return false
+				renewBlock = (blockSelector, oldUrl, newUrl) ->
+					jqBlock = $(blockSelector)
+					$('body').scrollTop 0
+					storeInCache blockSelector, oldUrl
 
-			loadNeighbourPicture = (neighbourPosition) ->
-				linkOffsetsByNeighbourPositions =
-					prev: -1
-					next: 1
+					renewed = renewFromCache blockSelector, newUrl
+					if not renewed
+						jqBlock.append('<img src="http://www.mobileciti.com.au/skin/frontend/default/mobileciti_v2/images/ajax-loader.gif" />')
+						jqBlock.load newUrl + ' '+ blockSelector + ' > *', ->
+							initPager blockSelector
 
-				linkOffset = linkOffsetsByNeighbourPositions[neighbourPosition]
-				picturePageLinks = $ thumbLinks
-				currentLinkIndex = picturePageLinks.index $ selectedThumbSelector + ' a'
+				renewFromCache = (blockSelector, loadedLink) ->
+					blockKey = getBlockKey blockSelector, loadedLink
+					cachedBlockInfo = cachedBlocksInfo[blockKey]
+					if not cachedBlockInfo?
+						return false
+					newBlock = $(cachedBlocks.children()[cachedBlockInfo.blockIndex])
 
-				#loop elements: next element for the last one is the first one, and vise versa
-				loadedLinkIndex = currentLinkIndex + linkOffset + picturePageLinks.length
-				loadedLink = picturePageLinks[loadedLinkIndex % picturePageLinks.length]
+					if newBlock.children().length = 0
+						return false
 
-				loadPictureByThumbLink loadedLink
+					$(blockSelector).append(newBlock.children())
+					return true
 
-			loadPictureByThumbLink = (picturePageLinkInThumb) ->
-				imgOffset = currentImg.offset()
-				scrollTo = imgOffset.top - 10
-				if $('body').scrollTop() > scrollTo
-					$('body').scrollTop scrollTo
+				storeInCache = (blockSelector, url) ->
+					blockKey = getBlockKey blockSelector, url
+					cachedBlockInfo = cachedBlocksInfo[blockKey]
+					cachedBlock = null
+					if not cachedBlockInfo?
+						cachedBlock = $('<div></div>')
+						cachedBlock.appendTo(cachedBlocks)
+						cachedBlocksInfo[blockKey] =
+							blockIndex: cachedBlocks.children().length - 1
+					else
+						cachedBlock = $(cachedBlocks.children()[cachedBlockInfo.blockIndex])
+					cachedBlock.append($(blockSelector + ' > *'))
 
-				#change text
-				$(descriptionBlockSelector).load picturePageLinkInThumb + ' ' + descriptionBlockSelector
+				getBlockKey = (blockSelector, url) ->
+					key = blockSelector + ' : ' + url.replace('http://', '').replace('www.', '').replace('techstars.com/', '/')
+					if key.substr(key.length - 4) == '?p=0'
+						key = key.substr(0, key.length - 4)
+					return key
 
-				newPictureUrl = 'http:#img.lenta.ru' + $(picturePageLinkInThumb).attr('href').replace '_Jpg.htm', '.jpg'
-				#replace old picture with new one
-				currentImg.attr 'src', newPictureUrl
-
-				#change selected thumbnail
-				$(selectedThumbSelector).removeClass selectedClass
-				$(picturePageLinkInThumb).parent('td').addClass selectedClass
-
-		js = '(' + jsFunction.toString() + ')()'
-
-		return {
-			urlRegexp: urlRegexp
-			css: css
-			js: js
-		}
-#		#TODO: вызвать сразу
+				initPager()

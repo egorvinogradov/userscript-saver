@@ -2,13 +2,16 @@ describe 'TaistieStorage', ->
 	taistieStorage = undefined
 	beforeEach ->
 		taistieStorage = new TaistiesStorage
-	it 'includes locally developed taistie if it has "use" flag ON', ->
-		DevelopedTaistie.use = true
-		expect(taistieStorage.getAllTaisties().length).toEqual 1
-
-	it 'doesn\'t include developed taistie if it has "use" flag OFF', ->
-		DevelopedTaistie.use = false
-		expect(taistieStorage.getAllTaisties().length).toEqual 0
-
+	it 'includes locally developed taistie', ->
+		developedTaistie =
+			urlRegexp: 'site\\.com'
+			css: 'developed_css'
+			js: 'developed_js'
+			active: on
+		taistieStorage._developedTaistie = developedTaistie
+		allTaisties = taistieStorage.getAllTaisties()
+		expect(allTaisties.length).toEqual 1
+		newTaistie = allTaisties[0]
+		expect(newTaistie.getCss()).toEqual developedTaistie.css
 
 
