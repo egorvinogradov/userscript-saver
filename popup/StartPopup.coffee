@@ -13,6 +13,6 @@ $ ->
 		'text-align': 'left'
 
 	$('.popupWidget').append popupOptionsWidget._element
-	$('.popupWidget').append $('<label for="taistieEnabled">Ускоритель: быстрая повторная загрузка</label>')
+	$('.popupWidget').append $('<label for="taistieEnabled">Accelerator: instant page loading</label>')
 	popupOptionsWidget.prerender()
 
