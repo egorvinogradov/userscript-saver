@@ -10,5 +10,6 @@ class PlainDomControl
 			@_jqueryElement.val()
 
 	setValueChangeListener: (listener) ->
+		#TODO: check that element can have value
 		@_jqueryElement.change =>
 			listener @getValue(), @
