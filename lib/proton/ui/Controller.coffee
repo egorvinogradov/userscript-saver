@@ -10,8 +10,7 @@ class Controller extends Spine.Controller
 		@_initChildElements()
 	
 	_initDOM: ->
-		localRoot = @_templateAccessor.getTemplateByClass @_domClass
-		@_localDomAccessor = @_newLocalDomAccessor localRoot
+		@_localDomAccessor = @_templateAccessor.getDomFromTemplateByClass @_domClass
 
 	_initChildElements: ->
 		for selector, attributeName of @_childELementDescriptions
