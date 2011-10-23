@@ -81,11 +81,12 @@ describe 'Controller', ->
 
 				controller.setModel mockModel
 
-			it 'points them to their DOM elements', ->
+			it 'points them to their DOM elements and stores them in @childElementsBySelectors', ->
 				controller.render()
-				expect((child.contents for child in childControls)).toEqual [
+				expect(child.contents for child in childControls).toEqual [
 					{domAccessor: 'foundChild: .childClassFoo'},
 					{domAccessor: 'foundChild: .childClassBar'}]
+				expect(childElement for selector, childElement of controller.childElementsBySelectors).toEqual childControls
 
 			it 'changes model when their values change', ->
 				mockChildControl::setValueChangeListener = (listener) -> @listener = listener

@@ -17,12 +17,13 @@ class Controller extends Spine.Controller
 		@_localDomAccessor = @_templateAccessor.getDomFromTemplateByClass @_domClass
 
 	_initChildElements: ->
-		@_childElements = {}
+		@childElementsBySelectors = {}
 		for selector, elementDescription of @_childELementDescriptions
 			do (selector, elementDescription) =>
 				elementDescription ?= {}
 
 				childControl = @_createChildControl selector, elementDescription
+				@childElementsBySelectors[selector] = childControl
 				@_bindControlToModelAtribute childControl, elementDescription.modelAttribute
 				@_listenToControlEvents childControl, elementDescription.events
 
