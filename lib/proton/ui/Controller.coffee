@@ -43,8 +43,7 @@ class Controller extends Spine.Controller
 					control.subscribeToEvent eventName, => eventHandler.apply @
 
 	redraw: =>
-		if @refreshRender?
-			@refreshRender()
+		@customRedraw?()
 
 	destroy: =>
 		if @_rendered

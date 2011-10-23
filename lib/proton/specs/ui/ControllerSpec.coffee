@@ -5,7 +5,9 @@ describe 'Controller', ->
 		controller = new Controller
 		mockModel =
 			bind: (eventName, eventHandler) ->
-				this['fire_' + eventName] = eventHandler
+				this['event_' + eventName] = eventHandler
+			fire: (eventName) ->
+				this['event_' + eventName]()
 
 	describe 'accepts model through @setModel', ->
 		beforeEach ->
@@ -24,7 +26,7 @@ describe 'Controller', ->
 			controller.setModel mockModel
 
 			#if not rendered yet, does nothing
-			mockModel['fire_destroy']()
+			mockModel.fire 'destroy'
 
 			domElementRemoved = false
 			controller._templateAccessor =
@@ -32,8 +34,19 @@ describe 'Controller', ->
 					remove: -> domElementRemoved = true
 
 			controller.render()
-			mockModel['fire_destroy']()
-			expect(domElementRemoved).toEqual true
+			mockModel.fire 'destroy'
+			expect(domElementRemoved).toBeTruthy()
+
+		it 'if has @_customRedraw, calls it on model change', ->
+			controller.setModel mockModel
+
+			#if there is no customRedraw, does nothing
+			mockModel.fire 'update'
+
+			customRedrawCalled = false
+			controller.customRedraw = -> customRedrawCalled = true
+			mockModel.fire 'update'
+			expect(customRedrawCalled).toBeTruthy()
 
 	describe 'render: creates DOM contents and children elements', ->
 		it 'gets DOM contents from template by @_domClass', ->
