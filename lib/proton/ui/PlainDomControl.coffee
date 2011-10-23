@@ -1,18 +1,18 @@
 class PlainDomControl
 	#TODO: убрать if'ы на типы элементов и т.п. - через полиморфизм
-	setDomAccessor: (jqueryElement) ->
-		@_jqueryElement = jqueryElement
+	setDomAccessor: (domAccessor) ->
+		@_domAccessor = domAccessor
 
 	getValue: ->
-		if @_jqueryElement.attr('type') is 'checkbox'
-			@_jqueryElement.is(':checked')
+		if @_domAccessor.attr('type') is 'checkbox'
+			@_domAccessor.is(':checked')
 		else
-			@_jqueryElement.val()
+			@_domAccessor.val()
 
 	setValueChangeListener: (listener) ->
 		#TODO: check that element can have value
-		@_jqueryElement.change =>
+		@_domAccessor.change =>
 			listener @getValue(), @
 
 	subscribeToEvent: (eventName, handler) ->
-		@_jqueryElement.bind eventName, handler
+		@_domAccessor.bind eventName, handler
