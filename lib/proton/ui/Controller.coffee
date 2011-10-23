@@ -16,12 +16,18 @@ class Controller extends Spine.Controller
 		for selector, elementDescription of @_childELementDescriptions
 			do (selector, elementDescription) =>
 				elementDescription ?= {}
+				#TODO: переименовать - убрать 'jquery'
 				jqueryControl = @_newJqueryControl()
 				jqueryControl.setDomAccessor @_localDomAccessor.findChild selector
 
 				if elementDescription.modelAttribute?
 					jqueryControl.setValueChangeListener (newValue) =>
 						@model.updateAttribute elementDescription.modelAttribute, newValue
+
+				if elementDescription.events?
+					for eventName, eventHandler of elementDescription.events
+						do(eventName, eventHandler) =>
+							jqueryControl.subscribeToEvent eventName, => eventHandler.apply @
 
 	redraw: =>
 		if not @_prerendered

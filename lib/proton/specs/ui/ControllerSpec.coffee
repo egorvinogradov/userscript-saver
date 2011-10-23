@@ -52,6 +52,8 @@ describe 'Controller', ->
 						contents: {}
 						setDomAccessor: (domAccessorValue) -> @contents.domAccessor = domAccessorValue
 						setValueChangeListener: (listener) -> @listener = listener
+						subscribeToEvent: (eventName, listener) ->
+							@['fire_' + eventName] = listener
 					childControls.push newControl
 					return newControl
 
@@ -86,10 +88,17 @@ describe 'Controller', ->
 
 				expect(updatedAttributes).toEqual [{'modelPropertyFoo': 'newFoo'}]
 
-			it 'subscribes to their different events', ->
+			it 'subscribes to their different events byt its methods', ->
+				#use controller attribute to check handler context binding to controller
+				controller.onBar = -> @barFired = true
 				controller._childELementDescriptions =
 					".childClassFoo":
 						events:
-							"event1"
+							"eventBar": controller.onBar
+
 				controller.render()
+				childControls[0]['fire_eventBar']()
+				expect(controller.barFired).toBeTruthy()
+
+
 
