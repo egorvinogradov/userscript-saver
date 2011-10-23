@@ -1,34 +1,39 @@
 describe 'Controller', ->
 	controller = null
+	mockModel = null
 	beforeEach ->
 		controller = new Controller
-
-	it 'accepts model through @setModel and subscribes to its events "redraw" and "destroy"', ->
-		calledHandlers = []
-		controller.redraw = -> calledHandlers.push 'redraw'
-		controller.destroy = -> calledHandlers.push 'destroyed'
-
-		model =
+		mockModel =
 			bind: (eventName, eventHandler) ->
 				this['fire_' + eventName] = eventHandler
 
-		controller.setModel model
-		expect(controller.model).toBe model
+	describe 'accepts model through @setModel', ->
+		beforeEach ->
 
-		model['fire_destroy']()
-		model['fire_update']()
-		expect(calledHandlers).toEqual ['destroyed', 'redraw']
+		it 'checks for existing model', ->
+			exceptionMsg = 'model should exist and have method \'bind\''
+			expect(setter).toThrow new AssertException(exceptionMsg) for setter in [
+				-> controller.setModel null,
+				-> controller.setModel {}
+			]
 
+			#check that correct model doesn't cause an exception
+			controller.setModel	mockModel
 
-	it 'checks for existing model', ->
-		exceptionMsg = 'model should exist and have method \'bind\''
-		expect(setter).toThrow new AssertException(exceptionMsg) for setter in [
-			-> controller.setModel null,
-			-> controller.setModel {}
-		]
+		it 'removes its DOM element from DOM when model is destroyed', ->
+			controller.setModel mockModel
 
-		#check that correct model doesn't cause an exception
-		controller.setModel	bind: ->
+			#if not rendered yet, does nothing
+			mockModel['fire_destroy']()
+
+			domElementRemoved = false
+			controller._templateAccessor =
+				getDomFromTemplateByClass: ->
+					remove: -> domElementRemoved = true
+
+			controller.render()
+			mockModel['fire_destroy']()
+			expect(domElementRemoved).toEqual true
 
 	describe 'render: creates DOM contents and children elements', ->
 		it 'gets DOM contents from template by @_domClass', ->
@@ -61,6 +66,8 @@ describe 'Controller', ->
 					".childClassFoo": null,
 					".childClassBar": null
 
+				controller.setModel mockModel
+
 			it 'points them to their DOM elements', ->
 				controller.render()
 				expect((child.contents for child in childControls)).toEqual [
@@ -70,8 +77,7 @@ describe 'Controller', ->
 			it 'changes model when their values change', ->
 				mockChildControl::setValueChangeListener = (listener) -> @listener = listener
 				updatedAttributes = []
-				controller.model =
-					updateAttribute: (attributeName, value) ->
+				mockModel.updateAttribute = (attributeName, value) ->
 						updatedAttribute = {}
 						updatedAttribute[attributeName] = value
 						updatedAttributes.push updatedAttribute
@@ -88,7 +94,7 @@ describe 'Controller', ->
 				childControls[0].listener 'newFoo'
 				expect(updatedAttributes).toEqual [{'modelPropertyFoo': 'newFoo'}]
 
-			it 'subscribes to their different events byt its methods', ->
+			it 'subscribes to their different events with its methods', ->
 				mockChildControl::subscribeToEvent = (eventName, listener) ->
 									@['fire_' + eventName] = listener
 
@@ -102,6 +108,5 @@ describe 'Controller', ->
 				controller.render()
 				childControls[0]['fire_eventBar']()
 				expect(controller.barFired).toBeTruthy()
-
 
 

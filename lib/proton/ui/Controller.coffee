@@ -1,4 +1,7 @@
 class Controller extends Spine.Controller
+	constructor: ->
+		@_rendered = false
+
 	setModel: (model) ->
 		assert model?.bind?, 'model should exist and have method \'bind\''
 		@_model = model
@@ -8,7 +11,8 @@ class Controller extends Spine.Controller
 	render: ->
 		@_initDOM()
 		@_initChildElements()
-	
+		@_rendered = true
+
 	_initDOM: ->
 		@_localDomAccessor = @_templateAccessor.getDomFromTemplateByClass @_domClass
 
@@ -38,15 +42,10 @@ class Controller extends Spine.Controller
 				do(eventName, eventHandler) =>
 					control.subscribeToEvent eventName, => eventHandler.apply @
 
-
 	redraw: =>
-		if not @_prerendered
-			@_initialRender()
-			@_prerendered = true
-
 		if @refreshRender?
 			@refreshRender()
 
-	_initialRender: ->
-		@delegateEvents()
-		@refreshElements()
+	destroy: =>
+		if @_rendered
+			@_localDomAccessor.remove()
