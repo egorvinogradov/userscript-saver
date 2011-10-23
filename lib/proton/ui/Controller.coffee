@@ -16,7 +16,7 @@ class Controller extends Spine.Controller
 		for selector, attributeName of @_childELementDescriptions
 			do (selector, attributeName) =>
 				jqueryControl = @_newJqueryControl()
-				jqueryControl.setDomAccessor @_localDomAccessor.find selector
+				jqueryControl.setDomAccessor @_localDomAccessor.findChild selector
 				jqueryControl.setValueChangeListener (newValue) =>
 					@item.updateAttribute attributeName, newValue
 

@@ -27,7 +27,7 @@ describe 'Controller', ->
 			-> controller.setModel {}
 		]
 
-		#check that correct model deosn't cause an exception
+		#check that correct model doesn't cause an exception
 		controller.setModel	bind: ->
 
 	describe 'render: creates DOM contents and children elements', ->
@@ -41,35 +41,43 @@ describe 'Controller', ->
 			controller.render()
 			expect(expectedSelector).toEqual 'controllerClass'
 
-		it 'creates child elements from @_childElements, points them to their DOM elements and subscribes them to model events', ->
-			controller._templateAccessor =
-				getDomFromTemplateByClass: ->
-					find: (selectorValue) -> return selector: selectorValue
+		describe 'creates child elements from @_childElementDescriptions', ->
+			childControls = null
+			updatedAttributes = null
+			beforeEach ->
+				controller._templateAccessor =
+					getDomFromTemplateByClass: ->
+						findChild: (selectorValue) -> 'foundChild: ' + selectorValue
+				childControls = []
+				controller._newJqueryControl = ->
+					newControl =
+						contents: {}
+						setDomAccessor: (domAccessorValue) -> @contents.domAccessor = domAccessorValue
+						setValueChangeListener: (listener) -> @listener = listener
+					childControls.push newControl
+					return newControl
 
-			childControls = []
-			controller._newJqueryControl = ->
-				newControl =
-					contents: {}
-					setDomAccessor: (domAccessorValue) -> @contents.domAccessor = domAccessorValue
-					setValueChangeListener: (listener) -> @listener = listener
-				childControls.push newControl
-				return newControl
+				updatedAttributes = []
+				controller.item =
+					updateAttribute: (attributeName, value) ->
+						updatedAttribute = {}
+						updatedAttribute[attributeName] = value
+						updatedAttributes.push updatedAttribute
 
-			updatedAttributes = []
-			controller.item =
-				updateAttribute: (attributeName, value) ->
-					updatedAttribute = {}
-					updatedAttribute[attributeName] = value
-					updatedAttributes.push updatedAttribute
+				controller._childELementDescriptions =
+					".childClassFoo": "modelPropertyFoo",
+					".childClassBar": "modelPropertyBar"
 
-			controller._childELementDescriptions =
-				".childClassFoo": "modelPropertyFoo",
-				".childClassBar": "modelPropertyBar"
+			it 'points them to their DOM elements', ->
+				controller.render()
+				expect((child.contents for child in childControls)).toEqual [
+					{domAccessor: 'foundChild: .childClassFoo'},
+					{domAccessor: 'foundChild: .childClassBar'}]
 
-			controller.render()
-			expect((child.contents for child in childControls)).toEqual [domAccessor: selector: '.childClassFoo',
-				domAccessor: selector: '.childClassBar']
+			it 'subscribes them to model events', ->
 
-			childControls[0].listener 'newFoo'
-			childControls[1].listener 'newBar'
-			expect(updatedAttributes).toEqual [{'modelPropertyFoo': 'newFoo'}, {'modelPropertyBar': 'newBar'}]
+				controller.render()
+				childControls[0].listener 'newFoo'
+				childControls[1].listener 'newBar'
+				expect(updatedAttributes).toEqual [{'modelPropertyFoo': 'newFoo'}, {'modelPropertyBar': 'newBar'}]
+
