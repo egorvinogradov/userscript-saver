@@ -1,9 +1,9 @@
 class Controller extends Spine.Controller
 	setModel: (model) ->
 		assert model?.bind?, 'model should exist and have method \'bind\''
-		@model = model
-		@model.bind "update",  @redraw
-		@model.bind "destroy", @destroy
+		@_model = model
+		@_model.bind "update",  @redraw
+		@_model.bind "destroy", @destroy
 
 	render: ->
 		@_initDOM()
@@ -30,7 +30,7 @@ class Controller extends Spine.Controller
 	_bindControlToModelAtribute: (control, modelAttribute) ->
 		if modelAttribute?
 			control.setValueChangeListener (newValue) =>
-				@model.updateAttribute modelAttribute, newValue
+				@_model.updateAttribute modelAttribute, newValue
 
 	_listenToControlEvents: (control, events) ->
 		if events?
