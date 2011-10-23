@@ -13,7 +13,7 @@ describe 'Controller', ->
 				this['fire_' + eventName] = eventHandler
 
 		controller.setModel model
-		expect(controller.item).toEqual model
+		expect(controller.model).toBe model
 
 		model['fire_destroy']()
 		model['fire_update']()
@@ -58,7 +58,7 @@ describe 'Controller', ->
 					return newControl
 
 				updatedAttributes = []
-				controller.item =
+				controller.model =
 					updateAttribute: (attributeName, value) ->
 						updatedAttribute = {}
 						updatedAttribute[attributeName] = value
@@ -74,8 +74,7 @@ describe 'Controller', ->
 					{domAccessor: 'foundChild: .childClassFoo'},
 					{domAccessor: 'foundChild: .childClassBar'}]
 
-			it 'subscribes them to model events', ->
-
+			it 'changes model when their values change', ->
 				controller.render()
 				childControls[0].listener 'newFoo'
 				childControls[1].listener 'newBar'
