@@ -42,20 +42,20 @@ describe 'Controller', ->
 
 		describe 'creates child elements from @_childElementDescriptions', ->
 			childControls = null
+			class mockChildControl
+				constructor: ->
+					@contents = {}
+				setDomAccessor: (domAccessorValue) -> @contents.domAccessor = domAccessorValue
+
 			beforeEach ->
 				controller._templateAccessor =
 					getDomFromTemplateByClass: ->
 						findChild: (selectorValue) -> 'foundChild: ' + selectorValue
 				childControls = []
-				controller._newJqueryControl = ->
-					newControl =
-						contents: {}
-						setDomAccessor: (domAccessorValue) -> @contents.domAccessor = domAccessorValue
-						setValueChangeListener: (listener) -> @listener = listener
-						subscribeToEvent: (eventName, listener) ->
-							@['fire_' + eventName] = listener
-					childControls.push newControl
-					return newControl
+				controller._newPlainDomControl = ->
+					newChildControl = new mockChildControl
+					childControls.push newChildControl
+					return newChildControl
 
 				controller._childELementDescriptions =
 					".childClassFoo": null,
@@ -68,6 +68,7 @@ describe 'Controller', ->
 					{domAccessor: 'foundChild: .childClassBar'}]
 
 			it 'changes model when their values change', ->
+				mockChildControl::setValueChangeListener = (listener) -> @listener = listener
 				updatedAttributes = []
 				controller.model =
 					updateAttribute: (attributeName, value) ->
@@ -78,17 +79,19 @@ describe 'Controller', ->
 				controller._childELementDescriptions =
 					".childClassFoo":
 						modelAttribute: "modelPropertyFoo",
-					".childClassBar":
-						{}
+					".childClassBar": {}
 				controller.render()
-				childControls[0].listener 'newFoo'
 
 				#if no model property is given, value changes are ignored
 				expect(childControls[1].listener).not.toBeDefined()
 
+				childControls[0].listener 'newFoo'
 				expect(updatedAttributes).toEqual [{'modelPropertyFoo': 'newFoo'}]
 
 			it 'subscribes to their different events byt its methods', ->
+				mockChildControl::subscribeToEvent = (eventName, listener) ->
+									@['fire_' + eventName] = listener
+
 				#use controller attribute to check handler context binding to controller
 				controller.onBar = -> @barFired = true
 				controller._childELementDescriptions =
