@@ -1,4 +1,5 @@
 class JqueryControl
+	#TODO: убрать if'ы на типы элементов и т.п. - через полиморфизм
 	setJqueryElement: (jqueryElement) ->
 		@_jqueryElement = jqueryElement
 
@@ -10,4 +11,4 @@ class JqueryControl
 
 	setValueChangeListener: (listener) ->
 		@_jqueryElement.change =>
-			listener(@, @getValue())
+			listener @getValue(), @

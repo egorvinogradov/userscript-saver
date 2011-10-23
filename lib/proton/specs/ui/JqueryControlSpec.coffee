@@ -23,7 +23,7 @@ describe 'JqueryControl', ->
 			jqueryInput.val 'foo'
 			expect(input.getValue()).toEqual 'foo'
 
-	it 'setValueChangeListener: sets listener to fire when its value changes; gives itself and new value', ->
+	it 'setValueChangeListener: sets listener to fire when its value changes; gives new value and itself', ->
 		#TODO: проверять, что только для input элементов
 		jqueryInput = $ '<input type="text"/>'
 		input = new JqueryControl
@@ -32,9 +32,9 @@ describe 'JqueryControl', ->
 		newValue = null
 
 		input.setJqueryElement jqueryInput
-		input.setValueChangeListener (changedEl, newVal) ->
-			changedElement = changedEl
+		input.setValueChangeListener (newVal, changedEl) ->
 			newValue = newVal
+			changedElement = changedEl
 
 		jqueryInput.val 'new value'
 		jqueryInput.change()
