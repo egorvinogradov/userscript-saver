@@ -1,28 +1,34 @@
 class Controller extends Spine.Controller
 	setModel: (model) ->
-		assert model?, 'model should exist'
-		assert @render? && @destroy?, 'should have methods \'render\' and \'destroy\''
+		assert model?.bind?, 'model should exist and have method \'bind\''
 		@item = model
-		@item.bind "update",  @render
+		@item.bind "update",  @redraw
 		@item.bind "destroy", @destroy
 
-	render: =>
-		if not @prerendered
-			@initialRender()
-			@prerendered = true
+	render: ->
+		@_initDOM()
+		@_initChildElements()
+	
+	_initDOM: ->
+		localRoot = @_templateAccessor.getTemplateByClass @_domClass
+		@_localDomAccessor = @_newLocalDomAccessor localRoot
+
+	_initChildElements: ->
+		for selector, attributeName of @_childELementDescriptions
+			do (selector, attributeName) =>
+				jqueryControl = @_newJqueryControl()
+				jqueryControl.setDomAccessor @_localDomAccessor.find selector
+				jqueryControl.setValueChangeListener (newValue) =>
+					@item.updateAttribute attributeName, newValue
+
+	redraw: =>
+		if not @_prerendered
+			@_initialRender()
+			@_prerendered = true
 
 		if @refreshRender?
 			@refreshRender()
 
-	initialRender: ->
-		@el = $(".#{@selector}.template").clone().removeClass('template')
+	_initialRender: ->
 		@delegateEvents()
 		@refreshElements()
-
-		for selector, propertyName of @newElements
-			do (selector, propertyName) =>
-				jqueryControl = new JqueryControl
-				jqueryControl.setJqueryElement @$(selector)
-				jqueryControl.setValueChangeListener (jqueryControl, newValue) =>
-					@item.updateAttribute propertyName, newValue
-
