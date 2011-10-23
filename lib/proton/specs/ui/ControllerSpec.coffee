@@ -31,7 +31,6 @@ describe 'Controller', ->
 		controller.setModel	bind: ->
 
 	describe 'render: creates DOM contents and children elements', ->
-
 		it 'gets DOM contents from template by @_domClass', ->
 			expectedSelector = null
 			controller._domClass = 'controllerClass'
@@ -43,7 +42,6 @@ describe 'Controller', ->
 
 		describe 'creates child elements from @_childElementDescriptions', ->
 			childControls = null
-			updatedAttributes = null
 			beforeEach ->
 				controller._templateAccessor =
 					getDomFromTemplateByClass: ->
@@ -57,16 +55,9 @@ describe 'Controller', ->
 					childControls.push newControl
 					return newControl
 
-				updatedAttributes = []
-				controller.model =
-					updateAttribute: (attributeName, value) ->
-						updatedAttribute = {}
-						updatedAttribute[attributeName] = value
-						updatedAttributes.push updatedAttribute
-
 				controller._childELementDescriptions =
-					".childClassFoo": "modelPropertyFoo",
-					".childClassBar": "modelPropertyBar"
+					".childClassFoo": null,
+					".childClassBar": null
 
 			it 'points them to their DOM elements', ->
 				controller.render()
@@ -75,8 +66,30 @@ describe 'Controller', ->
 					{domAccessor: 'foundChild: .childClassBar'}]
 
 			it 'changes model when their values change', ->
+				updatedAttributes = []
+				controller.model =
+					updateAttribute: (attributeName, value) ->
+						updatedAttribute = {}
+						updatedAttribute[attributeName] = value
+						updatedAttributes.push updatedAttribute
+
+				controller._childELementDescriptions =
+					".childClassFoo":
+						modelAttribute: "modelPropertyFoo",
+					".childClassBar":
+						{}
 				controller.render()
 				childControls[0].listener 'newFoo'
-				childControls[1].listener 'newBar'
-				expect(updatedAttributes).toEqual [{'modelPropertyFoo': 'newFoo'}, {'modelPropertyBar': 'newBar'}]
+
+				#if no model property is given, value changes are ignored
+				expect(childControls[1].listener).not.toBeDefined()
+
+				expect(updatedAttributes).toEqual [{'modelPropertyFoo': 'newFoo'}]
+
+			it 'subscribes to their different events', ->
+				controller._childELementDescriptions =
+					".childClassFoo":
+						events:
+							"event1"
+				controller.render()
 

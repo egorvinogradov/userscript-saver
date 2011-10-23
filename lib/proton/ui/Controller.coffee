@@ -13,12 +13,15 @@ class Controller extends Spine.Controller
 		@_localDomAccessor = @_templateAccessor.getDomFromTemplateByClass @_domClass
 
 	_initChildElements: ->
-		for selector, attributeName of @_childELementDescriptions
-			do (selector, attributeName) =>
+		for selector, elementDescription of @_childELementDescriptions
+			do (selector, elementDescription) =>
+				elementDescription ?= {}
 				jqueryControl = @_newJqueryControl()
 				jqueryControl.setDomAccessor @_localDomAccessor.findChild selector
-				jqueryControl.setValueChangeListener (newValue) =>
-					@model.updateAttribute attributeName, newValue
+
+				if elementDescription.modelAttribute?
+					jqueryControl.setValueChangeListener (newValue) =>
+						@model.updateAttribute elementDescription.modelAttribute, newValue
 
 	redraw: =>
 		if not @_prerendered
