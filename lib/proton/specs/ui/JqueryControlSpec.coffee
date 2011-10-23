@@ -3,7 +3,7 @@ describe 'JqueryControl', ->
 		it 'returns true/false for checked/unchecked checkbox', ->
 			jqueryCheckbox = $ '<input type="checkbox"/>'
 			checkbox = new JqueryControl
-			checkbox.setJqueryElement jqueryCheckbox
+			checkbox.setDomAccessor jqueryCheckbox
 
 			expect(checkbox.getValue()).toEqual off
 
@@ -17,7 +17,7 @@ describe 'JqueryControl', ->
 			jqueryInput = $ '<input type="text"/>'
 			input = new JqueryControl
 
-			input.setJqueryElement jqueryInput
+			input.setDomAccessor jqueryInput
 			expect(input.getValue()).toEqual ''
 
 			jqueryInput.val 'foo'
@@ -31,7 +31,7 @@ describe 'JqueryControl', ->
 		changedElement = null
 		newValue = null
 
-		input.setJqueryElement jqueryInput
+		input.setDomAccessor jqueryInput
 		input.setValueChangeListener (newVal, changedEl) ->
 			newValue = newVal
 			changedElement = changedEl

@@ -1,6 +1,6 @@
 class JqueryControl
 	#TODO: убрать if'ы на типы элементов и т.п. - через полиморфизм
-	setJqueryElement: (jqueryElement) ->
+	setDomAccessor: (jqueryElement) ->
 		@_jqueryElement = jqueryElement
 
 	getValue: ->
