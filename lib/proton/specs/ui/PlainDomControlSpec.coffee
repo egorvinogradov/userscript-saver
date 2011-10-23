@@ -39,3 +39,15 @@ describe 'PlainDomControl', ->
 		plainDomInput.val 'new value'
 		plainDomInput.change()
 		expect(changedElement).toBe input
+
+	describe 'sets event listeners through subscribeToEvent', ->
+		it 'uses event names of jquery', ->
+			control = new PlainDomControl
+			domAccessor = $ '<div></div>'
+			control.setDomAccessor domAccessor
+
+			clicked = false
+			control.subscribeToEvent 'click', -> clicked = true
+
+			domAccessor.click()
+			expect(clicked).toBeTruthy()

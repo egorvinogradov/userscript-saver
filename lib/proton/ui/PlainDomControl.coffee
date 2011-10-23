@@ -13,3 +13,6 @@ class PlainDomControl
 		#TODO: check that element can have value
 		@_jqueryElement.change =>
 			listener @getValue(), @
+
+	subscribeToEvent: (eventName, handler) ->
+		@_jqueryElement.bind eventName, handler
