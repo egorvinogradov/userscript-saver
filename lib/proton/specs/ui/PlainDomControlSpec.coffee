@@ -1,27 +1,49 @@
 describe 'PlainDomControl', ->
+	plainDomInput = null
+	plainDomCheckbox = null
+	control = null
+
+	beforeEach ->
+		plainDomCheckbox = $ '<input type="checkbox"/>'
+		plainDomInput = $ '<input type="text"/>'
+		control = new PlainDomControl
+
 	describe 'getValue', ->
 		it 'returns true/false for checked/unchecked checkbox', ->
-			plainDomCheckbox = $ '<input type="checkbox"/>'
-			checkbox = new PlainDomControl
-			checkbox.setDomAccessor plainDomCheckbox
+			control.setDomAccessor plainDomCheckbox
 
-			expect(checkbox.getValue()).toEqual off
+			expect(control.getValue()).toEqual off
 
 			plainDomCheckbox.attr 'checked', on
-			expect(checkbox.getValue()).toEqual on
+			expect(control.getValue()).toEqual on
 
 			plainDomCheckbox.attr 'checked', off
-			expect(checkbox.getValue()).toEqual off
+			expect(control.getValue()).toEqual off
 
-		it 'returns $val() for any input except checkbox', ->
-			plainDomInput = $ '<input type="text"/>'
-			input = new PlainDomControl
-
-			input.setDomAccessor plainDomInput
-			expect(input.getValue()).toEqual ''
+		it 'returns jquery.val() for any input except checkbox', ->
+			control.setDomAccessor plainDomInput
+			expect(control.getValue()).toEqual ''
 
 			plainDomInput.val 'foo'
-			expect(input.getValue()).toEqual 'foo'
+			expect(control.getValue()).toEqual 'foo'
+
+	describe 'setValue', ->
+		it 'allows to set value to control', ->
+			control.setDomAccessor plainDomInput
+			control.setValue 'newValue'
+			expect(control.getValue()).toEqual 'newValue'
+
+		it 'accepts only true/false for checkbox and sets its checked/unchecked state', ->
+			control.setDomAccessor plainDomCheckbox
+
+			expectedEx = new AssertException 'checkbox accepts only true/false'
+			expect(-> control.setValue invalidValue).toThrow expectedEx for invalidValue in ['', null, 'some string', 1]
+
+			control.setValue true
+			expect(control.getValue()).toBeTruthy()
+	
+			control.setValue false
+			expect(control.getValue()).toBeFalsy()
 
 	it 'setValueChangeListener: sets listener to fire when its value changes; gives new value and itself', ->
 		#TODO: проверять, что только для input элементов
