@@ -18,10 +18,12 @@ class TaistieListWidget extends Spine.Controller
 
 	addOne: (taistie) =>
 		view = new TaistieWidget
-		view.selector = 'item'
+		view._domClass = '.item'
 		view.setModel taistie
-		view.render()
-		@items.append view.el
+		view._templateAccessor =
+			getTemplateByClass: (templateClass) -> $("#{@_domClass}.template").clone().removeClass('template')
+
+		view.setParentElement @items
 
 	addAll: =>
 	   	Taistie.each @addOne
