@@ -9,9 +9,11 @@ class Controller extends Spine.Controller
 		@_model.bind "destroy", @destroy
 
 	render: ->
-		@_initDOM()
-		@_initChildElements()
-		@_rendered = true
+		if not @_rendered
+			@_initDOM()
+			@_initChildElements()
+			@_rendered = true
+		@redraw()
 
 	_initDOM: ->
 		@_localDomAccessor = @_templateAccessor.getDomFromTemplateByClass @_domClass
@@ -44,6 +46,14 @@ class Controller extends Spine.Controller
 					control.subscribeToEvent eventName, => eventHandler.apply @
 
 	redraw: =>
+		if @_model?
+			for selector, elementDescription of @_childELementDescriptions
+				do (selector, elementDescription) =>
+					if elementDescription?.modelAttribute?
+						control = @childElementsBySelectors[selector]
+						newValue = @_model[elementDescription.modelAttribute]
+						control.setValue newValue
+
 		@customRedraw?()
 
 	destroy: =>

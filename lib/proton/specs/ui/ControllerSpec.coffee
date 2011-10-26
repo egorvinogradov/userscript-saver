@@ -1,23 +1,34 @@
 describe 'Controller', ->
 	controller = null
 	mockModel = null
+	childControls = null
+	class mockChildControl
+		constructor: ->
+			@contents = {}
+		setDomAccessor: (domAccessorValue) -> @contents.domAccessor = domAccessorValue
+		setValue: (value) -> @value = value
+		getValue: -> @value
+		subscribeToEvent: (eventName, listener) ->
+			@['fire_' + eventName] = listener
+		setValueChangeListener: (listener) -> @listener = listener
+	
 	beforeEach ->
 		controller = new Controller
+		controller._newPlainDomControl = ->
+			newChildControl = new mockChildControl
+			childControls.push newChildControl
+			return newChildControl
 		mockModel =
 			bind: (eventName, eventHandler) ->
 				this['event_' + eventName] = eventHandler
 			fire: (eventName) ->
 				this['event_' + eventName]()
+		childControls = []
 
 	describe 'accepts model through @setModel', ->
-		beforeEach ->
-
 		it 'checks for existing model', ->
-			exceptionMsg = 'model should exist and have method \'bind\''
-			expect(setter).toThrow new AssertException(exceptionMsg) for setter in [
-				-> controller.setModel null,
-				-> controller.setModel {}
-			]
+			ex = new AssertException 'model should exist and have method \'bind\''
+			expect(-> controller.setModel invalidModel).toThrow ex for invalidModel in [null, {}]
 
 			#check that correct model doesn't cause an exception
 			controller.setModel	mockModel
@@ -37,16 +48,49 @@ describe 'Controller', ->
 			mockModel.fire 'destroy'
 			expect(domElementRemoved).toBeTruthy()
 
-		it 'if has @_customRedraw, calls it on model change', ->
-			controller.setModel mockModel
+		describe 'when model changes', ->
+			it 'renews its child element values', ->
+				controller.setModel mockModel
 
-			#if there is no customRedraw, does nothing
-			mockModel.fire 'update'
+				controller._childELementDescriptions =
+					".childClassFoo":
+						modelAttribute: 'foo'
+					".childClassBar":
+						modelAttribute: 'bar'
 
-			customRedrawCalled = false
-			controller.customRedraw = -> customRedrawCalled = true
-			mockModel.fire 'update'
-			expect(customRedrawCalled).toBeTruthy()
+				controller._templateAccessor =
+					getDomFromTemplateByClass: ->
+						findChild: (selectorValue) -> selectorValue
+
+				mockModel.foo = 'initialFoo'
+
+				controller.render()
+				fooControl = childControls[0]
+				barControl = childControls[1]
+				expect(fooControl.value).toEqual 'initialFoo'
+				expect(barControl.value).toEqual null
+
+				mockModel.foo = 'newFoo1'
+				mockModel.bar = 'newBar1'
+				mockModel.fire 'update'
+				expect(fooControl.value).toEqual 'newFoo1'
+				expect(barControl.value).toEqual 'newBar1'
+
+				mockModel.foo = 'newFoo2'
+				mockModel.fire 'update'
+				expect(fooControl.value).toEqual 'newFoo2'
+				expect(barControl.value).toEqual 'newBar1'
+
+			it 'if has @_customRedraw, calls it', ->
+				controller.setModel mockModel
+
+				#if there is no customRedraw, does nothing
+				mockModel.fire 'update'
+
+				customRedrawCalled = false
+				controller.customRedraw = -> customRedrawCalled = true
+				mockModel.fire 'update'
+				expect(customRedrawCalled).toBeTruthy()
 
 	describe 'render: creates DOM contents and children elements', ->
 		it 'gets DOM contents from template by @_domClass', ->
@@ -59,21 +103,10 @@ describe 'Controller', ->
 			expect(expectedSelector).toEqual 'controllerClass'
 
 		describe 'creates child elements from @_childElementDescriptions', ->
-			childControls = null
-			class mockChildControl
-				constructor: ->
-					@contents = {}
-				setDomAccessor: (domAccessorValue) -> @contents.domAccessor = domAccessorValue
-
 			beforeEach ->
 				controller._templateAccessor =
 					getDomFromTemplateByClass: ->
 						findChild: (selectorValue) -> 'foundChild: ' + selectorValue
-				childControls = []
-				controller._newPlainDomControl = ->
-					newChildControl = new mockChildControl
-					childControls.push newChildControl
-					return newChildControl
 
 				controller._childELementDescriptions =
 					".childClassFoo": null,
@@ -89,7 +122,6 @@ describe 'Controller', ->
 				expect(childElement for selector, childElement of controller.childElementsBySelectors).toEqual childControls
 
 			it 'changes model when their values change', ->
-				mockChildControl::setValueChangeListener = (listener) -> @listener = listener
 				updatedAttributes = []
 				mockModel.updateAttribute = (attributeName, value) ->
 						updatedAttribute = {}
@@ -109,8 +141,6 @@ describe 'Controller', ->
 				expect(updatedAttributes).toEqual [{'modelPropertyFoo': 'newFoo'}]
 
 			it 'subscribes to their different events with its methods', ->
-				mockChildControl::subscribeToEvent = (eventName, listener) ->
-									@['fire_' + eventName] = listener
 
 				#use controller attribute to check handler context binding to controller
 				controller.onBar = -> @barFired = true
