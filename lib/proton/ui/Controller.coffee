@@ -1,19 +1,19 @@
-class Controller extends Spine.Controller
+class Controller
 	constructor: ->
 		@_rendered = false
 
 	setModel: (model) ->
 		assert model?.bind?, 'model should exist and have method \'bind\''
 		@_model = model
-		@_model.bind "update",  @redraw
-		@_model.bind "destroy", @destroy
+		@_model.bind "update",  @_redraw
+		@_model.bind "destroy", @_destroy
 
 	render: ->
 		if not @_rendered
 			@_initDOM()
 			@_initChildElements()
 			@_rendered = true
-		@redraw()
+		@_redraw()
 
 	_initDOM: ->
 		@_localDomAccessor = @_templateAccessor.getDomFromTemplateByClass @_domClass
@@ -24,12 +24,12 @@ class Controller extends Spine.Controller
 			do (selector, elementDescription) =>
 				elementDescription ?= {}
 
-				childControl = @_createChildControl selector, elementDescription
+				childControl = @_createChildControl selector
 				@childElementsBySelectors[selector] = childControl
 				@_bindControlToModelAtribute childControl, elementDescription.modelAttribute
 				@_listenToControlEvents childControl, elementDescription.events
 
-	_createChildControl: (selector, elementDescription) ->
+	_createChildControl: (selector) ->
 		plainDomControl = @_newPlainDomControl()
 		plainDomControl.setDomAccessor @_localDomAccessor.findChild selector
 		return plainDomControl
@@ -45,7 +45,7 @@ class Controller extends Spine.Controller
 				do(eventName, eventHandler) =>
 					control.subscribeToEvent eventName, => eventHandler.apply @
 
-	redraw: =>
+	_redraw: =>
 		if @_model?
 			for selector, elementDescription of @_childELementDescriptions
 				do (selector, elementDescription) =>
@@ -56,6 +56,6 @@ class Controller extends Spine.Controller
 
 		@customRedraw?()
 
-	destroy: =>
+	_destroy: =>
 		if @_rendered
 			@_localDomAccessor.remove()
