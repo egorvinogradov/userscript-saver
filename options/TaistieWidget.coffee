@@ -16,20 +16,20 @@ class TaistieWidget extends Controller
 			modelAttribute: "css"
 		".view":
 			events:
-				dblclick: @toggleEditing on
+				dblclick: -> @toggleEditing on
 		".edit": null
 		".saveTaistie":
 			events:
-				click: @toggleEditing off
+				click: -> @toggleEditing off
 		".destroy":
 			events:
-				click: @getModel().destroy()
+				click: -> @getModel().destroy()
 
 	customRedraw: ->
 		activeModifier = if not @getModel().active then 'addClass' else 'removeClass'
 		@getDomAccessor()[activeModifier] 'inactive'
 
-	toggleEditing: (editing)->
+	toggleEditing: (editing) =>
 		activeDivSelector = if editing then '.edit' else '.view'
 		inactiveDivSelector = if editing then '.view' else '.edit'
 		activeDiv = @_childElementsBySelectors[activeDivSelector]

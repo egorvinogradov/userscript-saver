@@ -111,7 +111,7 @@ describe 'Controller', ->
 			beforeEach ->
 				controller._templateAccessor =
 					getDomFromTemplateByClass: ->
-						findChild: (selectorValue) -> 'foundChild: ' + selectorValue
+						find: (selectorValue) -> 'foundChild: ' + selectorValue
 
 				controller.childELementDescriptions =
 					".childClassFoo": null,
@@ -173,7 +173,7 @@ describe 'Controller', ->
 		childDomAccessor = {}
 		controller._templateAccessor =
 			getDomFromTemplateByClass: ->
-				findChild: (selectorValue) -> childDomAccessor
+				find: (selectorValue) -> childDomAccessor
 		controller.childELementDescriptions =
 			".childClass":
 				alias: "someChild"

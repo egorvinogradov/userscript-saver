@@ -49,7 +49,8 @@ class Controller
 
 	_createChildControl: (selector) ->
 		plainDomControl = @_newPlainDomControl()
-		plainDomControl.setDomAccessor @_localDomAccessor.findChild selector
+		#TODO: использовать кастомный find вместо jquery.find - с проверкой существования
+		plainDomControl.setDomAccessor @_localDomAccessor.find selector
 		return plainDomControl
 
 	_bindControlToModelAtribute: (control, modelAttribute) ->
@@ -60,7 +61,9 @@ class Controller
 	_listenToControlEvents: (control, events) ->
 		if events?
 			for eventName, eventHandler of events
-				#TODO: контракт: eventHandler должен быть установлен и быть функцией
+
+				#TODO: вынести в проверку схемы при рендере
+				assert typeof eventHandler == 'function', 'invalid handler for event #{eventName}'
 				do(eventName, eventHandler) =>
 					control.subscribeToEvent eventName, => eventHandler.apply @
 
