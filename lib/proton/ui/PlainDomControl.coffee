@@ -1,5 +1,4 @@
 class PlainDomControl
-	#TODO: убрать if'ы на типы элементов и т.п. - через полиморфизм
 	setDomAccessor: (domAccessor) ->
 		@_domAccessor = domAccessor
 		isCheckBox = @_domAccessor.attr('type') is 'checkbox'
