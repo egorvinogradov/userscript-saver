@@ -53,7 +53,7 @@ describe 'Controller', ->
 			it 'renews its child element values', ->
 				controller.setModel mockModel
 
-				controller._childELementDescriptions =
+				controller.childELementDescriptions =
 					".childClassFoo":
 						modelAttribute: 'foo'
 					".childClassBar":
@@ -113,7 +113,7 @@ describe 'Controller', ->
 					getDomFromTemplateByClass: ->
 						findChild: (selectorValue) -> 'foundChild: ' + selectorValue
 
-				controller._childELementDescriptions =
+				controller.childELementDescriptions =
 					".childClassFoo": null,
 					".childClassBar": null
 
@@ -124,7 +124,7 @@ describe 'Controller', ->
 				expect(child.contents for child in childControls).toEqual [
 					{domAccessor: 'foundChild: .childClassFoo'},
 					{domAccessor: 'foundChild: .childClassBar'}]
-				expect(childElement for selector, childElement of controller.childElementsBySelectors).toEqual childControls
+				expect(childElement for selector, childElement of controller._childElementsBySelectors).toEqual childControls
 
 			it 'changes model when their values change', ->
 				updatedAttributes = []
@@ -133,7 +133,7 @@ describe 'Controller', ->
 						updatedAttribute[attributeName] = value
 						updatedAttributes.push updatedAttribute
 
-				controller._childELementDescriptions =
+				controller.childELementDescriptions =
 					".childClassFoo":
 						modelAttribute: "modelPropertyFoo",
 					".childClassBar": {}
@@ -149,7 +149,7 @@ describe 'Controller', ->
 
 				#use controller attribute to check handler context binding to controller
 				controller.onBar = -> @barFired = true
-				controller._childELementDescriptions =
+				controller.childELementDescriptions =
 					".childClassFoo":
 						events:
 							"eventBar": controller.onBar
@@ -174,7 +174,7 @@ describe 'Controller', ->
 		controller._templateAccessor =
 			getDomFromTemplateByClass: ->
 				findChild: (selectorValue) -> childDomAccessor
-		controller._childELementDescriptions =
+		controller.childELementDescriptions =
 			".childClass":
 				alias: "someChild"
 

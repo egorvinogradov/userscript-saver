@@ -1,5 +1,5 @@
 class TaistieWidget extends Controller
-	_childELementDescriptions:
+	childELementDescriptions:
 		".viewName":
 			modelAttribute: "name"
 		".inputName":
@@ -30,10 +30,10 @@ class TaistieWidget extends Controller
 	toggleEditing: (editing)->
 		activeDivSelector = if editing then '.edit' else '.view'
 		inactiveDivSelector = if editing then '.view' else '.edit'
-		activeDiv = @childElementsBySelectors[activeDivSelector]
-		inactiveDiv = @childElementsBySelectors[inactiveDivSelector]
+		activeDiv = @_childElementsBySelectors[activeDivSelector]
+		inactiveDiv = @_childElementsBySelectors[inactiveDivSelector]
 		activeDiv.getDomAccessor().show()
 		inactiveDiv.getDomAccessor().hide()
 
 		if editing
-			@childElementsBySelectors['.inputName'].getDomAccessor().focus()
+			@_childElementsBySelectors['.inputName'].getDomAccessor().focus()

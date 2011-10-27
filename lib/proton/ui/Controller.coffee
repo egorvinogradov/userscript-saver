@@ -28,22 +28,22 @@ class Controller
 		childElement = null
 		assert alias, 'alias should be valid'
 
-		for selector, description of @_childELementDescriptions
+		for selector, description of @childELementDescriptions
 			if description?.alias == alias
-				childElement = @childElementsBySelectors[selector]
+				childElement = @_childElementsBySelectors[selector]
 
 		#TODO: проверять: алиас должен быть уникальным
 		assert childElement?, 'alias should exist'
 		return childElement.getDomAccessor()
 
 	_initChildElements: ->
-		@childElementsBySelectors = {}
-		for selector, elementDescription of @_childELementDescriptions
+		@_childElementsBySelectors = {}
+		for selector, elementDescription of @childELementDescriptions
 			do (selector, elementDescription) =>
 				elementDescription ?= {}
 
 				childControl = @_createChildControl selector
-				@childElementsBySelectors[selector] = childControl
+				@_childElementsBySelectors[selector] = childControl
 				@_bindControlToModelAtribute childControl, elementDescription.modelAttribute
 				@_listenToControlEvents childControl, elementDescription.events
 
@@ -66,10 +66,10 @@ class Controller
 
 	_redraw: =>
 		if @_model?
-			for selector, elementDescription of @_childELementDescriptions
+			for selector, elementDescription of @childELementDescriptions
 				do (selector, elementDescription) =>
 					if elementDescription?.modelAttribute?
-						control = @childElementsBySelectors[selector]
+						control = @_childElementsBySelectors[selector]
 						newValue = @_model[elementDescription.modelAttribute]
 						control.setValue newValue
 
