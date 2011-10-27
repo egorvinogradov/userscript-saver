@@ -6,6 +6,7 @@ describe 'Controller', ->
 		constructor: ->
 			@contents = {}
 		setDomAccessor: (domAccessorValue) -> @contents.domAccessor = domAccessorValue
+		getDomAccessor: -> @contents.domAccessor
 		setValue: (value) -> @value = value
 		getValue: -> @value
 		subscribeToEvent: (eventName, listener) ->
@@ -157,7 +158,7 @@ describe 'Controller', ->
 				childControls[0]['fire_eventBar']()
 				expect(controller.barFired).toBeTruthy()
 
-	it 'after rendering, can return domAccessor through getDomAccessor()', ->
+	it 'getDomAccessor() returns domAccessor after rendering', ->
 		mockDomAccessor = {}
 		controller._templateAccessor =
 			getDomFromTemplateByClass: (templateClass) -> mockDomAccessor
@@ -167,3 +168,16 @@ describe 'Controller', ->
 
 		controller.render()
 		expect(controller.getDomAccessor()).toBe mockDomAccessor
+
+	it 'getChildDomAccessorByAlias: gets child dom accessor by its alias', ->
+		childDomAccessor = {}
+		controller._templateAccessor =
+			getDomFromTemplateByClass: ->
+				findChild: (selectorValue) -> childDomAccessor
+		controller._childELementDescriptions =
+			".childClass":
+				alias: "someChild"
+
+		controller.render()
+		expect(controller.getChildDomAccessorByAlias 'someChild').toBe childDomAccessor
+

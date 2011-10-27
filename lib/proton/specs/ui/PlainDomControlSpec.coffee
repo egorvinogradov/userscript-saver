@@ -8,6 +8,14 @@ describe 'PlainDomControl', ->
 		plainDomInput = $ '<input type="text"/>'
 		control = new PlainDomControl
 
+	it 'setDomAccessor: accepts jquery-like object', ->
+		expectedEx = new AssertException 'domAccessor should be valid jquery-like object'
+		expect(-> control.setDomAccessor invalidAccessor).toThrow expectedEx for invalidAccessor in [null, {}]
+		control.setDomAccessor plainDomInput
+		expect(control.getDomAccessor()).toBe plainDomInput
+
+	it 'getDomAccessor: returns dom accessor', ->
+
 	describe 'getValue', ->
 		it 'returns true/false for checked/unchecked checkbox', ->
 			control.setDomAccessor plainDomCheckbox

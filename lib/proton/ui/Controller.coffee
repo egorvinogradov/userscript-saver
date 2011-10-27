@@ -24,6 +24,18 @@ class Controller
 		assert @_rendered, 'should be rendered before using @getDomAccessor'
 		return @_localDomAccessor
 
+	getChildDomAccessorByAlias: (alias) ->
+		childElement = null
+		assert alias, 'alias should be valid'
+
+		for selector, description of @_childELementDescriptions
+			if description?.alias == alias
+				childElement = @childElementsBySelectors[selector]
+
+		#TODO: проверять: алиас должен быть уникальным
+		assert childElement?, 'alias should exist'
+		return childElement.getDomAccessor()
+
 	_initChildElements: ->
 		@childElementsBySelectors = {}
 		for selector, elementDescription of @_childELementDescriptions
@@ -48,6 +60,7 @@ class Controller
 	_listenToControlEvents: (control, events) ->
 		if events?
 			for eventName, eventHandler of events
+				#TODO: контракт: eventHandler должен быть установлен и быть функцией
 				do(eventName, eventHandler) =>
 					control.subscribeToEvent eventName, => eventHandler.apply @
 
