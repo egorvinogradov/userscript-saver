@@ -17,22 +17,11 @@ class TaistieWidget extends Controller
 		".inputUrlRegexp": "urlRegexp"
 		".inputCss": "css"
 
-	refreshRender: ->
-		activeModifier = if not @item.active then 'addClass' else 'removeClass'
-		@el[activeModifier] 'inactive'
+	customRedraw: ->
+		activeModifier = if not @getModel().active then 'addClass' else 'removeClass'
+		@getDomAccessor()[activeModifier] 'inactive'
 
-		for selector, propertyName of @newElements
-			do (selector, propertyName) =>
-				val = @item[propertyName]
-				elem = @$(selector)
-				if elem.attr('type') is 'checkbox' then elem.attr('checked', val)
-				else if elem[0].tagName.toLowerCase() is 'input' then elem.val(val)
-				else elem.text(val)
-
-	destroy: =>
-		@el.remove()
-
-	remove: -> @item.destroy()
+	remove: -> @getModel().destroy()
 
 	startEditing: ->
 		@toggleEditing on
