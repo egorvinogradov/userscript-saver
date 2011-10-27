@@ -1,4 +1,6 @@
 class TaistieWidget extends Controller
+	domClass: '.item'
+
 	childELementDescriptions:
 		".viewName":
 			modelAttribute: "name"

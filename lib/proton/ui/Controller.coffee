@@ -18,7 +18,7 @@ class Controller
 		@_redraw()
 
 	_initDOM: ->
-		@_localDomAccessor = @_templateAccessor.getDomFromTemplateByClass @_domClass
+		@_localDomAccessor = @_templateAccessor.getDomFromTemplateByClass @domClass
 
 	getDomAccessor: ->
 		assert @_rendered, 'should be rendered before using @getDomAccessor'

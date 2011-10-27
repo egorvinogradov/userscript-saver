@@ -98,9 +98,9 @@ describe 'Controller', ->
 		expect(controller.getModel()).toBe mockModel
 
 	describe 'render: creates DOM contents and children elements', ->
-		it 'gets DOM contents from template by @_domClass', ->
+		it 'gets DOM contents from template by @domClass', ->
 			expectedSelector = null
-			controller._domClass = 'controllerClass'
+			controller.domClass = 'controllerClass'
 			controller._templateAccessor =
 				getDomFromTemplateByClass: (templateClassValue) ->
 					expectedSelector = templateClassValue
