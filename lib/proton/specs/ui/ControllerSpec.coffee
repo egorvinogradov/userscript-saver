@@ -92,6 +92,10 @@ describe 'Controller', ->
 				mockModel.fire 'update'
 				expect(customRedrawCalled).toBeTruthy()
 
+	it 'gives model by getModel()', ->
+		controller.setModel mockModel
+		expect(controller.getModel()).toBe mockModel
+
 	describe 'render: creates DOM contents and children elements', ->
 		it 'gets DOM contents from template by @_domClass', ->
 			expectedSelector = null
@@ -162,4 +166,4 @@ describe 'Controller', ->
 		expect(-> controller.getDomAccessor()).toThrow expectedException
 
 		controller.render()
-		expect(controller.getDomAccessor()).toEqual mockDomAccessor
+		expect(controller.getDomAccessor()).toBe mockDomAccessor

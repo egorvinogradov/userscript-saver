@@ -8,6 +8,8 @@ class Controller
 		@_model.bind "update",  @_redraw
 		@_model.bind "destroy", @_destroy
 
+	getModel: -> @_model
+
 	render: ->
 		if not @_rendered
 			@_initDOM()
