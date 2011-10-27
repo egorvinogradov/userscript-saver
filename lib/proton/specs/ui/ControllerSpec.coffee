@@ -180,4 +180,6 @@ describe 'Controller', ->
 
 		controller.render()
 		expect(controller.getChildDomAccessorByAlias 'someChild').toBe childDomAccessor
+		expect(-> controller.getChildDomAccessorByAlias null).toThrow new AssertException 'alias should be valid'
+		expect(-> controller.getChildDomAccessorByAlias 'noChild').toThrow new AssertException 'alias should exist'
 
