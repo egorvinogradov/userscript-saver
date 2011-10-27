@@ -153,4 +153,13 @@ describe 'Controller', ->
 				childControls[0]['fire_eventBar']()
 				expect(controller.barFired).toBeTruthy()
 
+	it 'after rendering, can return domAccessor through getDomAccessor()', ->
+		mockDomAccessor = {}
+		controller._templateAccessor =
+			getDomFromTemplateByClass: (templateClass) -> mockDomAccessor
 
+		expectedException = new AssertException 'should be rendered before using @getDomAccessor'
+		expect(-> controller.getDomAccessor()).toThrow expectedException
+
+		controller.render()
+		expect(controller.getDomAccessor()).toEqual mockDomAccessor

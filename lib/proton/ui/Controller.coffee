@@ -18,6 +18,10 @@ class Controller
 	_initDOM: ->
 		@_localDomAccessor = @_templateAccessor.getDomFromTemplateByClass @_domClass
 
+	getDomAccessor: ->
+		assert @_rendered, 'should be rendered before using @getDomAccessor'
+		return @_localDomAccessor
+
 	_initChildElements: ->
 		@childElementsBySelectors = {}
 		for selector, elementDescription of @_childELementDescriptions
