@@ -2,7 +2,7 @@ $ ->
 	iocContainer = new IocContainer()
 	iocContainer.setSchema
 		topPopupWidget:
-			ctor: PopupOpenOptionsWidget
+			singleton: PopupOpenOptionsWidget
 			deps: _tabApi: 'tabApi'
 		tabApi:
 			ref: TabApi

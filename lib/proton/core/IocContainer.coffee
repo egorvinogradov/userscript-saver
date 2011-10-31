@@ -31,8 +31,8 @@ class IocContainer
 
 	_createElement: (elementDescriptor) ->
 		#TODO: проверять, что задан только один вариант создания элемента (при начальной установке схемы)
-		if elementDescriptor.ctor?
-			return @_createFromConstructor elementDescriptor.ctor
+		if elementDescriptor.singleton?
+			return @_createFromConstructor elementDescriptor.singleton
 
 		if elementDescriptor.ref?
 			return elementDescriptor.ref

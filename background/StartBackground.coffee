@@ -2,23 +2,23 @@ do ->
 	iocContainer = new IocContainer
 	iocContainer.setSchema
 		tabTaister:
-			ctor: TabTaister
+			singleton: TabTaister
 			deps:
 				_dTaistieCombiner: 'taistieCombiner'
 				_dTaistieWrapper: 'taistieWrapper'
 				_tabApi: 'tabApi'
 				_popupResourcePaths: 'popupResourcePaths'
 		taistieCombiner:
-			ctor: TaistieCombiner
+			singleton: TaistieCombiner
 			deps: _dTaistiesStorage: 'taistiesStorage'
 		taistiesStorage:
-			ctor: TaistiesStorage
+			singleton: TaistiesStorage
 			deps:
 				_developedTaistie: 'developedTaistie'
 		developedTaistie:
 			ref: DevelopedTaistie
 		taistieWrapper:
-			ctor: TaistieWrapper
+			singleton: TaistieWrapper
 		tabApi:
 			ref: TabApi
 		popupResourcePaths:

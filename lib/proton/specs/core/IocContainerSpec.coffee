@@ -3,16 +3,18 @@ describe 'IocContainer', ->
 	beforeEach ->
 		iocContainer = new IocContainer
 		
-	it 'creates new object if its constructor given in \'ctor\'', ->
+	it 'returns the same new object if its constructor given in \'singleton\'', ->
 		class Foo
-			constructor: -> @name = 'foo'
+			constructor: -> @hello = 'Foo!'
 		iocContainer.setSchema
 			fooInstance:
-				ctor: Foo
+				singleton: Foo
 
-		expect(iocContainer.getElement 'fooInstance').toEqual new Foo
+		foo1 = iocContainer.getElement 'fooInstance'
+		expect(foo1.hello).toEqual 'Foo!'
+		expect(iocContainer.getElement 'fooInstance').toBe foo1
 
-	it 'gets existing object if its reference given in \'reference\'', ->
+	it 'gets existing object if its reference given in \'ref\'', ->
 		foo = name: 'fooElement'
 		iocContainer.setSchema
 			fooInstance:
@@ -27,22 +29,14 @@ describe 'IocContainer', ->
 		iocContainer.setSchema {}
 		expect(getFoo).toThrow 'Element \'fooInstance\' not found in dependency schema'
 
-	it 'returns the same element again for the same name', ->
-		iocContainer.setSchema
-			fooInstance:
-				ctor: ->
-
-		fooInstance = iocContainer.getElement 'fooInstance'
-		expect(iocContainer.getElement 'fooInstance').toBe fooInstance
-
 	it 'sets element dependencies', ->
 		iocContainer.setSchema
 			fooInstance:
-				ctor: ->
+				singleton: ->
 				deps:
 					'_barProperty': 'barInstance'
 			barInstance:
-				ctor: ->
+				singleton: ->
 
 		fooInstance = iocContainer.getElement 'fooInstance'
 		expect(fooInstance._barProperty).toBe iocContainer.getElement('barInstance')
