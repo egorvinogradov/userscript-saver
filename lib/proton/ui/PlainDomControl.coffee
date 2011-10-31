@@ -2,10 +2,15 @@ class PlainDomControl
 	setDomAccessor: (domAccessor) ->
 		assert domAccessor?.attr?, 'domAccessor should be valid jquery-like object'
 		@_domAccessor = domAccessor
-		isCheckBox = @_domAccessor.attr('type') is 'checkbox'
-		@_innerControl = new (if isCheckBox then Checkbox else DefaultInput)
-		@_innerControl._domAccessor = @_domAccessor
 
+		innerControlConstructor = null
+		if @_domAccessor.is 'input'
+			isCheckBox = @_domAccessor.attr('type') is 'checkbox'
+			innerControlConstructor = if isCheckBox then Checkbox else DefaultInput
+		else
+			innerControlConstructor = NonInput
+		@_innerControl = new innerControlConstructor
+		@_innerControl._domAccessor = @_domAccessor
 	getDomAccessor: -> @_domAccessor
 
 	getValue: -> @_innerControl.getValue()
@@ -28,3 +33,7 @@ class PlainDomControl
 	class DefaultInput
 		getValue: -> @_domAccessor.val()
 		setValue: (newValue) -> @_domAccessor.val newValue
+
+	class NonInput
+		getValue: -> @_domAccessor.html()
+		setValue: (newValue) -> @_domAccessor.html newValue

@@ -1,11 +1,13 @@
 describe 'PlainDomControl', ->
 	plainDomInput = null
 	plainDomCheckbox = null
+	plainDomSpan = null
 	control = null
 
 	beforeEach ->
 		plainDomCheckbox = $ '<input type="checkbox"/>'
 		plainDomInput = $ '<input type="text"/>'
+		plainDomSpan = $ '<span></span>'
 		control = new PlainDomControl
 
 	it 'setDomAccessor: accepts jquery-like object', ->
@@ -35,11 +37,24 @@ describe 'PlainDomControl', ->
 			plainDomInput.val 'foo'
 			expect(control.getValue()).toEqual 'foo'
 
+		it 'returns inner html for any non-input element', ->
+			control.setDomAccessor plainDomSpan
+			expect(control.getValue()).toEqual ''
+
+			plainDomSpan.html '<b>inner html</b>'
+			expect(control.getValue()).toEqual '<b>inner html</b>'
+
 	describe 'setValue', ->
-		it 'allows to set value to control', ->
+		it 'allows to set text value to input except checkbox', ->
 			control.setDomAccessor plainDomInput
 			control.setValue 'newValue'
 			expect(control.getValue()).toEqual 'newValue'
+
+		it 'allow to set html or plain text value to non-input element', ->
+			control.setDomAccessor plainDomSpan
+			for value in ['plain text value', '<h1><b>HTML</b> value</h1>']
+				control.setValue value
+				expect(control.getValue()).toEqual value
 
 		it 'accepts only true/false for checkbox and sets its checked/unchecked state', ->
 			control.setDomAccessor plainDomCheckbox
