@@ -61,7 +61,7 @@ describe 'Controller', ->
 
 				controller._templateAccessor =
 					getDomFromTemplateByClass: ->
-						findChild: (selectorValue) -> selectorValue
+						find: (selectorValue) -> selectorValue
 
 				mockModel.foo = 'initialFoo'
 
