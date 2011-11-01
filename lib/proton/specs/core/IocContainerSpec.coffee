@@ -3,12 +3,12 @@ describe 'IocContainer', ->
 	beforeEach ->
 		iocContainer = new IocContainer
 		
-	it 'returns the same new object if its constructor is given in \'singleton\'', ->
+	it 'returns the same new object if its constructor is given in \'single\'', ->
 		class Foo
 			constructor: -> @hello = 'Foo!'
 		iocContainer.setSchema
 			fooInstance:
-				singleton: Foo
+				single: Foo
 
 		foo1 = iocContainer.getElement 'fooInstance'
 		expect(foo1.hello).toEqual 'Foo!'
@@ -45,11 +45,11 @@ describe 'IocContainer', ->
 	it 'sets element dependencies', ->
 		iocContainer.setSchema
 			fooInstance:
-				singleton: ->
+				single: ->
 				deps:
 					'_barProperty': 'barInstance'
 			barInstance:
-				singleton: ->
+				single: ->
 
 		fooInstance = iocContainer.getElement 'fooInstance'
 		expect(fooInstance._barProperty).toBe iocContainer.getElement('barInstance')

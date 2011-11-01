@@ -30,9 +30,8 @@ class IocContainer
 		rawElementData = @_schema[elementName]
 		assert(rawElementData, 'Element \'' + elementName + '\' not found in dependency schema')
 
-		elementDescriptor = {}
-		if rawElementData.deps?
-			elementDescriptor.deps = rawElementData.deps
+		elementDescriptor =
+			deps: rawElementData.deps
 
 		elementDescriptor.type = @_getElementType rawElementData
 
@@ -46,7 +45,7 @@ class IocContainer
 		type = elementDescriptor.type
 		source = elementDescriptor.source
 
-		if type == 'singleton'
+		if type == 'single'
 			return @_createFromConstructor source
 
 		if type == 'ref'
@@ -56,7 +55,7 @@ class IocContainer
 			return =>
 				newElement = {}
 				source.apply(newElement, arguments)
-				@_addDependencies newElement, elementDescriptor
+				@_addDependencies newElement, elementDescriptor.deps
 				return newElement
 
 	_addDependencies: (element, dependencies) ->
@@ -69,7 +68,7 @@ class IocContainer
 
 	_isCachedElement: (elementDescriptor) -> elementDescriptor.type != 'prototype'
 
-	_allowedTypes: ['singleton', 'ref', 'factoryFunction']
+	_allowedTypes: ['single', 'ref', 'factoryFunction']
 
 	_getElementType: (rawElementData) ->
 		elementType = null
