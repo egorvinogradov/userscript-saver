@@ -18,7 +18,6 @@ class TaistieListWidget extends Spine.Controller
 	addOne: (taistie) =>
 		view = @_newtaistieWidget()
 		view.setModel taistie
-		view._newPlainDomControl = -> new PlainDomControl
 		view._templateAccessor =
 			getDomFromTemplateByClass: (templateClass) -> $("#{templateClass}.template").clone().removeClass('template')
 		view.render()
