@@ -31,7 +31,8 @@ class IocContainer
 		assert(rawElementData, 'Element \'' + elementName + '\' not found in dependency schema')
 
 		elementDescriptor =
-			deps: rawElementData.deps
+			deps: rawElementData.deps,
+			name: elementName
 
 		elementDescriptor.type = @_getElementType rawElementData
 
@@ -53,8 +54,8 @@ class IocContainer
 
 		if type == 'factoryFunction'
 			return =>
-				newElement = {}
-				source.apply(newElement, arguments)
+				assert arguments.length == 0, "factoryFunction '#{elementDescriptor.name}' should be called without arguments"
+				newElement = new source
 				@_addDependencies newElement, elementDescriptor.deps
 				return newElement
 

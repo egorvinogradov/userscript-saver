@@ -9,15 +9,14 @@ class TaistieListWidget extends Spine.Controller
 		".clear":     "clear"
 		"form input": "input"
 
-	constructor: ->
-		super
+	start: ->
 		Taistie.bind "create",  @addOne
 		Taistie.bind "refresh", @addAll
 		Taistie.bind "refresh change", @renderCount
 		Taistie.fetch()
 
 	addOne: (taistie) =>
-		view = new TaistieWidget
+		view = @_newtaistieWidget()
 		view.setModel taistie
 		view._newPlainDomControl = -> new PlainDomControl
 		view._templateAccessor =

@@ -16,17 +16,26 @@ describe 'IocContainer', ->
 
 	it 'returns function to create new objects if their constructor is given in \'factoryFunction\'', ->
 		class Foo
-			constructor: (name) -> @name = name
+			getClassName: -> return 'foo'
+
 		iocContainer.setSchema
 			fooFactory:
 				factoryFunction: Foo
 
-		factory = iocContainer.getElement 'fooFactory'
-		foo1 = factory 'first'
-		foo2 = factory 'second'
+		fooFactory = iocContainer.getElement 'fooFactory'
+		foo1 = fooFactory()
+		foo2 = fooFactory()
 
-		expect(foo1.name).toEqual 'first'
-		expect(foo2.name).toEqual 'second'
+		expect(foo1.getClassName()).toEqual 'foo'
+		expect(foo2).not.toBe foo1
+
+	it '\'factoryFunction\' accepts only calls without args', ->
+		class Foo
+		iocContainer.setSchema
+			fooFactory:
+				factoryFunction: Foo
+		fooFactory = iocContainer.getElement 'fooFactory'
+		expect(-> fooFactory 'some argument').toThrow new AssertException "factoryFunction 'fooFactory' should be called without arguments"
 
 	it 'gets existing object if its reference given in \'ref\'', ->
 		foo = name: 'fooElement'
