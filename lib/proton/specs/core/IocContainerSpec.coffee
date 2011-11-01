@@ -3,7 +3,7 @@ describe 'IocContainer', ->
 	beforeEach ->
 		iocContainer = new IocContainer
 		
-	it 'returns the same new object if its constructor given in \'singleton\'', ->
+	it 'returns the same new object if its constructor is given in \'singleton\'', ->
 		class Foo
 			constructor: -> @hello = 'Foo!'
 		iocContainer.setSchema
@@ -14,6 +14,20 @@ describe 'IocContainer', ->
 		expect(foo1.hello).toEqual 'Foo!'
 		expect(iocContainer.getElement 'fooInstance').toBe foo1
 
+	it 'returns function to create new objects if their constructor is given in \'factoryFunction\'', ->
+		class Foo
+			constructor: (name) -> @name = name
+		iocContainer.setSchema
+			fooFactory:
+				factoryFunction: Foo
+
+		factory = iocContainer.getElement 'fooFactory'
+		foo1 = factory 'first'
+		foo2 = factory 'second'
+
+		expect(foo1.name).toEqual 'first'
+		expect(foo2.name).toEqual 'second'
+
 	it 'gets existing object if its reference given in \'ref\'', ->
 		foo = name: 'fooElement'
 		iocContainer.setSchema
@@ -23,7 +37,6 @@ describe 'IocContainer', ->
 		expect(iocContainer.getElement 'fooInstance').toBe foo
 
 	it 'checks that schema is set and contains element', ->
-
 		getFoo = -> iocContainer.getElement 'fooInstance'
 		expect(getFoo).toThrow 'Dependency schema is not set'
 		iocContainer.setSchema {}

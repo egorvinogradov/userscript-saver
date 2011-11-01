@@ -5,37 +5,75 @@ class IocContainer
 		@_schema = schema
 	
 	getElement: (elementName) ->
-		previouslyCreatedElement = @_createdElements[elementName]
-		return previouslyCreatedElement ? @_getNewElement elementName
-
-	_getNewElement: (elementName) ->
 		elementDescriptor = @_getElementDescriptor elementName
+		isCached = @_isCachedElement elementDescriptor
+		element = null
 
+		if isCached
+			element = @_createdElements[elementName]
+
+		if not element?
+			element = @_getNewElement elementDescriptor
+			if isCached
+				@_createdElements[elementName] = element
+
+		return element
+
+	_getNewElement: (elementDescriptor) ->
 		element = @_createElement elementDescriptor
+		@_addDependencies element, elementDescriptor.deps
 
-		deps = elementDescriptor.deps
-		if deps?
-			for dependencyName, dependency of deps
-				element[dependencyName] = @getElement dependency
-
-		@_createdElements[elementName] = element
 		return element
 
 	_getElementDescriptor: (elementName) ->
 		assert(@_schema?, 'Dependency schema is not set')
-		elementDescriptor = @_schema[elementName]
+		rawElementData = @_schema[elementName]
+		assert(rawElementData, 'Element \'' + elementName + '\' not found in dependency schema')
 
-		assert(elementDescriptor?, 'Element \'' + elementName + '\' not found in dependency schema')
+		elementDescriptor = {}
+		if rawElementData.deps?
+			elementDescriptor.deps = rawElementData.deps
+
+		elementDescriptor.type = @_getElementType rawElementData
+
+		#in dependency schema, type/source are given as key/value pair
+		elementDescriptor.source = rawElementData[elementDescriptor.type]
 
 		return elementDescriptor
 
 	_createElement: (elementDescriptor) ->
 		#TODO: проверять, что задан только один вариант создания элемента (при начальной установке схемы)
-		if elementDescriptor.singleton?
-			return @_createFromConstructor elementDescriptor.singleton
+		type = elementDescriptor.type
+		source = elementDescriptor.source
 
-		if elementDescriptor.ref?
-			return elementDescriptor.ref
+		if type == 'singleton'
+			return @_createFromConstructor source
+
+		if type == 'ref'
+			return source
+
+		if type == 'factoryFunction'
+			return =>
+				newElement = {}
+				source.apply(newElement, arguments)
+				@_addDependencies newElement, elementDescriptor
+				return newElement
+
+	_addDependencies: (element, dependencies) ->
+		if dependencies
+			for dependencyName, dependency of dependencies
+				element[dependencyName] = @getElement dependency
 
 	_createFromConstructor: (ctor) ->
 		return new ctor
+
+	_isCachedElement: (elementDescriptor) -> elementDescriptor.type != 'prototype'
+
+	_allowedTypes: ['singleton', 'ref', 'factoryFunction']
+
+	_getElementType: (rawElementData) ->
+		elementType = null
+		for allowedType in @_allowedTypes
+			if rawElementData[allowedType]?
+				elementType = allowedType
+		return elementType
