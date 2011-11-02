@@ -2,19 +2,13 @@ class Controller
 	constructor: ->
 		@_rendered = false
 
-	setModel: (model) ->
-		assert model?.bind?, 'model should exist and have method \'bind\''
-		@_model = model
-		@_model.bind "update",  @_redraw
-		@_model.bind "destroy", @_destroy
-
-	getModel: -> @_model
-
 	render: ->
 		if not @_rendered
 			@_initDOM()
 			@_initChildElements()
 			@_rendered = true
+
+		#TODO: должно вызываться только при событии модели - мб вместо этого вызывать model.refresh()?
 		@_redraw()
 
 	_initDOM: ->
@@ -44,19 +38,14 @@ class Controller
 
 				childControl = @_createChildControl selector
 				@_childElementsBySelectors[selector] = childControl
-				@_bindControlToModelAtribute childControl, elementDescription.modelAttribute
 				@_listenToControlEvents childControl, elementDescription.events
+				@_additionalInitChildControl? childControl, elementDescription
 
 	_createChildControl: (selector) ->
 		plainDomControl = @_newPlainDomControl()
 		#TODO: использовать кастомный find вместо jquery.find - с проверкой существования
 		plainDomControl.setDomAccessor @_localDomAccessor.find selector
 		return plainDomControl
-
-	_bindControlToModelAtribute: (control, modelAttribute) ->
-		if modelAttribute?
-			control.setValueChangeListener (newValue) =>
-				@_model.updateAttribute modelAttribute, newValue
 
 	_listenToControlEvents: (control, events) ->
 		if events?
@@ -67,17 +56,7 @@ class Controller
 				do(eventName, eventHandler) =>
 					control.subscribeToEvent eventName, => eventHandler.apply @
 
+	#TODO: вынести в SingleItemController
 	_redraw: =>
-		if @_model?
-			for selector, elementDescription of @childELementDescriptions
-				do (selector, elementDescription) =>
-					if elementDescription?.modelAttribute?
-						control = @_childElementsBySelectors[selector]
-						newValue = @_model[elementDescription.modelAttribute]
-						control.setValue newValue
-
+		@_innerRedraw?()
 		@customRedraw?()
-
-	_destroy: =>
-		if @_rendered
-			@_localDomAccessor.remove()
