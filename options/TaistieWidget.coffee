@@ -1,4 +1,4 @@
-class TaistieWidget extends Controller
+class TaistieWidget extends SingleItemController
 	domClass: '.item'
 
 	childELementDescriptions:
