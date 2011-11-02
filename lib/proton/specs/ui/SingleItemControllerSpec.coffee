@@ -52,38 +52,6 @@ describe 'SingleItemController', ->
 			expect(domElementRemoved).toBeTruthy()
 
 		describe 'when model changes', ->
-			it 'renews its child element values', ->
-				controller.setModel mockModel
-
-				controller.getChildELementDescriptions = ->
-					".childClassFoo":
-						modelAttribute: 'foo'
-					".childClassBar":
-						modelAttribute: 'bar'
-
-				controller._templateAccessor =
-					getDomFromTemplateByClass: ->
-						find: (selectorValue) -> selectorValue
-
-				mockModel.foo = 'initialFoo'
-
-				controller.render()
-				fooControl = childControls[0]
-				barControl = childControls[1]
-				expect(fooControl.value).toEqual 'initialFoo'
-				expect(barControl.value).toEqual null
-
-				mockModel.foo = 'newFoo1'
-				mockModel.bar = 'newBar1'
-				mockModel.fire 'update'
-				expect(fooControl.value).toEqual 'newFoo1'
-				expect(barControl.value).toEqual 'newBar1'
-
-				mockModel.foo = 'newFoo2'
-				mockModel.fire 'update'
-				expect(fooControl.value).toEqual 'newFoo2'
-				expect(barControl.value).toEqual 'newBar1'
-
 			it 'if has @_customRedraw, calls it', ->
 				controller.setModel mockModel
 

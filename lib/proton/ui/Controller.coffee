@@ -8,8 +8,8 @@ class Controller
 			@_initChildElements()
 			@_rendered = true
 
-		#TODO: должно вызываться только при событии модели - мб вместо этого вызывать model.refresh()?
-		@_redraw()
+		#TODO: вызывать из виджета - должен ли быть всегда в виджете?
+		@onrendered?()
 
 	_initDOM: ->
 		@_localDomAccessor = @_templateAccessor.getDomFromTemplateByClass @domClass
@@ -49,8 +49,3 @@ class Controller
 		#TODO: использовать кастомный find вместо jquery.find - с проверкой существования
 		plainDomControl.setDomAccessor @_localDomAccessor.find selector
 		return plainDomControl
-
-	#TODO: вынести в SingleItemController
-	_redraw: =>
-		@_innerRedraw?()
-		@customRedraw?()
