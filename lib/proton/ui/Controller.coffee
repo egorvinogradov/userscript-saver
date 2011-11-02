@@ -40,10 +40,9 @@ class Controller
 				@_childElementsBySelectors[selector] = childControl
 
 				#TODO: DI
+				#TODO: проверять, что дочерним элементам полностью передаются опции
 				singleValueController = new SingleValueController childControl
-				singleValueController.init
-					events: elementDescription.events
-				@_additionalInitChildControl? childControl, elementDescription
+				singleValueController.init elementDescription
 
 	_createChildControl: (selector) ->
 		plainDomControl = @_newPlainDomControl()

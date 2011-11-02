@@ -3,16 +3,22 @@ class TaistieWidget extends SingleItemController
 
 	getChildELementDescriptions: ->
 		".viewName":
+			model: @_model
 			modelAttribute: "name"
 		".inputName":
+			model: @_model
 			modelAttribute: "name"
 		".inputActive":
+			model: @_model
 			modelAttribute: "active"
 		".inputJs":
+			model: @_model
 			modelAttribute: "js"
 		".inputUrlRegexp":
+			model: @_model
 			modelAttribute: "urlRegexp"
 		".inputCss":
+			model: @_model
 			modelAttribute: "css"
 		".view":
 			events:

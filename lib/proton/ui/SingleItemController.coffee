@@ -7,9 +7,6 @@ class SingleItemController extends Controller
 
 	getModel: -> @_model
 
-	_additionalInitChildControl: (childControl, controlDescription) ->
-		@_bindControlToModelAtribute childControl, controlDescription.modelAttribute
-
 	_innerRedraw: ->
 		if @_model?
 			for selector, elementDescription of @getChildELementDescriptions()
@@ -18,11 +15,6 @@ class SingleItemController extends Controller
 						control = @_childElementsBySelectors[selector]
 						newValue = @_model[elementDescription.modelAttribute]
 						control.setValue newValue
-
-	_bindControlToModelAtribute: (control, modelAttribute) ->
-		if modelAttribute?
-			control.setValueChangeListener (newValue) =>
-				@_model.updateAttribute modelAttribute, newValue
 
 	_destroy: =>
 		if @_rendered

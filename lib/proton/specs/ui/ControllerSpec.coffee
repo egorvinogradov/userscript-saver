@@ -10,6 +10,9 @@ describe 'Controller', ->
 
 	beforeEach ->
 		controller = new Controller
+
+		#set default method
+		controller.getChildELementDescriptions = ->
 		controller._newPlainDomControl = ->
 			newChildControl = new mockChildControl
 			childControls.push newChildControl
@@ -26,13 +29,13 @@ describe 'Controller', ->
 			controller.render()
 			expect(expectedSelector).toEqual 'controllerClass'
 
-		describe 'creates child elements from @_childElementDescriptions', ->
+		describe 'creates child elements from @getChildELementDescriptions()', ->
 			beforeEach ->
 				controller._templateAccessor =
 					getDomFromTemplateByClass: ->
 						find: (selectorValue) -> 'foundChild: ' + selectorValue
 
-				controller.childELementDescriptions =
+				controller.getChildELementDescriptions = ->
 					".childClassFoo": null,
 					".childClassBar": null
 
@@ -46,15 +49,16 @@ describe 'Controller', ->
 			it 'subscribes to their different events with its methods', ->
 
 				#use controller attribute to check handler context binding to controller
-				controller.onBar = -> @barFired = true
-				controller.childELementDescriptions =
+				barFired = false
+				controller.onBar = -> barFired = true
+				controller.getChildELementDescriptions = ->
 					".childClassFoo":
 						events:
 							"eventBar": controller.onBar
 
 				controller.render()
 				childControls[0]['fire_eventBar']()
-				expect(controller.barFired).toBeTruthy()
+				expect(barFired).toBeTruthy()
 
 	it 'getDomAccessor() returns domAccessor after rendering', ->
 		mockDomAccessor = {}
@@ -72,7 +76,7 @@ describe 'Controller', ->
 		controller._templateAccessor =
 			getDomFromTemplateByClass: ->
 				find: (selectorValue) -> childDomAccessor
-		controller.childELementDescriptions =
+		controller.getChildELementDescriptions = ->
 			".childClass":
 				alias: "someChild"
 

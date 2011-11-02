@@ -15,6 +15,8 @@ describe 'SingleItemController', ->
 
 	beforeEach ->
 		controller = new SingleItemController
+		controller.getChildELementDescriptions = ->
+
 		controller._newPlainDomControl = ->
 			newChildControl = new mockChildControl
 			childControls.push newChildControl
@@ -53,7 +55,7 @@ describe 'SingleItemController', ->
 			it 'renews its child element values', ->
 				controller.setModel mockModel
 
-				controller.childELementDescriptions =
+				controller.getChildELementDescriptions = ->
 					".childClassFoo":
 						modelAttribute: 'foo'
 					".childClassBar":
@@ -96,35 +98,3 @@ describe 'SingleItemController', ->
 	it 'gives model by getModel()', ->
 		controller.setModel mockModel
 		expect(controller.getModel()).toBe mockModel
-
-	describe 'render: creates DOM contents and children elements', ->
-		describe 'creates child elements from @_childElementDescriptions', ->
-			beforeEach ->
-				controller._templateAccessor =
-					getDomFromTemplateByClass: ->
-						find: (selectorValue) -> 'foundChild: ' + selectorValue
-
-				controller.childELementDescriptions =
-					".childClassFoo": null,
-					".childClassBar": null
-
-				controller.setModel mockModel
-
-			it 'changes model when their values change', ->
-				updatedAttributes = []
-				mockModel.updateAttribute = (attributeName, value) ->
-						updatedAttribute = {}
-						updatedAttribute[attributeName] = value
-						updatedAttributes.push updatedAttribute
-
-				controller.childELementDescriptions =
-					".childClassFoo":
-						modelAttribute: "modelPropertyFoo",
-					".childClassBar": {}
-				controller.render()
-
-				#if no model property is given, value changes are ignored
-				expect(childControls[1].listener).not.toBeDefined()
-
-				childControls[0].listener 'newFoo'
-				expect(updatedAttributes).toEqual [{'modelPropertyFoo': 'newFoo'}]
