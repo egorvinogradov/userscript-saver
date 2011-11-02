@@ -12,7 +12,7 @@ class SingleItemController extends Controller
 
 	_innerRedraw: ->
 		if @_model?
-			for selector, elementDescription of @childELementDescriptions
+			for selector, elementDescription of @getChildELementDescriptions()
 				do (selector, elementDescription) =>
 					if elementDescription?.modelAttribute?
 						control = @_childElementsBySelectors[selector]

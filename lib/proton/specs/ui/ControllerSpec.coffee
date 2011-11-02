@@ -3,9 +3,8 @@ describe 'Controller', ->
 	childControls = null
 	class mockChildControl
 		constructor: ->
-			@contents = {}
-		setDomAccessor: (domAccessorValue) -> @contents.domAccessor = domAccessorValue
-		getDomAccessor: -> @contents.domAccessor
+		setDomAccessor: (domAccessorValue) -> @domAccessor = domAccessorValue
+		getDomAccessor: -> @domAccessor
 		subscribeToEvent: (eventName, listener) ->
 			@['fire_' + eventName] = listener
 
@@ -39,9 +38,9 @@ describe 'Controller', ->
 
 			it 'points them to their DOM elements and stores them in @childElementsBySelectors', ->
 				controller.render()
-				expect(child.contents for child in childControls).toEqual [
-					{domAccessor: 'foundChild: .childClassFoo'},
-					{domAccessor: 'foundChild: .childClassBar'}]
+				expect(child.domAccessor for child in childControls).toEqual [
+					'foundChild: .childClassFoo',
+					'foundChild: .childClassBar']
 				expect(childElement for selector, childElement of controller._childElementsBySelectors).toEqual childControls
 
 			it 'subscribes to their different events with its methods', ->

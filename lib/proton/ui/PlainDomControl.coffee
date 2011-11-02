@@ -21,6 +21,7 @@ class PlainDomControl
 		@_domAccessor.change =>
 			listener @getValue(), @
 
+	#TODO: rename properly
 	subscribeToEvent: (eventName, handler) ->
 		@_domAccessor.bind eventName, handler
 

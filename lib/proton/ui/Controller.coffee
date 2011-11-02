@@ -22,7 +22,7 @@ class Controller
 		childElement = null
 		assert alias, 'alias should be valid'
 
-		for selector, description of @childELementDescriptions
+		for selector, description of @getChildELementDescriptions()
 			if description?.alias == alias
 				childElement = @_childElementsBySelectors[selector]
 
@@ -32,13 +32,17 @@ class Controller
 
 	_initChildElements: ->
 		@_childElementsBySelectors = {}
-		for selector, elementDescription of @childELementDescriptions
+		for selector, elementDescription of @getChildELementDescriptions()
 			do (selector, elementDescription) =>
 				elementDescription ?= {}
 
 				childControl = @_createChildControl selector
 				@_childElementsBySelectors[selector] = childControl
-				@_listenToControlEvents childControl, elementDescription.events
+
+				#TODO: DI
+				singleValueController = new SingleValueController childControl
+				singleValueController.init
+					events: elementDescription.events
 				@_additionalInitChildControl? childControl, elementDescription
 
 	_createChildControl: (selector) ->
@@ -46,15 +50,6 @@ class Controller
 		#TODO: использовать кастомный find вместо jquery.find - с проверкой существования
 		plainDomControl.setDomAccessor @_localDomAccessor.find selector
 		return plainDomControl
-
-	_listenToControlEvents: (control, events) ->
-		if events?
-			for eventName, eventHandler of events
-
-				#TODO: вынести в проверку схемы при рендере
-				assert typeof eventHandler == 'function', 'invalid handler for event #{eventName}'
-				do(eventName, eventHandler) =>
-					control.subscribeToEvent eventName, => eventHandler.apply @
 
 	#TODO: вынести в SingleItemController
 	_redraw: =>

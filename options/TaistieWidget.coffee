@@ -1,7 +1,7 @@
 class TaistieWidget extends SingleItemController
 	domClass: '.item'
 
-	childELementDescriptions:
+	getChildELementDescriptions: ->
 		".viewName":
 			modelAttribute: "name"
 		".inputName":
@@ -16,20 +16,23 @@ class TaistieWidget extends SingleItemController
 			modelAttribute: "css"
 		".view":
 			events:
-				dblclick: -> @toggleEditing on
+				dblclick: @startEditing
 		".edit": null
 		".saveTaistie":
 			events:
-				click: -> @toggleEditing off
+				click: => @toggleEditing off
 		".destroy":
 			events:
-				click: -> @getModel().destroy()
+				click: => @getModel().destroy()
 
 	customRedraw: ->
 		activeModifier = if not @getModel().active then 'addClass' else 'removeClass'
 		@getDomAccessor()[activeModifier] 'inactive'
+		
+	startEditing: =>
+		@toggleEditing on
 
-	toggleEditing: (editing) =>
+	toggleEditing: (editing) ->
 		activeDivSelector = if editing then '.edit' else '.view'
 		inactiveDivSelector = if editing then '.view' else '.edit'
 		activeDiv = @_childElementsBySelectors[activeDivSelector]
