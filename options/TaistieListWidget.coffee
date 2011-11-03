@@ -11,8 +11,6 @@ class TaistieListWidget extends Controller
 				submit: @create
 		"form input": null
 
-	#TODO: сделать обработку submit в PlainDomControl и включить это событие
-
 	onrendered: ->
 		Taistie.bind "create", @addOne
 		Taistie.bind "refresh", @addAll
