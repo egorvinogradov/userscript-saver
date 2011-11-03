@@ -12,7 +12,6 @@ class TaistieListWidget extends Controller
 		"form input": null
 
 	onrendered: ->
-		#TODO: insert Taistie as dependency
 		@_taistieRepository.bind "create", @addOne
 		@_taistieRepository.bind "refresh", @addAll
 		@_taistieRepository.fetch()
