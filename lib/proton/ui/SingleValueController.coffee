@@ -3,6 +3,7 @@ class SingleValueController
 		@_domElement = domElement
 
 	init: (options) ->
+		#TODO: проверять, что если модель задана, она имеет весь необходимый интерфейс
 		#TODO: РїСЂРѕРІРµСЂСЏС‚СЊ, С‡С‚Рѕ options Р·Р°РґР°РЅС‹, РЅРѕ РєРѕСЂСЂРµРєС‚РЅРѕ СЂР°Р±РѕС‚Р°РµС‚ Рё СЃ РїСѓСЃС‚С‹РјРё
 
 		for eventName, eventHandler of options.events

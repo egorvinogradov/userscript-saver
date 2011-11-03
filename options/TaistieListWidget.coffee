@@ -13,9 +13,9 @@ class TaistieListWidget extends Controller
 
 	onrendered: ->
 		#TODO: insert Taistie as dependency
-		Taistie.bind "create", @addOne
-		Taistie.bind "refresh", @addAll
-		Taistie.fetch()
+		@_taistieRepository.bind "create", @addOne
+		@_taistieRepository.bind "refresh", @addAll
+		@_taistieRepository.fetch()
 
 	addOne: (taistie) =>
 		view = @_newTaistieWidget()
@@ -26,19 +26,17 @@ class TaistieListWidget extends Controller
 		view.render()
 		@_childElementsBySelectors['.items'].getDomAccessor().append view.getDomAccessor()
 
-	#TODO: написать в Coffeescript: должен привязывать динамически, не разыменовывая конкретную функцию
-	#иначе глючит, если переопределять методы прототипа после создания объекта - методы созданного объекта не изменятся
 	addAll: =>
-		Taistie.each @addOne
+		@_taistieRepository.each @addOne
 
 	create: =>
 		#TODO: сделать отдельную модель - createdTaistie, проксирующую создание Taistie, и виджет формы
-		#TODO: сделать получение дочерних элементов через children
+		#TODO: get child elements by @children instead of @_childElementsBySelectors
 		nameInput = @_childElementsBySelectors['form input']
-		Taistie.create
+		@_taistieRepository.create
 			name: nameInput.getValue()
 			active: true
 		nameInput.setValue ""
 
 	clear: =>
-	    Taistie.destroyDone()
+		@_taistieRepository.destroyDone()
