@@ -11,4 +11,6 @@ class SingleItemController extends Controller
 			@_localDomAccessor.remove()
 
 	#TODO: create spec on it
-	onrendered: -> @_model.trigger 'update', @_model
+	onrendered: ->
+		@_rendered = true
+		@_model.trigger 'update', @_model

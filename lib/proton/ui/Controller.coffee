@@ -3,10 +3,8 @@ class Controller
 		@_rendered = false
 
 	render: ->
-		if not @_rendered
-			@_initDOM()
-			@_initChildElements()
-			@_rendered = true
+		@_initDOM()
+		@_initChildElements()
 
 		#TODO: вызывать из виджета - должен ли быть всегда в виджете?
 		#TODO: переименовать в onRendered
@@ -15,9 +13,7 @@ class Controller
 	_initDOM: ->
 		@_localDomAccessor = @_templateAccessor.getDomFromTemplateByClass @domClass
 
-	getDomAccessor: ->
-		assert @_rendered, 'should be rendered before using @getDomAccessor'
-		return @_localDomAccessor
+	getDomAccessor: -> @_localDomAccessor
 
 	getChildDomAccessorByAlias: (alias) ->
 		childElement = null
