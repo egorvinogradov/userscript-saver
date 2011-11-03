@@ -23,7 +23,9 @@ class PlainDomControl
 
 	#TODO: rename properly
 	subscribeToEvent: (eventName, handler) ->
-		@_domAccessor.bind eventName, handler
+		@_domAccessor.bind eventName, (e) ->
+			e.preventDefault()
+			handler()
 
 	class Checkbox
 		getValue: -> @_domAccessor.is ':checked'

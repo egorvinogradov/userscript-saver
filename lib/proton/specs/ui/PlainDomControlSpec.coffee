@@ -86,13 +86,24 @@ describe 'PlainDomControl', ->
 		expect(changedElement).toBe input
 
 	describe 'sets event listeners through subscribeToEvent', ->
-		it 'uses event names of jquery', ->
+		it 'uses event names of jquery and prevents default event behaviour', ->
 			control = new PlainDomControl
 			domAccessor = $ '<div></div>'
-			control.setDomAccessor domAccessor
+			boundEvents = []
+			spyOn(domAccessor, 'bind').andCallFake (eventName, handler) ->
+				boundEvent = {}
+				boundEvent[eventName] = handler
+				boundEvents.push boundEvent
 
 			clicked = false
+			control.setDomAccessor domAccessor
 			control.subscribeToEvent 'click', -> clicked = true
+			expect(boundEvents.length).toEqual 1
+			expect(boundEvents[0].click?).toBeTruthy()
 
-			domAccessor.click()
+			defaultPrevented = false
+
+			boundEvents[0].click
+				preventDefault: -> defaultPrevented = true
 			expect(clicked).toBeTruthy()
+			expect(defaultPrevented).toBeTruthy()
