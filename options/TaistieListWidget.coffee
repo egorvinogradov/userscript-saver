@@ -3,14 +3,15 @@ class TaistieListWidget extends Controller
 	getChildELementDescriptions: ->
 		".clear":
 			events:
-				click: => @clear
+				click: @clear
 		".items":     null
 		".clear":     null
+		"form":
+			events:
+				submit: @create
 		"form input": null
 
 	#TODO: сделать обработку submit в PlainDomControl и включить это событие
-	events:
-		"submit form":   "create"
 
 	onrendered: ->
 		Taistie.bind "create", @addOne
@@ -31,12 +32,14 @@ class TaistieListWidget extends Controller
 	addAll: =>
 		Taistie.each @addOne
 
-	create: (e) ->
-		e.preventDefault()
+	create: =>
+		#TODO: сделать отдельную модель - createdTaistie, проксирующую создание Taistie, и виджет формы
+		#TODO: сделать получение дочерних элементов через children
+		nameInput = @_childElementsBySelectors['form input']
 		Taistie.create
-			name: @input.val()
+			name: nameInput.getValue()
 			active: true
-		@input.val ""
+		nameInput.setValue ""
 
-	clear: ->
+	clear: =>
 	    Taistie.destroyDone()
