@@ -7,12 +7,17 @@ $ ->
 				_newPlainDomControl: 'plainDomControlFactoryFunction'
 		plainDomControlFactoryFunction:
 			factoryFunction: PlainDomControl
+		taistieListWidget:
+			single: TaistieListWidget
+			deps:
+				_templateAccessor: 'taistieListTemplateAccessor'
+				_newTaistieWidget: 'taistieWidgetFactoryFunction'
+				_newPlainDomControl: 'plainDomControlFactoryFunction'
+		taistieListTemplateAccessor:
+			#TODO: сделать класс для templateAccessor
+			ref: getDomFromTemplateByClass: -> $("#tasks")
 
-	#TODO: DI; убрать наследование от Controller
-	taistieListWidget = new TaistieListWidget
-	taistieListWidget._templateAccessor =
-		getDomFromTemplateByClass: -> $("#tasks")
-	taistieListWidget._newTaistieWidget = iocContainer.getElement 'taistieWidgetFactoryFunction'
-	taistieListWidget._newPlainDomControl = iocContainer.getElement 'plainDomControlFactoryFunction'
+	#TODO: убрать наследование от Controller
+	taistieListWidget = iocContainer.getElement 'taistieListWidget'
 	taistieListWidget.render()
-	window.taistieListWidget = taistieListWidget
+

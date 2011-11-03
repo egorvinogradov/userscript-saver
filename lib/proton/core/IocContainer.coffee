@@ -1,7 +1,9 @@
 class IocContainer
+	#TODO: заменить на constructor injection
 	constructor: -> @_createdElements = {}
 	
 	setSchema: (schema) ->
+		#TODO: проверять, что в каждом элементе схемы нет ничего лишнего
 		@_schema = schema
 	
 	getElement: (elementName) ->
@@ -31,7 +33,7 @@ class IocContainer
 		assert(rawElementData, 'Element \'' + elementName + '\' not found in dependency schema')
 
 		elementDescriptor =
-			deps: rawElementData.deps,
+			deps: rawElementData.deps
 			name: elementName
 
 		elementDescriptor.type = @_getElementType rawElementData
