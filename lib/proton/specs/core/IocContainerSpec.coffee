@@ -2,63 +2,69 @@ describe 'IocContainer', ->
 	iocContainer = null
 	beforeEach ->
 		iocContainer = new IocContainer
-		
-	it 'returns the same new object if its constructor is given in \'single\'', ->
-		class Foo
-			constructor: -> @hello = 'Foo!'
-		iocContainer.setSchema
-			fooInstance:
-				single: Foo
 
-		foo1 = iocContainer.getElement 'fooInstance'
-		expect(foo1.hello).toEqual 'Foo!'
-		expect(iocContainer.getElement 'fooInstance').toBe foo1
+	describe 'schema element contents meaning:', ->
+		describe 'single', ->
+			it 'returns the only instance of given class', ->
+				class Foo
+					constructor: -> @hello = 'Foo!'
+				iocContainer.setSchema
+					fooInstance:
+						single: Foo
 
-	it 'returns function to create new objects if their constructor is given in \'factoryFunction\'', ->
-		class Foo
-			getClassName: -> return 'foo'
+				foo1 = iocContainer.getElement 'fooInstance'
+				expect(foo1.hello).toEqual 'Foo!'
+				expect(iocContainer.getElement 'fooInstance').toBe foo1
 
-		iocContainer.setSchema
-			fooFactory:
-				factoryFunction: Foo
+		describe 'factoryFunction', ->
+			it 'returns function to create new objects', ->
+				class Foo
+					getClassName: -> return 'foo'
 
-		fooFactory = iocContainer.getElement 'fooFactory'
-		foo1 = fooFactory()
-		foo2 = fooFactory()
+				iocContainer.setSchema
+					fooFactory:
+						factoryFunction: Foo
 
-		expect(foo1.getClassName()).toEqual 'foo'
-		expect(foo2).not.toBe foo1
+				fooFactory = iocContainer.getElement 'fooFactory'
+				foo1 = fooFactory()
+				foo2 = fooFactory()
 
-	it '\'factoryFunction\' accepts only calls without args', ->
-		class Foo
-		iocContainer.setSchema
-			fooFactory:
-				factoryFunction: Foo
-		fooFactory = iocContainer.getElement 'fooFactory'
-		expect(-> fooFactory 'some argument').toThrow new AssertException "factoryFunction 'fooFactory' should be called without arguments"
+				expect(foo1.getClassName()).toEqual 'foo'
+				expect(foo2).not.toBe foo1
 
-	it 'gets existing object if its reference given in \'ref\'', ->
-		foo = name: 'fooElement'
-		iocContainer.setSchema
-			fooInstance:
-				ref: foo
+			it 'returned function accepts only calls without args', ->
+				class Foo
+				iocContainer.setSchema
+					fooFactory:
+						factoryFunction: Foo
+				fooFactory = iocContainer.getElement 'fooFactory'
+				expect(-> fooFactory 'some argument').toThrow new AssertException "factoryFunction 'fooFactory' should be called without arguments"
 
-		expect(iocContainer.getElement 'fooInstance').toBe foo
+		describe 'ref', ->
+			it 'gets existing object by direct reference', ->
+				foo = name: 'fooElement'
+				iocContainer.setSchema
+					fooInstance:
+						ref: foo
 
-	it 'checks that schema is set and contains element', ->
-		getFoo = -> iocContainer.getElement 'fooInstance'
-		expect(getFoo).toThrow 'Dependency schema is not set'
-		iocContainer.setSchema {}
-		expect(getFoo).toThrow 'Element \'fooInstance\' not found in dependency schema'
+				expect(iocContainer.getElement 'fooInstance').toBe foo
+		describe 'deps', ->
+			it 'sets element dependencies with other schema elements using their names in schema', ->
+				iocContainer.setSchema
+					fooInstance:
+						single: ->
+						deps:
+							'_barProperty': 'barInstance'
+					barInstance:
+						single: ->
 
-	it 'sets element dependencies', ->
-		iocContainer.setSchema
-			fooInstance:
-				single: ->
-				deps:
-					'_barProperty': 'barInstance'
-			barInstance:
-				single: ->
+				fooInstance = iocContainer.getElement 'fooInstance'
+				expect(fooInstance._barProperty).toBe iocContainer.getElement('barInstance')
 
-		fooInstance = iocContainer.getElement 'fooInstance'
-		expect(fooInstance._barProperty).toBe iocContainer.getElement('barInstance')
+	describe 'getElement: gets element by its name in schena', ->
+		it 'checks that schema is set and contains element', ->
+			getFoo = -> iocContainer.getElement 'fooInstance'
+			expect(getFoo).toThrow 'Dependency schema is not set'
+			iocContainer.setSchema {}
+			expect(getFoo).toThrow 'Element \'fooInstance\' not found in dependency schema'
+

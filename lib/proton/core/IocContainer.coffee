@@ -30,7 +30,7 @@ class IocContainer
 	_getElementDescriptor: (elementName) ->
 		assert(@_schema?, 'Dependency schema is not set')
 		rawElementData = @_schema[elementName]
-		assert(rawElementData, 'Element \'' + elementName + '\' not found in dependency schema')
+		assert(rawElementData?, 'Element \'' + elementName + '\' not found in dependency schema')
 
 		elementDescriptor =
 			deps: rawElementData.deps
