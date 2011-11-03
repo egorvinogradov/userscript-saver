@@ -36,7 +36,7 @@ describe 'Controller', ->
 						find: (selectorValue) -> 'foundChild: ' + selectorValue
 
 				controller.getChildELementDescriptions = ->
-					".childClassFoo": null,
+					".childClassFoo": null
 					".childClassBar": null
 
 			it 'points them to their DOM elements and stores them in @childElementsBySelectors', ->
