@@ -3,7 +3,6 @@ class SingleValueController
 		@_domElement = domElement
 
 	init: (options) ->
-		console.log options
 		#TODO: РїСЂРѕРІРµСЂСЏС‚СЊ, С‡С‚Рѕ options Р·Р°РґР°РЅС‹, РЅРѕ РєРѕСЂСЂРµРєС‚РЅРѕ СЂР°Р±РѕС‚Р°РµС‚ Рё СЃ РїСѓСЃС‚С‹РјРё
 
 		for eventName, eventHandler of options.events

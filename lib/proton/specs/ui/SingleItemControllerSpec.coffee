@@ -24,8 +24,9 @@ describe 'SingleItemController', ->
 		mockModel =
 			bind: (eventName, eventHandler) ->
 				this['event_' + eventName] = eventHandler
-			fire: (eventName) ->
+			trigger: (eventName) ->
 				this['event_' + eventName]()
+			event_update: -> @updated = true
 		childControls = []
 
 	describe 'accepts model through @setModel', ->
@@ -40,7 +41,7 @@ describe 'SingleItemController', ->
 			controller.setModel mockModel
 
 			#if not rendered yet, does nothing
-			mockModel.fire 'destroy'
+			mockModel.trigger 'destroy'
 
 			domElementRemoved = false
 			controller._templateAccessor =
@@ -48,20 +49,8 @@ describe 'SingleItemController', ->
 					remove: -> domElementRemoved = true
 
 			controller.render()
-			mockModel.fire 'destroy'
+			mockModel.trigger 'destroy'
 			expect(domElementRemoved).toBeTruthy()
-
-		describe 'when model changes', ->
-			it 'if has @_customRedraw, calls it', ->
-				controller.setModel mockModel
-
-				#if there is no customRedraw, does nothing
-				mockModel.fire 'update'
-
-				customRedrawCalled = false
-				controller.customRedraw = -> customRedrawCalled = true
-				mockModel.fire 'update'
-				expect(customRedrawCalled).toBeTruthy()
 
 	it 'gives model by getModel()', ->
 		controller.setModel mockModel

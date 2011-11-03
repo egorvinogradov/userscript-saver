@@ -9,6 +9,7 @@ class Controller
 			@_rendered = true
 
 		#TODO: вызывать из виджета - должен ли быть всегда в виджете?
+		#TODO: переименовать в onRendered
 		@onrendered?()
 
 	_initDOM: ->
