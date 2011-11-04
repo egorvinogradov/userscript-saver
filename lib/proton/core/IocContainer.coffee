@@ -15,8 +15,13 @@ class IocContainer
 			assert condition, "invalid element '#{elementName}': " + message
 
 		assertElement elementDescription?, 'contents not set'
+
 		elementTypes = (elementPart for elementPart of elementDescription when elementPart in @_allowedTypes)
+
+		assertElement elementTypes.length > 0, "has no type"
 		assertElement elementTypes.length == 1, "has several types: #{elementTypes.join ', '}"
+
+
 
 	getElement: (elementName) ->
 		elementDescriptor = @_getElementDescriptor elementName

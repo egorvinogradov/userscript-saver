@@ -80,15 +80,7 @@ describe 'IocContainer', ->
 						single: ->
 						factoryFunction: ->
 			checkInvalidSchema 'should have contents', 'contents not set', foo: null
-#				[
-#					'should have contents',
-#					'invalid element \'foo\': contents not set',
-#					foo: null
-#				]
-#
-#			]
-#			it , ->
-#				checkInvalidSchema 'invalid element \'foo\': has several types: single, factoryFunction'
+			checkInvalidSchema 'type not given', 'has no type', foo: {}
 
 	describe 'getElement: gets element by its name in schema', ->
 		it 'checks that schema is set and contains element', ->
