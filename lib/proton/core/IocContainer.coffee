@@ -23,6 +23,12 @@ class IocContainer
 		assertElement elementTypes.length > 0, "has no type"
 		assertElement elementTypes.length == 1, "has several types: #{elementTypes.join ', '}"
 
+		elementType = elementTypes[0]
+		creator = elementDescription[elementType]
+		assertElement creator?, "part '#{elementType}' should have value"
+
+		if elementType != 'ref'
+			assertElement typeof creator == 'function', "part '#{elementType}' should be function"
 		allAllowedParts = @_allowedTypes.concat 'deps'
 		unknownParts = (part for part of elementDescription when part not in allAllowedParts)
 		assertElement unknownParts.length == 0, "unknown description parts: #{unknownParts.join ', '}. allowed parts: #{allAllowedParts.join ', '}"
