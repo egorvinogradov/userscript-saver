@@ -61,10 +61,19 @@ describe 'IocContainer', ->
 				fooInstance = iocContainer.getElement 'fooInstance'
 				expect(fooInstance._barProperty).toBe iocContainer.getElement('barInstance')
 
-	describe 'getElement: gets element by its name in schena', ->
+	describe 'setSchema: sets dependency schema to use', ->
+		it 'checks that schema is not empty', ->
+			invalidSchemaException = new AssertException "Dependency schema should given and non-empty"
+			for invalidSchema in [null, undefined, {}]
+				do (invalidSchema) ->
+					expect(-> iocContainer.setSchema invalidSchema).toThrow invalidSchemaException
+
+	describe 'getElement: gets element by its name in schema', ->
 		it 'checks that schema is set and contains element', ->
-			getFoo = -> iocContainer.getElement 'fooInstance'
+			getFoo = -> iocContainer.getElement 'foo'
 			expect(getFoo).toThrow 'Dependency schema is not set'
-			iocContainer.setSchema {}
-			expect(getFoo).toThrow 'Element \'fooInstance\' not found in dependency schema'
+			iocContainer.setSchema
+				bar:
+					single: ->
+			expect(getFoo).toThrow 'Element \'foo\' not found in dependency schema'
 

@@ -4,6 +4,7 @@ class IocContainer
 	
 	setSchema: (schema) ->
 		#TODO: проверять, что в каждом элементе схемы нет ничего лишнего
+		assert(schema? and (element for element of schema).length > 0, 'Dependency schema should given and non-empty')
 		@_schema = schema
 	
 	getElement: (elementName) ->
