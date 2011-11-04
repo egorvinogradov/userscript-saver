@@ -4,9 +4,20 @@ class IocContainer
 	
 	setSchema: (schema) ->
 		#TODO: проверять, что в каждом элементе схемы нет ничего лишнего
-		assert(schema? and (element for element of schema).length > 0, 'Dependency schema should given and non-empty')
+		assert schema?, 'Dependency schema should be given'
+		assert (element for element of schema).length > 0, 'Dependency schema should be non-empty'
+
+		@_checkSchemaElement elementName, elementDescription for elementName, elementDescription of schema
 		@_schema = schema
-	
+
+	_checkSchemaElement: (elementName, elementDescription) ->
+		assertElement = (condition, message) ->
+			assert condition, "invalid element '#{elementName}': " + message
+
+		assertElement elementDescription?, 'contents not set'
+		elementTypes = (elementPart for elementPart of elementDescription when elementPart in @_allowedTypes)
+		assertElement elementTypes.length == 1, "has several types: #{elementTypes.join ', '}"
+
 	getElement: (elementName) ->
 		elementDescriptor = @_getElementDescriptor elementName
 		isCached = @_isCachedElement elementDescriptor

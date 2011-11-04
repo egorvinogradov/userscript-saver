@@ -66,8 +66,29 @@ describe 'IocContainer', ->
 		it 'checks that schema is not empty', ->
 			for invalidSchema in [null, undefined, {}]
 				do (invalidSchema) ->
-					expectAssertFail 'Dependency schema should given and non-empty', ->
+					assertMessage = if not invalidSchema? then 'Dependency schema should be given' else 'Dependency schema should be non-empty'
+					expectAssertFail assertMessage, ->
 						iocContainer.setSchema invalidSchema
+
+		describe 'it checks each element in schema', ->
+			checkInvalidSchema = (specDescription, assertMessage, invalidSchema) ->
+				it specDescription, ->
+					completeMessage = 'invalid element \'foo\': ' + assertMessage
+					expectAssertFail completeMessage, -> iocContainer.setSchema invalidSchema
+			checkInvalidSchema 'should have only one type', 'has several types: single, factoryFunction',
+					foo:
+						single: ->
+						factoryFunction: ->
+			checkInvalidSchema 'should have contents', 'contents not set', foo: null
+#				[
+#					'should have contents',
+#					'invalid element \'foo\': contents not set',
+#					foo: null
+#				]
+#
+#			]
+#			it , ->
+#				checkInvalidSchema 'invalid element \'foo\': has several types: single, factoryFunction'
 
 	describe 'getElement: gets element by its name in schema', ->
 		it 'checks that schema is set and contains element', ->
