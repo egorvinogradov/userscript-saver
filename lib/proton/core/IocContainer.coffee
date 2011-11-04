@@ -28,9 +28,15 @@ class IocContainer
 
 		if elementType != 'ref'
 			assertElement typeof creator == 'function', "part '#{elementType}' should be function"
+
 		allAllowedParts = @_allowedTypes.concat 'deps'
 		unknownParts = (part for part of elementDescription when part not in allAllowedParts)
 		assertElement unknownParts.length == 0, "unknown description parts: #{unknownParts.join ', '}. allowed parts: #{allAllowedParts.join ', '}"
+
+		if 'deps' of elementDescription
+			deps = elementDescription.deps
+			typeofDeps = if deps == null then 'null' else typeof elementDescription.deps
+			assertElement typeofDeps == 'object' and (dep for dep of deps).length > 0, "deps should be non-empty dictionary, #{typeofDeps} given"
 
 	getElement: (elementName) ->
 		elementDescriptor = @_getElementDescriptor elementName

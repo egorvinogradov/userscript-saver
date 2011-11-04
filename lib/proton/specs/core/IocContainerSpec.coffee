@@ -70,16 +70,20 @@ describe 'IocContainer', ->
 						iocContainer.setSchema invalidSchema
 
 		describe 'it checks each element in schema', ->
-			checkInvalidSchema = (specDescription, assertMessage, invalidSchema) ->
-				it specDescription, ->
-					completeMessage = 'invalid element \'foo\': ' + assertMessage
-					expectAssertFail completeMessage, -> iocContainer.setSchema invalidSchema
-			checkInvalidSchema 'should have only one type', 'has several types: single, factoryFunction',
-					foo:
-						single: ->
-						factoryFunction: ->
-			checkInvalidSchema 'should have contents', 'contents not set', foo: null
-			checkInvalidSchema 'type should be given', 'has no type', foo: {}
+
+			assertInvalidSchema = (assertMessage, invalidSchema) ->
+				completeMessage = 'invalid element \'foo\': ' + assertMessage
+				expectAssertFail completeMessage, -> iocContainer.setSchema invalidSchema
+
+			itAssertsSchema = (specDescription, assertMessage, invalidSchema) ->
+				it specDescription, -> assertInvalidSchema assertMessage, invalidSchema
+
+			itAssertsSchema 'should have only one type', 'has several types: single, factoryFunction',
+				foo:
+					single: ->
+					factoryFunction: ->
+			itAssertsSchema 'should have contents', 'contents not set', foo: null
+			itAssertsSchema 'type should be given', 'has no type', foo: {}
 
 			allAllowedTypes = ['single', 'ref', 'factoryFunction']
 			for creator in allAllowedTypes
@@ -87,20 +91,28 @@ describe 'IocContainer', ->
 					nullDescription = foo: {}
 
 					nullDescription.foo[creator] = null
-					checkInvalidSchema "part '#{creator}' should have value", "part '#{creator}' should have value", nullDescription
+					itAssertsSchema "part '#{creator}' should have value", "part '#{creator}' should have value", nullDescription
 
 					if creator != 'ref'
 						nonFunctionDescription = foo: {}
 						nonFunctionDescription.foo[creator] = {}
-						checkInvalidSchema "part '#{creator}' should be function", "part '#{creator}' should be function", nonFunctionDescription
-
+						itAssertsSchema "part '#{creator}' should be function", "part '#{creator}' should be function", nonFunctionDescription
 
 			allowedParts = "allowed parts: #{allAllowedTypes.join ', '}, deps"
-			checkInvalidSchema 'should have only allowed parts', "unknown description parts: bar, baz. " + allowedParts,
+			itAssertsSchema 'should have only allowed parts', "unknown description parts: bar, baz. " + allowedParts,
 				foo:
 					single: ->
 					bar: null
 					baz: {}
+
+			it 'deps should be non-empty dictionary', ->
+				for invalidDeps in [undefined, null, 'invalid', {}]
+					do (invalidDeps) ->
+						typeofDeps = if invalidDeps == null then 'null' else typeof invalidDeps
+						assertInvalidSchema "deps should be non-empty dictionary, #{typeofDeps} given",
+							foo:
+								single: ->
+								deps: invalidDeps
 
 	describe 'getElement: gets element by its name in schema', ->
 		it 'checks that schema is set and contains element', ->
