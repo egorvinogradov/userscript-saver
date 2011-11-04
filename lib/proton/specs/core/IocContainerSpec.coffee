@@ -38,7 +38,8 @@ describe 'IocContainer', ->
 					fooFactory:
 						factoryFunction: Foo
 				fooFactory = iocContainer.getElement 'fooFactory'
-				expect(-> fooFactory 'some argument').toThrow new AssertException "factoryFunction 'fooFactory' should be called without arguments"
+				expectAssertFail "factoryFunction 'fooFactory' should be called without arguments", ->
+					fooFactory 'some argument'
 
 		describe 'ref', ->
 			it 'gets existing object by direct reference', ->
@@ -63,17 +64,17 @@ describe 'IocContainer', ->
 
 	describe 'setSchema: sets dependency schema to use', ->
 		it 'checks that schema is not empty', ->
-			invalidSchemaException = new AssertException "Dependency schema should given and non-empty"
 			for invalidSchema in [null, undefined, {}]
 				do (invalidSchema) ->
-					expect(-> iocContainer.setSchema invalidSchema).toThrow invalidSchemaException
+					expectAssertFail 'Dependency schema should given and non-empty', ->
+						iocContainer.setSchema invalidSchema
 
 	describe 'getElement: gets element by its name in schema', ->
 		it 'checks that schema is set and contains element', ->
 			getFoo = -> iocContainer.getElement 'foo'
-			expect(getFoo).toThrow 'Dependency schema is not set'
+			expectAssertFail 'Dependency schema is not set', getFoo
 			iocContainer.setSchema
 				bar:
 					single: ->
-			expect(getFoo).toThrow 'Element \'foo\' not found in dependency schema'
+			expectAssertFail 'Element \'foo\' not found in dependency schema', getFoo
 
