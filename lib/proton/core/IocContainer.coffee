@@ -3,7 +3,6 @@ class IocContainer
 	constructor: -> @_createdElements = {}
 	
 	setSchema: (schema) ->
-		#TODO: проверять, что правильно указан создатель элемента
 		#TODO: задано содержимое зависимостей
 		#TODO: проверять, что существуют все зависимости
 		assert schema?, 'Dependency schema should be given'

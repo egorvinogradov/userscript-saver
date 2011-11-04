@@ -81,20 +81,21 @@ describe 'IocContainer', ->
 			checkInvalidSchema 'should have contents', 'contents not set', foo: null
 			checkInvalidSchema 'type should be given', 'has no type', foo: {}
 
-			functionalCreators = ['single', 'factoryFunction']
-			for creator in functionalCreators
+			allAllowedTypes = ['single', 'ref', 'factoryFunction']
+			for creator in allAllowedTypes
 				do (creator) ->
 					nullDescription = foo: {}
 
 					nullDescription.foo[creator] = null
 					checkInvalidSchema "part '#{creator}' should have value", "part '#{creator}' should have value", nullDescription
 
-					nonFunctionDescription = foo: {}
-					nonFunctionDescription.foo[creator] = {}
-					checkInvalidSchema "part '#{creator}' should be function", "part '#{creator}' should be function", nonFunctionDescription
+					if creator != 'ref'
+						nonFunctionDescription = foo: {}
+						nonFunctionDescription.foo[creator] = {}
+						checkInvalidSchema "part '#{creator}' should be function", "part '#{creator}' should be function", nonFunctionDescription
 
 
-			allowedParts = 'allowed parts: single, ref, factoryFunction, deps'
+			allowedParts = "allowed parts: #{allAllowedTypes.join ', '}, deps"
 			checkInvalidSchema 'should have only allowed parts', "unknown description parts: bar, baz. " + allowedParts,
 				foo:
 					single: ->
