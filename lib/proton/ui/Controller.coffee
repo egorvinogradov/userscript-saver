@@ -36,8 +36,8 @@ class Controller
 				childControl = @_createChildControl selector
 				@_childElementsBySelectors[selector] = childControl
 
-				#TODO: DI
-				#TODO: проверять, что дочерним элементам полностью передаются опции
+				#TODO: DI (вместо _newPlainDomControl возвращать готовый объект)
+				#TODO: спек: проверять, что дочерним элементам полностью передаются опции
 				singleValueController = new SingleValueController childControl
 				singleValueController.init elementDescription
 
