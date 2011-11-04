@@ -33,10 +33,9 @@ describe 'IocContainer', ->
 				expect(foo2).not.toBe foo1
 
 			it 'returned function accepts only calls without args', ->
-				class Foo
 				iocContainer.setSchema
 					fooFactory:
-						factoryFunction: Foo
+						factoryFunction: ->
 				fooFactory = iocContainer.getElement 'fooFactory'
 				expectAssertFail "factoryFunction 'fooFactory' should be called without arguments", ->
 					fooFactory 'some argument'
@@ -81,6 +80,12 @@ describe 'IocContainer', ->
 						factoryFunction: ->
 			checkInvalidSchema 'should have contents', 'contents not set', foo: null
 			checkInvalidSchema 'type not given', 'has no type', foo: {}
+			allowedParts = 'allowed parts: single, ref, factoryFunction, deps'
+			checkInvalidSchema 'should have only allowed parts', "unknown description parts: bar, baz. " + allowedParts,
+				foo:
+					single: ->
+					bar: null
+					baz: {}
 
 	describe 'getElement: gets element by its name in schema', ->
 		it 'checks that schema is set and contains element', ->

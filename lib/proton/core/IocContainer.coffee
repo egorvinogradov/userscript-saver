@@ -3,7 +3,9 @@ class IocContainer
 	constructor: -> @_createdElements = {}
 	
 	setSchema: (schema) ->
-		#TODO: проверять, что в каждом элементе схемы нет ничего лишнего
+		#TODO: проверять, что правильно указан создатель элемента
+		#TODO: задано содержимое зависимостей
+		#TODO: проверять, что существуют все зависимости
 		assert schema?, 'Dependency schema should be given'
 		assert (element for element of schema).length > 0, 'Dependency schema should be non-empty'
 
@@ -21,7 +23,9 @@ class IocContainer
 		assertElement elementTypes.length > 0, "has no type"
 		assertElement elementTypes.length == 1, "has several types: #{elementTypes.join ', '}"
 
-
+		allAllowedParts = @_allowedTypes.concat 'deps'
+		unknownParts = (part for part of elementDescription when part not in allAllowedParts)
+		assertElement unknownParts.length == 0, "unknown description parts: #{unknownParts.join ', '}. allowed parts: #{allAllowedParts.join ', '}"
 
 	getElement: (elementName) ->
 		elementDescriptor = @_getElementDescriptor elementName
@@ -61,7 +65,6 @@ class IocContainer
 		return elementDescriptor
 
 	_createElement: (elementDescriptor) ->
-		#TODO: проверять, что задан только один вариант создания элемента (при начальной установке схемы)
 		type = elementDescriptor.type
 		source = elementDescriptor.source
 
