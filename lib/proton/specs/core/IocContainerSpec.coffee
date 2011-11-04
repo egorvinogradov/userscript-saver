@@ -114,6 +114,20 @@ describe 'IocContainer', ->
 								single: ->
 								deps: invalidDeps
 
+			it 'each dependency should be a string name of other element in schema', ->
+				for invalidDep in [null, {}]
+					do (invalidDep) ->
+						assertInvalidSchema "dependency 'barProperty' should be a string",
+							foo:
+								single: ->
+								deps:
+									barProperty: invalidDep
+				assertInvalidSchema "dependency 'barProperty': schema doesn't have element 'bar'",
+					foo:
+						single: ->
+						deps:
+							barProperty: 'bar'
+
 	describe 'getElement: gets element by its name in schema', ->
 		it 'checks that schema is set and contains element', ->
 			getFoo = -> iocContainer.getElement 'foo'

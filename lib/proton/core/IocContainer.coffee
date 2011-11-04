@@ -3,15 +3,14 @@ class IocContainer
 	constructor: -> @_createdElements = {}
 	
 	setSchema: (schema) ->
-		#TODO: задано содержимое зависимостей
-		#TODO: проверять, что существуют все зависимости
 		assert schema?, 'Dependency schema should be given'
 		assert (element for element of schema).length > 0, 'Dependency schema should be non-empty'
 
-		@_checkSchemaElement elementName, elementDescription for elementName, elementDescription of schema
+		allElementNames = (elName for elName of schema)
+		@_checkSchemaElement elementName, elementDescription, allElementNames for elementName, elementDescription of schema
 		@_schema = schema
 
-	_checkSchemaElement: (elementName, elementDescription) ->
+	_checkSchemaElement: (elementName, elementDescription, allElementNames) ->
 		assertElement = (condition, message) ->
 			assert condition, "invalid element '#{elementName}': " + message
 
@@ -37,6 +36,10 @@ class IocContainer
 			deps = elementDescription.deps
 			typeofDeps = if deps == null then 'null' else typeof elementDescription.deps
 			assertElement typeofDeps == 'object' and (dep for dep of deps).length > 0, "deps should be non-empty dictionary, #{typeofDeps} given"
+
+			for depName, depValue of deps
+				assertElement typeof depValue == 'string', "dependency '#{depName}' should be a string"
+				assertElement depValue in allElementNames, "dependency '#{depName}': schema doesn't have element '#{depValue}'"
 
 	getElement: (elementName) ->
 		elementDescriptor = @_getElementDescriptor elementName
@@ -94,8 +97,8 @@ class IocContainer
 
 	_addDependencies: (element, dependencies) ->
 		if dependencies
-			for dependencyName, dependency of dependencies
-				element[dependencyName] = @getElement dependency
+			for depName, dependency of dependencies
+				element[depName] = @getElement dependency
 
 	_createFromConstructor: (ctor) ->
 		return new ctor
