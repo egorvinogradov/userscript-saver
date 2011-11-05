@@ -55,6 +55,8 @@ describe "TaistieCombiner", ->
 					fittingActiveTaistie2
 				]
 
+		expect(taistieCombiner.getAllCssAndJsForUrl 'other.com').toEqual null
+
 		expect(taistieCombiner.getAllCssAndJsForUrl 'fitting.com').toEqual
 			css: fittingActiveTaistie1.getCss() + '\n\n' + fittingActiveTaistie2.getCss()
 			js: fittingActiveTaistie1.getJs() + '\n\n' + fittingActiveTaistie2.getJs()

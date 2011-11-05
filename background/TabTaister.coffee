@@ -16,8 +16,9 @@ class TabTaister
 
 	_taistTab: (tabUrl, tabDescriptor) ->
 		allTaistiesCssAndJs = @_dTaistieCombiner.getAllCssAndJsForUrl tabUrl
+		if not allTaistiesCssAndJs?
+			return
 
-		#TODO: maybe check and continue only if have any taistie
 		insertedJs = @_dTaistieWrapper.wrapTaistiesCodeToJs allTaistiesCssAndJs
 
 		storage = new LocalStorage
