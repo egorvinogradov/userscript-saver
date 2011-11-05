@@ -1,4 +1,5 @@
 class TabTaister
+	#TODO: complete specs
 	constructor: ->
 		@_tabApi = null
 		@_dTaistieCombiner = null
