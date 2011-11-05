@@ -1,6 +1,6 @@
 class Taistie
 	setTaistieData: (taistieData) ->
-		#TODO: вынести в контракты + написать спеки
+		#TODO: написать спеки
 		assert taistieData?, 'taistie data should be given'
 		assert taistieData.urlRegexp?, 'url regexp shoul be given'
 
