@@ -1,19 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html manifest="cache.manifest">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Todos</title>
+  
+  <link rel="stylesheet" href="css/application.css" type="text/css" charset="utf-8">
 
-	<script type="text/javascript" src="../lib/jquery.js"></script>
-	<script type="text/javascript" src="../lib/proton/core/Assert.js"></script>
-	<script type="text/javascript" src="../lib/proton/core/IocContainer.js"></script>
-    <script type="text/javascript" src="../core/TabApiChrome.js"></script>
-	<script type="text/javascript" src="../lib/proton/storage/LocalStorage.js"></script>
+  <script src="../lib/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../lib/jquery.tmpl.js" type="text/javascript" charset="utf-8"></script>
 
-    <script type="text/javascript" src="PopupOpenOptionsWidget.js"></script>
-	<script type="text/javascript" src="StartPopup.js"></script>
+  <script src="../lib/spine/lib/spine.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../lib/spine/lib/local.js" type="text/javascript" charset="utf-8"></script>
+  <script src="application.js" type="text/javascript" charset="utf-8"></script>
+  
+  <script type="text/x-jquery-tmpl" id="taskTemplate">
+    <div class="item {{if done}}done{{/if}}">
+      <div class="view" title="Double click to edit...">
+        <input type="checkbox" {{if done}}checked="checked"{{/if}}> 
+        <span>${name}</span> <a class="destroy"></a>
+      </div>
+      
+      <div class="edit">
+        <input type="text" value="${name}">
+      </div>
+    </div>
+  </script>
 </head>
-<body style="width: 400px; height: 60px;">
-<h4>Choose taisties:</h4>
-<div class="popupWidget"></div>
+<body>
+  <div id="views">
+    <div id="tasks">
+      <h1>Todos</h1>
+      
+      <form>
+        <input type="text" placeholder="What needs to be done?">
+      </form>
+      
+      <div class="items"></div>
+      
+      <footer>
+        <a class="clear">Clear completed</a>
+        <div class="count"><span class="countVal"></span> left</div>
+      </footer>
+    </div>
+  </div>
 </body>
 </html>
