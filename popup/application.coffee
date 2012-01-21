@@ -1,7 +1,7 @@
 $ = jQuery
 
-class Task extends Spine.Model
-  @configure "Task", "name", "done"
+class Taistie extends Spine.Model
+  @configure "Taistie", "name", "done"
   
   @extend Spine.Model.Local
 
@@ -65,31 +65,31 @@ class TaskApp extends Spine.Controller
   
   constructor: ->
     super
-    Task.bind("create",  @addOne)
-    Task.bind("refresh", @addAll)
-    Task.bind("refresh change", @renderCount)
-    Task.fetch()
+    Taistie.bind("create",  @addOne)
+    Taistie.bind("refresh", @addAll)
+    Taistie.bind("refresh change", @renderCount)
+    Taistie.fetch()
   
   addOne: (task) =>
     view = new Tasks(item: task)
     @items.append(view.render().el)
   
   addAll: =>
-    Task.each(@addOne)
+    Taistie.each(@addOne)
 
   create: (e) ->
     e.preventDefault()
-    Task.create(name: @input.val())
+    Taistie.create(name: @input.val())
     @input.val("")
   
   clear: ->
-    Task.destroyDone()
+    Taistie.destroyDone()
   
   renderCount: =>
-    active = Task.active().length
+    active = Taistie.active().length
     @count.text(active)
     
-    inactive = Task.done().length
+    inactive = Taistie.done().length
     if inactive 
       @clear.show()
     else
