@@ -14,7 +14,7 @@ class Taistie extends Spine.Model
   @destroyDone: ->
     rec.destroy() for rec in @done()
 
-class Tasks extends Spine.Controller
+class Taisties extends Spine.Controller
   events:
    "change   input[type=checkbox]": "toggle"
    "click    .destroy":             "remove"
@@ -71,7 +71,7 @@ class TaskApp extends Spine.Controller
     Taistie.fetch()
   
   addOne: (task) =>
-    view = new Tasks(item: task)
+    view = new Taisties(item: task)
     @items.append(view.render().el)
   
   addAll: =>
