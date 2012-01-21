@@ -1,5 +1,6 @@
 class Taistie extends Spine.Model
-	@configure "Taistie", "name", "done"
+	#TODO: убрать поле "done"
+	@configure "Taistie", "name", "done", "active", "urlRegexp", "css", "js"
 
 	@extend Spine.Model.Local
 
