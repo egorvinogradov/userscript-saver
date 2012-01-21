@@ -1,4 +1,17 @@
-class Taistie
+class Taistie extends Spine.Model
+	@configure "Taistie", "name", "done"
+
+	@extend Spine.Model.Local
+
+	@active: ->
+		@select (item) -> !item.done
+
+	@done: ->
+		@select (item) -> !!item.done
+
+	@destroyDone: ->
+		rec.destroy() for rec in @done()
+
 	setTaistieData: (taistieData) ->
 		#TODO: написать спеки
 		assert taistieData?, 'taistie data should be given'
