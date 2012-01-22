@@ -21,7 +21,7 @@ class Taisties extends Spine.Controller
 		@
 
 	toggle: ->
-		@item.done = !@item.done
+		@item.active = !@item.active
 		@item.save()
 
 	remove: ->
@@ -75,7 +75,7 @@ class TaskApp extends Spine.Controller
 		active = Taistie.active().length
 		@count.text(active)
 
-		inactive = Taistie.done().length
+		inactive = Taistie.active().length
 		if inactive
 			@clear.show()
 		else

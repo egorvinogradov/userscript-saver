@@ -1,14 +1,11 @@
 class Taistie extends Spine.Model
 	#TODO: убрать поле "done"
-	@configure "Taistie", "name", "done", "active", "urlRegexp", "css", "js"
+	@configure "Taistie", "name", "active", "urlRegexp", "css", "js"
 
 	@extend Spine.Model.Local
 
 	@active: ->
 		@select (item) -> !item.done
-
-	@done: ->
-		@select (item) -> !!item.done
 
 	@destroyDone: ->
 		rec.destroy() for rec in @done()
