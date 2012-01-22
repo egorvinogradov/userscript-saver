@@ -16,9 +16,9 @@
 	<script src="application.js" type="text/javascript" charset="utf-8"></script>
 
 	<script type="text/x-jquery-tmpl" id="taskTemplate">
-		<div class="item {{if done}}done{{/if}}">
+		<div class="item {{if !_active}}done{{/if}}">
 			<div class="view" title="Double click to edit...">
-				<input type="checkbox" {{if done}}checked="checked"{{/if}}>
+				<input type="checkbox" {{if !_active}}checked="checked"{{/if}}>
 				<span>${name}</span> <a class="destroy"></a>
 			</div>
 
@@ -42,7 +42,6 @@
 		<footer>
 			<a class="clear">Clear completed</a>
 
-			<div class="count"><span class="countVal"></span> left</div>
 		</footer>
 	</div>
 </div>
