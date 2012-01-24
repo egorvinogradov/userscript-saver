@@ -4,12 +4,8 @@ class Taisties extends Spine.Controller
 	events:
 	 "change	 input[type=checkbox]": "toggle"
 	 "click		.destroy":						 "remove"
-	 "dblclick .view":								"edit"
-	 "keypress input[type=text]":		 "blurOnEnter"
-	 "blur		 input[type=text]":		 "close"
 
 	elements:
-		"input[type=text]": "input"
 
 	constructor: ->
 		super
@@ -27,33 +23,15 @@ class Taisties extends Spine.Controller
 	remove: ->
 		@item.destroy()
 
-	edit: ->
-		@el.addClass("editing")
-		@input.focus()
-
-	blurOnEnter: (e) ->
-		if e.keyCode is 13 then e.target.blur()
-
-	close: ->
-		@el.removeClass("editing")
-		@item.updateAttributes({name: @input.val()})
-
 class TaskApp extends Spine.Controller
 	events:
-		"submit form":	 "create"
-		"click	.clear": "clear"
 
 	elements:
 		".items":		 "items"
-		".countVal":	"count"
-		".clear":		 "clear"
-		"form input": "input"
 
 	constructor: ->
 		super
-		Taistie.bind("create",	@addOne)
 		Taistie.bind("refresh", @addAll)
-		Taistie.bind("refresh change", @renderCount)
 		Taistie.fetch()
 
 	addOne: (task) =>
@@ -62,24 +40,6 @@ class TaskApp extends Spine.Controller
 
 	addAll: =>
 		Taistie.each(@addOne)
-
-	create: (e) ->
-		e.preventDefault()
-		Taistie.create(name: @input.val())
-		@input.val("")
-
-	clear: ->
-		Taistie.destroyDone()
-
-	renderCount: =>
-		active = Taistie.active().length
-		@count.text(active)
-
-		inactive = Taistie.active().length
-		if inactive
-			@clear.show()
-		else
-			@clear.hide()
 
 $ ->
 	new TaskApp(el: $("#tasks"))
