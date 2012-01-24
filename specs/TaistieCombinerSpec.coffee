@@ -6,7 +6,7 @@ describe "TaistieCombiner", ->
 		taistie.setTaistieData taistieData
 
 		#by default turn taistie on
-		taistie._active ?= on
+		taistie.active ?= on
 		return taistie
 
 	beforeEach ->

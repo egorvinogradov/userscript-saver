@@ -2,10 +2,8 @@ $ = jQuery
 
 class Taisties extends Spine.Controller
 	events:
-	 "change	 input[type=checkbox]": "toggle"
-	 "click		.destroy":						 "remove"
-
-	elements:
+		"change	 input[type=checkbox]": "toggle"
+		"click		.destroy": "remove"
 
 	constructor: ->
 		super
@@ -24,8 +22,6 @@ class Taisties extends Spine.Controller
 		@item.destroy()
 
 class TaskApp extends Spine.Controller
-	events:
-
 	elements:
 		".items":		 "items"
 
