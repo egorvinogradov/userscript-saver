@@ -8,5 +8,5 @@
 		"default_icon": "icons/browser_action_taistie_disabled.png",
 		"default_title": "Tai.st"
 	},
-	"options_page": "options/options.html"
+	"options_page": "popup/popup.html"
 }

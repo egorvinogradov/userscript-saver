@@ -70,9 +70,8 @@ body {
   border-bottom: 1px solid #cccccc;
 }
 
-#tasks .item.done span {
+#tasks .item.inactive span {
   color: #777777;
-  text-decoration: line-through;
 }
 
 #tasks .item .destroy {

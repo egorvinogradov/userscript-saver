@@ -20,7 +20,7 @@ class Taistie extends Spine.Model
 		@_css = taistieData.css ? ''
 		#TODO: проверять, что имя задано
 		@_name = taistieData.name
-		@_active = taistieData.active
+		@active = taistieData.active
 
 	fitsUrl: (url) ->
 		urlRegexp = new RegExp(@_urlRegexp, 'g')
@@ -36,4 +36,4 @@ class Taistie extends Spine.Model
 		@_name
 
 	isActive: () ->
-		@_active
+		@active
