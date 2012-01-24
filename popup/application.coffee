@@ -1,6 +1,6 @@
 $ = jQuery
 
-class Taisties extends Spine.Controller
+class TaistieView extends Spine.Controller
 	events:
 		"change	 input[type=checkbox]": "toggle"
 		"click		.destroy": "remove"
@@ -24,18 +24,28 @@ class Taisties extends Spine.Controller
 class TaskApp extends Spine.Controller
 	elements:
 		".items":		 "items"
+	events:
+		"click .create": "create"
 
 	constructor: ->
 		super
 		Taistie.bind("refresh", @addAll)
 		Taistie.fetch()
 
-	addOne: (task) =>
-		view = new Taisties(item: task)
+	addOne: (taistie) =>
+		view = new TaistieView(item: taistie)
 		@items.append(view.render().el)
+		view
 
 	addAll: =>
 		Taistie.each(@addOne)
+
+	create: =>
+		newTaistie = Taistie.create
+			name: "<new taistie>"
+			active: true
+
+		newView = @addOne newTaistie
 
 $ ->
 	new TaskApp(el: $("#tasks"))

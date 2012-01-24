@@ -93,7 +93,7 @@ body {
 #tasks .item.editing .edit { display: block; }
 #tasks .item.editing .view { display: none; }
 
-#tasks footer {
+#tasks .menubar {
   display: block;
   margin: 20px -20px -20px -20px;
   overflow: hidden;
@@ -110,7 +110,7 @@ body {
   border-radius: 0 0 5px 5px;
 }
 
-#tasks .new {
+#tasks .create {
   display: block;
   float: right;
   line-height: 20px;
