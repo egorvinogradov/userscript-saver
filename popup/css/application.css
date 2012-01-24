@@ -101,7 +101,7 @@ body {
   color: #555555;
   background: #f4fce8;
   border-top: 1px solid #ededed;
-  padding: 0 20px;
+  padding: 0 10px;
   line-height: 36px;
   
   -moz-border-radius: 0 0 5px 5px;
@@ -110,7 +110,7 @@ body {
   border-radius: 0 0 5px 5px;
 }
 
-#tasks .clear {
+#tasks .new {
   display: block;
   float: right;
   line-height: 20px;
@@ -118,8 +118,9 @@ body {
   
   background: rgba(0, 0, 0, 0.1);
   color: #555555;
-  font-size: 11px;
+  font-size: 16px;
   margin-top: 8px;
+  margin-bottom: 8px;
   padding: 0 10px 1px;
   
   -moz-border-radius: 12px;
