@@ -17,9 +17,18 @@
 
 	<script type="text/x-jquery-tmpl" id="taskTemplate">
 		<div class="item {{if !active}}inactive{{/if}}">
-			<div class="view" title="Double click to edit...">
+			<div class="view">
 				<input type="checkbox" {{if active}}checked="checked"{{/if}}>
-				<span>${name}</span> <a class="destroy"></a>
+				<span>${name}</span> <a class="button editbutton">Edit</a> <a class="destroy"></a>
+			</div>
+			<div class="edit">
+				<span>Name: </span><input type="text" class="nameInput" value="${name}">
+				<span>URL regexp: </span><input type="text" class="urlRegexpInput" value="${urlRegexp}">
+				<span>CSS: </span><input type="text" class="cssInput" value="${css}">
+				<span>JS: </span><input type="text" class="jsInput" value="${js}">
+				<div class="menubar taistiemenu">
+					<a class="button save">Save</a>
+				</div>
 			</div>
 		</div>
 	</script>
@@ -28,8 +37,8 @@
 <div id="views">
 	<div id="tasks">
 		<h1>Taisties</h1>
-		<div class="menubar">
-			<a class="create">Create new</a>
+		<div class="menubar topmenu">
+			<a class="button create">Create new</a>
 		</div>
 
 		<div class="items"></div>
