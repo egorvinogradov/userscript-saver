@@ -4,6 +4,14 @@ class TaistieView extends Spine.Controller
 	events:
 		"change	 input[type=checkbox]": "toggle"
 		"click		.destroy": "remove"
+		"click .save": "finishEditing"
+		"click .editbutton": "startEditing"
+
+	elements:
+		".nameInput": "nameInput"
+		".urlRegexpInput": "urlRegexpInput"
+		".cssInput": "cssInput"
+		".jsInput": "jsInput"
 
 	constructor: ->
 		super
@@ -20,6 +28,18 @@ class TaistieView extends Spine.Controller
 
 	remove: ->
 		@item.destroy()
+
+	startEditing: ->
+		@el.addClass "editing"
+		@nameInput.focus()
+
+	finishEditing: ->
+		@el.removeClass "editing"
+		@item.updateAttributes
+			name: @nameInput.val()
+			urlRegexp: @urlRegexpInput.val()
+			css: @cssInput.val()
+			js: @jsInput.val()
 
 class TaskApp extends Spine.Controller
 	elements:
@@ -46,6 +66,7 @@ class TaskApp extends Spine.Controller
 			active: true
 
 		newView = @addOne newTaistie
+		newView.startEditing()
 
 $ ->
 	new TaskApp(el: $("#tasks"))

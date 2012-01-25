@@ -2,24 +2,21 @@ describe "TaistieCombiner", ->
 	taistieCombiner = undefined
 
 	createTaistie = (taistieData) ->
-		taistie = new Taistie
-		taistie.setTaistieData taistieData
-
 		#by default turn taistie on
-		taistie.active ?= on
+		taistieData.active ?= on
+		taistie = Taistie.create taistieData
+
 		return taistie
 
 	beforeEach ->
+		Taistie.deleteAll()
 		taistieCombiner = new TaistieCombiner()
 
 	it "gets whole js and css code for taisties", ->
 		cssOnly = createTaistie urlRegexp: '.*', css: '|css1|', js: ''
 		jsOnly = createTaistie urlRegexp: '.*', css: '', js: '|js2|'
 		jsAndCss = createTaistie urlRegexp: '.*', css: '|css3|', js: '|js3|'
-
-		taistieCombiner._dTaistiesStorage =
-			getAllTaisties: -> return [cssOnly, jsOnly,jsAndCss]
-
+		
 		expect(taistieCombiner.getAllCssAndJsForUrl 'some_url').toEqual
 			css: cssOnly.getCss() + '\n\n' + jsAndCss.getCss(),
 			js: jsOnly.getJs() + '\n\n' + jsAndCss.getJs()
@@ -45,15 +42,6 @@ describe "TaistieCombiner", ->
 			css: 'fitting inactive'
 			js: 'alert(\'fitting inactive\')'
 			active: false
-
-		taistieCombiner._dTaistiesStorage =
-			getAllTaisties: ->
-				return [
-					fittingInactiveTaistie,
-					fittingActiveTaistie1,
-					nonFittingTaistie,
-					fittingActiveTaistie2
-				]
 
 		expect(taistieCombiner.getAllCssAndJsForUrl 'other.com').toEqual null
 

@@ -15,25 +15,25 @@ class Taistie extends Spine.Model
 		assert taistieData?, 'taistie data should be given'
 		assert taistieData.urlRegexp?, 'url regexp shoul be given'
 
-		@_urlRegexp = taistieData.urlRegexp
-		@_js = taistieData.js ? ''
-		@_css = taistieData.css ? ''
+		@urlRegexp = taistieData.urlRegexp
+		@js = taistieData.js ? ''
+		@css = taistieData.css ? ''
 		#TODO: проверять, что имя задано
-		@_name = taistieData.name
+		@name = taistieData.name
 		@active = taistieData.active
 
 	fitsUrl: (url) ->
-		urlRegexp = new RegExp(@_urlRegexp, 'g')
+		urlRegexp = new RegExp(@urlRegexp, 'g')
 		return urlRegexp.test(url)
 
 	getCss: () ->
-		@_css
+		@css
 
 	getJs: () ->
-		if @_js is '' then '' else '(function(){' + @_js + '})();'
+		if @js is '' then '' else '(function(){' + @js + '})();'
 
 	getName: () ->
-		@_name
+		@name
 
 	isActive: () ->
 		@active

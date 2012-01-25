@@ -12,6 +12,6 @@ class TaistieCombiner
 	
 	_getTaistiesForUrl: (url) ->
 		assert url? and url != '', 'url should be given'
-		taistie for taistie in @_dTaistiesStorage.getAllTaisties() when taistie.fitsUrl(url) and taistie.isActive()
+		taistie for taistie in Taistie.all() when taistie.fitsUrl(url) and taistie.isActive()
 
 	existTaistiesForUrl: (url) -> @_getTaistiesForUrl(url).length > 0
