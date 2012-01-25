@@ -10,13 +10,6 @@ do ->
 				_popupResourcePaths: 'popupResourcePaths'
 		taistieCombiner:
 			single: TaistieCombiner
-			deps: _dTaistiesStorage: 'taistiesStorage'
-		taistiesStorage:
-			single: TaistiesStorage
-			deps:
-				_developedTaistie: 'developedTaistie'
-		developedTaistie:
-			ref: DevelopedTaistie
 		taistieWrapper:
 			single: TaistieWrapper
 		tabApi:

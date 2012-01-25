@@ -8,31 +8,36 @@ class TabTaister
 
 	startListeningToTabChange: ->
 		@_tabApi.onTabUrlChanged (tabUrl, tabDescriptor) =>
+			@refresh()
 			@updatePopup tabUrl
 			@_taistTab tabUrl, tabDescriptor
 
 		@_tabApi.onTabSelected (tabUrl) =>
-				@updatePopup tabUrl
+			@refresh()
+			@updatePopup tabUrl
 
 
 	_taistTab: (tabUrl, tabDescriptor) ->
 		allTaistiesCssAndJs = @_dTaistieCombiner.getAllCssAndJsForUrl tabUrl
+
+		console.log tabUrl, allTaistiesCssAndJs
 		if not allTaistiesCssAndJs?
 			return
 
 		insertedJs = @_dTaistieWrapper.wrapTaistiesCodeToJs allTaistiesCssAndJs
-
-		storage = new LocalStorage
-		taistiesEnabled = storage.get 'taistieEnabled'
-
-		if taistiesEnabled and insertedJs isnt null
+		if insertedJs isnt null
 			@_tabApi.insertJsToTab insertedJs, tabDescriptor
 	
 	updatePopup: (tabUrl) ->
-		existTaisties = @_dTaistieCombiner.existTaistiesForUrl(tabUrl)
+		existTaisties = @_dTaistieCombiner.existTaistiesForUrl tabUrl
 		popupResourcePaths = @_popupResourcePaths[if existTaisties then 'enabled' else 'disabled']
 
 		@_tabApi.setIcon popupResourcePaths.icon
 		@_tabApi.setPopup popupResourcePaths.page
+
+	refresh: ->
+		#workaround to refresh Taisties while developing
+		#TODO: incapsulate in Taistie
+		Taistie.fetch()
 
 	
