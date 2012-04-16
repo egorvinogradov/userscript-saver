@@ -7,21 +7,17 @@ do ->
 				_dTaistieCombiner: 'taistieCombiner'
 				_dTaistieWrapper: 'taistieWrapper'
 				_tabApi: 'tabApi'
-				_popupResourcePaths: 'popupResourcePaths'
+				_popupIconPaths: 'popupIconPaths'
 		taistieCombiner:
 			single: TaistieCombiner
 		taistieWrapper:
 			single: TaistieWrapper
 		tabApi:
 			ref: TabApi
-		popupResourcePaths:
+		popupIconPaths:
 			ref:
-				enabled:
-					icon: '../icons/browser_action_taistie_enabled.png'
-					page: '../popup/popup.html'
-				disabled:
-					icon: '../icons/browser_action_taistie_disabled.png'
-					page: ''
+				enabled: '../icons/browser_action_taistie_enabled.png'
+				disabled: '../icons/browser_action_taistie_disabled.png'
 
 
 	tabTaister = iocContainer.getElement 'tabTaister'

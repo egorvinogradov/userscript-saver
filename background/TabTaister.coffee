@@ -4,7 +4,7 @@ class TabTaister
 		@_tabApi = null
 		@_dTaistieCombiner = null
 		@_dTaistiesStorage = null
-		@_popupResourcePaths = null
+		@_popupIconPaths = null
 
 	startListeningToTabChange: ->
 		@_tabApi.onTabUrlChanged (tabUrl, tabDescriptor) =>
@@ -30,10 +30,9 @@ class TabTaister
 	
 	updatePopup: (tabUrl) ->
 		existTaisties = @_dTaistieCombiner.existTaistiesForUrl tabUrl
-		popupResourcePaths = @_popupResourcePaths[if existTaisties then 'enabled' else 'disabled']
+		popupIconPath = @_popupIconPaths[if existTaisties then 'enabled' else 'disabled']
 
-		@_tabApi.setIcon popupResourcePaths.icon
-		@_tabApi.setPopup popupResourcePaths.page
+		@_tabApi.setIcon popupIconPath
 
 	refresh: ->
 		#workaround to refresh Taisties while developing

@@ -36,26 +36,20 @@ describe 'TabTaister', ->
 		urlWithTaisties = 'haveTaisties.com'
 		urlWithoutTaisties = 'noTaisties.com'
 
-		popupResourcePaths =
-			enabled:
-				icon: 'enabledIcon.png'
-				page: 'enabledPage.html'
-			disabled:
-				icon: 'disabledIcon.png'
-				page: 'disabledPage.html'
+		popupIconPaths =
+			enabled: 'enabledIcon.png'
+			disabled: 'disabledIcon.png'
 
 		tabTaister._dTaistieCombiner =
 			existTaistiesForUrl: (url) ->
 				checkedUrl = url
 				return url == urlWithTaisties
 
-		tabTaister._popupResourcePaths = popupResourcePaths
+		tabTaister._popupIconPaths = popupIconPaths
 
 		tabTaister.updatePopup urlWithTaisties
 		expect(checkedUrl).toEqual urlWithTaisties
 		expect(mockTabApi.iconPath).toEqual 'enabledIcon.png'
-		expect(mockTabApi.pagePath).toEqual 'enabledPage.html'
 
 		tabTaister.updatePopup urlWithoutTaisties
 		expect(mockTabApi.iconPath).toEqual 'disabledIcon.png'
-		expect(mockTabApi.pagePath).toEqual 'disabledPage.html'

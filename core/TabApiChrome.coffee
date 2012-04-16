@@ -6,7 +6,6 @@ TabApi =
 
 	insertJsToTab: (jsCode, tabDescriptor) ->
 		tabId = tabDescriptor
-		console.log "inserting code", tabDescriptor, jsCode
 		chrome.tabs.executeScript tabId, code: jsCode
 
 	openTab: (url) ->
@@ -20,8 +19,3 @@ TabApi =
 	setIcon: (iconPath) ->
 		chrome.browserAction.setIcon
 			path: iconPath
-
-	setPopup: (popupPath) ->
-		chrome.browserAction.setPopup
-			popup: popupPath
-
