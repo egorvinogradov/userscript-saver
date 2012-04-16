@@ -1,7 +1,7 @@
 class TaistieCombiner 
 
 	getAllCssAndJsForUrl: (url) ->
-		taisties = @_getTaistiesForUrl url
+		taisties = @_getActiveTaistiesForUrl url
 		if taisties.length == 0 then null
 		else
 			joinTaistieParts = (partGetter) ->
@@ -9,9 +9,12 @@ class TaistieCombiner
 
 			js: joinTaistieParts 'getJs'
 			css: joinTaistieParts 'getCss'
-	
-	_getTaistiesForUrl: (url) ->
-		assert url? and url != '', 'url should be given'
-		taistie for taistie in Taistie.all() when taistie.fitsUrl(url) and taistie.isActive()
 
-	existTaistiesForUrl: (url) -> @_getTaistiesForUrl(url).length > 0
+	_getAllTaistiesForUrl: (url) ->
+		assert url? and url != '', 'url should be given'
+		taistie for taistie in Taistie.all() when taistie.fitsUrl(url)
+
+	_getActiveTaistiesForUrl: (url) ->
+		taistie for taistie in @_getAllTaistiesForUrl(url) when taistie.isActive()
+
+	existTaistiesForUrl: (url) -> @_getAllTaistiesForUrl(url).length > 0
