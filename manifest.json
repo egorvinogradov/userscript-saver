@@ -6,7 +6,8 @@
 	"permissions":	["tabs", "<all_urls>"],
 	"browser_action": {
 		"default_icon": "icons/browser_action_taistie_disabled.png",
-		"default_title": "Tai.st"
+		"default_title": "Tai.st",
+		"popup": "popup/popup.html"
 	},
 	"options_page": "popup/popup.html"
 }
