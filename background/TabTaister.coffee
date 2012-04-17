@@ -16,11 +16,9 @@ class TabTaister
 			@refresh()
 			@updatePopup tabUrl
 
-
 	_taistTab: (tabUrl, tabDescriptor) ->
 		allTaistiesCssAndJs = @_dTaistieCombiner.getAllCssAndJsForUrl tabUrl
 
-		console.log tabUrl, allTaistiesCssAndJs
 		if not allTaistiesCssAndJs?
 			return
 
