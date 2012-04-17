@@ -25,3 +25,7 @@ class Taistie extends Spine.Model
 
 	isActive: () ->
 		@active
+
+	@getTaistiesForUrl: (url) ->
+		assert url? and url != '', 'url should be given'
+		@select (taistie) -> taistie.fitsUrl url
