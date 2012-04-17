@@ -4,12 +4,6 @@ class Taistie extends Spine.Model
 
 	@extend Spine.Model.Local
 
-	@active: ->
-		@select (item) -> !item.done
-
-	@destroyDone: ->
-		rec.destroy() for rec in @done()
-
 	fitsUrl: (url) ->
 		urlRegexp = new RegExp(@urlRegexp, 'g')
 		return urlRegexp.test(url)
