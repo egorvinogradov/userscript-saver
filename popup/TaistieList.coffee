@@ -1,4 +1,4 @@
-class TaistieApp extends Spine.Controller
+class TaistieList extends Spine.Controller
 	elements:
 		".items":		 "items"
 	events:
