@@ -18,3 +18,16 @@ describe 'Taistie', ->
 
 		expect(taistie.getCss()).toEqual ''
 		expect(taistie.getJs()).toEqual ''
+
+	describe 'getTaistiesForUrl', ->
+		it 'gives taisties that fit to url', ->
+			expect(Taistie.getTaistiesForUrl 'http://aaa.com').toEqual []
+
+			fittingTaistie = Taistie.create urlRegexp: 'aaa\.com'
+			unfittingTaistie = Taistie.create urlRegexp: 'bbb\.com'
+			expect(Taistie.getTaistiesForUrl 'http://aaa.com').toEqual [fittingTaistie]
+
+		it 'takes valid non-empty url', ->
+			expect(-> Taistie.getTaistiesForUrl null).toThrow new AssertException 'url should be given'
+			expect(-> Taistie.getTaistiesForUrl '').toThrow new AssertException 'url should be given'
+

@@ -48,7 +48,3 @@ describe "TaistieCombiner", ->
 		expect(taistieCombiner.getAllCssAndJsForUrl 'fitting.com').toEqual
 			css: fittingActiveTaistie1.getCss() + '\n\n' + fittingActiveTaistie2.getCss()
 			js: fittingActiveTaistie1.getJs() + '\n\n' + fittingActiveTaistie2.getJs()
-
-	it 'takes valid non-empty url', ->
-		expect(-> taistieCombiner.getAllCssAndJsForUrl null).toThrow new AssertException 'url should be given'
-		expect(-> taistieCombiner.getAllCssAndJsForUrl '').toThrow new AssertException 'url should be given'

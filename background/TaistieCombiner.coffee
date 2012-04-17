@@ -11,8 +11,7 @@ class TaistieCombiner
 			css: joinTaistieParts 'getCss'
 
 	_getAllTaistiesForUrl: (url) ->
-		assert url? and url != '', 'url should be given'
-		taistie for taistie in Taistie.all() when taistie.fitsUrl(url)
+		Taistie.getTaistiesForUrl url
 
 	_getActiveTaistiesForUrl: (url) ->
 		taistie for taistie in @_getAllTaistiesForUrl(url) when taistie.isActive()
