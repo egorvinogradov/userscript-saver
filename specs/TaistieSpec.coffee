@@ -43,15 +43,15 @@ describe 'Taistie', ->
 				urlRegexp: 'aaa\.com'
 				js: '<js here>'
 				name: 'userscript1'
-			spyOn(mockUserscriptsDownloader, 'getUserscriptsForUrl').andReturn
+			spyOn(mockUserscriptsDownloader, 'getUserscriptsForUrl').andReturn [mockUserscript1]
 
 			taisties = Taistie.getTaistiesForUrl 'http://aaa.com'
 			expect(mockUserscriptsDownloader.getUserscriptsForUrl).toHaveBeenCalledWith 'http://aaa.com'
 			expect(taisties.length).toEqual(1)
-#			taistie = taisties[0]
-#			expect(
-#				name: taistie.getName()
-#				js: taistie.getJs()
-#				urlRegexp: taistie.urlRegexp).toEqual mockUserscript1
+			taistie = taisties[0]
+			expect(
+				name: taistie.name
+				js: taistie.js
+				urlRegexp: taistie.urlRegexp).toEqual mockUserscript1
 
 
