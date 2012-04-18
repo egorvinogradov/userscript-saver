@@ -1,7 +1,11 @@
 class Taistie extends Spine.Model
 	@_userscriptsDownloader = null
 
-	@configure "Taistie", "name", "active", "urlRegexp", "css", "js"
+	@configure "Taistie", "name", "active", "urlRegexp", "css", "js", "source", "externalId"
+
+	constructor: (options) ->
+		super options
+		source ?= 'taistie'
 
 	@extend Spine.Model.Local
 
@@ -23,11 +27,22 @@ class Taistie extends Spine.Model
 	@getTaistiesForUrl: (url) ->
 		assert url? and url != '', 'url should be given'
 		existingTaisties = @select (taistie) -> taistie.fitsUrl url
+
 		userscripts = @_userscriptsDownloader.getUserscriptsForUrl url
 		taistiesFromUserScripts = []
 		for userscript in userscripts
 			do (userscript) ->
-				taistie = Taistie.create userscript
-				taistiesFromUserScripts.push taistie
+				taistieExists = false
+				taistieExists = true for taistie in existingTaisties when taistie.source is 'userscripts' and taistie.externalId is userscript.id
+
+				if not taistieExists
+					taistieFromUserscript = Taistie.create
+						name: userscript.name
+						js: userscript.js
+						urlRegexp: userscript.urlRegexp
+						source: 'userscripts'
+						externalId: userscript.id
+					taistiesFromUserScripts.push taistieFromUserscript
 
 		existingTaisties.concat taistiesFromUserScripts
+

@@ -38,20 +38,20 @@ describe 'Taistie', ->
 			expect(-> Taistie.getTaistiesForUrl null).toThrow new AssertException 'url should be given'
 			expect(-> Taistie.getTaistiesForUrl '').toThrow new AssertException 'url should be given'
 
-		it 'gets taisties from userstyles.org', ->
-			mockUserscript1 =
+		it 'gets taisties from userstyles.org - saves them and omits duplicates', ->
+			userscript =
 				urlRegexp: 'aaa\.com'
 				js: '<js here>'
 				name: 'userscript1'
-			spyOn(mockUserscriptsDownloader, 'getUserscriptsForUrl').andReturn [mockUserscript1]
+				id: 1
+			spyOn(mockUserscriptsDownloader, 'getUserscriptsForUrl').andReturn [userscript]
 
 			taisties = Taistie.getTaistiesForUrl 'http://aaa.com'
 			expect(mockUserscriptsDownloader.getUserscriptsForUrl).toHaveBeenCalledWith 'http://aaa.com'
 			expect(taisties.length).toEqual(1)
 			taistie = taisties[0]
-			expect(
-				name: taistie.name
-				js: taistie.js
-				urlRegexp: taistie.urlRegexp).toEqual mockUserscript1
+			expect([taistie.name, taistie.js, taistie.urlRegexp, taistie.source, taistie.externalId]).
+				toEqual [userscript.name, userscript.js, userscript.urlRegexp, 'userscripts', userscript.id]
 
+			expect(Taistie.getTaistiesForUrl('http://aaa.com').length).toEqual 1
 
