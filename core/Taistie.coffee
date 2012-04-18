@@ -28,6 +28,9 @@ class Taistie extends Spine.Model
 		assert url? and url != '', 'url should be given'
 		existingTaisties = @select (taistie) -> taistie.fitsUrl url
 
+		existingTaisties.concat @_getUserscriptsForUrl url, existingTaisties
+
+	@_getUserscriptsForUrl: (url, existingTaisties) ->
 		userscripts = @_userscriptsDownloader.getUserscriptsForUrl url
 		taistiesFromUserScripts = []
 		for userscript in userscripts
@@ -43,6 +46,6 @@ class Taistie extends Spine.Model
 						source: 'userscripts'
 						externalId: userscript.id
 					taistiesFromUserScripts.push taistieFromUserscript
+		taistiesFromUserScripts
 
-		existingTaisties.concat taistiesFromUserScripts
 
