@@ -36,5 +36,3 @@ class TabTaister
 		#workaround to refresh Taisties while developing
 		#TODO: incapsulate in Taistie
 		Taistie.fetch()
-
-	

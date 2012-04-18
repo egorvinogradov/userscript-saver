@@ -1,5 +1,6 @@
 class Taistie extends Spine.Model
-	#TODO: убрать поле "done"
+	@_userscriptsDownloader = null
+
 	@configure "Taistie", "name", "active", "urlRegexp", "css", "js"
 
 	@extend Spine.Model.Local
@@ -8,18 +9,20 @@ class Taistie extends Spine.Model
 		urlRegexp = new RegExp(@urlRegexp, 'g')
 		return urlRegexp.test(url)
 
-	getCss: () ->
+	getCss: ->
 		@css ? ''
 
-	getJs: () ->
+	getJs: ->
 		if (@js ? '') is '' then '' else '(function(){' + @js + '})();'
 
-	getName: () ->
+	getName: ->
 		@name
-
-	isActive: () ->
+	isActive: ->
 		@active
 
 	@getTaistiesForUrl: (url) ->
 		assert url? and url != '', 'url should be given'
-		@select (taistie) -> taistie.fitsUrl url
+		existingTaisties = @select (taistie) -> taistie.fitsUrl url
+		userscripts = @_userscriptsDownloader.getUserscriptsForUrl url
+
+		return existingTaisties.concat userscripts
