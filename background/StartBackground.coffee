@@ -10,6 +10,14 @@ do ->
 				_popupIconPaths: 'popupIconPaths'
 		taistieCombiner:
 			single: TaistieCombiner
+			deps:
+				_taistieCollection: 'Taistie'
+		Taistie:
+			ref: Taistie
+			deps:
+				_userscriptsDownloader: 'userscriptsDownloader'
+		userscriptsDownloader:
+			single: UserscriptsDownloader
 		taistieWrapper:
 			single: TaistieWrapper
 		tabApi:

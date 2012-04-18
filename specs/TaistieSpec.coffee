@@ -1,4 +1,7 @@
 describe 'Taistie', ->
+	afterEach ->
+		Taistie.destroyAll()
+
 	it 'defines whether it fits url by regexp', ->
 		taistie = Taistie.create urlRegexp: 'targetsite\\.com'
 		expect(taistie.fitsUrl 'http://targetsite.com').toBeTruthy()
@@ -20,6 +23,10 @@ describe 'Taistie', ->
 		expect(taistie.getJs()).toEqual ''
 
 	describe 'getTaistiesForUrl', ->
+		mockUserscriptsDownloader =
+			getUserscriptsForUrl: -> []
+		Taistie._userscriptsDownloader = mockUserscriptsDownloader
+
 		it 'gives taisties that fit to url', ->
 			expect(Taistie.getTaistiesForUrl 'http://aaa.com').toEqual []
 
@@ -30,4 +37,21 @@ describe 'Taistie', ->
 		it 'takes valid non-empty url', ->
 			expect(-> Taistie.getTaistiesForUrl null).toThrow new AssertException 'url should be given'
 			expect(-> Taistie.getTaistiesForUrl '').toThrow new AssertException 'url should be given'
+
+		it 'gets taisties from userstyles.org', ->
+			mockUserscript1 =
+				urlRegexp: 'aaa\.com'
+				js: '<js here>'
+				name: 'userscript1'
+			spyOn(mockUserscriptsDownloader, 'getUserscriptsForUrl').andReturn
+
+			taisties = Taistie.getTaistiesForUrl 'http://aaa.com'
+			expect(mockUserscriptsDownloader.getUserscriptsForUrl).toHaveBeenCalledWith 'http://aaa.com'
+			expect(taisties.length).toEqual(1)
+#			taistie = taisties[0]
+#			expect(
+#				name: taistie.getName()
+#				js: taistie.getJs()
+#				urlRegexp: taistie.urlRegexp).toEqual mockUserscript1
+
 

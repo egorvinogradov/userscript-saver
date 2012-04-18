@@ -1,4 +1,6 @@
-class TaistieCombiner 
+class TaistieCombiner
+	constructor: ->
+		@_taistieCollection = null
 
 	getAllCssAndJsForUrl: (url) ->
 		taisties = @_getActiveTaistiesForUrl url
@@ -11,7 +13,7 @@ class TaistieCombiner
 			css: joinTaistieParts 'getCss'
 
 	_getAllTaistiesForUrl: (url) ->
-		Taistie.getTaistiesForUrl url
+		@_taistieCollection.getTaistiesForUrl url
 
 	_getActiveTaistiesForUrl: (url) ->
 		taistie for taistie in @_getAllTaistiesForUrl(url) when taistie.isActive()
