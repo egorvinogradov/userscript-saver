@@ -36,14 +36,11 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
     color: #3c4044;
 }
 
-.page__wrapper {
-    width: 1000px;
-    margin: 0 auto;
-}
-
 .header {
     overflow: hidden;
-    padding: 70px 0 5px 0;
+    padding: 70px 0;
+    width: 1000px;
+    margin: 0 auto;
 }
 
 .header__column-left {
@@ -212,18 +209,186 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
     background: url('../img/blogger.png') no-repeat 0 0;
 }
 
-
-
-/*  */
-
-
-
-
-
-
 .capabilities {
-    padding-top: 50px;
+    background: rgba(60,64,68,.1);
+    border-width: 3px 0;
+    border-style: solid;
+    border-color: rgba(60,64,68,.16);
+    box-shadow: 0 -1px 0 rgba(60,64,68,.36), 0 1px 0 rgba(255,255,255,.4);
 }
+
+.capabilities__wrapper {
+    width: 1000px;
+    margin: 0 auto;
+    padding: 50px 0 40px 0;
+}
+
+.capabilities__switchers {
+    overflow: hidden;
+    width: 108px;
+    margin: 0 auto;
+}
+
+.capabilities__switcher {
+    display: block;
+    margin-left: 18px;
+    float: left;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    background: url('../img/elements.png') no-repeat -50px 0;
+}
+
+.capabilities__switcher:first-child {
+    margin-left: 0;
+}
+
+.capabilities__switcher.m-active {
+    background-position: 0 0;
+}
+
+.capabilities__headers-fading-left {
+    left: 0;
+    background:url('../img/fadings.png') -176px 0;
+}
+
+.capabilities__headers-fading-right {
+    right: 0;
+    background:url('../img/fadings.png') 0 0;
+}
+
+.capabilities__headers-fading-left,
+.capabilities__headers-fading-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 176px;
+    height: 50px;
+    z-index: 2;
+    background-repeat: no-repeat;
+}
+
+.capabilities__headers {
+    height: 50px;
+    position: relative;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 50px;
+    font-size: 18px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.capabilities__header.m-active {
+    font-size: 24px;
+    opacity: 1;
+    display: inline;
+}
+
+.capabilities__header.m-left,
+.capabilities__header.m-right {
+    color: #83898E;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+}
+
+.capabilities__header.m-left.m-hover,
+.capabilities__header.m-right.m-hover {
+    color: #3C4044;
+}
+
+
+
+
+            /* TODO: calculate in js */
+
+            .capabilities__header.m-left {
+                right: 800px;
+            }
+
+            .capabilities__header.m-right {
+                left: 800px;
+            }
+
+            /* / TODO: calculate in js */
+
+
+
+
+.capabilities__header.m-invisible {
+    display: none;
+}
+
+.capabilities__slides {
+    padding: 50px 0;
+    overflow: hidden;
+}
+
+.capabilities__slide-steps {
+    display: none;
+}
+
+.capabilities__slide-steps:first-child {
+    display: block;
+}
+
+.capabilities__slide-step {
+    float: left;
+    margin-left: 25px;
+    position: relative;
+}
+
+.capabilities__slide-step:first-child {
+    margin-left: 0;
+}
+
+.capabilities__slide-step-number {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    margin-left: -18px;
+    border-radius: 30px;
+    width: 37px;
+    height: 37px;
+    line-height: 37px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    background: #fff;
+    box-shadow: 0 1px 0 rgba(60,64,68,.36), 0 3px 3px rgba(60,64,68,.2);
+}
+
+.capabilities__slide-step-action {
+    width: 185px;
+    padding: 0 20px;
+    height: 120px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0 3px 3px rgba(39,130,191,.2);
+    background-color: #fff;
+    background-image: linear-gradient(bottom, #DFEAF0 0%, #FFFFFF 49%);
+    background-image: -o-linear-gradient(bottom, #DFEAF0 0%, #FFFFFF 49%);
+    background-image: -moz-linear-gradient(bottom, #DFEAF0 0%, #FFFFFF 49%);
+    background-image: -webkit-linear-gradient(bottom, #DFEAF0 0%, #FFFFFF 49%);
+    background-image: -ms-linear-gradient(bottom, #DFEAF0 0%, #FFFFFF 49%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #DFEAF0), color-stop(0.49, #FFFFFF));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
