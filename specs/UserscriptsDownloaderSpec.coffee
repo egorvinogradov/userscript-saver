@@ -9,21 +9,21 @@ describe 'UserscriptsDownloader', ->
 	describe 'searches userscripts by top site name without extension', ->
 
 		testUrls =
-			'simple url': 'sitename.com'
-			'url with \'/\' at the end': 'sitename.com/'
-			'url without top-level domain (may be in local network)': 'sitename/'
-			'starting from http://': 'http://sitename/'
-			'with www': 'http://www.sitename/'
-			'https url': 'https://sitename.com/'
-			'url with folders and parameters': 'sitename/folder1/folder2/?param1=value1'
+			'accepts url without protocol': 'sitename.com'
+			'strips \'/\' at the end': 'sitename.com/'
+			'accepts url without top-level domain (may be in local network)': 'sitename/'
+			'strips http://': 'http://sitename/'
+			'strips \'www\'': 'http://www.sitename/'
+			'strips secure protocol - https://': 'https://sitename.com/'
+			'strips subdomains leaving just root domain': 'http://sub2.sub1.sitename.com/'
+			'strips folders and parameters': 'sitename/folder1/folder2/?param1=value1'
 
 		for testDescription, testUrl of testUrls
 			do(testDescription, testUrl) ->
 				it testDescription, ->
-
-				mockAjaxProvider =
-					getUrlContent: ->
-				userscriptsDownloader._ajaxProvider = mockAjaxProvider
-				spiedMethod = spyOn(mockAjaxProvider, 'getUrlContent')
-				userscriptsDownloader.getUserscriptsForUrl testUrl
-				expect(mockAjaxProvider.getUrlContent).toHaveBeenCalledWith(searchUrlPrefix + 'sitename')
+					mockAjaxProvider =
+						getUrlContent: ->
+					userscriptsDownloader._ajaxProvider = mockAjaxProvider
+					spiedMethod = spyOn(mockAjaxProvider, 'getUrlContent')
+					userscriptsDownloader.getUserscriptsForUrl testUrl
+					expect(mockAjaxProvider.getUrlContent).toHaveBeenCalledWith(searchUrlPrefix + 'sitename')
