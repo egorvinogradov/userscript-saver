@@ -5,16 +5,20 @@ class UserscriptsDownloader
 
 	getUserscriptsForUrl: (url) ->
 
-		siteName = url
-		siteName = siteName.replace /^https?:\/\//, ''    # remove 'http://' and 'https://' from beginning
+		urlWithoutProtocol = url.replace /^https?:\/\//, ''
 
-		if siteName.indexOf('/') > 0
-			match = siteName.match /([^\/]+)\//          # remove all after '/'
-			siteName = match[1]
+		urlWithoutParams = urlWithoutProtocol
+		if urlWithoutParams.indexOf('/') > 0
+			match = urlWithoutParams.match /([^\/]+)\//
+			urlWithoutParams = match[1]
 
-		siteName = siteName.replace /^www\./, '' # remove 'www.' from beginning - only domains left
+		domainsString = urlWithoutParams.replace /^www\./, '' # remove 'www.' from beginning - only domains left
 
-		siteName = siteName.replace /\.[A-Z]+$/i, '' #remove last domain
+		domainsArray = domainsString.split '.'
 
+		rootDomainPosition = if domainsArray.length >= 2 then domainsArray.length - 2 else 0
+		rootDomain = domainsArray[rootDomainPosition]
+
+		siteName = rootDomain
 		@_ajaxProvider.getUrlContent(UserscriptsDownloader._userscriptsSearchPrefix + siteName)
 		return []
