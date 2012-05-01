@@ -560,7 +560,7 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 .footer__nav {
     position: absolute;
     top: 40px;
-    left: 300px;
+    left: 270px;
 }
 
 .footer__nav-item {
@@ -571,7 +571,7 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 .footer__social {
     position: absolute;
     top: 80px;
-    left: 300px;
+    left: 270px;
     white-space: nowrap;
 }
 
@@ -611,17 +611,19 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 }
 
 .footer__subscribe-label {
-    padding-bottom: 6px;
+    height: 30px;
     display: block;
 }
 
 .footer__subscribe-input {
     box-sizing: border-box;
     width: 100%;
-    height: 30px;
+    height: 32px;
     border: 1px solid #687E8C;
+    font: 16px/20px ProximaNova, Arial, sans-serif;
     border-top-color: #637079;
     background: #fff;
+    padding-left: 6px;
     border-radius: 4px;
     box-shadow: inset 0 2px 1px rgba(49,84,106,.23), 0 1px 0 rgba(255,255,255,.5);
     -webkit-background-clip: padding-box;
@@ -630,30 +632,180 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 }
 
 .footer__subscribe-input:focus {
-    border-color: #
+    border-color: #3c5365;
+    background: #d8e0e6;
+    outline: none;
 }
 
+.footer__subscribe-input::-webkit-input-placeholder {
+    color:#a5b3bd;
+}
 
+.footer__subscribe-input:-moz-placeholder {
+    color: #a5b3bd;
+}
 
+.footer__subscribe-button {
+    width: 125px;
+    height: 32px;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    font: 16px/32px ProximaNova, Arial, sans-serif;
+    color: #fff;
+    cursor: pointer;
+    text-shadow: 0 1px 1px rgba(0,0,0,.7);
+    border: 1px solid #3F4B57;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.4);
+    background-color: #5D6F7D;
+    background-color: #687F90;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#687F90), to(#51626F));
+    background-image: -webkit-linear-gradient(top, #687F90, #51626F);
+    background-image: -moz-linear-gradient(top, #687F90, #51626F);
+    background-image: -ms-linear-gradient(top, #687F90, #51626F);
+    background-image: -o-linear-gradient(top, #687F90, #51626F);
+    background-image:  linear-gradient(to bottom, #687F90, #51626F);
+    border-radius: 0 4px 4px 0;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* team */
+.footer__subscribe-button:active {
+    background: #51626F;
+    box-shadow: inset 0 3px 2px rgba(0,0,0,.15);
+    line-height: 34px;
+}
 
 .team {
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: none;
+    background: rgba(60,64,68,.9);
+    opacity: 0;
+    -webkit-transition: opacity 1000ms ease;
+       -moz-transition: opacity 1000ms ease;
+        -ms-transition: opacity 1000ms ease;
+         -o-transition: opacity 1000ms ease;
+            transition: opacity 1000ms ease;
 }
 
-/* / team */
+.team.m-visible {
+    display: block;
+    opacity: 1;
+}
+
+.team__popup {
+    width: 1000px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 0 10px;
+    margin: -300px 0 0 -500px;
+    height: 600px;
+    background: #fff;
+    box-shadow: 0 3px 6px rgba(0,0,0,.5);
+    border-radius: 7px;
+}
+
+.team__popup-header {
+    font-size: 36px;
+    line-height: 40px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    position: relative;
+    margin-top: 25px;
+}
+
+.team__popup-header-line {
+    border-bottom: 1px solid #CECECE;
+    height: 20px;
+    position: absolute;
+    width: 100%;
+    left: 0;
+}
+
+.team__popup-header-text {
+    position: relative;
+    z-index: 1;
+    background: #fff;
+    padding: 0 13px;
+}
+
+.team__popup-columns {
+    overflow: hidden;
+    padding-top: 50px;
+}
+
+.team__popup-column {
+    float: left;
+    width: 350px;
+    padding-left: 100px;
+}
+
+.team__popup-column:first-child {
+    padding-left: 125px;
+}
+
+.team__popup-photo {
+    width: 160px;
+    height: 160px;
+    margin-bottom: 36px;
+    border-radius: 100px;
+}
+
+.team__popup-photo.m-anton {
+    background: url('../img/anton.jpg');
+}
+
+.team__popup-photo.m-egor {
+    background: url('../img/egor.jpg');
+}
+
+.team__popup-name {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-bottom: 15px;
+}
+
+.team__popup-site {
+    padding-top: 10px;
+}
+
+.team__popup-link {
+    color: #1771ab;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(23,113,171,.3);
+    line-height: 20px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.team__popup-link:hover {
+    border-bottom-color: #1771ab;
+}
+
+.team__popup-close {
+    position: absolute;
+    width: 200px;
+    bottom: 20px;
+    left: 50%;
+    margin-left: -50px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
