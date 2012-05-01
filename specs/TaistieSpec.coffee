@@ -2,11 +2,13 @@ describe 'Taistie', ->
 	afterEach ->
 		Taistie.destroyAll()
 
-	it 'defines whether it fits url by regexp', ->
-		taistie = Taistie.create rootUrl: 'targetsite\\.com'
+	it 'fits url if @rootUrl is a substring of full server name in url', ->
+		taistie = Taistie.create rootUrl: 'targetsite.com'
 		expect(taistie.fitsUrl 'http://targetsite.com').toBeTruthy()
 		expect(taistie.fitsUrl 'http://targetsite.com/subfolder').toBeTruthy()
+
 		expect(taistie.fitsUrl 'http://other.com').toBeFalsy()
+		expect(taistie.fitsUrl 'http://other.com/targetsite.com').toBeFalsy()
 
 	it "returns css directly from data", ->
 		taistie = Taistie.create rootUrl: 'stub', css: 'css code'
