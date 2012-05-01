@@ -8,6 +8,7 @@ $(function(){
         },
         els: {
             body:       $('.page'),
+            forms:      $('.header__join-form, .footer__subscribe-form'),
             team: {
                 block:  $('.team'),
                 popup:  $('.team__popup'),
@@ -37,7 +38,8 @@ $(function(){
                 hover:      'm-hover'
             },
             switcherActive:     'm-active',
-            fadingInvisible:    'm-invisible'
+            fadingInvisible:    'm-invisible',
+            inputError:         'm-error'
         },
 
         showTeam: function(){
@@ -101,13 +103,29 @@ $(function(){
             fading
                 .removeClass(this.classes.fadingInvisible);
 
-            console.log('lol ', number);
-
             number === 0 && this.els.slides.fading.left.addClass(this.classes.fadingInvisible);
-            number === 2 && this.els.slides.fading.right.addClass(this.classes.fadingInvisible);
+            number === this.settings.slideCount - 1 && this.els.slides.fading.right.addClass(this.classes.fadingInvisible);
 
             setTimeout(animate, 0);
 
+        },
+        validateEmail: function(input){
+
+            var email = input.val(),
+                re = /^([a-z0-9_\.\-])+\@(([a-z0-9\-])+\.)+([a-z0-9]{2,6})+$/i;
+
+            if ( re.test(email) ) {
+                return true;
+            }
+            else {
+                input
+                    .addClass(this.classes.inputError)
+                    .one('blur', $.proxy(function(){
+                        input.removeClass(this.classes.inputError)
+                    }, this));
+
+                return false;
+            }
         },
         init: function(){
 
@@ -171,6 +189,19 @@ $(function(){
             this.els.slides.fading.all
                 .click($.proxy(handlers.fadingClick, this))
                 .bind('mouseover mouseout', $.proxy(handlers.fadingHover, this));
+
+
+            this.els.forms.each($.proxy(function(i, element){
+
+                var form =  $(element),
+                    input = form.find('input');
+
+                form.submit($.proxy(function(){
+                    return this.validateEmail(input);
+                }, this));
+
+            }, this));
+
 
             setTimeout(slideFirst, 1600);
         }
