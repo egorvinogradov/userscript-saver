@@ -249,12 +249,12 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 
 .capabilities__headers-fading-left {
     left: 0;
-    background:url('../img/fadings.png') -176px 0;
+    background:url('../img/fading-left.png') no-repeat 0 0;
 }
 
 .capabilities__headers-fading-right {
     right: 0;
-    background:url('../img/fadings.png') 0 0;
+    background:url('../img/fading-right.png') no-repeat 100% 0;
 }
 
 .capabilities__headers-fading-left,
@@ -266,7 +266,6 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
     height: 50px;
     z-index: 5;
     cursor: pointer;
-    background-repeat: no-repeat;
 }
 
 .capabilities__headers-fading-left.m-invisible,
@@ -305,40 +304,34 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
     color: #3C4044;
 }
 
+.capabilities__header.m-left {
+    right: 800px;
+}
 
-
-
-            /* TODO: calculate in js */
-
-            .capabilities__header.m-left {
-                right: 800px;
-            }
-
-            .capabilities__header.m-right {
-                left: 800px;
-            }
-
-            /* / TODO: calculate in js */
-
-
-
+.capabilities__header.m-right {
+    left: 800px;
+}
 
 .capabilities__header.m-invisible {
-    display: none;
+    display: none !important;
 }
 
 .capabilities__slides {
     padding: 54px 0;
     overflow: hidden;
-}
-
-.capabilities__slide-steps {
-    display: none;
     position: relative;
 }
 
-.capabilities__slide-steps.m-active {
-    display: block;
+.capabilities__slides-wrapper {
+    width: 3000px;
+    position: relative;
+    left: -2000px;
+}
+
+.capabilities__slide-steps {
+    position: relative;
+    float: left;
+    width: 1000px;
 }
 
 .capabilities__slide-step {
