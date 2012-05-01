@@ -5,6 +5,17 @@ class UserscriptsDownloader
 
 	getUserscriptsForUrl: (url) ->
 
+		siteName = @_getSiteNameByUrl url
+
+		scriptsListPage = @_ajaxProvider.getUrlContent(UserscriptsDownloader._userscriptsSearchPrefix + siteName)
+
+		scripts = scriptsListPage.match /tr\sid="scripts-(\d+)">(.)+?<\/td>/gm
+
+		console.log scripts
+
+		return scripts
+
+	_getSiteNameByUrl: (url) ->
 		urlWithoutProtocol = url.replace /^https?:\/\//, ''
 
 		urlWithoutParams = urlWithoutProtocol
@@ -20,5 +31,5 @@ class UserscriptsDownloader
 		rootDomain = domainsArray[rootDomainPosition]
 
 		siteName = rootDomain
-		@_ajaxProvider.getUrlContent(UserscriptsDownloader._userscriptsSearchPrefix + siteName)
-		return []
+
+		return siteName
