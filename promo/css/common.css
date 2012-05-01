@@ -264,9 +264,14 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
     right: 0;
     width: 176px;
     height: 50px;
-    z-index: 2;
+    z-index: 5;
     cursor: pointer;
     background-repeat: no-repeat;
+}
+
+.capabilities__headers-fading-left.m-invisible,
+.capabilities__headers-fading-right.m-invisible {
+    display: none;
 }
 
 .capabilities__headers {
@@ -329,6 +334,7 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 
 .capabilities__slide-steps {
     display: none;
+    position: relative;
 }
 
 .capabilities__slide-steps.m-active {
@@ -683,17 +689,11 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
     bottom: 0;
     display: none;
     background: rgba(60,64,68,.9);
-    opacity: 0;
     -webkit-transition: opacity 1000ms ease;
        -moz-transition: opacity 1000ms ease;
         -ms-transition: opacity 1000ms ease;
          -o-transition: opacity 1000ms ease;
             transition: opacity 1000ms ease;
-}
-
-.team.m-visible {
-    display: block;
-    opacity: 1;
 }
 
 .team__popup {
