@@ -74,9 +74,9 @@ $(function(){
 
                     header
                         .next().css({ left: settings.headerIndents }).end()
-                        .prev().css({ right: settings.headerIndents }).end()
-                        .siblings().hide().fadeIn(600);
+                        .prev().css({ right: settings.headerIndents });
 
+                    !( $.browser.msie && $.browser.version < 9 ) && header.siblings().hide().fadeIn(600);
                     fading.width( ( settings.pageWidth - header.width() ) / 2 );
                 };
 
