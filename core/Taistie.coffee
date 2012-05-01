@@ -1,7 +1,7 @@
 class Taistie extends Spine.Model
 	@_userscriptsDownloader = null
 
-	@configure "Taistie", "name", "active", "urlRegexp", "css", "js", "source", "externalId"
+	@configure "Taistie", "name", "active", "rootUrl", "css", "js", "source", "externalId"
 
 	constructor: (options) ->
 		super options
@@ -10,8 +10,8 @@ class Taistie extends Spine.Model
 	@extend Spine.Model.Local
 
 	fitsUrl: (url) ->
-		urlRegexp = new RegExp(@urlRegexp, 'g')
-		return urlRegexp.test(url)
+		rootUrl = new RegExp(@rootUrl, 'g')
+		return rootUrl.test(url)
 
 	getCss: ->
 		@css ? ''
@@ -42,7 +42,7 @@ class Taistie extends Spine.Model
 					taistieFromUserscript = Taistie.create
 						name: userscript.name
 						js: userscript.js
-						urlRegexp: userscript.urlRegexp
+						rootUrl: userscript.rootUrl
 						source: 'userscripts'
 						externalId: userscript.id
 					taistiesFromUserScripts.push taistieFromUserscript

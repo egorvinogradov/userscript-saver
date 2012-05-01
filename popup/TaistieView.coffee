@@ -7,7 +7,7 @@ class TaistieView extends Spine.Controller
 
 	elements:
 		".nameInput": "nameInput"
-		".urlRegexpInput": "urlRegexpInput"
+		".rootUrlInput": "rootUrlInput"
 		".cssInput": "cssInput"
 		".jsInput": "jsInput"
 
@@ -35,6 +35,6 @@ class TaistieView extends Spine.Controller
 		@el.removeClass "editing"
 		@item.updateAttributes
 			name: @nameInput.val()
-			urlRegexp: @urlRegexpInput.val()
+			rootUrl: @rootUrlInput.val()
 			css: @cssInput.val()
 			js: @jsInput.val()

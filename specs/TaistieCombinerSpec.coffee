@@ -18,9 +18,9 @@ describe "TaistieCombiner", ->
 		return taistie
 
 	it "gets whole js and css code for taisties", ->
-		cssOnly = createTaistie urlRegexp: '.*', css: '|css1|', js: ''
-		jsOnly = createTaistie urlRegexp: '.*', css: '', js: '|js2|'
-		jsAndCss = createTaistie urlRegexp: '.*', css: '|css3|', js: '|js3|'
+		cssOnly = createTaistie rootUrl: '.*', css: '|css1|', js: ''
+		jsOnly = createTaistie rootUrl: '.*', css: '', js: '|js2|'
+		jsAndCss = createTaistie rootUrl: '.*', css: '|css3|', js: '|js3|'
 		
 		expect(taistieCombiner.getAllCssAndJsForUrl 'some_url').toEqual
 			css: cssOnly.getCss() + '\n\n' + jsAndCss.getCss(),
