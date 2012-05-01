@@ -120,7 +120,7 @@ $(function(){
             else {
                 input
                     .addClass(this.classes.inputError)
-                    .one('blur', $.proxy(function(){
+                    .one('focus blur', $.proxy(function(){
                         input.removeClass(this.classes.inputError)
                     }, this));
 

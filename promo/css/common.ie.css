@@ -1,3 +1,22 @@
+.capabilities {
+    background: #AEB6BB;
+    border-color: #A5ADB1;
+}
+
+.capabilities__headers-fading-left {
+    left: -1px;
+}
+
+.capabilities__headers-fading-right {
+    right: -1px;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFAEB6BB,endColorstr=#00AEB6BB);
+    zoom: 1;
+}
+
+.activity__column-divider {
+    background: #A4ADB1;
+}
+
 .activity__message-corner-inner {
 
     filter: progid:DXImageTransform.Microsoft.Matrix(
@@ -7,4 +26,9 @@
             M22=0.7071067811865476,
             sizingMethod='auto expand');
     zoom: 1;
+}
+
+.footer {
+    background: #A2ABB0;
+    border-color: #99A1A5;
 }
