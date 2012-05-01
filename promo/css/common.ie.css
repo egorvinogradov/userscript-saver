@@ -8,6 +8,10 @@
     _position: absolute;
 }
 
+.header__join-form-fading {
+    background: #fff url('../img/spinner.gif') no-repeat 50% 50%;
+}
+
 .capabilities {
     background: #AEB6BB;
     border-color: #A5ADB1;

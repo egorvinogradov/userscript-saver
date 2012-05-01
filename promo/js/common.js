@@ -4,7 +4,12 @@ $(function(){
 
         settings: {
             pageWidth: 1000,
-            slideCount: 3
+            slideCount: 3,
+            launchrock: {
+                id: '8XJV8IA3',
+                form:   '#signupform-',
+                input:  '#email-'
+            }
         },
         els: {
             body:       $('.page'),
@@ -27,6 +32,11 @@ $(function(){
                     left:   $('.capabilities__headers-fading-left'),
                     right:  $('.capabilities__headers-fading-right')
                 }
+            },
+            formFading:     $('.header__join-form-fading, .footer__subscribe-form-fading'),
+            subscribe: {
+                container:  $('.launchrock-form '),
+                custom:     $('.subscribe-input')
             }
         },
         classes: {
@@ -39,9 +49,10 @@ $(function(){
             },
             switcherActive:     'm-active',
             fadingInvisible:    'm-invisible',
-            inputError:         'm-error'
+            inputError:         'm-error',
+            formFadingVisible:  'm-visible',
+            formInactive:       'm-inactive'
         },
-
         showTeam: function(){
             this.els.team.block.show();
             this.els.team.popup.hide().fadeIn();
@@ -109,22 +120,22 @@ $(function(){
             setTimeout(animate, 0);
 
         },
-        validateEmail: function(input){
+        validateEmail: function(value){
+            return /^([a-z0-9_\.\-])+\@(([a-z0-9\-])+\.)+([a-z0-9]{2,6})+$/i.test(value);
+        },
+        subscribe: function(form){
 
-            var email = input.val(),
-                re = /^([a-z0-9_\.\-])+\@(([a-z0-9\-])+\.)+([a-z0-9]{2,6})+$/i;
+            var input = form.find(this.els.subscribe.custom),
+                value = input.val();
 
-            if ( re.test(email) ) {
-                return true;
+            if ( this.validateEmail(value) ) {
+                this.els.subscribe.input.val(value).trigger('change');
+                this.els.subscribe.form.submit();
             }
             else {
                 input
-                    .addClass(this.classes.inputError)
-                    .one('focus blur', $.proxy(function(){
-                        input.removeClass(this.classes.inputError)
-                    }, this));
-
-                return false;
+                .addClass(this.classes.inputError)
+                .one('focus blur', $.proxy(function(){ input.removeClass(this.classes.inputError) }, this));
             }
         },
         init: function(){
@@ -191,14 +202,21 @@ $(function(){
                 .bind('mouseover mouseout', $.proxy(handlers.fadingHover, this));
 
 
-            this.els.forms.each($.proxy(function(i, element){
+            $(window).load($.proxy(function(){
 
-                var form =  $(element),
-                    input = form.find('input');
+                this.els.forms.each($.proxy(function(i, form){
 
-                form.submit($.proxy(function(){
-                    return this.validateEmail(input);
+                    $(form).submit($.proxy(function(event){
+                        this.subscribe( $(event.target) );
+                        return false;
+                    }, this));
+
                 }, this));
+
+                this.els.subscribe.form = this.els.subscribe.container.find(this.settings.launchrock.form + this.settings.launchrock.id);
+                this.els.subscribe.input = this.els.subscribe.container.find(this.settings.launchrock.input + this.settings.launchrock.id);
+                this.els.formFading.removeClass(this.classes.formFadingVisible);
+                this.els.forms.removeClass(this.classes.formInactive);
 
             }, this));
 

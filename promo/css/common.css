@@ -120,6 +120,25 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 
 .header__join-form {
     padding: 0 50px;
+    position: relative;
+    height: 150px;
+    overflow: hidden;
+}
+
+.header__join-form-fading {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 144px;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, .9) url('../img/spinner.gif') no-repeat 50% 50%;
+    z-index: 3;
+    padding-bottom: 5px;
+}
+
+.header__join-form-fading.m-visible {
+    display: block;
 }
 
 .header__join-form-label {
@@ -211,7 +230,7 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 }
 
 .header__social {
-    padding: 96px 50px 0 50px;
+    padding: 90px 50px 0 50px;
     background: url('../img/join-form-sciccors.png') no-repeat 0 33px;
     line-height: 30px;
 }
@@ -683,6 +702,24 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
     right: 0;
 }
 
+.footer__subscribe-form.m-inactive {
+    opacity: .3;
+}
+
+.footer__subscribe-form-fading {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 2;
+}
+
+.footer__subscribe-form-fading.m-visible {
+    display: block;
+}
+
 .footer__subscribe-label {
     height: 30px;
     display: block;
@@ -889,4 +926,10 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
     bottom: 20px;
     left: 50%;
     margin-left: -50px;
+}
+
+.launchrock-form {
+    position: absolute;
+    left: -9999em;
+    bottom: -9990em;
 }
