@@ -10,8 +10,7 @@ class Taistie extends Spine.Model
 	@extend Spine.Model.Local
 
 	fitsUrl: (url) ->
-		rootUrl = new RegExp(@rootUrl, 'g')
-		return rootUrl.test(url)
+		return url.indexOf(@rootUrl) >= 0
 
 	getCss: ->
 		@css ? ''
