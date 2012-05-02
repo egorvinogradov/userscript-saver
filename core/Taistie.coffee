@@ -1,7 +1,7 @@
 class Taistie extends Spine.Model
 	@_userscriptsDownloader = null
 
-	@configure "Taistie", "name", "active", "rootUrl", "css", "js", "source", "externalId"
+	@configure "Taistie", "name", "active", "rootUrl", "css", "js", "source", "externalId", "description"
 
 	constructor: (options) ->
 		super options
@@ -41,6 +41,9 @@ class Taistie extends Spine.Model
 					taistieFromUserscript = Taistie.create
 						name: userscript.name
 						js: userscript.js
+						description: userscript.description
+
+						#TODO: проставлять url здесь, в Taistie
 						rootUrl: userscript.rootUrl
 						source: 'userscripts'
 						externalId: userscript.id

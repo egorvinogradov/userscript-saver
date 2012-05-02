@@ -1,5 +1,6 @@
 describe 'UserscriptsDownloader', ->
 	searchUrlPrefix = 'http://userscripts.org/scripts/search?q='
+
 	downloader = null
 
 	initDownloader = (ajaxProvider) ->
@@ -34,54 +35,67 @@ describe 'UserscriptsDownloader', ->
 			userscripts = null
 			beforeEach ->
 				initDownloader
-					getUrlContent: ->
-						getContentFixture()
+					getUrlContent: (url) ->
+						getContentFixture()[url]
 
-				userscripts = downloader.getUserscriptsForUrl 'mockUrl'
+				userscripts = downloader.getUserscriptsForUrl 'targetSite.com'
 
 			it 'creates a userscript from every row of scripts table', ->
 				scriptsInFixtureCount = 2
 				expect(userscripts.length).toEqual scriptsInFixtureCount
 
-			xit 'gets script ids from ids of rows of scripts table', ->
-				userscripts = downloader.getUserscriptsForUrl 'some_url'
+			it 'gets script id, name and description from ids of rows of scripts table', ->
+				expect(userscripts[0]).toEqual {
+						id: 55501
+						name: 'script1_link_text'
+						description: 'script1_description'
+						js: 'alert(\'script1\')'
+					}
 
+				expect(userscripts[1]).toEqual {
+						id: 55502
+						name: 'script2_link_text',
+						description: "script2_description\n\twith newline"
+					}
 
 			getContentFixture = ->
-				'<tr id="scripts-132177">
-				<td class="script-meat">
-				<a href="/scripts/show/132177" class="title" title="Github.Time.Formatter">Github.Time.Formatter</a>
+				content = {}
+				content[searchUrlPrefix + 'targetSite'] = '<tr id="scripts-55501">
+					<td class="script-meat">
+					<a href="/scripts/show/55502" class="title" title="script1_title">script1_link_text</a>
 
-				<p class="desc">Github.Time.Formatter . I\'m sick of "xx month ago", \'cuz I\'m a programmer, not a goddamn calendar.</p>
-				</td>
-				<td class="inv lp">
-				<b>no&nbsp;reviews</b>
-				</td>
-				<td class="inv lp">0</td>
-				<td class="inv lp">0</td>
-				<td class="inv lp">18</td>
-				<td class="inv lp">
-				<abbr class="updated" title="2012-05-01T08:17:06Z">
-				58 minutes ago
-				</abbr>
-				</td>
-				</tr>' +
-				'<tr id="scripts-130781">
-				<td class="script-meat">
-				<a href="/scripts/show/130781" class="title" title="gist raw perm HEAD">gist raw perm HEAD</a>
+					<p class="desc">script1_description</p>
+					</td>
+					<td class="inv lp">
+					<b>no&nbsp;reviews</b>
+					</td>
+					<td class="inv lp">0</td>
+					<td class="inv lp">0</td>
+					<td class="inv lp">18</td>
+					<td class="inv lp">
+					<abbr class="updated" title="2012-05-01T08:17:06Z">
+					58 minutes ago
+					</abbr>
+					</td>
+					</tr>' +
+					'<tr id="scripts-55502">
+					<td class="script-meat">
+					<a href="/scripts/show/55501" class="title" title="script2_title">script2_link_text</a>
 
-				<p class="desc">Add permanently HEAD links on Gist. Use for install user.js or load xxx.js with (at)require etc.</p>
-				</td>
-				<td class="inv lp">
-				<b>no&nbsp;reviews</b>
-				</td>
-				<td class="inv lp">0</td>
-				<td class="inv lp">0</td>
-				<td class="inv lp">132</td>
-				<td class="inv lp">
-				<abbr class="updated" title="2012-04-30T15:48:10Z">
-				17 hours ago
-				</abbr>
-				</td>
-				</tr>'
+					<p class="desc">script2_description\n\twith newline</p>
+					</td>
+					<td class="inv lp">
+					<b>no&nbsp;reviews</b>
+					</td>
+					<td class="inv lp">0</td>
+					<td class="inv lp">0</td>
+					<td class="inv lp">132</td>
+					<td class="inv lp">
+					<abbr class="updated" title="2012-04-30T15:48:10Z">
+					17 hours ago
+					</abbr>
+					</td>
+					</tr>'
+
+				return content
 

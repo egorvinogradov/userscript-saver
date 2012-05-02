@@ -7,13 +7,23 @@ class UserscriptsDownloader
 
 		siteName = @_getSiteNameByUrl url
 
-		scriptsListPage = @_ajaxProvider.getUrlContent(UserscriptsDownloader._userscriptsSearchPrefix + siteName)
+		scriptsListPageContent = @_ajaxProvider.getUrlContent(UserscriptsDownloader._userscriptsSearchPrefix + siteName)
 
-		scripts = scriptsListPage.match /tr\sid="scripts-(\d+)">(.)+?<\/td>/gm
+		scriptRows = scriptsListPageContent.match /tr\sid="scripts-(\d+)">([\s\S])+?<\/td>/gm
 
-		console.log scripts
+		scripts = []
+
+		if scriptRows?
+			scripts.push @_getScriptFromScriptRow scriptRow for scriptRow in scriptRows
 
 		return scripts
+
+	_getScriptFromScriptRow: (scriptRow) ->
+		id = parseInt(scriptRow.match(/tr\sid="scripts-(\d+)/)[1])
+		name = scriptRow.match(/<a(?:.)+?>((?:.)+)<\/a>/)[1]
+		description = scriptRow.match(/class="desc">(([\s\S])*?)<\/p>/)[1]
+
+		return id: id, name: name, description: description
 
 	_getSiteNameByUrl: (url) ->
 		urlWithoutProtocol = url.replace /^https?:\/\//, ''
