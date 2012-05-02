@@ -10,6 +10,10 @@ $(function(){
                 form:   '#signupform-',
                 input:  '#email-',
                 submit: '#submit-'
+            },
+            share: {
+                text:   $('.meta__title').attr('content'),
+                url:    $('.meta__url').attr('content')
             }
         },
         els: {
@@ -45,7 +49,8 @@ $(function(){
             teamPopup:                  $('.team'),
             successSubscriptionPopup:   $('.subscribed'),
             subscriptionEmail:          $('.subscribed__confirmation-email'),
-            shareURLInput:              $('.subscribed__share-url-input')
+            shareURLInput:              $('.subscribed__share-url-input'),
+            shareButtons:               $('.subscribed__social-link')
         },
         classes: {
             headers: {
@@ -176,6 +181,16 @@ $(function(){
             this.subscribe(submit);
 
         },
+        share: function(event){
+
+            var button = $(event.target),
+                service = button.data('service'),
+                url = button.data('uri')
+                        .replace(/\{\{ url \}\}/, encodeURIComponent(this.settings.share.url))
+                        .replace(/\{\{ text \}\}/, encodeURIComponent(this.settings.share.text));
+
+            window.open(url, '_blank', 'scrollbars=0, resizable=1, menubar=0, left=200, top=200, width=550, height=440, toolbar=0, status=0');
+        },
         init: function(){
 
             var context = this,
@@ -241,7 +256,8 @@ $(function(){
 
             this.els.showTeam.click($.proxy(function(){ this.showPopup(this.els.teamPopup) }, this));
             this.els.shareURLInput.click(function(){ $(this).select() });
-
+            this.els.shareButtons.click($.proxy(this.share, this));
+            
 
             $(window).load($.proxy(function(){
 
@@ -269,3 +285,4 @@ $(function(){
     Promo.init();
 
 });
+
