@@ -229,6 +229,19 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
             box-shadow: inset 0 3px 4px rgba(0,0,0,.2);
 }
 
+.header__join-form-submit.m-disabled {
+    background: #C0CAD0;
+    border: 0;
+    text-shadow: 0 1px 1px rgba(0,0,0,.25);
+    -webkit-box-shadow: none;
+       -moz-box-shadow: none;
+            box-shadow: none;
+}
+
+.header__join-form-submit.m-disabled:active {
+    line-height: 40px;
+}
+
 .header__social {
     padding: 90px 50px 0 50px;
     background: url('../img/join-form-sciccors.png') no-repeat 0 33px;
@@ -808,6 +821,19 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
     -webkit-box-shadow: inset 0 3px 2px rgba(0,0,0,.15);
        -moz-box-shadow: inset 0 3px 2px rgba(0,0,0,.15);
             box-shadow: inset 0 3px 2px rgba(0,0,0,.15);
+}
+
+.footer__subscribe-button.m-disabled {
+    background: #8A9296;
+    border-color: #8A9296;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .5);
+    -webkit-box-shadow: inset 0 1px 0 rgba(0,0,0,.1);
+       -moz-box-shadow: inset 0 1px 0 rgba(0,0,0,.1);
+            box-shadow: inset 0 1px 0 rgba(0,0,0,.1);
+}
+
+.footer__subscribe-button.m-disabled:active {
+    line-height: 32px;
 }
 
 .team {

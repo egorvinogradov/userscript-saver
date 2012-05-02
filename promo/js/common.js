@@ -8,7 +8,8 @@ $(function(){
             launchrock: {
                 id: '8XJV8IA3',
                 form:   '#signupform-',
-                input:  '#email-'
+                input:  '#email-',
+                submit: '#submit-'
             }
         },
         els: {
@@ -35,8 +36,9 @@ $(function(){
             },
             formFading:     $('.header__join-form-fading, .footer__subscribe-form-fading'),
             subscribe: {
-                container:  $('.launchrock-form '),
-                custom:     $('.subscribe-input')
+                container:      $('.launchrock-form '),
+                customInput:    $('.subscribe-input'),
+                customSubmit:   $('.header__join-form-submit, .footer__subscribe-button')
             }
         },
         classes: {
@@ -51,7 +53,8 @@ $(function(){
             fadingInvisible:    'm-invisible',
             inputError:         'm-error',
             formFadingVisible:  'm-visible',
-            formInactive:       'm-inactive'
+            formInactive:       'm-inactive',
+            disabledSubmit:     'm-disabled'
         },
         showTeam: function(){
             this.els.team.block.show();
@@ -123,14 +126,22 @@ $(function(){
         validateEmail: function(value){
             return /^([a-z0-9_\.\-])+\@(([a-z0-9\-])+\.)+([a-z0-9]{2,6})+$/i.test(value);
         },
-        subscribe: function(form){
+        subscribe: function(submit){
 
-            var input = form.find(this.els.subscribe.custom),
+            var form = submit.parent(this.els.forms),
+                input = form.find(this.els.subscribe.customInput),
                 value = input.val();
+
+            console.log('subscribe', form, input);
 
             if ( this.validateEmail(value) ) {
                 this.els.subscribe.input.val(value).trigger('change');
-                this.els.subscribe.form.submit();
+                this.els.subscribe.submit.trigger('click');
+                input.val('');
+                submit
+                    .html(submit.data('success'))
+                    .attr({ disabled: true })
+                    .addClass(this.classes.disabledSubmit);
             }
             else {
                 input
@@ -204,17 +215,13 @@ $(function(){
 
             $(window).load($.proxy(function(){
 
-                this.els.forms.each($.proxy(function(i, form){
-
-                    $(form).submit($.proxy(function(event){
-                        this.subscribe( $(event.target) );
-                        return false;
-                    }, this));
-
+                this.els.subscribe.customSubmit.click($.proxy(function(event){
+                    this.subscribe( $(event.target) );
                 }, this));
 
                 this.els.subscribe.form = this.els.subscribe.container.find(this.settings.launchrock.form + this.settings.launchrock.id);
                 this.els.subscribe.input = this.els.subscribe.container.find(this.settings.launchrock.input + this.settings.launchrock.id);
+                this.els.subscribe.submit = this.els.subscribe.container.find(this.settings.launchrock.submit + this.settings.launchrock.id);
                 this.els.formFading.removeClass(this.classes.formFadingVisible);
                 this.els.forms.removeClass(this.classes.formInactive);
 
