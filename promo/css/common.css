@@ -229,6 +229,8 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
             box-shadow: inset 0 3px 4px rgba(0,0,0,.2);
 }
 
+/* TEMPORARY UNUSED */
+
 .header__join-form-submit.m-disabled {
     background: #C0CAD0;
     border: 0;
@@ -241,6 +243,8 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 .header__join-form-submit.m-disabled:active {
     line-height: 40px;
 }
+
+/* / TEMPORARY UNUSED */
 
 .header__social {
     padding: 90px 50px 0 50px;
@@ -823,6 +827,8 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
             box-shadow: inset 0 3px 2px rgba(0,0,0,.15);
 }
 
+/* TEMPORARY UNUSED */
+
 .footer__subscribe-button.m-disabled {
     background: #8A9296;
     border-color: #8A9296;
@@ -835,6 +841,8 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 .footer__subscribe-button.m-disabled:active {
     line-height: 32px;
 }
+
+/* / TEMPORARY UNUSED */
 
 .b-popup {
     position: fixed;

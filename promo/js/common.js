@@ -59,8 +59,7 @@ $(function(){
             fadingInvisible:    'm-invisible',
             inputError:         'm-error',
             formFadingVisible:  'm-visible',
-            formInactive:       'm-inactive',
-            disabledSubmit:     'm-disabled'
+            formInactive:       'm-inactive'
         },
         showPopup: function(element){
 
@@ -146,25 +145,19 @@ $(function(){
                     context.els.formFading.removeClass(context.classes.formFadingVisible);
                     context.els.forms.removeClass(context.classes.formInactive);
                     context.showPopup(context.els.successSubscriptionPopup);
+                    input.val('');
                 };
 
             if ( this.validateEmail(value) ) {
 
                 this.els.subscribe.input.val(value).trigger('change');
                 this.els.subscribe.submit.trigger('click');
-
-                input.val('');
-
-                submit
-                    .html(submit.data('success'))
-                    .attr({ disabled: true })
-                    .addClass(this.classes.disabledSubmit);
-
                 this.els.subscriptionEmail.html(value);
                 this.els.formFading.addClass(this.classes.formFadingVisible);
                 this.els.forms.addClass(this.classes.formInactive);
 
                 setTimeout(showPopup, 700);
+
             }
             else {
                 
@@ -172,6 +165,16 @@ $(function(){
                 .addClass(this.classes.inputError)
                 .one('focus blur', $.proxy(function(){ input.removeClass(this.classes.inputError) }, this));
             }
+        },
+        enterSubmit: function(event){
+
+            if ( event.which !== 13 ) return true;
+
+            var input = $(event.target),
+                submit = input.next(this.els.subscribe.customSubmit);
+
+            this.subscribe(submit);
+
         },
         init: function(){
 
@@ -253,8 +256,9 @@ $(function(){
                 this.els.forms.removeClass(this.classes.formInactive);
 
                 this.els.subscribe.customInput
-                    .focus($.proxy(function(event){ $(event.target).bind('keydown', $.proxy(this.formSubmit, this)) }, this))
-                    .blur($.proxy(function(event){ $(event.target).unbind('keydown', $.proxy(this.formSubmit, this)) }, this));
+                    .focus($.proxy(function(event){ $(event.target).bind('keydown', $.proxy(this.enterSubmit, this)) }, this))
+                    .blur($.proxy(function(event){ $(event.target).unbind('keydown', $.proxy(this.enterSubmit, this)) }, this));
+
             }, this));
 
 
