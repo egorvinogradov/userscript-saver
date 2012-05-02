@@ -132,8 +132,6 @@ $(function(){
                 input = form.find(this.els.subscribe.customInput),
                 value = input.val();
 
-            console.log('subscribe', form, input);
-
             if ( this.validateEmail(value) ) {
                 this.els.subscribe.input.val(value).trigger('change');
                 this.els.subscribe.submit.trigger('click');
