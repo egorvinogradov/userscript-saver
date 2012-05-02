@@ -960,9 +960,10 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 .team__popup-close {
     position: absolute;
     width: 200px;
-    bottom: 20px;
+    bottom: 32px;
     left: 50%;
-    margin-left: -50px;
+    margin-left: -100px;
+    text-align: center;
 }
 
 .subscribed__popup {
@@ -1012,7 +1013,6 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 .subscribed__share-url-label {
     display: inline-block;
 }
-
 
 .subscribed__share-url-text {
     display: inline-block;
@@ -1105,8 +1105,8 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
     width: 200px;
     bottom: 32px;
     left: 50%;
-    margin-left: -50px;
-    text-align: left;
+    margin-left: -100px;
+    text-align: center;
 }
 
 .launchrock-form {
