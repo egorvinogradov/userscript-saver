@@ -324,9 +324,8 @@
 
     <!-- team -->
 
-    <div class="team">
-        <div class="team__fading"></div>
-        <div class="team__popup">
+    <div class="team b-popup">
+        <div class="team__popup b-popup-inner">
             <h2 class="team__popup-header">
                 <span class="team__popup-header-line"></span>
                 <span class="team__popup-header-text">Команда Taist</span>
@@ -358,15 +357,48 @@
                     </div>
                 </div>
             </div>
-
             <div class="team__popup-close">
-                <span class="team__popup-close-button team__popup-link">Закрыть</span>
+                <span class="team__popup-link b-popup-close">Закрыть</span>
             </div>
 
         </div>
     </div>
 
     <!-- / team -->
+
+
+    <!-- subscribed -->
+
+    <div class="subscribed b-popup">
+        <div class="subscribed__popup b-popup-inner">
+            <h2 class="subscribed__header">Спасибо! Ваша заявка принята.</h2>
+            <div class="subscribed__confirmation">
+                Мы отправили подтверждение на<br>
+                <span class="subscribed__confirmation-email">email@example.com</span>
+            </div>
+            <div class="subscribed__message">
+                Как только бета-версия будет доступна,<br>
+                вам придет письмо с приглашением.
+            </div>
+            <h3 class="subscribed__share-header">Расскажите друзьям о Taist</h3>
+            <div class="subscribed__share-url">
+                <label class="subscribed__share-url-label">
+                    <span class="subscribed__share-url-text">Ссылка:</span>
+                    <input type="text" value="http://tai.st" class="subscribed__share-url-input">
+                </label>
+            </div>
+            <ul class="subscribed__social">
+                <li class="subscribed__social-link">
+                    <a href=""></a>
+                </li>
+            </ul>
+            <div class="subscribed__popup-close">
+                <span class="subscribed__popup-link b-popup-close">Закрыть</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- /subscribed -->
 
 
     <!-- launchrock -->

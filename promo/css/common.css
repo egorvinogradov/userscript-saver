@@ -836,7 +836,7 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
     line-height: 32px;
 }
 
-.team {
+.b-popup {
     position: fixed;
     z-index: 10;
     top: 0;
@@ -847,14 +847,11 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
     background: rgba(60,64,68,.9);
 }
 
-.team__popup {
-    width: 1000px;
+.b-popup-inner {
     position: absolute;
     top: 50%;
     left: 50%;
     padding: 0 10px;
-    margin: -300px 0 0 -500px;
-    height: 600px;
     background: #fff;
     -webkit-border-radius: 7px;
        -moz-border-radius: 7px;
@@ -862,6 +859,12 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
     -webkit-box-shadow: 0 3px 6px rgba(0,0,0,.5);
        -moz-box-shadow: 0 3px 6px rgba(0,0,0,.5);
             box-shadow: 0 3px 6px rgba(0,0,0,.5);
+}
+
+.team__popup {
+    width: 1000px;
+    height: 600px;
+    margin: -300px 0 0 -500px;
 }
 
 .team__popup-header {
@@ -952,6 +955,112 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
     bottom: 20px;
     left: 50%;
     margin-left: -50px;
+}
+
+.subscribed__popup {
+    width: 600px;
+    height: 540px;
+    margin: -270px 0 0 -300px;
+    text-align: center;
+    padding-top: 45px;
+}
+
+.subscribed__header {
+    font-size: 30px;
+    font-weight: bold;
+    padding-bottom: 32px;
+}
+
+.subscribed__confirmation {
+    line-height: 32px;
+    padding-bottom: 30px;
+}
+
+.subscribed__confirmation-email {
+    display: inline-block;
+    background: #ffebc5;
+    color: #4e432e;
+    padding: 0 10px;
+    position: relative;
+    bottom: -3px;
+}
+
+.subscribed__message {
+    padding-bottom: 35px;
+}
+
+.subscribed__share-header {
+    font-size: 24px;
+    font-weight: bold;
+    padding-bottom: 15px;
+}
+
+.subscribed__share-url {
+    background: #dff6ff;
+    display: inline-block;
+    padding: 16px 63px;
+}
+
+.subscribed__share-url-label {
+    display: inline-block;
+}
+
+
+.subscribed__share-url-text {
+    display: inline-block;
+    line-height: 40px;
+    padding-right: 10px;
+}
+
+.subscribed__share-url-input {
+    width: 170px;
+    height: 38px;
+    padding-left: 8px;
+    background: #fff;
+    border: 1px solid #7292a7;
+    font: 20px/24px ProximaNova, Arial, sans-serif;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
+    -webkit-box-shadow: inset 0 3px 3px rgba(156,176,189, .2);
+       -moz-box-shadow: inset 0 3px 3px rgba(156,176,189, .2);
+            box-shadow: inset 0 3px 3px rgba(156,176,189, .2);
+}
+
+.subscribed__share-url-input:focus {
+    border-color: #8daec5;
+    outline: none;
+    -webkit-box-shadow: inset 0 3px 3px rgba(156,176,189, .2),
+                        0 0 3px 2px rgba(64,179,255, .7);
+       -moz-box-shadow: inset 0 3px 3px rgba(156,176,189, .2),
+                        0 0 3px 2px rgba(64,179,255, .7);
+            box-shadow: inset 0 3px 3px rgba(156,176,189, .2),
+                        0 0 3px 2px rgba(64,179,255, .7);
+}
+
+.subscribed__popup-link {
+    color: #1771ab;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(23,113,171,.3);
+    line-height: 20px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.subscribed__popup-link:hover {
+    border-bottom-color: #1771ab;
+}
+
+.subscribed__popup-close {
+    position: absolute;
+    width: 200px;
+    bottom: 20px;
+    left: 50%;
+    margin-left: -50px;
+    text-align: left;
 }
 
 .launchrock-form {

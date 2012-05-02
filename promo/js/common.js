@@ -6,7 +6,7 @@ $(function(){
             pageWidth: 1000,
             slideCount: 3,
             launchrock: {
-                id: '8XJV8IA3',
+                id:     '8XJV8IA3',
                 form:   '#signupform-',
                 input:  '#email-',
                 submit: '#submit-'
@@ -21,25 +21,31 @@ $(function(){
                 close:  $('.team__popup-close-button'),
                 link:   $('.footer__link-team')
             },
+            popup: {
+                container:  $('.b-popup'),
+                inner:      $('.b-popup-inner'),
+                close:      $('.b-popup-close')
+            },
             slides: {
                 headers:    $('.capabilities__header'),
                 wrapper:    $('.capabilities__slides-wrapper'),
                 switchers:  $('.capabilities__switcher'),
-
-                headerContainer:    $('.capabilities__headers-list'),
-                slideContainer:     $('.capabilities__slides'),
-                switcherContainer:  $('.capabilities__switcher'),
                 fading: {
                     left:   $('.capabilities__headers-fading-left'),
                     right:  $('.capabilities__headers-fading-right')
                 }
             },
-            formFading:     $('.header__join-form-fading, .footer__subscribe-form-fading'),
             subscribe: {
                 container:      $('.launchrock-form '),
                 customInput:    $('.subscribe-input'),
                 customSubmit:   $('.header__join-form-submit, .footer__subscribe-button')
-            }
+            },
+            formFading:                 $('.header__join-form-fading, .footer__subscribe-form-fading'),
+            showTeam:                   $('.footer__link-team'),
+            teamPopup:                  $('.team'),
+            successSubscriptionPopup:   $('.subscribed'),
+            subscriptionEmail:          $('.subscribed__confirmation-email'),
+            shareURLInput:              $('.subscribed__share-url-input')
         },
         classes: {
             headers: {
@@ -56,14 +62,18 @@ $(function(){
             formInactive:       'm-inactive',
             disabledSubmit:     'm-disabled'
         },
-        showTeam: function(){
-            this.els.team.block.show();
-            this.els.team.popup.hide().fadeIn();
+        showPopup: function(element){
+
+            element.show();
+            element.find(this.els.popup.inner).hide().fadeIn();
+
         },
-        hideTeam: function(){
-            this.els.team.popup.fadeOut($.proxy(function(){
-                this.els.team.block.hide();
+        hidePopup: function(){
+
+            this.els.popup.inner.fadeOut($.proxy(function(){
+                this.els.popup.container.hide();
             }, this));
+
         },
         getNextSlide: function(current){
             return current + 1 < this.settings.slideCount ? current + 1 : 0;
@@ -130,18 +140,34 @@ $(function(){
 
             var form = submit.parent(this.els.forms),
                 input = form.find(this.els.subscribe.customInput),
-                value = input.val();
+                value = input.val(),
+                context = this,
+                showPopup = function(){
+                    context.els.formFading.removeClass(context.classes.formFadingVisible);
+                    context.els.forms.removeClass(context.classes.formInactive);
+                    context.showPopup(context.els.successSubscriptionPopup);
+                };
 
             if ( this.validateEmail(value) ) {
+
                 this.els.subscribe.input.val(value).trigger('change');
                 this.els.subscribe.submit.trigger('click');
+
                 input.val('');
+
                 submit
                     .html(submit.data('success'))
                     .attr({ disabled: true })
                     .addClass(this.classes.disabledSubmit);
+
+                this.els.subscriptionEmail.html(value);
+                this.els.formFading.addClass(this.classes.formFadingVisible);
+                this.els.forms.addClass(this.classes.formInactive);
+
+                setTimeout(showPopup, 700);
             }
             else {
+                
                 input
                 .addClass(this.classes.inputError)
                 .one('focus blur', $.proxy(function(){ input.removeClass(this.classes.inputError) }, this));
@@ -188,14 +214,13 @@ $(function(){
 
 
             this.els.slides.fading.all = this.els.slides.fading.left.add(this.els.slides.fading.right);
-            this.els.team.link.click($.proxy(this.showTeam, this));
             this.els.body.bind('click keydown', $.proxy(function(event){
 
                 var target = $(event.target),
                     condition = ( event.type === 'keydown' && event.which === 27 ) ||
-                                ( event.type === 'click' && ( target.is(this.els.team.close) || target.is(this.els.team.block) ) );
+                                ( event.type === 'click' && ( target.is(this.els.popup.close) || target.is(this.els.popup.container) ) );
 
-                condition && this.hideTeam();
+                condition && this.hidePopup();
                 event.stopPropagation();
 
             }, this));
@@ -211,6 +236,10 @@ $(function(){
                 .bind('mouseover mouseout', $.proxy(handlers.fadingHover, this));
 
 
+            this.els.showTeam.click($.proxy(function(){ this.showPopup(this.els.teamPopup) }, this));
+            this.els.shareURLInput.click(function(){ $(this).select() });
+
+
             $(window).load($.proxy(function(){
 
                 this.els.subscribe.customSubmit.click($.proxy(function(event){
@@ -223,6 +252,9 @@ $(function(){
                 this.els.formFading.removeClass(this.classes.formFadingVisible);
                 this.els.forms.removeClass(this.classes.formInactive);
 
+                this.els.subscribe.customInput
+                    .focus($.proxy(function(event){ $(event.target).bind('keydown', $.proxy(this.formSubmit, this)) }, this))
+                    .blur($.proxy(function(event){ $(event.target).unbind('keydown', $.proxy(this.formSubmit, this)) }, this));
             }, this));
 
 
