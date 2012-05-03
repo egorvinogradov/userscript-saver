@@ -3,7 +3,7 @@ $(function(){
     var Promo = {
 
         settings: {
-            pageWidth: 1000,
+            pageWidth:  1000,
             slideCount: 3,
             launchrock: {
                 id:     '8XJV8IA3',
@@ -91,7 +91,7 @@ $(function(){
         switchSlide: function(number){
 
             var settings = {
-                    pageWidth: 1000,
+                    pageWidth: this.settings.pageWidth,
                     headerSpace: 40
                 },
                 header = this.els.slides.headers.eq(number),
@@ -184,7 +184,6 @@ $(function(){
         share: function(event){
 
             var button = $(event.target),
-                service = button.data('service'),
                 url = button.data('uri')
                         .replace(/\{\{ url \}\}/, encodeURIComponent(this.settings.share.url))
                         .replace(/\{\{ text \}\}/, encodeURIComponent(this.settings.share.text));
