@@ -84,12 +84,12 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 }
 
 .header__text {
-    padding-bottom: 20px;
+    padding-bottom: 30px;
 }
 
 .header__highlighted {
     background: #fef7c9;
-    padding: 24px 20px 24px 40px;
+    padding: 32px 20px 32px 43px;
     -webkit-border-radius: 6px;
        -moz-border-radius: 6px;
             border-radius: 6px;
@@ -968,8 +968,8 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 
 .subscribed__popup {
     width: 600px;
-    height: 500px;
-    margin: -270px 0 0 -300px;
+    height: 460px;
+    margin: -250px 0 0 -300px;
     text-align: center;
     padding-top: 45px;
 }
@@ -982,7 +982,7 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 
 .subscribed__confirmation {
     line-height: 32px;
-    padding-bottom: 30px;
+    padding-bottom: 12px;
 }
 
 .subscribed__confirmation-email {
@@ -1112,5 +1112,5 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 .launchrock-form {
     position: absolute;
     left: -9999em;
-    bottom: -9990em;
+    bottom: -9999em;
 }
