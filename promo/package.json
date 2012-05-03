@@ -1,0 +1,7 @@
+{
+  "name": "taist-promo",
+  "version": "0.0.1",
+  "dependencies": {
+    "http-server": "0.4.1"
+  }
+}
