@@ -52,6 +52,9 @@ $(function(){
             shareURLInput:              $('.subscribed__share-url-input'),
             shareButtons:               $('.subscribed__social-link')
         },
+        selectors: {
+            forms:          '.header__join-form, .footer__subscribe-form'
+        },
         classes: {
             headers: {
                 active:     'm-active',
@@ -117,7 +120,7 @@ $(function(){
                 .removeAttr('style');
 
             this.els.slides.wrapper
-                .animate({ left: number * -1000 });
+                .animate({ left: number * this.settings.pageWidth * -1 });
 
             this.els.slides.switchers
                 .removeClass(this.classes.switcherActive)
@@ -140,10 +143,10 @@ $(function(){
         validateEmail: function(value){
             return /^([a-z0-9_\.\-])+\@(([a-z0-9\-])+\.)+([a-z0-9]{2,6})+$/i.test(value);
         },
-        subscribe: function(submit){
+        subscribe: function(form){
 
-            var form = submit.parent(this.els.forms),
-                input = form.find(this.els.subscribe.customInput),
+            var input = form.find(this.els.subscribe.customInput),
+                submit = form.find(this.els.subscribe.customSubmit),
                 value = input.val(),
                 context = this,
                 showPopup = function(){
@@ -153,14 +156,13 @@ $(function(){
                     input.val('');
                 };
 
-            if ( this.validateEmail(value) ) {
+            if ( value && this.validateEmail(value) ) {
 
-                this.els.subscribe.input.val(value).trigger('change');
+                this.els.subscribe.input.val(value);
                 this.els.subscribe.submit.trigger('click');
                 this.els.subscriptionEmail.html(value);
                 this.els.formFading.addClass(this.classes.formFadingVisible);
                 this.els.forms.addClass(this.classes.formInactive);
-
                 setTimeout(showPopup, 700);
 
             }
@@ -170,16 +172,6 @@ $(function(){
                 .addClass(this.classes.inputError)
                 .one('focus blur', $.proxy(function(){ input.removeClass(this.classes.inputError) }, this));
             }
-        },
-        enterSubmit: function(event){
-
-            if ( event.which !== 13 ) return true;
-
-            var input = $(event.target),
-                submit = input.next(this.els.subscribe.customSubmit);
-
-            this.subscribe(submit);
-
         },
         share: function(event){
 
@@ -226,6 +218,11 @@ $(function(){
 
                         event.type === 'mouseover'  && header.addClass(hover);
                         event.type === 'mouseout'   && header.removeClass(hover);
+                    },
+                    enterPress: function(event){
+
+                        if ( event.which !== 13 ) return true;
+                        context.subscribe( $(event.target).parents(context.selectors.forms) );
                     }
                 };
 
@@ -261,7 +258,7 @@ $(function(){
             $(window).load($.proxy(function(){
 
                 this.els.subscribe.customSubmit.click($.proxy(function(event){
-                    this.subscribe( $(event.target) );
+                    this.subscribe( $(event.target).parents(this.selectors.forms) );
                 }, this));
 
                 this.els.subscribe.form = this.els.subscribe.container.find(this.settings.launchrock.form + this.settings.launchrock.id);
@@ -271,11 +268,11 @@ $(function(){
                 this.els.forms.removeClass(this.classes.formInactive);
 
                 this.els.subscribe.customInput
-                    .focus($.proxy(function(event){ $(event.target).bind('keydown', $.proxy(this.enterSubmit, this)) }, this))
-                    .blur($.proxy(function(event){ $(event.target).unbind('keydown', $.proxy(this.enterSubmit, this)) }, this));
+                    .focus(function(event){ $(event.target).bind('keydown', handlers.enterPress) })
+                    .blur(function(event){ $(event.target).unbind('keydown', handlers.enterPress) });
 
             }, this));
-
+            
 
             setTimeout(slideFirst, 1600);
         }

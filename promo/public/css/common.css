@@ -1110,6 +1110,11 @@ html, body, h1, h2, h3, form, input, button, ul, li, img {
 }
 
 .launchrock-form {
+    position: relative;
+    overflow: hidden;
+}
+
+.launchrock-form .lrdiscoverwidget {
     position: absolute;
     left: -9999em;
     bottom: -9999em;
