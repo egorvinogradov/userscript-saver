@@ -141,7 +141,7 @@ $(function(){
 
         },
         validateEmail: function(value){
-            return /^([a-z0-9_\.\-])+\@(([a-z0-9\-])+\.)+([a-z0-9]{2,6})+$/i.test(value);
+            return /^([a-z0-9_\.\-\+])+\@(([a-z0-9\-])+\.)+([a-z0-9]{2,6})+$/i.test(value);
         },
         subscribe: function(form){
 
