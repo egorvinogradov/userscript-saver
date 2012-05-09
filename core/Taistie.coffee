@@ -35,8 +35,7 @@ class Taistie extends Spine.Model
 
 	getExternalId: -> @externalId
 
-	getExternalLink: ->
-		if @isOwnTaistie() then null else "http://userscripts.org/scripts/show/#{@getExternalId()}"
+	getExternalLink: ->	if @isUserscript() then "http://userscripts.org/scripts/show/#{@getExternalId()}" else null
 
 	getUsageCount: -> @usageCount
 
