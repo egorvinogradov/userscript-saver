@@ -1,9 +1,8 @@
 $ ->
 
+	#заглушки для независимого создания UI userscript'ов
 	mockTargetSiteUrl = 'http://mocktarget.com'
-
-	Taistie.deleteAll()
-	Taistie.create data for data in [
+	mockTaisties = [
 		{
 			name: 'My super decorator'
 			active: true
@@ -93,6 +92,9 @@ $ ->
 			usageCount: 100
 		}
 	]
+
+	Taistie.deleteAll()
+	Taistie.create mockTaistieData for mockTaistieData in mockTaisties
 
 	mockUserscriptsDownloader =
 		getUserscriptsForUrl: -> []
