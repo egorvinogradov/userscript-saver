@@ -20,12 +20,15 @@ class Taistie extends Spine.Model
 
 	getName: ->
 		@name
+		
 	isActive: ->
 		@active
 
 	isOwnTaistie: -> @source == 'own'
 
 	isUserscript: -> @source == 'userscript'
+
+	getDescription: -> @description
 
 	@getTaistiesForUrl: (url) ->
 		assert url? and url != '', 'url should be given'

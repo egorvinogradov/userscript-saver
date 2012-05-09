@@ -26,6 +26,9 @@ describe 'Taistie', ->
 		expect(taistie.getCss()).toEqual ''
 		expect(taistie.getJs()).toEqual ''
 
+	it 'gets description with getDescription', ->
+			taistie = Taistie.create description: 'some text'
+			expect(taistie.getDescription()).toEqual 'some text'
 
 	it 'IsOwnTaistie() / IsUserscript() depending on given \'source\' field', ->
 		for taistieData in [{}, {source: 'own'}]
