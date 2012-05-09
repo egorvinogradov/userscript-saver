@@ -26,6 +26,18 @@ describe 'Taistie', ->
 		expect(taistie.getCss()).toEqual ''
 		expect(taistie.getJs()).toEqual ''
 
+
+	it 'IsOwnTaistie() / IsUserscript() depending on given \'source\' field', ->
+		for taistieData in [{}, {source: 'own'}]
+			do(taistieData) ->
+
+				ownTaistie = new Taistie taistieData
+				expect(ownTaistie.isOwnTaistie()).toBeTruthy()
+				expect(ownTaistie.isUserscript()).toBeFalsy()
+
+		userscriptTaistie = new Taistie source: 'userscript'
+		expect(userscriptTaistie.isUserscript()).toBeTruthy()
+
 	describe 'getTaistiesForUrl', ->
 		mockUserscriptsDownloader =
 			getUserscriptsForUrl: -> []

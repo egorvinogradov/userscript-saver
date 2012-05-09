@@ -4,8 +4,8 @@ class Taistie extends Spine.Model
 	@configure "Taistie", "name", "active", "rootUrl", "css", "js", "source", "externalId", "description", "usageCount"
 
 	constructor: (options) ->
+		options.source ?= 'own'
 		super options
-		source ?= 'taistie'
 
 	@extend Spine.Model.Local
 
@@ -22,6 +22,10 @@ class Taistie extends Spine.Model
 		@name
 	isActive: ->
 		@active
+
+	isOwnTaistie: -> @source == 'own'
+
+	isUserscript: -> @source == 'userscript'
 
 	@getTaistiesForUrl: (url) ->
 		assert url? and url != '', 'url should be given'
