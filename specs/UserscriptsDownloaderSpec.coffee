@@ -1,5 +1,4 @@
 describe 'UserscriptsDownloader', ->
-	searchUrlPrefix = 'http://userscripts.org/scripts/search?q='
 
 	downloader = null
 
@@ -19,6 +18,8 @@ describe 'UserscriptsDownloader', ->
 				'strips subdomains leaving just root domain': 'http://sub2.sub1.sitename.com/'
 				'strips folders and parameters': 'sitename/folder1/folder2/?param1=value1'
 
+			searchUrl = 'http://userscripts.org/scripts/search?q=sitename&sort=installs'
+
 			for testDescription, testUrl of testUrls
 				do(testDescription, testUrl) ->
 					it testDescription, ->
@@ -29,7 +30,7 @@ describe 'UserscriptsDownloader', ->
 						spiedMethod = spyOn(mockAjaxProvider, 'getUrlContent').andReturn 'mockContent'
 
 						downloader.getUserscriptsForUrl testUrl
-						expect(mockAjaxProvider.getUrlContent).toHaveBeenCalledWith(searchUrlPrefix + 'sitename')
+						expect(mockAjaxProvider.getUrlContent).toHaveBeenCalledWith(searchUrl)
 
 		describe 'gathers all scripts content', ->
 			userscripts = null
@@ -60,7 +61,7 @@ describe 'UserscriptsDownloader', ->
 
 			getContentFixture = ->
 				content = {}
-				content['http://userscripts.org/scripts/search?q=targetSite'] = '<tr id="scripts-55501">
+				content['http://userscripts.org/scripts/search?q=targetSite&sort=installs'] = '<tr id="scripts-55501">
 					<td class="script-meat">
 					<a href="/scripts/show/55502" class="title" title="script1_title">script1_link_text</a>
 
