@@ -35,6 +35,9 @@ class Taistie extends Spine.Model
 
 	getExternalId: -> @externalId
 
+	getExternalLink: ->
+		if @isOwnTaistie() then null else "http://userscripts.org/scripts/show/#{@getExternalId()}"
+
 	@getTaistiesForUrl: (url) ->
 		assert url? and url != '', 'url should be given'
 		existingTaisties = @select (taistie) -> taistie.fitsUrl url

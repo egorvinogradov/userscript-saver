@@ -34,12 +34,13 @@ describe 'Taistie', ->
 		taistie = new Taistie externalId: 555
 		expect(taistie.getExternalId()).toEqual 555
 
-	it 'if it is userscript, it gives link to userscript page with getExternalLink', ->
+	it 'getExternalLink: gives link to userscript page for userscript and null otherwise', ->
 		userscriptTaistie = new Taistie
 			source: 'userscripts'
 			externalId: 555
+		expect(userscriptTaistie.getExternalLink()).toEqual('http://userscripts.org/scripts/show/555')
 
-#		expect(userscriptTaistie.getExternalLink()).toEqual('http://userscripts.org/scripts/show/555')
+		expect((new Taistie {}).getExternalLink()).toBeNull()
 
 	it 'constructor requires field values', ->
 		expect(-> new Taistie).toThrow 'Taistie creation: field values data required (in dictionary)'
@@ -52,7 +53,7 @@ describe 'Taistie', ->
 
 			expect(-> new Taistie(source: 'other')).toThrow('Taistie creation: invalid \'source\' value \'other\'')
 
-		it 'IsOwnTaistie() / IsUserscript() depending on given \'source\' field', ->
+		it 'either isOwnTaistie() or isUserscript() is true depending on given \'source\' field', ->
 			for taistieData in [{}, {source: 'own'}]
 				do(taistieData) ->
 
