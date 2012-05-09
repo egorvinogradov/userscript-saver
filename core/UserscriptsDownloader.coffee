@@ -1,13 +1,14 @@
 class UserscriptsDownloader
-	@_userscriptsSearchPrefix: 'http://userscripts.org/scripts/search?q='
+	@_searchUrlTemplate: 'http://userscripts.org/scripts/search?q=%siteName%'
+	@_scriptBodyUrlTemplate = 'http://userscripts.org/scripts/source/%scriptId%.user.js'
+
 	constructor: ->
 		@_ajaxProvider = null
 
 	getUserscriptsForUrl: (url) ->
 
-		siteName = @_getSiteNameByUrl url
-
-		scriptsListPageContent = @_ajaxProvider.getUrlContent(UserscriptsDownloader._userscriptsSearchPrefix + siteName)
+		searchUrl = UserscriptsDownloader._searchUrlTemplate.replace('%siteName%', @_getSiteNameByUrl url)
+		scriptsListPageContent = @_ajaxProvider.getUrlContent searchUrl
 
 		scriptRows = scriptsListPageContent.match /tr\sid="scripts-(\d+)">([\s\S])+?<\/td>/gm
 
@@ -23,7 +24,10 @@ class UserscriptsDownloader
 		name = scriptRow.match(/<a(?:.)+?>((?:.)+)<\/a>/)[1]
 		description = scriptRow.match(/class="desc">(([\s\S])*?)<\/p>/)[1]
 
-		return id: id, name: name, description: description
+		scriptBodyUrl = UserscriptsDownloader._scriptBodyUrlTemplate.replace('%scriptId%', id)
+		js = @_ajaxProvider.getUrlContent scriptBodyUrl
+
+		return id: id, name: name, description: description, js: js
 
 	_getSiteNameByUrl: (url) ->
 		urlWithoutProtocol = url.replace /^https?:\/\//, ''

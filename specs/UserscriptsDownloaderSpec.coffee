@@ -60,7 +60,7 @@ describe 'UserscriptsDownloader', ->
 
 			getContentFixture = ->
 				content = {}
-				content[searchUrlPrefix + 'targetSite'] = '<tr id="scripts-55501">
+				content['http://userscripts.org/scripts/search?q=targetSite'] = '<tr id="scripts-55501">
 					<td class="script-meat">
 					<a href="/scripts/show/55502" class="title" title="script1_title">script1_link_text</a>
 
@@ -96,6 +96,8 @@ describe 'UserscriptsDownloader', ->
 					</abbr>
 					</td>
 					</tr>'
+
+				content['http://userscripts.org/scripts/source/55501.user.js'] = 'alert(\'script1\')'
 
 				return content
 
