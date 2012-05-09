@@ -90,14 +90,18 @@ describe 'Taistie', ->
 				js: '<js here>'
 				name: 'userscript1'
 				id: 1
+				description: 'some description'
 			spyOn(mockUserscriptsDownloader, 'getUserscriptsForUrl').andReturn [userscript]
 
 			taisties = Taistie.getTaistiesForUrl 'http://aaa.com'
 			expect(mockUserscriptsDownloader.getUserscriptsForUrl).toHaveBeenCalledWith 'http://aaa.com'
 			expect(taisties.length).toEqual(1)
+
 			taistie = taisties[0]
-			expect([taistie.name, taistie.js, taistie.rootUrl, taistie.source, taistie.externalId]).
-				toEqual [userscript.name, userscript.js, userscript.rootUrl, 'userscripts', userscript.id]
+			expect([taistie.name, taistie.js, taistie.rootUrl, taistie.source, taistie.externalId,
+				taistie.description]).
+				toEqual [userscript.name, userscript.js, userscript.rootUrl, 'userscripts', userscript.id,
+				userscript.description]
 
 			expect(Taistie.getTaistiesForUrl('http://aaa.com').length).toEqual 1
 
