@@ -1,7 +1,7 @@
 class Taistie extends Spine.Model
 	@_userscriptsDownloader = null
 
-	@configure "Taistie", "name", "active", "rootUrl", "css", "js", "source", "externalId", "description"
+	@configure "Taistie", "name", "active", "rootUrl", "css", "js", "source", "externalId", "description", "usageCount"
 
 	constructor: (options) ->
 		super options
