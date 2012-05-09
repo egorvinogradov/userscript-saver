@@ -3,7 +3,7 @@ describe 'Taistie', ->
 		Taistie.destroyAll()
 
 	it 'fits url if @rootUrl is a substring of full server name in url', ->
-		taistie = Taistie.create rootUrl: 'targetsite.com'
+		taistie = new Taistie rootUrl: 'targetsite.com'
 		expect(taistie.fitsUrl 'http://targetsite.com').toBeTruthy()
 		expect(taistie.fitsUrl 'http://targetsite.com/subfolder').toBeTruthy()
 
@@ -13,33 +13,55 @@ describe 'Taistie', ->
 #		expect(taistie.fitsUrl 'http://other.com/targetsite.com').toBeFalsy()
 
 	it "returns css directly from data", ->
-		taistie = Taistie.create rootUrl: 'stub', css: 'css code'
+		taistie = new Taistie rootUrl: 'stub', css: 'css code'
 		expect(taistie.getCss()).toEqual 'css code'
 
 	it 'returns js as functional expression text', ->
-		taistie = Taistie.create rootUrl: 'stub', js: 'return true'
+		taistie = new Taistie rootUrl: 'stub', js: 'return true'
 		expect(taistie.getJs()).toEqual '(function(){return true})();'
 
 	it "has empty css and js if they are not given", ->
-		taistie = Taistie.create rootUrl: 'stub'
+		taistie = new Taistie rootUrl: 'stub'
 
 		expect(taistie.getCss()).toEqual ''
 		expect(taistie.getJs()).toEqual ''
 
-	it 'gets description with getDescription', ->
-			taistie = Taistie.create description: 'some text'
-			expect(taistie.getDescription()).toEqual 'some text'
+	it 'gives description with getDescription', ->
+		taistie = new Taistie description: 'some text'
+		expect(taistie.getDescription()).toEqual 'some text'
 
-	it 'IsOwnTaistie() / IsUserscript() depending on given \'source\' field', ->
-		for taistieData in [{}, {source: 'own'}]
-			do(taistieData) ->
+	it 'gives external id with getExternalId', ->
+		taistie = new Taistie externalId: 555
+		expect(taistie.getExternalId()).toEqual 555
 
-				ownTaistie = new Taistie taistieData
-				expect(ownTaistie.isOwnTaistie()).toBeTruthy()
-				expect(ownTaistie.isUserscript()).toBeFalsy()
+	it 'if it is userscript, it gives link to userscript page with getExternalLink', ->
+		userscriptTaistie = new Taistie
+			source: 'userscripts'
+			externalId: 555
 
-		userscriptTaistie = new Taistie source: 'userscript'
-		expect(userscriptTaistie.isUserscript()).toBeTruthy()
+#		expect(userscriptTaistie.getExternalLink()).toEqual('http://userscripts.org/scripts/show/555')
+
+	it 'constructor requires field values', ->
+		expect(-> new Taistie).toThrow 'Taistie creation: field values data required (in dictionary)'
+
+	describe '\'source\' field', ->
+		it 'can be null or one of [\'own\', \'userscripts\']', ->
+			correctTaistie = new Taistie({})
+			correctTaistie = new Taistie source: 'own'
+			correctTaistie = new Taistie source: 'userscripts'
+
+			expect(-> new Taistie(source: 'other')).toThrow('Taistie creation: invalid \'source\' value \'other\'')
+
+		it 'IsOwnTaistie() / IsUserscript() depending on given \'source\' field', ->
+			for taistieData in [{}, {source: 'own'}]
+				do(taistieData) ->
+
+					ownTaistie = new Taistie taistieData
+					expect(ownTaistie.isOwnTaistie()).toBeTruthy()
+					expect(ownTaistie.isUserscript()).toBeFalsy()
+
+			userscriptTaistie = new Taistie source: 'userscripts'
+			expect(userscriptTaistie.isUserscript()).toBeTruthy()
 
 	describe 'getTaistiesForUrl', ->
 		mockUserscriptsDownloader =

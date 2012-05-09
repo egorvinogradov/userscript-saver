@@ -4,7 +4,10 @@ class Taistie extends Spine.Model
 	@configure "Taistie", "name", "active", "rootUrl", "css", "js", "source", "externalId", "description", "usageCount"
 
 	constructor: (options) ->
+		msgPrefix = 'Taistie creation: '
+		assert options?, "#{msgPrefix}field values data required (in dictionary)"
 		options.source ?= 'own'
+		assert ['own', 'userscripts'].indexOf(options.source) >= 0, "#{msgPrefix}invalid \'source\' value \'#{options.source}\'"
 		super options
 
 	@extend Spine.Model.Local
@@ -20,15 +23,17 @@ class Taistie extends Spine.Model
 
 	getName: ->
 		@name
-		
+
 	isActive: ->
 		@active
 
 	isOwnTaistie: -> @source == 'own'
 
-	isUserscript: -> @source == 'userscript'
+	isUserscript: -> @source == 'userscripts'
 
 	getDescription: -> @description
+
+	getExternalId: -> @externalId
 
 	@getTaistiesForUrl: (url) ->
 		assert url? and url != '', 'url should be given'
