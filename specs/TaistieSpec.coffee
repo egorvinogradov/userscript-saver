@@ -42,6 +42,10 @@ describe 'Taistie', ->
 
 		expect((new Taistie {}).getExternalLink()).toBeNull()
 
+	it 'gives current usage count with getUsageCount', ->
+		taistie = new Taistie usageCount: 134
+		expect(taistie.getUsageCount()).toEqual 134
+
 	it 'constructor requires field values', ->
 		expect(-> new Taistie).toThrow 'Taistie creation: field values data required (in dictionary)'
 
