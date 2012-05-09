@@ -101,3 +101,12 @@ describe 'Taistie', ->
 
 			expect(Taistie.getTaistiesForUrl('http://aaa.com').length).toEqual 1
 
+	it 'getAllOwnTaisties: gets all own taisties', ->
+		defaultOwnTaistie = Taistie.create {}
+		ownActive = Taistie.create {active: true}
+		ownInactive = Taistie.create {source: 'own', active: false}
+
+		userscriptActive = Taistie.create {source: 'userscripts', active: true}
+		userscriptInactive = Taistie.create {source: 'userscripts', active: false}
+
+		expect(Taistie.getAllOwnTaisties()).toEqual [defaultOwnTaistie, ownActive, ownInactive]

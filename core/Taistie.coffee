@@ -67,4 +67,5 @@ class Taistie extends Spine.Model
 					taistiesFromUserScripts.push taistieFromUserscript
 		taistiesFromUserScripts
 
+	@getAllOwnTaisties: -> @select (taistie) -> taistie.isOwnTaistie()
 
