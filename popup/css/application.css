@@ -1,4 +1,4 @@
-html, body, ul, li, input {
+html, body, ul, li, input, textarea, button {
     padding: 0;
     margin: 0;
 }
@@ -7,6 +7,52 @@ html, body, ul, li, input {
     color: #000;
     background: #fff;
     font: 13px/18px Helvetica, Arial, sans-serif;
+}
+
+.taisties.m-editing {
+    min-height: 510px;
+}
+
+.taisties__link {
+    color: rgb(64,113,144);
+    text-decoration: none;
+    line-height: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(64,113,144,.4);
+}
+
+.taisties__link:hover {
+    border-bottom-color: rgb(64,113,144);
+}
+
+.taisties__input,
+.taisties__textarea {
+    display: block;
+    line-height: 18px;
+    width: 100%;
+    padding: 4px 6px;
+    font: 13px/18px Helvetica, Arial, sans-serif;
+    color: #000;
+    border: 1px solid #999;
+    -webkit-box-sizing: border-box;
+    -webkit-border-radius: 4px;
+    -webkit-box-shadow: inset 0 2px 3px rgba(0,0,0,.1);
+    -webkit-transition: -webkit-box-shadow 350ms ease;
+}
+
+.taisties__textarea {
+    resize: vertical;
+}
+
+.taisties__input:focus,
+.taisties__textarea:focus {
+    outline: none;
+    -webkit-box-shadow: inset 0 2px 3px rgba(0,0,0,.1),
+                        0 0 3px 1px rgba(57,135,190,.7);
+}
+
+.taisties__textarea {
+    height: 150px;
 }
 
 .taisties {
@@ -40,7 +86,7 @@ html, body, ul, li, input {
 
 .taisties__create:active {
     background: #cdd2d6;
-    box-shadow: inset 0 2px 3px rgba(0,0,0,.15);
+    -webkit-box-shadow: inset 0 2px 3px rgba(0,0,0,.15);
     border: 1px solid #9CA8B0;
 }
 
@@ -55,16 +101,7 @@ html, body, ul, li, input {
 
 .taisties__show-created {
     float: left;
-    color: rgb(64,113,144);
-    text-decoration: none;
-    line-height: 14px;
     margin-top: 6px;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(64,113,144,.4);
-}
-
-.taisties__show-created:hover {
-    border-bottom-color: rgb(64,113,144);
 }
 
 .taisties__list-item {
@@ -79,8 +116,12 @@ html, body, ul, li, input {
     cursor: pointer;
 }
 
-.taisties__list:first-of-type .taisties__list-item:first-child {
-    box-shadow: 0 -1px 0 0 #C9C9C9;
+.taisties__list-recommended {
+    margin-top: -1px;
+}
+
+.taisties__list-recommended .taisties__list-item:first-child {
+    -webkit-box-shadow: 0 -1px 0 0 #C9C9C9;
 }
 
 .taisties__list-item.m-installed {
@@ -105,20 +146,33 @@ html, body, ul, li, input {
     border-bottom: 1px solid #2877a9;
 }
 
-.taisties__list-own:first-of-type .taisties__list-item:first-child {
-    box-shadow: 0 -1px 0 0 #409BD4;
+.taisties__list-own {
+    position: relative;
+    z-index: 1;
+}
+
+.taisties__list-own .taisties__list-item:first-child {
+    -webkit-box-shadow: 0 -1px 0 0 #409BD4;
 }
 
 .taisties__list-own .taisties__list-item.m-installed {
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4099d1), color-stop(0.85, #57b1ea));
-    background-image: -webkit-linear-gradient(bottom, #4099d1 0%, #57b1ea 85%);
-    border-top: 1px solid #3987be;
-    border-bottom: 1px solid #3480b0;
-    -webkit-box-shadow: inset 0 1px 3px rgba(20,83,123,.4) !important;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4099D1), color-stop(0.85, #57B1EA));
+    background-image: -webkit-linear-gradient(bottom, #3886BD 0%, #52A6DB 85%);
+    border-top: 1px solid #367FB3;
+    border-bottom: 1px solid #327AA8;
+    -webkit-box-shadow: inset 0 2px 3px rgba(20,83,123,.35) !important;
+}
+
+.taisties__list-own .taisties__list-item.m-installed + .taisties__list-item.m-installed {
+    border-top: 1px solid #3174A3;
 }
 
 .taisties__list-own .taisties__list-item.m-installed .taisties__name {
     text-shadow: 0 1px 0 rgba(255,255,255,.33);
+}
+
+.taisties__list-own .taisties__list-item.m-installed .taisties__settings {
+    top: 16px;
 }
 
 .taisties__switch {
@@ -230,206 +284,61 @@ html, body, ul, li, input {
     display: none;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-html, body {
-	margin: 0;
-	padding: 0;
+.taisties__editing {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    padding: 15px 16px 20px 16px;
+    cursor: default;
 }
 
-body {
-	font-family: "Helvetica Neue", helvetica, arial, sans-serif;
-	font-size: 14px;
-	line-height: 1.4em;
-	background: #eeeeee;
-	color: #333333;
+.taisties__list-item.m-editing .taisties__editing {
+    display: block;
 }
 
-#views {
-	width: 520px;
-	margin: 0 auto 40px auto;
-	background: white;
-
-	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 6px 0;
-	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 6px 0;
-	-o-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 6px 0;
-	box-shadow: rgba(0, 0, 0, 0.2) 0 2px 6px 0;
-
-	-moz-border-radius: 0 0 5px 5px;
-	-o-border-radius: 0 0 5px 5px;
-	-webkit-border-radius: 0 0 5px 5px;
-	border-radius: 0 0 5px 5px;
+.taisties__editing-header {
+    font-size: 15px;
+    font-weight: bold;
+    padding-bottom: 12px;
 }
 
-#tasks {
-	padding: 20px;
+.taisties__editing-row {
+    padding-bottom: 12px;
 }
 
-#tasks h1 {
-	font-size: 36px;
-	font-weight: bold;
-	text-align: center;
-	padding: 0 0 10px 0;
+.taisties__editing-button {
+    padding-top: 5px;
 }
 
-#tasks input[type="text"] {
-	width: 466px;
-	font-size: 24px;
-	font-family: inherit;
-	line-height: 1.4em;
-	border: 0;
-	outline: none;
-	padding: 6px;
-	border: 1px solid #999999;
-	margin-bottom: 15px;
-	margin-top: 5px;
-
-	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
-	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
-	-o-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
-	box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
+.taisties__new-cancel {
+    display: inline-block;
+    margin: 4px 0 0 20px;
 }
 
-#tasks input::-webkit-input-placeholder {
-	font-style: italic;
+.taisties__button {
+    padding: 0 15px;
+    color: #000;
+    font-weight: bold;
+    line-height: 30px;
+    height: 30px;
+    font-size: 13px;
+    cursor: pointer;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+    border: 1px solid #3480B0;
+    -webkit-border-radius: 4px;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4dace8), color-stop(0.85, #88ccf6));
+    background-image: -webkit-linear-gradient(bottom, #4dace8 0%, #88ccf6 85%);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.44),
+                        0 1px 2px rgba(0,0,0,.3);
+    -webkit-transition: -webkit-box-shadow 100ms ease;
 }
 
-#tasks .items {
-	margin: 10px 0;
-	list-style: none;
+.taisties__button:active {
+    background: #4099d1;
+    -webkit-box-shadow: inset 0 2px 3px rgba(0,0,0,.3);
 }
-
-#tasks .item {
-	padding: 15px 20px 15px 0;
-	position: relative;
-	font-size: 24px;
-	border-bottom: 1px solid #cccccc;
-}
-
-#tasks .item.inactive span {
-	color: #777777;
-}
-
-#tasks .item .destroy {
-	position: absolute;
-	right: 0px;
-	top: 22px;
-	display: none;
-	cursor: pointer;
-	width: 20px;
-	height: 20px;
-	background: url(../images/destroy.png) no-repeat center center;
-}
-
-#tasks .item:hover .destroy {
-	display: block;
-}
-
-#tasks .item .edit {
-	display: none;
-}
-
-#tasks .item.editing .edit {
-	display: block;
-}
-
-#tasks .item.editing .view {
-	display: none;
-}
-
-#tasks .menubar {
-	display: block;
-	overflow: hidden;
-
-	color: #555555;
-	padding: 0 10px;
-	line-height: 36px;
-
-	-moz-border-radius: 0 0 5px 5px;
-	-o-border-radius: 0 0 5px 5px;
-	-webkit-border-radius: 0 0 5px 5px;
-	border-radius: 0 0 5px 5px;
-}
-
-#tasks .topmenu {
-	margin-top: 20px;
-	margin-right: -20px;
-	margin-bottom: -20px;
-	margin-left: -20px;
-	background: #f4fce8;
-	border-top: 1px solid #ededed;
-}
-
-#tasks .taistiemenu {
-	margin-top: 5px;
-	margin-right: -25px;
-	margin-bottom: -20px;
-}
-
-#tasks .button {
-	display: block;
-	float: right;
-	line-height: 20px;
-	text-decoration: none;
-
-	background: rgba(0, 0, 0, 0.1);
-	color: #555555;
-	font-size: 16px;
-	margin-top: 8px;
-	margin-bottom: 8px;
-	padding: 0 10px 1px;
-
-	-moz-border-radius: 12px;
-	-webkit-border-radius: 12px;
-	-o-border-radius: 12px;
-	border-radius: 12px;
-
-	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
-	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
-	-o-box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
-	box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
-
-	cursor: pointer;
-}
-
-#tasks .editbutton {
-	display: none;
-	margin-right: 10px;
-}
-
-#tasks .item:hover .editbutton {
-	display: block;
-}
-
-#tasks .clear:hover {
-	background: rgba(0, 0, 0, 0.15);
-	-moz-box-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0 0;
-	-webkit-box-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0 0;
-	-o-box-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0 0;
-	box-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0 0;
-}
-
-#tasks .clear:active {
-	position: relative;
-	top: 1px;
-}
-
-#tasks .count span {
-	font-weight: bold;
-}
-
-*/

@@ -1,15 +1,16 @@
 class TaistieView extends Spine.Controller
 	events:
-		"change	 input[type=checkbox]": "toggle"
-		"click		.destroy": "remove"
-		"click .save": "finishEditing"
-		"click .editbutton": "startEditing"
+		"change	.taisties__switch-checkbox": "toggle"
+		"click .taisties__remove": "remove"
+		"click .taisties__edit": "startEditing"
+		"click .taisties__new-save": "finishEditing"
+		"click .taisties__new-cancel": "cancelEditing"
 
 	elements:
-		".nameInput": "nameInput"
-		".rootUrlInput": "rootUrlInput"
-		".cssInput": "cssInput"
-		".jsInput": "jsInput"
+		".taisties__new-name": "nameInput"
+		".taisties__new-url": "rootUrlInput"
+		".taisties__new-css": "cssInput"
+		".taisties__new-js": "jsInput"
 
 	constructor: ->
 		super
@@ -17,7 +18,7 @@ class TaistieView extends Spine.Controller
 		@item.bind("destroy", @release)
 
 	render: =>
-		@replace($("#taskTemplate").tmpl(@item))
+		@replace($("#taisty").tmpl(@item))
 		@
 
 	toggle: ->
@@ -28,13 +29,16 @@ class TaistieView extends Spine.Controller
 		@item.destroy()
 
 	startEditing: ->
-		@el.addClass "editing"
+		@el.add('.taisties').addClass "m-editing"
 		@nameInput.focus()
 
 	finishEditing: ->
-		@el.removeClass "editing"
+		@el.add('.taisties').removeClass "m-editing"
 		@item.updateAttributes
 			name: @nameInput.val()
 			rootUrl: @rootUrlInput.val()
 			css: @cssInput.val()
 			js: @jsInput.val()
+
+	cancelEditing: ->
+    @el.add('.taisties').removeClass "m-editing"

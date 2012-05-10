@@ -24,23 +24,44 @@
 	<script src="TaistieList.js" type="text/javascript" charset="utf-8"></script>
 	<script src="StartPopup.js" type="text/javascript" charset="utf-8"></script>
 
-	<script type="text/x-jquery-tmpl" id="taskTemplate">
-		<div class="item {{if !active}}inactive{{/if}}">
-			<div class="view">
-				<input type="checkbox" {{if active}}checked="checked"{{/if}}>
-				<span>${name}</span> <a class="button editbutton">Edit</a> <a class="destroy"></a>
+	<script type="text/x-jquery-tmpl" id="taisty">
+        <li class="taisties__list-item {{if active}}m-installed{{/if}}">
+            <div class="taisties__switch">
+                <input class="taisties__switch-checkbox" type="checkbox" {{if active}}checked{{/if}}>
+            </div>
+            <div class="taisties__name">${name}</div>
+            <div class="taisties__description">
+                Сервер userscripts.org не найден из-за ошибки поиска DNS (веб-службы,
+                которая преобразует название веб-сайта в интернет-адрес). Обычно это вызвано ...
+                <a class="taisties__description-link" href="http://userscripts.org/" target="_blank" tabindex="-1">Подробнее на userscripts.org</a>
+            </div>
+            <div class="taisties__settings">
+                <div class="taisties__edit">изменить</div>
+                <div class="taisties__remove">удалить</div>
+            </div>
+            <div class="taisties__downloads" title="Количество загрузок">2436</div>
+			<div class="taisties__editing">
+                <div class="taisties__editing-header">Новое улучшение</div>
+                <div class="taisties__editing-row">
+                    <input type="text" class="taisties__new-name taisties__input nameInput" value="${name}" placeholder="Название">
+                </div>
+                <div class="taisties__editing-row">
+                    <input type="text" class="taisties__new-url taisties__input rootUrlInput" value="${rootUrl}" placeholder="URL, соответствующий регулярному выражению">
+                </div>
+                <div class="taisties__editing-row">
+                    <textarea class="taisties__new-css taisties__textarea cssInput" placeholder="CSS-код">${css}</textarea>
+                </div>
+                <div class="taisties__editing-row">
+                    <textarea class="taisties__new-js taisties__textarea jsInput" placeholder="JavaScript-код">${js}</textarea>
+                </div>
+                <div class="taisties__editing-button">
+                    <button class="taisties__new-save taisties__button">Сохранить</button>
+                    <span class="taisties__new-cancel taisties__link">Отмена</span>
+                </div>
 			</div>
-			<div class="edit">
-				<span>Name: </span><input type="text" class="nameInput" value="${name}">
-				<span>URL regexp: </span><input type="text" class="rootUrlInput" value="${rootUrl}">
-				<span>CSS: </span><br/><textarea rows="10" cols="66" class="cssInput">${css}</textarea><br/>
-				<span>JS: </span><br/><textarea rows="30" cols="66" class="jsInput">${js}</textarea></br>
-				<div class="menubar taistiemenu">
-					<a class="button save">Save</a>
-				</div>
-			</div>
-		</div>
+        </li>
 	</script>
+
 </head>
 <body class="popup">
 
@@ -48,27 +69,10 @@
 
         <div class="taisties__developer">
             <div class="taisties__create"><span class="taisties__create-icon">+</span>создать улучшение</div>
-            <div class="taisties__show-created">посмотреть уже созданные</div>
+            <div class="taisties__show-created taisties__link">посмотреть уже созданные</div>
         </div>
 
-        <ul class="taisties__list taisties__list-own">
-            <li class="taisties__list-item">
-                <div class="taisties__switch">
-                    <input class="taisties__switch-checkbox" type="checkbox">
-                </div>
-                <div class="taisties__name">Крутое расширение</div>
-                <div class="taisties__description">
-                    Сервер userscripts.org не найден из-за ошибки поиска DNS (веб-службы,
-                    которая преобразует название веб-сайта в интернет-адрес). Обычно это вызвано ...
-                    <a class="taisties__description-link" href="http://userscripts.org/" target="_blank" tabindex="-1">Подробнее на userscripts.org</a>
-                </div>
-                <div class="taisties__settings">
-                    <div class="taisties__edit">изменить</div>
-                    <div class="taisties__remove">удалить</div>
-                </div>
-                <div class="taisties__downloads" title="Количество загрузок">2436</div>
-            </li>
-        </ul>
+        <ul class="taisties__list taisties__list-own"></ul>
 
         <ul class="taisties__list taisties__list-recommended">
 
@@ -160,23 +164,6 @@
         </ul>
 
     </div>
-
-
-
-<!--
-<div id="views">
-	<div id="tasks">
-		<h1>Taisties</h1>
-		<div class="menubar topmenu">
-			<a class="button create">Create new</a>
-		</div>
-
-		<div class="items"></div>
-	</div>
-</div>
--->
-
-
 
 </body>
 </html>

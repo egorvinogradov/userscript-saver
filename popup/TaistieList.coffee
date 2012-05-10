@@ -1,8 +1,8 @@
 class TaistieList extends Spine.Controller
 	elements:
-		".items":		 "items"
+		".taisties__list-own": "items"
 	events:
-		"click .create": "create"
+		"click .taisties__create": "create"
 
 	constructor: ->
 		super
@@ -19,8 +19,8 @@ class TaistieList extends Spine.Controller
 
 	create: =>
 		newTaistie = Taistie.create
-			name: "<new taistie>"
-			active: true
+			name: ""
+			active: false
 
 		newView = @addOne newTaistie
 		newView.startEditing()

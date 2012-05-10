@@ -13,4 +13,4 @@ $ ->
 	taistieListConstructor = iocContainer.getElement 'taistieListConstructor'
 
 	#TODO: добавить инициализацию зависимостей через IoC
-	new taistieListConstructor(el: $("#tasks"))
+	new taistieListConstructor(el: $(".taisties"))
