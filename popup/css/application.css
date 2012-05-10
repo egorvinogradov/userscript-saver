@@ -172,21 +172,13 @@ html, body, ul, li, input {
     top: 10px;
     right: 11px;
     font-size: 11px;
-    line-height: 18px;
+    line-height: 17px;
     height: 16px;
-    padding: 0 6px 0 13px;
+    padding: 0 6px 0 15px;
     color: #fff;
-    background: rgba(80,97,97,.5);
-    text-shadow: 0 1px 0 rgba(0,0,0,.45);
+    background: rgba(80,97,97,.5) no-repeat 6px 4px url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAKCAYAAAB4zEQNAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADhJREFUeNpiZICC/0AAYzMCAYhmYsADaCTJiOwQDJ1Ahylg1YUkLv8fCYD46IrlcUnAFSBzAAIMAOj2GNplc4gsAAAAAElFTkSuQmCC);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .35);
     -webkit-border-radius: 16px;
-}
-
-.taisties__downloads-icon {
-    position: absolute;
-    top: -2px;
-    left: 4px;
-    font-weight: bold;
-    font-size: 16px;
 }
 
 .taisties__settings {
@@ -205,7 +197,7 @@ html, body, ul, li, input {
 .taisties__edit {
     float: left;
     margin-right: 22px;
-    color: #143950;
+    color: #2d6385;
     cursor: pointer;
     font-weight: bold;
     -webkit-transition: color 300ms ease;
@@ -223,7 +215,7 @@ html, body, ul, li, input {
 }
 
 .taisties__remove:hover {
-    color: #143950;
+    color: #000;
 }
 
 .taisties__list-own .taisties__description {
