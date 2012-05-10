@@ -1,0 +1,81 @@
+.chromeFrameOverlayUnderlay {
+    left: 0;
+    position: fixed;
+    _position: absolute;
+}
+#chromeFrameOverlayContent {
+    position: fixed;
+    _position: absolute;
+}
+
+.header__join-form-fading {
+    background: #fff url('../img/spinner.gif') no-repeat 50% 50%;
+}
+
+.capabilities {
+    background: #AEB6BB;
+    border-color: #A5ADB1;
+}
+
+.capabilities__slide-step-number {
+    display: none;
+}
+
+.capabilities__headers-fading-left {
+    left: -1px;
+    background: none;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFAEB6BB,endColorstr=#00AEB6BB, GradientType=1);
+    zoom: 1;
+}
+
+.capabilities__headers-fading-right {
+    right: -1px;
+    background: none;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#00AEB6BB,endColorstr=#FFAEB6BB, GradientType=1);
+    zoom: 1;
+}
+
+.activity__column-divider {
+    background: #A4ADB1;
+}
+
+.activity__message-corner-inner {
+
+    filter: progid:DXImageTransform.Microsoft.Matrix(
+            M11=0.7071067811865476,
+            M12=-0.7071067811865475,
+            M21=0.7071067811865475,
+            M22=0.7071067811865476,
+            sizingMethod='auto expand');
+    zoom: 1;
+}
+
+.activity__column-left .activity__message-corner-inner {
+    left: -21px;
+}
+
+.activity__column-right .activity__message-corner-inner {
+    right: -13px;
+}
+
+.footer {
+    background: #A2ABB0;
+    border-top: 3px solid #99A1A5;
+}
+
+.header__link,
+.activity__message-link {
+    border-bottom: 1px solid #1771AB;
+}
+
+.footer__link {
+    border-bottom: 1px solid #0C456A;
+}
+
+.header__join-form-input {
+    padding: 6px 0 5px 7px;
+}
+
+.footer__subscribe-input {
+    padding: 5px 0 4px 6px;
+}

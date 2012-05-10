@@ -1,0 +1,393 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Taist</title>
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<!--[if lte IE 8]>
+<link rel="stylesheet" type="text/css" href="css/common.ie.css">
+<![endif]-->
+<!--[if lte IE 7 ]>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+<script type="text/javascript">
+    window.attachEvent('onload', function(){
+        CFInstall.check({mode:'overlay'})
+    })
+</script>
+<![endif]-->
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31386062-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<meta property="og:title" content="Taist — прокачай свой веб" class="meta__title">
+<meta property="og:type" content="company">
+<meta property="og:url" content="http://tai.st" class="meta__url">
+<meta property="og:image" content="http://tai.st/img/logo.png">
+<meta property="og:description"  content="Taist — это расширение для Google Chrome, которое позволяет изменять сайты по собственному желанию: улучшать дизайн, удобство и функционал так, как это подходит именно вам. Вы можете создавать улучшения самостоятельно или использовать созданные другими разработчиками.">
+
+</head>
+<body class="page">
+
+    <!-- header -->
+
+    <div class="header">
+
+        <div class="header__column-left">
+            <div class="header__logo">
+                <img class="header__logo-img" src="img/logo.png" alt="Taist">
+                <span class="header__logo-sup">beta</span>
+            </div>
+            <div class="header__title">Прокачай свой веб</div>
+            <div class="header__text">
+                Taist — это расширение для Google Chrome, которое позволяет изменять сайты
+                по собственному желанию: улучшать дизайн, удобство и функционал так, как это
+                подходит именно вам. Вы можете создавать улучшения самостоятельно или
+                использовать созданные другими разработчиками.
+            </div>
+            <div class="header__highlighted">
+                Знакомы с
+                <a href="http://userscripts.org/" target="_blank" class="header__link">userscripts</a> или
+                <a href="http://userstyles.org/" target="_blank" class="header__link">userstyles</a>?
+                Taist &mdash; это userscripts на стероидах: удобные, умные и доступные всем.
+            </div>
+        </div>
+        <div class="header__column-right">
+            <div class="header__join">
+                <h2 class="header__join-title">Присоединяйтесь!</h2>
+                <div class="header__join-form m-inactive">
+                    <div class="header__join-form-fading m-visible"></div>
+                    <label class="header__join-form-label" for="header-subscribe-input">Подпишитесь на бета-версию</label>
+                    <input class="header__join-form-input subscribe-input" id="header-subscribe-input" name="email" placeholder="Электронная почта">
+                    <button class="header__join-form-submit" data-success="Спасибо!">Я хочу прокачать свой веб</button>
+                </div>
+                <div class="header__social">
+                    Следите за новостями в
+                    <a href="http://twitter.com/taistyweb" target="_blank" class="header__link header__link-twitter">твиттере</a><br>
+                    или <a href="http://www.facebook.com/pages/Taist/302533069820881" target="_blank" class="header__link header__link-facebook">фэйсбуке</a> и читайте наш
+                    <a href="http://blog.tai.st/" target="_blank" class="header__link header__link-blogger">блог</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- / header -->
+
+
+    <!-- capabilities -->
+
+    <div class="capabilities">
+        <div class="capabilities__wrapper">
+            <div class="capabilities__headers">
+                <span class="capabilities__headers-fading-left"></span>
+                <span class="capabilities__headers-fading-right"></span>
+                <ul class="capabilities__headers-list">
+                    <li class="capabilities__header m-invisible">Получайте улучшения автоматически</li>
+                    <li class="capabilities__header m-left">Предлагайте новые идеи</li>
+                    <li class="capabilities__header m-active">Создавайте свои улучшения</li>
+                </ul>
+            </div>
+            <div class="capabilities__slides">
+                <div class="capabilities__slides-wrapper">
+
+                    <ul class="capabilities__slide-steps">
+                        <li class="capabilities__slide-step">
+                            <span class="capabilities__slide-step-number">1</span>
+                            <div class="capabilities__slide-step-action">
+                                Зайдите на<br>
+                                любимый сайт
+                            </div>
+                        </li>
+                        <li class="capabilities__slide-step">
+                            <span class="capabilities__slide-step-number">2</span>
+                            <div class="capabilities__slide-step-action">
+                                Taist предложит<br>
+                                подходящие<br>
+                                улучшения
+                            </div>
+                        </li>
+                        <li class="capabilities__slide-step">
+                            <span class="capabilities__slide-step-number">3</span>
+                            <div class="capabilities__slide-step-action">
+                                Включите их в<br>
+                                один клик
+                            </div>
+                        </li>
+                        <li class="capabilities__slide-step">
+                            <span class="capabilities__slide-step-number">4</span>
+                            <div class="capabilities__slide-step-action">
+                                Сайт становится<br>
+                                удобнее именно<br>
+                                для вас
+                            </div>
+                        </li>
+                    </ul>
+
+                    <ul class="capabilities__slide-steps">
+                        <li class="capabilities__slide-step">
+                            <span class="capabilities__slide-step-number">1</span>
+                            <div class="capabilities__slide-step-action">
+                                Нет подходящих<br>
+                                улучшений?
+                            </div>
+                        </li>
+                        <li class="capabilities__slide-step">
+                            <span class="capabilities__slide-step-number">2</span>
+                            <div class="capabilities__slide-step-action">
+                                Предложите идею<br>
+                                или проголосуйте за<br>
+                                уже предложенную
+                            </div>
+                        </li>
+                        <li class="capabilities__slide-step">
+                            <span class="capabilities__slide-step-number">3</span>
+                            <div class="capabilities__slide-step-action">
+                                Самые популярные<br>
+                                идеи будут<br>
+                                реализованы
+                            </div>
+                        </li>
+                        <li class="capabilities__slide-step">
+                            <span class="capabilities__slide-step-number">4</span>
+                            <div class="capabilities__slide-step-action">
+                                Вы узнаете об этом и<br>
+                                сможете использовать<br>
+                                улучшение
+                            </div>
+                        </li>
+                    </ul>
+
+                    <ul class="capabilities__slide-steps m-active">
+                        <li class="capabilities__slide-step">
+                            <span class="capabilities__slide-step-number">1</span>
+                            <div class="capabilities__slide-step-action">
+                                Напишите своё на<br>
+                                обычном Javascript<br>
+                                и CSS</div>
+                        </li>
+                        <li class="capabilities__slide-step">
+                            <span class="capabilities__slide-step-number">2</span>
+                            <div class="capabilities__slide-step-action">
+                                Попробуйте его<br>
+                                в один клик
+                            </div>
+                        </li>
+                        <li class="capabilities__slide-step">
+                            <span class="capabilities__slide-step-number">3</span>
+                            <div class="capabilities__slide-step-action">
+                                Пользуйтесь сами<br>
+                                и поделитесь<br>
+                                с другими
+                            </div>
+                        </li>
+                        <li class="capabilities__slide-step">
+                            <span class="capabilities__slide-step-number">4</span>
+                            <div class="capabilities__slide-step-action">
+                                Создавайте своё<br>
+                                портфолио, получайте<br>
+                                благодарности
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <ul class="capabilities__switchers">
+                <li class="capabilities__switcher"></li>
+                <li class="capabilities__switcher"></li>
+                <li class="capabilities__switcher m-active"></li>
+            </ul>
+
+        </div>
+    </div>
+
+    <!-- / capabilities -->
+
+
+    <!-- activity -->
+
+    <div class="activity">
+
+        <h2 class="activity__header">Последние события</h2>
+        <div class="activity__columns">
+            <div class="activity__column-left">
+                <div class="activity__message">
+                    <span class="activity__message-corner" style="top: 36px;">
+                        <span class="activity__message-corner-inner"></span>
+                        <span class="activity__message-corner-dot"></span>
+                    </span>
+                    <div class="activity__message-date">3 мая 2012</div>
+                    <div class="activity__message-header">
+                        <a class="activity__message-link" target="_blank" href="http://blog.tai.st/2012/05/blog-post.html">Блог <span class="activity__message-arrow">&rarr;</span> Бета-версия выйдет 13-го мая</a>
+                    </div>
+                    <div class="activity__message-text">
+                        Сейчас мы разрабатываем первую бета-версию Taist (альфа-версию уже сделали и обкатали).
+                        <span class="m-nw">В блоге</span> мы написали, какие возможности появятся в расширении.
+                    </div>
+                </div>
+            </div>
+            <div class="activity__column-space"></div>
+            <div class="activity__column-divider"></div>
+            <div class="activity__column-space"></div>
+            <div class="activity__column-right">
+
+                <div class="activity__message">
+                    <span class="activity__message-corner" style="top: 106px;">
+                        <span class="activity__message-corner-inner"></span>
+                        <span class="activity__message-corner-dot"></span>
+                    </span>                    <div class="activity__message-date">2 мая 2012</div>
+                    <div class="activity__message-header">
+                        <a class="activity__message-link" target="_blank" href="http://blog.tai.st/2012/05/taist.html">Блог <span class="activity__message-arrow">&rarr;</span> Анонс Taist</a>
+                    </div>
+                    <div class="activity__message-text">
+                        В первом посте блога мы рассказали, какие проблемы будет решать Taist, и чем он будет отличаться от существующих решений.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- / activity -->
+
+
+    <!-- footer -->
+
+    <div class="footer">
+        <div class="footer__wrapper">
+            <div class="footer__copyright">Taist, 2012</div>
+            <div class="footer__email">
+                <a class="footer__link" href="mailto:beta@tai.st">beta@tai.st</a>
+            </div>
+            <ul class="footer__nav">
+                <li class="footer__nav-item">
+                    <span class="footer__link m-dotted footer__link-team">Команда</span>
+                </li>
+                <li class="footer__nav-item">
+                    <a class="footer__link" target="_blank" href="http://blog.tai.st/">Блог</a>
+                </li>
+            </ul>
+            <div class="footer__social">
+                Мы в <a href="http://www.facebook.com/pages/Taist/302533069820881" target="_blank" class="footer__link footer__link-facebook">фэйсбуке</a> и
+                <a href="http://twitter.com/taistyweb" target="_blank" class="footer__link footer__link-twitter">твиттере</a>
+            </div>
+            <div class="footer__subscribe">
+                <div class="footer__subscribe-form m-inactive">
+                    <div class="footer__subscribe-form-fading m-visible"></div>
+                    <label class="footer__subscribe-label" for="footer-subscribe-input">Подпишитесь на бета-версию</label>
+                    <input class="footer__subscribe-input subscribe-input" id="footer-subscribe-input" name="email" placeholder="Электронная почта">
+                    <button class="footer__subscribe-button" data-success="Спасибо!">Подписаться</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- / footer -->
+
+
+    <!-- team -->
+
+    <div class="team b-popup">
+        <div class="team__popup b-popup-inner">
+            <h2 class="team__popup-header">
+                <span class="team__popup-header-line"></span>
+                <span class="team__popup-header-text">Команда Taist</span>
+            </h2>
+            <div class="team__popup-columns">
+                <div class="team__popup-column">
+                    <div class="team__popup-photo m-anton"></div>
+                    <div class="team__popup-name">Антон Белоусов</div>
+                    <div class="team__popup-text">
+                        Разработчик, руководитель,
+                        сооснователь. <span class="m-nw">Семь лет в IT:</span>
+                        разработка десктопных и
+                        веб-проектов, руководство проектами.
+                    </div>
+                    <div class="team__popup-site">
+                        <a class="team__popup-link" target="_blank" href="http://about.me/antonbelousov">about.me/antonbelousov</a>
+                    </div>
+                </div>
+                <div class="team__popup-column">
+                    <div class="team__popup-photo m-egor"></div>
+                    <div class="team__popup-name">Егор виноградов</div>
+                    <div class="team__popup-text">
+                        Разработчик, сооснователь.
+                        <span class="m-nw">Четыре года</span> в IT: фронтенд
+                        в высоконагруженных проектах.
+                    </div>
+                    <div class="team__popup-site">
+                        <a class="team__popup-link" target="_blank" href="http://egorvinogradov.ru">egorvinogradov.ru</a>
+                    </div>
+                </div>
+            </div>
+            <div class="team__popup-close">
+                <span class="team__popup-link b-popup-close">Закрыть</span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- / team -->
+
+
+    <!-- subscribed -->
+
+    <div class="subscribed b-popup">
+        <div class="subscribed__popup b-popup-inner">
+            <h2 class="subscribed__header">Спасибо! Ваша заявка принята.</h2>
+            <div class="subscribed__confirmation">
+                Мы отправили краткую инструкцию на<br>
+                <span class="subscribed__confirmation-email">email@example.com</span>
+            </div>
+            <div class="subscribed__message">
+                Оставайтесь с нами!
+            </div>
+            <h3 class="subscribed__share-header">И расскажите о нас друзьям:</h3>
+            <div class="subscribed__share-url">
+                <label class="subscribed__share-url-label">
+                    <span class="subscribed__share-url-text">Ссылка:</span>
+                    <input type="text" value="http://tai.st" class="subscribed__share-url-input">
+                </label>
+            </div>
+            <ul class="subscribed__social">
+                <li class="subscribed__social-link subscribed__social-facebook" title="Поделиться в Facebook" data-uri="http://www.facebook.com/sharer.php?u={{ url }}&t={{ text }}"></li>
+                <li class="subscribed__social-link subscribed__social-vk" title="Поделиться в VK" data-uri="http://vk.com/share.php?url={{ url }}"></li>
+                <li class="subscribed__social-link subscribed__social-twitter" title="Поделиться в Twitter" data-uri="http://twitter.com/share?text={{ text }}&url={{ url }}&via=taistyweb"></li>
+                <li class="subscribed__social-link subscribed__social-blogger" title="Поделиться в Blogger" data-uri="http://www.blogger.com/blog_this.pyra?t&u={{ url }}&n={{ text }}"></li>
+                <li class="subscribed__social-link subscribed__social-lj" title="Поделиться в LiveJournal" data-uri="http://www.livejournal.com/update.bml?event={{ url }}&subject={{ text }}"></li>
+            </ul>
+            <div class="subscribed__popup-close">
+                <span class="subscribed__popup-link b-popup-close">Закрыть</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- /subscribed -->
+
+
+    <!-- launchrock -->
+
+    <div class="launchrock-form">
+        <div rel="8XJV8IA3" class="lrdiscoverwidget" data-logo="off" data-background="off" data-share-url="www.tai.st" data-css=""></div>
+        <script type="text/javascript" src="http://launchrock-ignition.s3.amazonaws.com/ignition.1.1.js"></script>
+    </div>
+
+    <!-- / launchrock -->
+
+
+</body>
+</html>
