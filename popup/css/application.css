@@ -1,3 +1,252 @@
+html, body, ul, li, input {
+    padding: 0;
+    margin: 0;
+}
+
+.popup {
+    color: #000;
+    background: #fff;
+    font: 13px/18px Helvetica, Arial, sans-serif;
+}
+
+.taisties {
+    width: 500px;
+}
+
+.taisties__developer {
+    overflow: hidden;
+    padding: 20px;
+    font-size: 13px;
+}
+
+.taisties__create {
+    position: relative;
+    float: left;
+    line-height: 28px;
+    padding: 0 12px 0 31px;
+    margin-right: 19px;
+    color: #3f3f3f;
+    font-weight: bold;
+    cursor: pointer;
+    text-shadow: 0 1px 0 rgba(255,255,255,.9);
+    border: 1px solid #a8b5be;
+    background-color: #dfe4e8;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#dfe4e8), to(#cdd2d6));
+    background-image: -webkit-linear-gradient(top, #dfe4e8, #cdd2d6);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
+    -webkit-border-radius: 30px;
+}
+
+.taisties__create-icon {
+    position: absolute;
+    top: 2px;
+    left: 13px;
+    font-size: 20px;
+    color: #859099;
+    text-shadow: 0 1px 0 rgba(255,255,255,.9);
+}
+
+.taisties__show-created {
+    float: left;
+    color: rgb(64,113,144);
+    text-decoration: none;
+    line-height: 14px;
+    margin-top: 6px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(64,113,144,.4);
+}
+
+.taisties__show-created:hover {
+    border-bottom-color: rgb(64,113,144);
+}
+
+.taisties__list-item {
+    overflow: hidden;
+    position: relative;
+    padding: 13px 0;
+    background-color: #EBEEEE;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #E5E8E8), color-stop(0.85, #EEF2F2));
+    background-image: -webkit-linear-gradient(bottom, #E5E8E8 0%, #EEF2F2 85%);
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #C9C9C9;
+    cursor: pointer;
+}
+
+.taisties__list:first-of-type .taisties__list-item:first-child {
+    box-shadow: 0 -1px 0 0 #C9C9C9;
+}
+
+.taisties__list-item.m-installed {
+    padding-top: 14px;
+    margin-top: -1px;
+    background-color: #EBEEEE;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #bac3c3), color-stop(0.85, #c5cccc));
+    background-image: -webkit-linear-gradient(bottom, #bac3c3 0%, #c5cccc 85%);
+    border-top: 1px solid #969C9C;
+    border-bottom: 1px solid #ADB5B5;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,.2);
+}
+
+.taisties__list-item.m-installed .taisties__name {
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+}
+
+.taisties__list-own .taisties__list-item {
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4dace8), color-stop(0.85, #88ccf6));
+    background-image: -webkit-linear-gradient(bottom, #4dace8 0%, #88ccf6 85%);
+    border-top: 1px solid #AEDCF9;
+    border-bottom: 1px solid #2877a9;
+}
+
+.taisties__list-own:first-of-type .taisties__list-item:first-child {
+    box-shadow: 0 -1px 0 0 #409BD4;
+}
+
+.taisties__list-own .taisties__list-item.m-installed {
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4099d1), color-stop(0.85, #57b1ea));
+    background-image: -webkit-linear-gradient(bottom, #4099d1 0%, #57b1ea 85%);
+    border-top: 1px solid #3987be;
+    border-bottom: 1px solid #3480b0;
+    -webkit-box-shadow: inset 0 1px 3px rgba(20,83,123,.4) !important;
+}
+
+.taisties__list-own .taisties__list-item.m-installed .taisties__name {
+    text-shadow: 0 1px 0 rgba(255,255,255,.33);
+}
+
+.taisties__switch {
+    float: left;
+    line-height: 20px;
+    padding-left: 14px;
+    width: 21px;
+}
+
+.taisties__switch-checkbox {
+    vertical-align: text-top;
+}
+
+.taisties__name {
+    float: left;
+    line-height: 20px;
+    font-weight: bold;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.taisties__description {
+    clear: both;
+    line-height: 16px;
+    font-size: 12px;
+    height: 16px;
+    margin: 0 15px 0 35px;
+    overflow: hidden;
+    color: rgba(0,0,0,.7);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.taisties__list-item:hover .taisties__description {
+    white-space: normal;
+    height: auto;
+}
+
+.taisties__description-link {
+    color: #407190;
+}
+
+.taisties__description-link:hover {
+    color: #284f68;
+}
+
+.taisties__downloads {
+    position: absolute;
+    top: 10px;
+    right: 11px;
+    font-size: 11px;
+    line-height: 18px;
+    height: 16px;
+    padding: 0 6px 0 13px;
+    color: #fff;
+    background: rgba(80,97,97,.5);
+    text-shadow: 0 1px 0 rgba(0,0,0,.45);
+    -webkit-border-radius: 16px;
+}
+
+.taisties__downloads-icon {
+    position: absolute;
+    top: -2px;
+    left: 4px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.taisties__settings {
+    position: absolute;
+    top: 15px;
+    right: 13px;
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 16px;
+}
+
+.taisties__list-item:hover .taisties__settings {
+    opacity: 1;
+}
+
+.taisties__edit {
+    float: left;
+    margin-right: 22px;
+    color: #143950;
+    cursor: pointer;
+    font-weight: bold;
+    -webkit-transition: color 300ms ease;
+}
+
+.taisties__edit:hover {
+    color: #000;
+}
+
+.taisties__remove {
+    float: left;
+    color: #2d6385;
+    cursor: pointer;
+    -webkit-transition: color 300ms ease;
+}
+
+.taisties__remove:hover {
+    color: #143950;
+}
+
+.taisties__list-own .taisties__description {
+    display: none;
+}
+
+.taisties__list-own .taisties__downloads {
+    display: none;
+}
+
+.taisties__list-recommended .taisties__settings {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
 html, body {
 	margin: 0;
 	padding: 0;
@@ -183,3 +432,5 @@ body {
 #tasks .count span {
 	font-weight: bold;
 }
+
+*/
