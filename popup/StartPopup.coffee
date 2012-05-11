@@ -115,5 +115,4 @@ $ ->
 	# taistieCollection проставлять как зависимость
 	# для этого научить IoC передавать зависимости через параметры конструктора
 	taistieListConstructor = iocContainer.getElement 'taistieListConstructor'
-
-	taistieList = new taistieListConstructor($("#tasks"), mockTargetSiteUrl, iocContainer.getElement 'taistieCollection')
+	taistieList = new taistieListConstructor($(".taisties"), mockTargetSiteUrl, iocContainer.getElement 'taistieCollection')
