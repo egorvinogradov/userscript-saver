@@ -82,10 +82,18 @@ describe 'Taistie', ->
 			Taistie.getTaistiesForUrl 'http://urlWithNoTaisties.com', (taisties)->
 				expect(taisties).toEqual []
 
-			fittingTaistie = Taistie.create rootUrl: 'aaa\.com'
-			unfittingTaistie = Taistie.create rootUrl: 'bbb\.com'
+			fittingTaistie = Taistie.create rootUrl: 'aaa.com'
+			unfittingTaistie = Taistie.create rootUrl: 'bbb.com'
 			Taistie.getTaistiesForUrl 'http://aaa.com', (taisties)->
 				expect(taisties).toEqual [fittingTaistie]
+
+		it 'doesn\'t load userscripts if any userscript for current url already exists', ->
+			userscript = Taistie.create
+				source: 'userscripts'
+				rootUrl: 'aaa.com'
+
+			Taistie.getTaistiesForUrl 'http://aaa.com', (taisties) ->
+				expect(expectedUrl).not.toBeDefined()
 
 		it 'takes valid non-empty url', ->
 			expect(-> Taistie.getTaistiesForUrl null).toThrow new AssertException 'url should be given'

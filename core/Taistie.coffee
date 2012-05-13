@@ -43,7 +43,13 @@ class Taistie extends Spine.Model
 		assert url? and url != '', 'url should be given'
 		localTaisties = @getLocalTaistiesForUrl(url)
 
-		@_getUserscriptsForUrl url, localTaisties, (userscripts) -> callback(localTaisties.concat userscripts)
+		localUserscriptExists = false
+		localUserscriptExists = true for taistie in localTaisties when taistie.isUserscript()
+
+		if localUserscriptExists
+			callback localTaisties
+		else
+			@_getUserscriptsForUrl url, localTaisties, (userscripts) -> callback(localTaisties.concat userscripts)
 
 	@getActiveTaistiesForUrl: (url) ->
 		taistie for taistie in @getLocalTaistiesForUrl(url) when taistie.isActive()
