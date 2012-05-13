@@ -93,8 +93,8 @@ $ ->
 		}
 	]
 
-	Taistie.deleteAll()
-	Taistie.create mockTaistieData for mockTaistieData in mockTaisties
+	#Taistie.deleteAll()
+	#Taistie.create mockTaistieData for mockTaistieData in mockTaisties
 
 	mockUserscriptsDownloader =
 		getUserscriptsForUrl: -> []

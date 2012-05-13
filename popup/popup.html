@@ -33,149 +33,45 @@
                 <div class="taisties__name">${name}</div>
             </label>
             <div class="taisties__description">
-                Сервер userscripts.org не найден из-за ошибки поиска DNS: веб-службы,
-                которая преобразует название веб-сайта в интернет-адрес...
-                <a class="taisties__description-link" href="http://userscripts.org/" target="_blank" tabindex="-1">Подробнее на userscripts.org</a>
+                ${description}
+								<a class="taisties__description-link" href="${externalLink}" target="_blank" tabindex="-1">Подробнее на userscripts.org</a>
             </div>
             <div class="taisties__settings">
                 <div class="taisties__edit">изменить</div>
                 <div class="taisties__remove">удалить</div>
             </div>
-            <div class="taisties__downloads" title="Количество загрузок">2436</div>
-			<div class="taisties__editing">
-                <div class="taisties__editing-header">Новое улучшение</div>
-                <div class="taisties__editing-row">
-                    <input type="text" class="taisties__new-name taisties__input nameInput" value="${name}" placeholder="Название">
-                </div>
-                <div class="taisties__editing-row">
-                    <input type="text" class="taisties__new-url taisties__input rootUrlInput" value="${rootUrl}" placeholder="URL, соответствующий регулярному выражению">
-                </div>
-                <div class="taisties__editing-row">
-                    <textarea class="taisties__new-css taisties__textarea cssInput" placeholder="CSS-код">${css}</textarea>
-                </div>
-                <div class="taisties__editing-row">
-                    <textarea class="taisties__new-js taisties__textarea jsInput" placeholder="JavaScript-код">${js}</textarea>
-                </div>
-                <div class="taisties__editing-button">
-                    <button class="taisties__new-save taisties__button">Сохранить</button>
-                    <span class="taisties__new-cancel taisties__link">Отмена</span>
-                </div>
-			</div>
+            <div class="taisties__downloads" title="${usageCount} загрузок">${usageCount}</div>
+						<div class="taisties__editing">
+								<div class="taisties__editing-header">Новое улучшение</div>
+								<div class="taisties__editing-row">
+										<input type="text" class="taisties__new-name taisties__input nameInput" value="${name}" placeholder="Название">
+								</div>
+								<div class="taisties__editing-row">
+										<input type="text" class="taisties__new-url taisties__input rootUrlInput" value="${rootUrl}" placeholder="URL, соответствующий регулярному выражению">
+								</div>
+								<div class="taisties__editing-row">
+										<textarea class="taisties__new-css taisties__textarea cssInput" placeholder="CSS-код">${css}</textarea>
+								</div>
+								<div class="taisties__editing-row">
+										<textarea class="taisties__new-js taisties__textarea jsInput" placeholder="JavaScript-код">${js}</textarea>
+								</div>
+								<div class="taisties__editing-button">
+										<button class="taisties__new-save taisties__button">Сохранить</button>
+										<span class="taisties__new-cancel taisties__link">Отмена</span>
+								</div>
+						</div>
         </li>
 	</script>
 
 </head>
 <body class="popup">
-
     <div class="taisties">
-
         <div class="taisties__developer">
             <div class="taisties__create"><span class="taisties__create-icon">+</span>создать улучшение</div>
             <div class="taisties__show-created taisties__link">посмотреть уже созданные</div>
         </div>
-
         <ul class="taisties__list taisties__list-own"></ul>
-
-        <ul class="taisties__list taisties__list-recommended">
-
-            <li class="taisties__list-item">
-                <label class="taisties__switch-checkbox-label">
-                    <div class="taisties__switch">
-                        <input class="taisties__switch-checkbox" type="checkbox">
-                    </div>
-                    <div class="taisties__name">Крутое расширение</div>
-                </label>
-                <div class="taisties__description">
-                    Сервер userscripts.org не найден из-за ошибки поиска DNS: веб-службы,
-                    которая преобразует название веб-сайта в интернет-адрес...
-                    <a class="taisties__description-link" href="http://userscripts.org/" target="_blank" tabindex="-1">Подробнее на userscripts.org</a>
-                </div>
-                <div class="taisties__settings">
-                    <div class="taisties__edit">изменить</div>
-                    <div class="taisties__remove">удалить</div>
-                </div>
-                <div class="taisties__downloads" title="Количество загрузок">2436</div>
-            </li>
-
-            <li class="taisties__list-item m-installed">
-                <label class="taisties__switch-checkbox-label">
-                    <div class="taisties__switch">
-                        <input class="taisties__switch-checkbox" type="checkbox" checked>
-                    </div>
-                    <div class="taisties__name">Крутое расширение</div>
-                </label>
-                <div class="taisties__description">
-                    Сервер userscripts.org не найден из-за ошибки поиска DNS: веб-службы,
-                    которая преобразует название веб-сайта в интернет-адрес...
-                    <a class="taisties__description-link" href="http://userscripts.org/" target="_blank" tabindex="-1">Подробнее на userscripts.org</a>
-                </div>
-                <div class="taisties__settings">
-                    <div class="taisties__edit">изменить</div>
-                    <div class="taisties__remove">удалить</div>
-                </div>
-                <div class="taisties__downloads" title="Количество загрузок">2436</div>
-            </li>
-
-            <li class="taisties__list-item">
-                <label class="taisties__switch-checkbox-label">
-                    <div class="taisties__switch">
-                        <input class="taisties__switch-checkbox" type="checkbox">
-                    </div>
-                    <div class="taisties__name">Крутое расширение</div>
-                </label>
-                <div class="taisties__description">
-                    Сервер userscripts.org не найден из-за ошибки поиска DNS: веб-службы,
-                    которая преобразует название веб-сайта в интернет-адрес...
-                    <a class="taisties__description-link" href="http://userscripts.org/" target="_blank" tabindex="-1">Подробнее на userscripts.org</a>
-                </div>
-                <div class="taisties__settings">
-                    <div class="taisties__edit">изменить</div>
-                    <div class="taisties__remove">удалить</div>
-                </div>
-                <div class="taisties__downloads" title="Количество загрузок">2436</div>
-            </li>
-
-            <li class="taisties__list-item">
-                <label class="taisties__switch-checkbox-label">
-                    <div class="taisties__switch">
-                        <input class="taisties__switch-checkbox" type="checkbox">
-                    </div>
-                    <div class="taisties__name">Крутое расширение</div>
-                </label>
-                <div class="taisties__description">
-                    Сервер userscripts.org не найден из-за ошибки поиска DNS: веб-службы,
-                    которая преобразует название веб-сайта в интернет-адрес...
-                    <a class="taisties__description-link" href="http://userscripts.org/" target="_blank" tabindex="-1">Подробнее на userscripts.org</a>
-                </div>
-                <div class="taisties__settings">
-                    <div class="taisties__edit">изменить</div>
-                    <div class="taisties__remove">удалить</div>
-                </div>
-                <div class="taisties__downloads" title="Количество загрузок">2436</div>
-            </li>
-
-            <li class="taisties__list-item">
-                <label class="taisties__switch-checkbox-label">
-                    <div class="taisties__switch">
-                        <input class="taisties__switch-checkbox" type="checkbox">
-                    </div>
-                    <div class="taisties__name">Крутое расширение</div>
-                </label>
-                <div class="taisties__description">
-                    Сервер userscripts.org не найден из-за ошибки поиска DNS: веб-службы,
-                    которая преобразует название веб-сайта в интернет-адрес...
-                    <a class="taisties__description-link" href="http://userscripts.org/" target="_blank" tabindex="-1">Подробнее на userscripts.org</a>
-                </div>
-                <div class="taisties__settings">
-                    <div class="taisties__edit">изменить</div>
-                    <div class="taisties__remove">удалить</div>
-                </div>
-                <div class="taisties__downloads" title="Количество загрузок">2436</div>
-            </li>
-
-        </ul>
-
+        <ul class="taisties__list taisties__list-recommended"></ul>
     </div>
-
 </body>
 </html>
