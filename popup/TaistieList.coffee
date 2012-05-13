@@ -4,10 +4,12 @@ class TaistieList extends Spine.Controller
 	events:
 		"click .taisties__create": "create"
 
-	constructor: ->
-		super
-		Taistie.bind("refresh", @addAll)
-		Taistie.fetch()
+	constructor: (element, url, taistieCollection)->
+		@_taistieCollection = taistieCollection
+		super el: element
+		@_url = url
+		@_taistieCollection.bind("refresh", @addAll)
+		@_taistieCollection.fetch()
 
 	addOne: (taistie) =>
 		view = new TaistieView(item: taistie)
@@ -15,12 +17,12 @@ class TaistieList extends Spine.Controller
 		view
 
 	addAll: =>
-		Taistie.each(@addOne)
+		@addOne taistie for taistie in @_taistieCollection.getTaistiesForUrl(@_url)
 
 	create: =>
-		newTaistie = Taistie.create
-			name: ""
-			active: false
+		newTaistie = @_taistieCollection.create
+				name: ""
+				active: false
 
 		newView = @addOne newTaistie
 		newView.startEditing()
