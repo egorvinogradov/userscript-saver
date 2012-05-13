@@ -3,6 +3,10 @@ TabApi =
 		chrome.tabs.onUpdated.addListener (tabId, changeInfo, tabInfo) ->
 			if changeInfo.status is 'complete'
 				tabTaistCallback tabInfo.url, tabId
+			console.log('-- tab change', +new Date(), tabId, changeInfo, tabInfo)
+#		Taistie.getTaistiesForUrl @_url, (taisties) =>
+#			console.log('-- tab', taisties, taisties.length)
+#			chrome.browserAction.setBadgeText({ text: taisties.length.toString() })
 
 	insertJsToTab: (jsCode, tabDescriptor) ->
 		tabId = tabDescriptor
@@ -19,6 +23,7 @@ TabApi =
 	getCurrentUrl: (callback) ->
 		chrome.windows.getCurrent (win) ->
 			chrome.tabs.query {'windowId': win.id, 'active': true}, (arrayOfOneTab) ->
+				console.log('--- callback:', callback(arrayOfOneTab[0].url))
 				callback arrayOfOneTab[0].url
 
 	setIcon: (iconPath) ->
