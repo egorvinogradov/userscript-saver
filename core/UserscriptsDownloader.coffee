@@ -11,9 +11,10 @@ class UserscriptsDownloader
 	getUserscriptsForUrl: (url, callback) ->
 
 		searchUrl = UserscriptsDownloader._searchUrlTemplate.replace('%siteName%', @_getSiteNameByUrl url)
+		nakedDomain = @_getNakedDomain url
 		@_ajaxProvider.getUrlContent searchUrl, (scriptsListPageContent) =>
 
-			scriptRows = scriptsListPageContent.match /tr\sid="scripts-(\d+)">([\s\S])+?<\/tr>/gm
+			scriptRows = scriptsListPageContent.match /tr\sid='scripts-(\d+)'>([\s\S])+?<\/tr>/gm
 			scriptRows ?= []
 
 			scripts = []
@@ -24,7 +25,7 @@ class UserscriptsDownloader
 
 			getNextRowSerially = (rowIndex) =>
 				if rowIndex < scriptsLimit
-					@_getScriptFromScriptRow scriptRows[rowIndex], (script) ->
+					@_getScriptFromScriptRow scriptRows[rowIndex], nakedDomain, (script) ->
 						scripts.push script
 						getNextRowSerially rowIndex + 1
 				else
@@ -32,19 +33,21 @@ class UserscriptsDownloader
 
 			getNextRowSerially 0
 
-	_getScriptFromScriptRow: (scriptRow, callback) ->
-		id = parseInt(scriptRow.match(/tr\sid="scripts-(\d+)/)[1])
-		name = scriptRow.match(/<a(?:.)+?>((?:.)+)<\/a>/)[1]
-		description = scriptRow.match(/class="desc">(([\s\S])*?)<\/p>/)[1]
+	_getScriptFromScriptRow: (scriptRow, nakedDomain, callback) ->
+		userscript = {}
+		userscript.id = parseInt(scriptRow.match(/tr\sid='scripts-(\d+)/)[1])
+		userscript.name = scriptRow.match(/<a(?:.)+?>((?:.)+)<\/a>/)[1]
+		userscript.description = scriptRow.match(/class='desc'>(([\s\S])*?)<\/p>/)[1]
+		userscript.rootUrl = nakedDomain
 
-		usageCount = parseInt(scriptRow.match(/<td class="inv lp">(\d+)<\/td>/g)[2].match(/>(\d+)</)[1])
+		userscript.usageCount = parseInt(scriptRow.match(/<td class='inv lp'>(\d+)<\/td>/g)[2].match(/>(\d+)</)[1])
 
-		scriptBodyUrl = UserscriptsDownloader._scriptBodyUrlTemplate.replace('%scriptId%', id)
+		scriptBodyUrl = UserscriptsDownloader._scriptBodyUrlTemplate.replace('%scriptId%', userscript.id)
 		@_ajaxProvider.getUrlContent scriptBodyUrl, (js) ->
-			callback
-				id: id, name: name, description: description, js: js, usageCount: usageCount
+			userscript.js = js
+			callback userscript
 
-	_getSiteNameByUrl: (url) ->
+	_getNakedDomain: (url) ->
 		urlWithoutProtocol = url.replace /^https?:\/\//, ''
 
 		urlWithoutParams = urlWithoutProtocol
@@ -57,8 +60,8 @@ class UserscriptsDownloader
 		domainsArray = domainsString.split '.'
 
 		rootDomainPosition = if domainsArray.length >= 2 then domainsArray.length - 2 else 0
-		rootDomain = domainsArray[rootDomainPosition]
+		nakedDomain = domainsArray.slice(rootDomainPosition).join '.'
 
-		siteName = rootDomain
+		return nakedDomain
 
-		return siteName
+	_getSiteNameByUrl: (url) -> @_getNakedDomain(url).split('.')[0]

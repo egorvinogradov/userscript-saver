@@ -62,6 +62,7 @@ describe 'UserscriptsDownloader', ->
 							description: 'script1_description'
 							js: 'alert(\'script1\')'
 							usageCount: 18
+							rootUrl: 'targetSite.com'
 						}
 
 					expect(userscripts[1]).toEqual {
@@ -70,42 +71,43 @@ describe 'UserscriptsDownloader', ->
 							description: "script2_description\n\twith newline"
 							js: 'alert(\'script2\')'
 							usageCount: 132
+							rootUrl: 'targetSite.com'
 						}
 
 			getContentFixture = ->
 				content = {}
-				content['http://userscripts.org/scripts/search?q=targetSite&sort=installs'] = '<tr id="scripts-55501">
-					<td class="script-meat">
-					<a href="/scripts/show/55502" class="title" title="script1_title">script1_link_text</a>
+				content['http://userscripts.org/scripts/search?q=targetSite&sort=installs'] = '<tr id=\'scripts-55501\'>
+					<td class=\'script-meat\'>
+					<a href=\'/scripts/show/55502\' class=\'title\' title=\'script1_title\'>script1_link_text</a>
 
-					<p class="desc">script1_description</p>
+					<p class=\'desc\'>script1_description</p>
 					</td>
-					<td class="inv lp">
+					<td class=\'inv lp\'>
 					<b>no&nbsp;reviews</b>
 					</td>
-					<td class="inv lp">0</td>
-					<td class="inv lp">0</td>
-					<td class="inv lp">18</td>
-					<td class="inv lp">
-					<abbr class="updated" title="2012-05-01T08:17:06Z">
+					<td class=\'inv lp\'>0</td>
+					<td class=\'inv lp\'>0</td>
+					<td class=\'inv lp\'>18</td>
+					<td class=\'inv lp\'>
+					<abbr class=\'updated\' title=\'2012-05-01T08:17:06Z\'>
 					58 minutes ago
 					</abbr>
 					</td>
 					</tr>' +
-					'<tr id="scripts-55502">
-					<td class="script-meat">
-					<a href="/scripts/show/55501" class="title" title="script2_title">script2_link_text</a>
+					'<tr id=\'scripts-55502\'>
+					<td class=\'script-meat\'>
+					<a href=\'/scripts/show/55501\' class=\'title\' title=\'script2_title\'>script2_link_text</a>
 
-					<p class="desc">script2_description\n\twith newline</p>
+					<p class=\'desc\'>script2_description\n\twith newline</p>
 					</td>
-					<td class="inv lp">
+					<td class=\'inv lp\'>
 					<b>no&nbsp;reviews</b>
 					</td>
-					<td class="inv lp">0</td>
-					<td class="inv lp">0</td>
-					<td class="inv lp">132</td>
-					<td class="inv lp">
-					<abbr class="updated" title="2012-04-30T15:48:10Z">
+					<td class=\'inv lp\'>0</td>
+					<td class=\'inv lp\'>0</td>
+					<td class=\'inv lp\'>132</td>
+					<td class=\'inv lp\'>
+					<abbr class=\'updated\' title=\'2012-04-30T15:48:10Z\'>
 					17 hours ago
 					</abbr>
 					</td>
