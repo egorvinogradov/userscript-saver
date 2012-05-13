@@ -32,9 +32,8 @@ class TabTaister
 		callback = (url) ->
 			chrome.browserAction.setBadgeText({ text: '' })
 			Taistie.getTaistiesForUrl url, (taisties) =>
-				console.log('--- taisties for url:', url, taisties, taisties.length)
 				if taisties.length then chrome.browserAction.setBadgeText({ text: taisties.length.toString() })
-		@_tabApi.getCurrentUrl callback
+#		@_tabApi.getCurrentUrl callback
 		@_tabApi.setIcon popupIconPath
 
 	refresh: ->
