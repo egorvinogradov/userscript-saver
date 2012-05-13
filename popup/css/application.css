@@ -114,9 +114,22 @@ html, body, ul, li, input, textarea, button {
     text-shadow: 0 1px 0 rgba(255,255,255,.9);
 }
 
-.taisties__show-created {
+.taisties__show-own,
+.taisties__show-recommended {
     float: left;
     margin-top: 6px;
+}
+
+.taisties.m-own .taisties__show-own {
+		display: none;
+}
+
+.taisties__show-recommended {
+		display: none;
+}
+
+.taisties.m-own .taisties__show-recommended {
+		display: block;
 }
 
 .taisties__list-item {

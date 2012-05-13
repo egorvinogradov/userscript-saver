@@ -4,7 +4,8 @@ class TaistieList extends Spine.Controller
 		".taisties__list-recommended": "recommended"
 	events:
 		"click .taisties__create": "create"
-		"click .taisties__show-created": "showOwn"
+		"click .taisties__show-own": "showOwn"
+		"click .taisties__show-recommended": "showRecommended"
 
 	constructor: (element, url, taistieCollection)->
 		@_taistieCollection = taistieCollection
@@ -14,9 +15,8 @@ class TaistieList extends Spine.Controller
 		@_taistieCollection.fetch()
 
 	addOne: (taistie) =>
-
-		list = if taistie.isOwnTaistie() then @own else @recommended
 		view = new TaistieView(item: taistie)
+		list = if taistie.isOwnTaistie() then @own else @recommended
 		list.append(view.render().el)
 		view
 
@@ -37,10 +37,13 @@ class TaistieList extends Spine.Controller
 		newView.startEditing()
 
 	showOwn: =>
-		if @.el.hasClass 'm-own'
-			@addAll
-			@.el.removeClass 'm-own'
-		else
+			@own.empty()
 			@recommended.empty()
 			@addOwn
 			@.el.addClass 'm-own'
+
+	showRecommended: =>
+			@own.empty()
+			@recommended.empty()
+			@addAll
+			@.el.removeClass 'm-own'
