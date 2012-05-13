@@ -11,6 +11,7 @@ class TaistieList extends Spine.Controller
 		super el: element
 		@_url = url
 		@_taistieCollection.bind("refresh", @addAll)
+		@_taistieCollection.bind("refresh", @setCount)
 		@_taistieCollection.fetch()
 
 	addOne: (taistie) =>
@@ -50,3 +51,6 @@ class TaistieList extends Spine.Controller
 			@addOwn
 			@.el.addClass 'm-own'
 
+	setCount: =>
+		@_taistieCollection.getTaistiesForUrl @_url, (taisties) =>
+			chrome.browserAction.setBadgeText({ text: taisties.length.toString() })
