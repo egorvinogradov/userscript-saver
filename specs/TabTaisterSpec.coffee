@@ -12,6 +12,9 @@ describe 'TabTaister', ->
 				@iconPath = path
 			setPopup: (path) ->
 				@pagePath = path
+			setBadgeText: (text) ->
+				@badgeText = text
+
 		tabTaister = new TabTaister
 		tabTaister._tabApi = mockTabApi
 		tabTaister.startListeningToTabChange()

@@ -29,9 +29,8 @@ class TabTaister
 	updatePopup: (tabUrl) ->
 		@_updatePopupInstantly tabUrl
 
-		@_tabApi.getCurrentUrl (url) =>
-			Taistie.getTaistiesForUrl url, (taisties) =>
-				@_updatePopupInstantly url, taisties
+		Taistie.getTaistiesForUrl tabUrl, (taisties) =>
+			@_updatePopupInstantly tabUrl, taisties
 
 	_updatePopupInstantly: (tabUrl, allTaistiesForUrl) =>
 		localTaisties = @_dTaistieCombiner.existLocalTaistiesForUrl tabUrl
@@ -43,7 +42,7 @@ class TabTaister
 		#TODO: вынести в логику и покрыть тестами
 		recommended = (taistie for taistie in allTaistiesForUrl when taistie.isUserscript() and not taistie.isActive())
 		badgeText = if recommended.length > 0 then recommended.length.toString() else ''
-		chrome.browserAction.setBadgeText text: badgeText
+		@_tabApi.setBadgeText text: badgeText
 
 
 	refresh: ->
