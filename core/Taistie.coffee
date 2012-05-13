@@ -41,14 +41,14 @@ class Taistie extends Spine.Model
 
 	@getTaistiesForUrl: (url, callback) ->
 		assert url? and url != '', 'url should be given'
-		existingTaisties = @_getLocalTaistiesForUrl(url)
+		localTaisties = @getLocalTaistiesForUrl(url)
 
-		@_getUserscriptsForUrl url, existingTaisties, (userscripts) -> callback(existingTaisties.concat userscripts)
+		@_getUserscriptsForUrl url, localTaisties, (userscripts) -> callback(localTaisties.concat userscripts)
 
 	@getActiveTaistiesForUrl: (url) ->
-		taistie for taistie in @_getLocalTaistiesForUrl(url) when taistie.isActive()
+		taistie for taistie in @getLocalTaistiesForUrl(url) when taistie.isActive()
 
-	@_getLocalTaistiesForUrl: (url) ->
+	@getLocalTaistiesForUrl: (url) ->
 		@select (taistie) -> taistie.fitsUrl url
 
 	@_getUserscriptsForUrl: (url, existingTaisties, callback) ->

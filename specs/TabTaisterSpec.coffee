@@ -41,7 +41,7 @@ describe 'TabTaister', ->
 			disabled: 'disabledIcon.png'
 
 		tabTaister._dTaistieCombiner =
-			existTaistiesForUrl: (url) ->
+			existLocalTaistiesForUrl: (url) ->
 				checkedUrl = url
 				return url == urlWithTaisties
 

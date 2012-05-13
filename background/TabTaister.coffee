@@ -27,7 +27,7 @@ class TabTaister
 			@_tabApi.insertJsToTab insertedJs, tabDescriptor
 	
 	updatePopup: (tabUrl) ->
-		existTaisties = @_dTaistieCombiner.existTaistiesForUrl tabUrl
+		existTaisties = @_dTaistieCombiner.existLocalTaistiesForUrl tabUrl
 		popupIconPath = @_popupIconPaths[if existTaisties then 'enabled' else 'disabled']
 
 		@_tabApi.setIcon popupIconPath

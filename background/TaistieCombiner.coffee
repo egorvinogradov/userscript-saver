@@ -14,4 +14,4 @@ class TaistieCombiner
 			js: joinTaistieParts 'getJs'
 			css: joinTaistieParts 'getCss'
 
-	existTaistiesForUrl: (url) -> @_taistieCollection.getTaistiesForUrl(url).length > 0
+	existLocalTaistiesForUrl: (url) -> @_taistieCollection.getLocalTaistiesForUrl(url).length > 0

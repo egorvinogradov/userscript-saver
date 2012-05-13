@@ -18,6 +18,10 @@ do ->
 				_userscriptsDownloader: 'userscriptsDownloader'
 		userscriptsDownloader:
 			single: UserscriptsDownloader
+			deps:
+				_ajaxProvider: 'jqueryAjaxProvider'
+		jqueryAjaxProvider:
+			single: JqueryAjaxProvider
 		taistieWrapper:
 			single: TaistieWrapper
 		tabApi:
