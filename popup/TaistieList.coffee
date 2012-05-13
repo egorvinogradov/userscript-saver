@@ -30,7 +30,6 @@ class TaistieList extends Spine.Controller
 			@addOne taistie for taistie in taisties
 
 	addOwn: =>
-		console.log('zzz', @_taistieCollection.getAllOwnTaisties())
 		@_taistieCollection.getAllOwnTaisties() =>
 			@addOne taistie for taistie in taisties
 
