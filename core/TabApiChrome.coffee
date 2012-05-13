@@ -23,7 +23,6 @@ TabApi =
 	getCurrentUrl: (callback) ->
 		chrome.windows.getCurrent (win) ->
 			chrome.tabs.query {'windowId': win.id, 'active': true}, (arrayOfOneTab) ->
-				console.log('--- callback:', callback(arrayOfOneTab[0].url))
 				callback arrayOfOneTab[0].url
 
 	setIcon: (iconPath) ->
