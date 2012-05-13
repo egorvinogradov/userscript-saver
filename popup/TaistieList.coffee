@@ -4,6 +4,7 @@ class TaistieList extends Spine.Controller
 		".taisties__list-recommended": "recommended"
 	events:
 		"click .taisties__create": "create"
+		"click .taisties__show-created": "showOwn"
 
 	constructor: (element, url, taistieCollection)->
 		@_taistieCollection = taistieCollection
@@ -28,6 +29,11 @@ class TaistieList extends Spine.Controller
 		@_taistieCollection.getTaistiesForUrl @_url, (taisties) =>
 			@addOne taistie for taistie in taisties
 
+	addOwn: =>
+		console.log('zzz', @_taistieCollection.getAllOwnTaisties())
+		@_taistieCollection.getAllOwnTaisties() =>
+			@addOne taistie for taistie in taisties
+
 	create: =>
 		newTaistie = @_taistieCollection.create
 				name: ""
@@ -35,4 +41,13 @@ class TaistieList extends Spine.Controller
 
 		newView = @addOne newTaistie
 		newView.startEditing()
+
+	showOwn: =>
+		if @.el.hasClass 'm-own'
+			@addAll
+			@.el.removeClass 'm-own'
+		else
+			@recommended.empty()
+			@addOwn
+			@.el.addClass 'm-own'
 
