@@ -56,7 +56,7 @@ html, body, ul, li, input, textarea, button {
 }
 
 .taisties {
-    width: 500px;
+    min-width: 500px;
 }
 
 .taisties__developer {
