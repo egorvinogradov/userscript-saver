@@ -29,18 +29,12 @@ class TabTaister
 	updatePopup: (tabUrl) ->
 		existTaisties = @_dTaistieCombiner.existLocalTaistiesForUrl tabUrl
 		popupIconPath = @_popupIconPaths[if existTaisties then 'enabled' else 'disabled']
-
-		callback = (url) -> url
-
-		url = TabApi.getCurrentUrl(callback)
-#		url = 'http://yandex.ru'
-
-		console.log('--- updatePopup:', url, callback)
-
-		Taistie.getTaistiesForUrl url, (taisties) =>
-			console.log('--- taisties for url:', taisties, taisties.length)
-			chrome.browserAction.setBadgeText({ text: taisties.length.toString() })
-
+		callback = (url) ->
+			chrome.browserAction.setBadgeText({ text: '' })
+			Taistie.getTaistiesForUrl url, (taisties) =>
+				console.log('--- taisties for url:', url, taisties, taisties.length)
+				if taisties.length then chrome.browserAction.setBadgeText({ text: taisties.length.toString() })
+		@_tabApi.getCurrentUrl callback
 		@_tabApi.setIcon popupIconPath
 
 	refresh: ->
