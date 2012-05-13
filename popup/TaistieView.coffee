@@ -25,6 +25,9 @@ class TaistieView extends Spine.Controller
 			description: (if description.length > 100 then description.substr(0, 97) + '...' else description)
 			externalLink: @item.getExternalLink()
 			usageCount: @item.getUsageCount()
+			css: @item.getCss()
+			js: @item.getRawJs()
+			rootUrl: @item.getRootUrl()
 
 		@replace($("#taisty").tmpl(data))
 		@

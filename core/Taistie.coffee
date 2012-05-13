@@ -18,14 +18,14 @@ class Taistie extends Spine.Model
 	getCss: ->
 		@css ? ''
 
-	getJs: ->
+	getJsForInsertion: ->
 		if (@js ? '') is '' then '' else '(function(){' + @js + '})();'
 
-	getName: ->
-		@name
+	getRawJs: -> @js
 
-	isActive: ->
-		@active
+	getName: ->	@name
+
+	isActive: -> @active
 
 	isOwnTaistie: -> @source == 'own'
 
@@ -38,6 +38,8 @@ class Taistie extends Spine.Model
 	getExternalLink: ->	if @isUserscript() then "http://userscripts.org/scripts/show/#{@getExternalId()}" else null
 
 	getUsageCount: -> @usageCount
+
+	getRootUrl: -> @rootUrl
 
 	@getTaistiesForUrl: (url, callback) ->
 		assert url? and url != '', 'url should be given'

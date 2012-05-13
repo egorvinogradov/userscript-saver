@@ -16,19 +16,27 @@ describe 'Taistie', ->
 		taistie = new Taistie rootUrl: 'stub', css: 'css code'
 		expect(taistie.getCss()).toEqual 'css code'
 
-	it 'returns js as functional expression text', ->
+	it 'returns js for insertion as functional expression text', ->
 		taistie = new Taistie rootUrl: 'stub', js: 'return true'
-		expect(taistie.getJs()).toEqual '(function(){return true})();'
+		expect(taistie.getJsForInsertion()).toEqual '(function(){return true})();'
+
+	it 'gets raw js with getRawJs', ->
+		taistie = new Taistie js: 'return true;'
+		expect(taistie.getRawJs()).toEqual 'return true;'
 
 	it "has empty css and js if they are not given", ->
 		taistie = new Taistie rootUrl: 'stub'
 
 		expect(taistie.getCss()).toEqual ''
-		expect(taistie.getJs()).toEqual ''
+		expect(taistie.getJsForInsertion()).toEqual ''
 
 	it 'gives description with getDescription', ->
 		taistie = new Taistie description: 'some text'
 		expect(taistie.getDescription()).toEqual 'some text'
+
+	it 'gives root URL with getRootUrl', ->
+		taistie = new Taistie rootUrl: 'rooturl.com'
+		expect(taistie.getRootUrl()).toEqual 'rooturl.com'
 
 	it 'gives external id with getExternalId', ->
 		taistie = new Taistie externalId: 555

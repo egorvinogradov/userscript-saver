@@ -25,4 +25,4 @@ describe "TaistieCombiner", ->
 		
 		expect(taistieCombiner.getAllCssAndJsForUrl 'some_url').toEqual
 			css: cssOnly.getCss() + '\n\n' + jsAndCss.getCss(),
-			js: jsOnly.getJs() + '\n\n' + jsAndCss.getJs()
+			js: jsOnly.getJsForInsertion() + '\n\n' + jsAndCss.getJsForInsertion()

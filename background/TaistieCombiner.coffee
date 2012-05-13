@@ -11,7 +11,7 @@ class TaistieCombiner
 				taistieParts = (taistie[partGetter]() for taistie in taisties when taistie[partGetter]() != '')
 				taistieParts.join '\n\n'
 
-			js: joinTaistieParts 'getJs'
+			js: joinTaistieParts 'getJsForInsertion'
 			css: joinTaistieParts 'getCss'
 
 	existLocalTaistiesForUrl: (url) -> @_taistieCollection.getLocalTaistiesForUrl(url).length > 0
