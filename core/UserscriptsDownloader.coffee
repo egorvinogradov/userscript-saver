@@ -5,21 +5,26 @@ class UserscriptsDownloader
 	constructor: ->
 		@_ajaxProvider = null
 
-	getUserscriptsForUrl: (url) ->
+	getUserscriptsForUrl: (url, callback) ->
 
 		searchUrl = UserscriptsDownloader._searchUrlTemplate.replace('%siteName%', @_getSiteNameByUrl url)
-		scriptsListPageContent = @_ajaxProvider.getUrlContent searchUrl
+		@_ajaxProvider.getUrlContent searchUrl, (scriptsListPageContent) =>
 
-		scriptRows = scriptsListPageContent.match /tr\sid="scripts-(\d+)">([\s\S])+?<\/tr>/gm
+			scriptRows = scriptsListPageContent.match /tr\sid="scripts-(\d+)">([\s\S])+?<\/tr>/gm
 
-		scripts = []
+			scripts = []
 
-		if scriptRows?
-			scripts.push @_getScriptFromScriptRow scriptRow for scriptRow in scriptRows
+			getNextRowSerially = (rowIndex) =>
+				if rowIndex < scriptRows.length
+					@_getScriptFromScriptRow scriptRows[rowIndex], (script) ->
+						scripts.push script
+						getNextRowSerially rowIndex + 1
+				else
+					callback scripts
 
-		return scripts
+			getNextRowSerially 0
 
-	_getScriptFromScriptRow: (scriptRow) ->
+	_getScriptFromScriptRow: (scriptRow, callback) ->
 		id = parseInt(scriptRow.match(/tr\sid="scripts-(\d+)/)[1])
 		name = scriptRow.match(/<a(?:.)+?>((?:.)+)<\/a>/)[1]
 		description = scriptRow.match(/class="desc">(([\s\S])*?)<\/p>/)[1]
@@ -27,9 +32,9 @@ class UserscriptsDownloader
 		usageCount = parseInt(scriptRow.match(/<td class="inv lp">(\d+)<\/td>/g)[2].match(/>(\d+)</)[1])
 
 		scriptBodyUrl = UserscriptsDownloader._scriptBodyUrlTemplate.replace('%scriptId%', id)
-		js = @_ajaxProvider.getUrlContent scriptBodyUrl
-
-		return id: id, name: name, description: description, js: js, usageCount: usageCount
+		@_ajaxProvider.getUrlContent scriptBodyUrl, (js) ->
+			callback
+				id: id, name: name, description: description, js: js, usageCount: usageCount
 
 	_getSiteNameByUrl: (url) ->
 		urlWithoutProtocol = url.replace /^https?:\/\//, ''

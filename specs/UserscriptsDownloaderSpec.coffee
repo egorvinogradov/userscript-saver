@@ -23,27 +23,31 @@ describe 'UserscriptsDownloader', ->
 			for testDescription, testUrl of testUrls
 				do(testDescription, testUrl) ->
 					it testDescription, ->
+						expectedUrl = null
 						mockAjaxProvider =
-							getUrlContent: -> ''
+							getUrlContent: (url, callback) -> expectedUrl = url
 						initDownloader mockAjaxProvider
 
-						spiedMethod = spyOn(mockAjaxProvider, 'getUrlContent').andReturn 'mockContent'
-
 						downloader.getUserscriptsForUrl testUrl
-						expect(mockAjaxProvider.getUrlContent).toHaveBeenCalledWith(searchUrl)
+						expect(expectedUrl).toEqual(searchUrl)
 
 		describe 'gathers all scripts content', ->
 			userscripts = null
+			callAndExpect = (expectFunction) ->
+				downloader.getUserscriptsForUrl 'targetSite.com', (results) ->
+					userscripts = results
+					console.log userscripts
+					expectFunction()
+
 			beforeEach ->
 				initDownloader
-					getUrlContent: (url) ->
-						getContentFixture()[url]
-
-				userscripts = downloader.getUserscriptsForUrl 'targetSite.com'
+					getUrlContent: (url, callback) ->
+						callback(getContentFixture()[url])
 
 			it 'creates a userscript from every row of scripts table', ->
-				scriptsInFixtureCount = 2
-				expect(userscripts.length).toEqual scriptsInFixtureCount
+				contentFixturesCount = 2
+				callAndExpect ->
+					expect(userscripts.length).toEqual contentFixturesCount
 
 			it 'gets script id, name and description from ids of rows of scripts table', ->
 				expect(userscripts[0]).toEqual {
@@ -51,12 +55,15 @@ describe 'UserscriptsDownloader', ->
 						name: 'script1_link_text'
 						description: 'script1_description'
 						js: 'alert(\'script1\')'
+						usageCount: 18
 					}
 
 				expect(userscripts[1]).toEqual {
 						id: 55502
 						name: 'script2_link_text',
 						description: "script2_description\n\twith newline"
+						js: 'alert(\'script2\')'
+						usageCount: 132
 					}
 
 			getContentFixture = ->
@@ -99,6 +106,7 @@ describe 'UserscriptsDownloader', ->
 					</tr>'
 
 				content['http://userscripts.org/scripts/source/55501.user.js'] = 'alert(\'script1\')'
+				content['http://userscripts.org/scripts/source/55502.user.js'] = 'alert(\'script2\')'
 
 				return content
 

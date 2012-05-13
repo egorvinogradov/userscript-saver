@@ -69,16 +69,23 @@ describe 'Taistie', ->
 			expect(userscriptTaistie.isUserscript()).toBeTruthy()
 
 	describe 'getTaistiesForUrl', ->
-		mockUserscriptsDownloader =
-			getUserscriptsForUrl: -> []
-		Taistie._userscriptsDownloader = mockUserscriptsDownloader
+		expectedUrl = undefined
+		mockedResults = undefined
+		beforeEach ->
+			mockedResults = []
+			expectedUrl = undefined
+			Taistie._userscriptsDownloader = getUserscriptsForUrl: (url, callback) ->
+				expectedUrl = url
+				callback mockedResults
 
 		it 'gives taisties that fit to url', ->
-			expect(Taistie.getTaistiesForUrl 'http://aaa.com').toEqual []
+			Taistie.getTaistiesForUrl 'http://urlWithNoTaisties.com', (taisties)->
+				expect(taisties).toEqual []
 
 			fittingTaistie = Taistie.create rootUrl: 'aaa\.com'
 			unfittingTaistie = Taistie.create rootUrl: 'bbb\.com'
-			expect(Taistie.getTaistiesForUrl 'http://aaa.com').toEqual [fittingTaistie]
+			Taistie.getTaistiesForUrl 'http://aaa.com', (taisties)->
+				expect(taisties).toEqual [fittingTaistie]
 
 		it 'takes valid non-empty url', ->
 			expect(-> Taistie.getTaistiesForUrl null).toThrow new AssertException 'url should be given'
@@ -91,19 +98,20 @@ describe 'Taistie', ->
 				name: 'userscript1'
 				id: 1
 				description: 'some description'
-			spyOn(mockUserscriptsDownloader, 'getUserscriptsForUrl').andReturn [userscript]
+			mockedResults = [userscript]
 
-			taisties = Taistie.getTaistiesForUrl 'http://aaa.com'
-			expect(mockUserscriptsDownloader.getUserscriptsForUrl).toHaveBeenCalledWith 'http://aaa.com'
-			expect(taisties.length).toEqual(1)
+			Taistie.getTaistiesForUrl 'http://aaa.com', (taisties) ->
+				expect(expectedUrl).toEqual 'http://aaa.com'
+				expect(taisties.length).toEqual(1)
 
-			taistie = taisties[0]
-			expect([taistie.name, taistie.js, taistie.rootUrl, taistie.source, taistie.externalId,
-				taistie.description]).
-				toEqual [userscript.name, userscript.js, userscript.rootUrl, 'userscripts', userscript.id,
-				userscript.description]
+				taistie = taisties[0]
+				expect([taistie.name, taistie.js, taistie.rootUrl, taistie.source, taistie.externalId,
+					taistie.description]).
+					toEqual [userscript.name, userscript.js, userscript.rootUrl, 'userscripts', userscript.id,
+					userscript.description]
 
-			expect(Taistie.getTaistiesForUrl('http://aaa.com').length).toEqual 1
+				Taistie.getTaistiesForUrl 'http://aaa.com', (taisties) ->
+					expect(taisties.length).toEqual 1
 
 	it 'getActiveTaistiesForUrl: gets all active taisties that fit given url assuming they all are loaded locally', ->
 		activeFittingTaistie = Taistie.create

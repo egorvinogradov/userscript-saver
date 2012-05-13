@@ -39,11 +39,11 @@ class Taistie extends Spine.Model
 
 	getUsageCount: -> @usageCount
 
-	@getTaistiesForUrl: (url) ->
+	@getTaistiesForUrl: (url, callback) ->
 		assert url? and url != '', 'url should be given'
 		existingTaisties = @_getLocalTaistiesForUrl(url)
 
-		existingTaisties.concat @_getUserscriptsForUrl url, existingTaisties
+		@_getUserscriptsForUrl url, existingTaisties, (userscripts) -> callback(existingTaisties.concat userscripts)
 
 	@getActiveTaistiesForUrl: (url) ->
 		taistie for taistie in @_getLocalTaistiesForUrl(url) when taistie.isActive()
@@ -51,26 +51,26 @@ class Taistie extends Spine.Model
 	@_getLocalTaistiesForUrl: (url) ->
 		@select (taistie) -> taistie.fitsUrl url
 
-	@_getUserscriptsForUrl: (url, existingTaisties) ->
-		userscripts = @_userscriptsDownloader.getUserscriptsForUrl url
-		taistiesFromUserScripts = []
-		for userscript in userscripts
-			do (userscript) ->
-				taistieExists = false
-				taistieExists = true for taistie in existingTaisties when taistie.source is 'userscripts' and taistie.externalId is userscript.id
+	@_getUserscriptsForUrl: (url, existingTaisties, callback) ->
+		@_userscriptsDownloader.getUserscriptsForUrl url, (userscripts) ->
+			taistiesFromUserScripts = []
+			for userscript in userscripts
+				do (userscript) ->
+					taistieExists = false
+					taistieExists = true for taistie in existingTaisties when taistie.source is 'userscripts' and taistie.externalId is userscript.id
 
-				if not taistieExists
-					taistieFromUserscript = Taistie.create
-						name: userscript.name
-						js: userscript.js
-						description: userscript.description
+					if not taistieExists
+						taistieFromUserscript = Taistie.create
+							name: userscript.name
+							js: userscript.js
+							description: userscript.description
 
-						#TODO: проставлять url здесь, в Taistie
-						rootUrl: userscript.rootUrl
-						source: 'userscripts'
-						externalId: userscript.id
-					taistiesFromUserScripts.push taistieFromUserscript
-		taistiesFromUserScripts
+							#TODO: проставлять url здесь, в Taistie
+							rootUrl: userscript.rootUrl
+							source: 'userscripts'
+							externalId: userscript.id
+						taistiesFromUserScripts.push taistieFromUserscript
+			callback taistiesFromUserScripts
 
 	@getAllOwnTaisties: -> @select (taistie) -> taistie.isOwnTaistie()
 

@@ -8,12 +8,10 @@ class TaistieCombiner
 		if taisties.length == 0 then null
 		else
 			joinTaistieParts = (partGetter) ->
-				(taistie[partGetter]() for taistie in taisties when taistie[partGetter]() != '').join('\n\n')
+				taistieParts = (taistie[partGetter]() for taistie in taisties when taistie[partGetter]() != '')
+				taistieParts.join '\n\n'
 
 			js: joinTaistieParts 'getJs'
 			css: joinTaistieParts 'getCss'
 
-	_getAllTaistiesForUrl: (url) ->
-		@_taistieCollection.getTaistiesForUrl url
-
-	existTaistiesForUrl: (url) -> @_getAllTaistiesForUrl(url).length > 0
+	existTaistiesForUrl: (url) -> @_taistieCollection.getTaistiesForUrl(url).length > 0
