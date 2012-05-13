@@ -20,16 +20,24 @@ describe 'UserscriptsDownloader', ->
 
 			searchUrl = 'http://userscripts.org/scripts/search?q=sitename&sort=installs'
 
-			for testDescription, testUrl of testUrls
-				do(testDescription, testUrl) ->
-					it testDescription, ->
-						expectedUrl = null
-						mockAjaxProvider =
-							getUrlContent: (url, callback) -> expectedUrl = url
-						initDownloader mockAjaxProvider
+			expectedUrl = null
+			testUrl = (testedUrl) ->
+				expectedUrl = undefined
+				mockAjaxProvider =
+					getUrlContent: (url, callback) -> expectedUrl = url
+				initDownloader mockAjaxProvider
 
-						downloader.getUserscriptsForUrl testUrl
+				downloader.getUserscriptsForUrl testedUrl, ->
+
+			for testDescription, testedUrl of testUrls
+				do(testDescription, testedUrl) ->
+					it testDescription, ->
+						testUrl testedUrl
 						expect(expectedUrl).toEqual(searchUrl)
+
+			it 'doesn\'t process service urls with protocols different from http/https', ->
+				testUrl 'chrome://somepath'
+				expect(expectedUrl).not.toBeDefined()
 
 		describe 'gathers all scripts content', ->
 			userscripts = null

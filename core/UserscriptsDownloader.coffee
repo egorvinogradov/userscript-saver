@@ -10,28 +10,32 @@ class UserscriptsDownloader
 
 	getUserscriptsForUrl: (url, callback) ->
 
-		searchUrl = UserscriptsDownloader._searchUrlTemplate.replace('%siteName%', @_getSiteNameByUrl url)
-		nakedDomain = @_getNakedDomain url
-		@_ajaxProvider.getUrlContent searchUrl, (scriptsListPageContent) =>
+		if not @_isValidUserscriptsUrl url
+			callback []
 
-			scriptRows = scriptsListPageContent.match /tr\sid='scripts-(\d+)'>([\s\S])+?<\/tr>/gm
-			scriptRows ?= []
+		else
+			searchUrl = UserscriptsDownloader._searchUrlTemplate.replace('%siteName%', @_getSiteNameByUrl url)
+			nakedDomain = @_getNakedDomain url
+			@_ajaxProvider.getUrlContent searchUrl, (scriptsListPageContent) =>
 
-			scripts = []
+				scriptRows = scriptsListPageContent.match /tr\sid='scripts-(\d+)'>([\s\S])+?<\/tr>/gm
+				scriptRows ?= []
 
-			scriptsLimit = UserscriptsDownloader._maxUserscriptsCount
-			if scriptsLimit > scriptRows.length
-				scriptsLimit = scriptRows.length
+				scripts = []
 
-			getNextRowSerially = (rowIndex) =>
-				if rowIndex < scriptsLimit
-					@_getScriptFromScriptRow scriptRows[rowIndex], nakedDomain, (script) ->
-						scripts.push script
-						getNextRowSerially rowIndex + 1
-				else
-					callback scripts
+				scriptsLimit = UserscriptsDownloader._maxUserscriptsCount
+				if scriptsLimit > scriptRows.length
+					scriptsLimit = scriptRows.length
 
-			getNextRowSerially 0
+				getNextRowSerially = (rowIndex) =>
+					if rowIndex < scriptsLimit
+						@_getScriptFromScriptRow scriptRows[rowIndex], nakedDomain, (script) ->
+							scripts.push script
+							getNextRowSerially rowIndex + 1
+					else
+						callback scripts
+
+				getNextRowSerially 0
 
 	_getScriptFromScriptRow: (scriptRow, nakedDomain, callback) ->
 		userscript = {}
@@ -65,3 +69,5 @@ class UserscriptsDownloader
 		return nakedDomain
 
 	_getSiteNameByUrl: (url) -> @_getNakedDomain(url).split('.')[0]
+
+	_isValidUserscriptsUrl: (url) -> url.indexOf('http') is 0 or url.indexOf('://') is -1
