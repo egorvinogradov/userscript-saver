@@ -1,4 +1,4 @@
-staticServer = require "node-staticServer"
+staticServer = require "node-static"
 http = require "http"
 url = require "url"
 
