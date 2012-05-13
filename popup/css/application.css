@@ -118,6 +118,7 @@ html, body, ul, li, input, textarea, button {
 .taisties__show-recommended {
     float: left;
     margin-top: 6px;
+		display: none;
 }
 
 .taisties.m-own .taisties__show-own {
