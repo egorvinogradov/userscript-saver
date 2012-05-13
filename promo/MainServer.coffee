@@ -1,11 +1,11 @@
-static = require "node-static"
+staticServer = require "node-static"
 http = require "http"
 url = require "url"
 
 webroot = './promo/public'
 port = process.env.PORT || 3000
 
-fileServer = new(static.Server) webroot, cache: 600
+fileServer = new(staticServer.Server) webroot, cache: 600
 
 load_static_file = (request, response) ->
 	fileServer.serve request, response, (error, result) ->

@@ -1,1 +1,1 @@
-web: node promo/MainServer.js
+web: coffee promo/MainServer.coffee

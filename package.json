@@ -3,7 +3,8 @@
 	"version": "0.0.1",
 	"dependencies": {
 	"http-server": "0.4.1",
-	"node-static": "*"
+	"node-static": "*",
+	"coffee-script": "*"
   },
 	"engines": {
 		"node": "0.6.x"
