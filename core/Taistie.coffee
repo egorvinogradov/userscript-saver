@@ -69,6 +69,7 @@ class Taistie extends Spine.Model
 							rootUrl: userscript.rootUrl
 							source: 'userscripts'
 							externalId: userscript.id
+							usageCount: userscript.usageCount
 						taistiesFromUserScripts.push taistieFromUserscript
 			callback taistiesFromUserScripts
 
