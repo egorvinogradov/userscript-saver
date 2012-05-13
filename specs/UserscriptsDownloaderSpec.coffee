@@ -113,8 +113,8 @@ describe 'UserscriptsDownloader', ->
 					</td>
 					</tr>'
 
-				content['http://userscripts.org/scripts/source/55501.user.js'] = 'alert(\'script1\')'
-				content['http://userscripts.org/scripts/source/55502.user.js'] = 'alert(\'script2\')'
+				content['http://www.tai.st/server/userscripts/55501'] = 'alert(\'script1\')'
+				content['http://www.tai.st/server/userscripts/55502'] = 'alert(\'script2\')'
 
 				return content
 
