@@ -3,7 +3,8 @@ class TaistieCombiner
 		@_taistieCollection = null
 
 	getAllCssAndJsForUrl: (url) ->
-		taisties = @_getActiveTaistiesForUrl url
+		taisties = @_taistieCollection.getActiveTaistiesForUrl url
+
 		if taisties.length == 0 then null
 		else
 			joinTaistieParts = (partGetter) ->
@@ -14,8 +15,5 @@ class TaistieCombiner
 
 	_getAllTaistiesForUrl: (url) ->
 		@_taistieCollection.getTaistiesForUrl url
-
-	_getActiveTaistiesForUrl: (url) ->
-		taistie for taistie in @_getAllTaistiesForUrl(url) when taistie.isActive()
 
 	existTaistiesForUrl: (url) -> @_getAllTaistiesForUrl(url).length > 0

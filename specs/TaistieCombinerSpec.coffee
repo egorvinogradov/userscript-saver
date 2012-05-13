@@ -4,6 +4,7 @@ describe "TaistieCombiner", ->
 	mockTaistieCollection =
 		#return just all taisties - ulr fitting is checked in Taistie specs
 		getTaistiesForUrl: (url) -> @taisties
+		getActiveTaistiesForUrl: (url) -> taistie for taistie in @taisties when taistie.isActive()
 
 	beforeEach ->
 		mockTaistieCollection.taisties = []

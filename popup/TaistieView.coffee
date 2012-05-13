@@ -41,4 +41,4 @@ class TaistieView extends Spine.Controller
 			js: @jsInput.val()
 
 	cancelEditing: ->
-    @el.add('.taisties').removeClass "m-editing"
+		@el.add('.taisties').removeClass "m-editing"

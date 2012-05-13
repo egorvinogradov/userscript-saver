@@ -105,6 +105,19 @@ describe 'Taistie', ->
 
 			expect(Taistie.getTaistiesForUrl('http://aaa.com').length).toEqual 1
 
+	it 'getActiveTaistiesForUrl: gets all active taisties that fit given url assuming they all are loaded locally', ->
+		activeFittingTaistie = Taistie.create
+			active: true
+			rootUrl: 'current.com'
+		inactiveFittingTaistie = Taistie.create
+			active: false
+			rootUrl: 'current.com'
+		activeOtherTaistie = Taistie.create
+			active: true
+			rootUrl: 'other.com'
+
+		expect(Taistie.getActiveTaistiesForUrl 'http://current.com').toEqual [activeFittingTaistie]
+
 	it 'getAllOwnTaisties: gets all own taisties', ->
 		defaultOwnTaistie = Taistie.create {}
 		ownActive = Taistie.create {active: true}

@@ -10,7 +10,7 @@ class UserscriptsDownloader
 		searchUrl = UserscriptsDownloader._searchUrlTemplate.replace('%siteName%', @_getSiteNameByUrl url)
 		scriptsListPageContent = @_ajaxProvider.getUrlContent searchUrl
 
-		scriptRows = scriptsListPageContent.match /tr\sid="scripts-(\d+)">([\s\S])+?<\/td>/gm
+		scriptRows = scriptsListPageContent.match /tr\sid="scripts-(\d+)">([\s\S])+?<\/tr>/gm
 
 		scripts = []
 
@@ -24,10 +24,12 @@ class UserscriptsDownloader
 		name = scriptRow.match(/<a(?:.)+?>((?:.)+)<\/a>/)[1]
 		description = scriptRow.match(/class="desc">(([\s\S])*?)<\/p>/)[1]
 
+		usageCount = parseInt(scriptRow.match(/<td class="inv lp">(\d+)<\/td>/g)[2].match(/>(\d+)</)[1])
+
 		scriptBodyUrl = UserscriptsDownloader._scriptBodyUrlTemplate.replace('%scriptId%', id)
 		js = @_ajaxProvider.getUrlContent scriptBodyUrl
 
-		return id: id, name: name, description: description, js: js
+		return id: id, name: name, description: description, js: js, usageCount: usageCount
 
 	_getSiteNameByUrl: (url) ->
 		urlWithoutProtocol = url.replace /^https?:\/\//, ''
