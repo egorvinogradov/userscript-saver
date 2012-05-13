@@ -15,12 +15,7 @@ class TaistieList extends Spine.Controller
 		@_taistieCollection.fetch()
 
 	addOne: (taistie) =>
-		taistie.description = if taistie.description and taistie.description.length > 100
-			taistie.description.substr(0, 100) + "..."
 
-		taistie.externalLink = if taistie.isUserscript()
-			taistie.getExternalLink()
-		
 		list = if taistie.isOwnTaistie() then @own else @recommended
 		view = new TaistieView(item: taistie)
 		list.append(view.render().el)

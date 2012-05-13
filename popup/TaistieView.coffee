@@ -18,6 +18,13 @@ class TaistieView extends Spine.Controller
 		@item.bind("destroy", @release)
 
 	render: =>
+		data =
+			active: @item.isActive()
+			name: @item.getName()
+			description: (if @item.description.length <= 100 then @item.description else @item.description.substr(0, 97) + '...')
+			externalLink: @item.getExternalLink()
+			usageCount: @item.getUsageCount()
+
 		@replace($("#taisty").tmpl(@item))
 		@
 
