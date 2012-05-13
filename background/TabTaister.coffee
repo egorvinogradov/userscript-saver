@@ -27,14 +27,23 @@ class TabTaister
 			@_tabApi.insertJsToTab insertedJs, tabDescriptor
 	
 	updatePopup: (tabUrl) ->
-		existTaisties = @_dTaistieCombiner.existLocalTaistiesForUrl tabUrl
-		popupIconPath = @_popupIconPaths[if existTaisties then 'enabled' else 'disabled']
-		callback = (url) ->
-			chrome.browserAction.setBadgeText({ text: '' })
+		@_updatePopupInstantly tabUrl
+
+		@_tabApi.getCurrentUrl (url) =>
 			Taistie.getTaistiesForUrl url, (taisties) =>
-				if taisties.length then chrome.browserAction.setBadgeText({ text: taisties.length.toString() })
-#		@_tabApi.getCurrentUrl callback
+				@_updatePopupInstantly url, taisties
+
+	_updatePopupInstantly: (tabUrl, allTaistiesForUrl) =>
+		localTaisties = @_dTaistieCombiner.existLocalTaistiesForUrl tabUrl
+		popupIconPath = @_popupIconPaths[if localTaisties then 'enabled' else 'disabled']
 		@_tabApi.setIcon popupIconPath
+
+		if allTaistiesForUrl?
+			#TODO: вынести в логику и покрыть тестами
+			recommended = (taistie for taistie in allTaistiesForUrl when taistie.isUserscript() and not taistie.isActive())
+			badgeText = if recommended.length > 0 then recommended.length.toString() else ''
+			chrome.browserAction.setBadgeText text: badgeText
+
 
 	refresh: ->
 		#workaround to refresh Taisties while developing
