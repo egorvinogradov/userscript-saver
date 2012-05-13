@@ -62,6 +62,7 @@ describe 'UserscriptsDownloader', ->
 							description: 'script1_description'
 							js: 'alert(\'script1\')'
 							usageCount: 18
+							rootUrl: 'targetSite.com'
 						}
 
 					expect(userscripts[1]).toEqual {
@@ -70,6 +71,7 @@ describe 'UserscriptsDownloader', ->
 							description: "script2_description\n\twith newline"
 							js: 'alert(\'script2\')'
 							usageCount: 132
+							rootUrl: 'targetSite.com'
 						}
 
 			getContentFixture = ->
