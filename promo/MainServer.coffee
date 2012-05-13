@@ -1,10 +1,6 @@
 static = require "node-static"
-util = require "util"
 http = require "http"
 url = require "url"
-path = require "path"
-fs = require "fs"
-events = require "events"
 
 webroot = './promo/public'
 port = process.env.PORT || 3000
@@ -16,17 +12,37 @@ load_static_file = (request, response) ->
 		if error
 			console.error 'Error serving %s - %s', request.url, error.message
 			response.writeHead error.status, error.headers
-			response.end()
+			response.end 'Error: ' + error.status
+
+load_userscript = (request, response, userscriptId) ->
+	userscriptsClient = http.createClient 80, "userscripts.org"
+
+	userscriptUri = "/scripts/source/#{userscriptId}.user.js"
+	request = userscriptsClient.request "GET", userscriptUri, "host": "userscripts.org"
+
+	request.addListener "response", (userscriptsResponse) ->
+		body = ""
+		userscriptsResponse.addListener "data", (data) ->
+			body += data
+
+		userscriptsResponse.addListener "end", ->
+			response.writeHead 200, "Content-Type" : "text/plain"
+			response.end body
+
+	request.end()
+
 
 server = http.createServer (request, response) ->
 	request.addListener "end", ->
-		uri = url.parse(request.url).pathname
-		if uri is "/server"
-			#add logic here
-			return
+		apiPath = "/server/userscripts/"
+		path = url.parse(request.url).path
+		console.log path
+		if path.indexOf(apiPath) is 0
+			userscriptId = path.substr apiPath.length
+			load_userscript request, response, userscriptId
 		else
 			load_static_file(request, response)
 
 server.listen port
 
-util.puts "Server running at http://localhost:#{port}/"
+console.log "Server running at http://localhost:#{port}/"
