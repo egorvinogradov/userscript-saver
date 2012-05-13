@@ -14,6 +14,7 @@ class UserscriptsDownloader
 		@_ajaxProvider.getUrlContent searchUrl, (scriptsListPageContent) =>
 
 			scriptRows = scriptsListPageContent.match /tr\sid="scripts-(\d+)">([\s\S])+?<\/tr>/gm
+			scriptRows ?= []
 
 			scripts = []
 
