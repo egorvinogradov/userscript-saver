@@ -1,6 +1,3 @@
-background/*.js
-core/*.js
-popup/*.js
-specs/*.js
+*.js
 npm-debug.log
 node_modules
