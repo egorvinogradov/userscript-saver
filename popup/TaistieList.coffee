@@ -21,8 +21,7 @@ class TaistieList extends Spine.Controller
 		view
 
 	addAll: =>
-		@_taistieCollection.getLocalTaistiesForUrl @_url, (taisties) =>
-			@addOne taistie for taistie in taisties
+		@addOne taistie for taistie in @_taistieCollection.getLocalTaistiesForUrl @_url
 
 	addOwn: =>
 		@_taistieCollection.getAllOwnTaisties() =>

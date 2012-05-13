@@ -38,11 +38,12 @@ class TabTaister
 		popupIconPath = @_popupIconPaths[if localTaisties then 'enabled' else 'disabled']
 		@_tabApi.setIcon popupIconPath
 
-		if allTaistiesForUrl?
-			#TODO: вынести в логику и покрыть тестами
-			recommended = (taistie for taistie in allTaistiesForUrl when taistie.isUserscript() and not taistie.isActive())
-			badgeText = if recommended.length > 0 then recommended.length.toString() else ''
-			chrome.browserAction.setBadgeText text: badgeText
+		allTaistiesForUrl ?= []
+
+		#TODO: вынести в логику и покрыть тестами
+		recommended = (taistie for taistie in allTaistiesForUrl when taistie.isUserscript() and not taistie.isActive())
+		badgeText = if recommended.length > 0 then recommended.length.toString() else ''
+		chrome.browserAction.setBadgeText text: badgeText
 
 
 	refresh: ->
