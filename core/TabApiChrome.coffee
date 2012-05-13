@@ -16,6 +16,11 @@ TabApi =
 			chrome.tabs.getSelected null, (tab) ->
 				selectedTabCallBack tab.url
 
+	getCurrentUrl: (callback) ->
+		chrome.windows.getCurrent (win) ->
+			chrome.tabs.query {'windowId': win.id, 'active': true}, (arrayOfOneTab) ->
+				callback arrayOfOneTab[0].url
+
 	setIcon: (iconPath) ->
 		chrome.browserAction.setIcon
 			path: iconPath
