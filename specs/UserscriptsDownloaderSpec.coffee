@@ -36,10 +36,10 @@ describe 'UserscriptsDownloader', ->
 			callAndExpect = (expectFunction) ->
 				downloader.getUserscriptsForUrl 'targetSite.com', (results) ->
 					userscripts = results
-					console.log userscripts
 					expectFunction()
 
 			beforeEach ->
+				UserscriptsDownloader._maxUserscriptsCount = 5
 				initDownloader
 					getUrlContent: (url, callback) ->
 						callback(getContentFixture()[url])
@@ -49,22 +49,28 @@ describe 'UserscriptsDownloader', ->
 				callAndExpect ->
 					expect(userscripts.length).toEqual contentFixturesCount
 
-			it 'gets script id, name and description from ids of rows of scripts table', ->
-				expect(userscripts[0]).toEqual {
-						id: 55501
-						name: 'script1_link_text'
-						description: 'script1_description'
-						js: 'alert(\'script1\')'
-						usageCount: 18
-					}
+			it 'gets no more than allowed maximum of userscripts', ->
+				UserscriptsDownloader._maxUserscriptsCount = 1
+				callAndExpect ->
+					expect(userscripts.length).toEqual 1
 
-				expect(userscripts[1]).toEqual {
-						id: 55502
-						name: 'script2_link_text',
-						description: "script2_description\n\twith newline"
-						js: 'alert(\'script2\')'
-						usageCount: 132
-					}
+			it 'gets script id, name and description from ids of rows of scripts table', ->
+				callAndExpect ->
+					expect(userscripts[0]).toEqual {
+							id: 55501
+							name: 'script1_link_text'
+							description: 'script1_description'
+							js: 'alert(\'script1\')'
+							usageCount: 18
+						}
+
+					expect(userscripts[1]).toEqual {
+							id: 55502
+							name: 'script2_link_text',
+							description: "script2_description\n\twith newline"
+							js: 'alert(\'script2\')'
+							usageCount: 132
+						}
 
 			getContentFixture = ->
 				content = {}

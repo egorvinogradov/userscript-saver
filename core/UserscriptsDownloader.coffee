@@ -2,6 +2,9 @@ class UserscriptsDownloader
 	@_searchUrlTemplate: 'http://userscripts.org/scripts/search?q=%siteName%&sort=installs'
 	@_scriptBodyUrlTemplate = 'http://userscripts.org/scripts/source/%scriptId%.user.js'
 
+	#TODO: передавать количество юзерскриптов как параметр
+	@_maxUserscriptsCount = 5
+
 	constructor: ->
 		@_ajaxProvider = null
 
@@ -14,8 +17,12 @@ class UserscriptsDownloader
 
 			scripts = []
 
+			scriptsLimit = UserscriptsDownloader._maxUserscriptsCount
+			if scriptsLimit > scriptRows.length
+				scriptsLimit = scriptRows.length
+
 			getNextRowSerially = (rowIndex) =>
-				if rowIndex < scriptRows.length
+				if rowIndex < scriptsLimit
 					@_getScriptFromScriptRow scriptRows[rowIndex], (script) ->
 						scripts.push script
 						getNextRowSerially rowIndex + 1
