@@ -27,3 +27,6 @@ TabApi =
 	setIcon: (iconPath) ->
 		chrome.browserAction.setIcon
 			path: iconPath
+
+	setBadgeText: (text) ->
+		chrome.browserAction.setBadgeText text
