@@ -14,7 +14,8 @@ class UserscriptsDownloader
 			callback []
 
 		else
-			searchUrl = UserscriptsDownloader._searchUrlTemplate.replace('%siteName%', @_getSiteNameByUrl url)
+			siteName = @_getSiteNameByUrl url
+			searchUrl = UserscriptsDownloader._searchUrlTemplate.replace('%siteName%', siteName)
 			nakedDomain = @_getNakedDomain url
 			@_ajaxProvider.getUrlContent searchUrl, (scriptsListPageContent) =>
 
@@ -23,19 +24,22 @@ class UserscriptsDownloader
 
 				scripts = []
 
-				scriptsLimit = UserscriptsDownloader._maxUserscriptsCount
-				if scriptsLimit > scriptRows.length
-					scriptsLimit = scriptRows.length
-
-				getNextRowSerially = (rowIndex) =>
-					if rowIndex < scriptsLimit
+				#TODO: добавить тесты на отсечение левых сайтов
+				checkJsRegexp = new RegExp "(\\s*)@include(\\s+)(?:.+?)#{siteName}", 'i'
+				getNextRowSerially = (rowIndex, scriptsCount) =>
+					if rowIndex < scriptRows.length and scriptsCount < UserscriptsDownloader._maxUserscriptsCount
 						@_getScriptFromScriptRow scriptRows[rowIndex], nakedDomain, (script) ->
-							scripts.push script
-							getNextRowSerially rowIndex + 1
+							nextScriptsCount = undefined
+							if checkJsRegexp.test script.js
+								scripts.push script
+								nextScriptsCount = scriptsCount + 1
+							else
+								nextScriptsCount = scriptsCount
+							getNextRowSerially rowIndex + 1, nextScriptsCount
 					else
 						callback scripts
 
-				getNextRowSerially 0
+				getNextRowSerially 0, 0
 
 	_getScriptFromScriptRow: (scriptRow, nakedDomain, callback) ->
 		userscript = {}

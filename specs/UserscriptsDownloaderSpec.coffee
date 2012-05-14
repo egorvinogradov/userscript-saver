@@ -68,7 +68,7 @@ describe 'UserscriptsDownloader', ->
 							id: 55501
 							name: 'script1_link_text'
 							description: 'script1_description'
-							js: 'alert(\'script1\')'
+							js: "@include http://targetSite.com\nalert(\'script1\')"
 							usageCount: 18
 							rootUrl: 'targetSite.com'
 						}
@@ -77,7 +77,7 @@ describe 'UserscriptsDownloader', ->
 							id: 55502
 							name: 'script2_link_text',
 							description: "script2_description\n\twith newline"
-							js: 'alert(\'script2\')'
+							js: '@include http://targetSite.com\nalert(\'script2\')'
 							usageCount: 132
 							rootUrl: 'targetSite.com'
 						}
@@ -121,8 +121,8 @@ describe 'UserscriptsDownloader', ->
 					</td>
 					</tr>'
 
-				content['http://www.tai.st/server/userscripts/55501'] = 'alert(\'script1\')'
-				content['http://www.tai.st/server/userscripts/55502'] = 'alert(\'script2\')'
+				content['http://www.tai.st/server/userscripts/55501'] = "@include http://targetSite.com\nalert(\'script1\')"
+				content['http://www.tai.st/server/userscripts/55502'] = '@include http://targetSite.com\nalert(\'script2\')'
 
 				return content
 
