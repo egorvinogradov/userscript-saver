@@ -1,9 +1,12 @@
 describe 'IocContainerChecker', ->
-	iocContainer = null
-	IocContainerChecker.applyToIocContainerPrototype IocContainerBare
 
+	class CheckedIocContainer extends IocContainerBare
+
+	IocContainerChecker.applyToIocContainerPrototype CheckedIocContainer
+
+	iocContainer = null
 	beforeEach ->
-		iocContainer = new IocContainerBare
+		iocContainer = new CheckedIocContainer
 
 	describe 'setSchema', ->
 		it 'checks that schema is not empty', ->

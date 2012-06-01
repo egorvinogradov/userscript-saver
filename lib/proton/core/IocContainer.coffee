@@ -1,1 +1,3 @@
-IocContainer = IocContainerBare
+class IocContainer extends IocContainerBare
+
+IocContainerChecker.applyToIocContainerPrototype IocContainer
