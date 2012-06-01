@@ -1,5 +1,4 @@
 class IocContainerBare
-	#TODO: добавить constructor injection и по максимуму заменить везде на него setter injection
 	constructor: -> @_createdElements = {}
 
 	setSchema: (schema) ->
