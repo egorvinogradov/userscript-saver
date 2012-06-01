@@ -1,7 +1,7 @@
 describe 'IocContainer', ->
 	iocContainer = null
 	beforeEach ->
-		iocContainer = new IocContainer
+		iocContainer = new IocContainerBare
 
 	describe 'schema element contents meaning:', ->
 		describe 'single', ->
