@@ -62,12 +62,6 @@ describe 'IocContainer', ->
 				expect(fooInstance._barProperty).toBe iocContainer.getElement('barInstance')
 
 	describe 'setSchema: sets dependency schema to use', ->
-		it 'checks that schema is not empty', ->
-			for invalidSchema in [null, undefined, {}]
-				do (invalidSchema) ->
-					assertMessage = if not invalidSchema? then 'Dependency schema should be given' else 'Dependency schema should be non-empty'
-					expectAssertFail assertMessage, ->
-						iocContainer.setSchema invalidSchema
 
 		describe 'it checks each element in schema', ->
 
