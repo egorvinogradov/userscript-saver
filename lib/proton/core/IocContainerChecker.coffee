@@ -11,3 +11,5 @@ IocContainerChecker =
 
 	setSchema: (schema) ->
 		assert schema?, 'Dependency schema should be given'
+		schemaElements = (element for element of schema)
+		assert schemaElements.length > 0, 'Dependency schema should be non-empty'

@@ -2,7 +2,6 @@ class IocContainerBare
 	constructor: -> @_createdElements = {}
 
 	setSchema: (schema) ->
-		assert (element for element of schema).length > 0, 'Dependency schema should be non-empty'
 
 		allElementNames = (elName for elName of schema)
 		@_checkSchemaElement elementName, elementDescription, allElementNames for elementName, elementDescription of schema
