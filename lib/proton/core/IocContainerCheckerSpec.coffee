@@ -2,7 +2,8 @@ describe 'IocContainerChecker', ->
 
 	class CheckedIocContainer extends IocContainerBare
 
-	IocContainerChecker.applyToIocContainerPrototype CheckedIocContainer
+	checker = new IocContainerChecker
+	checker.applyToIocContainerPrototype CheckedIocContainer
 
 	iocContainer = null
 	beforeEach ->
@@ -75,3 +76,12 @@ describe 'IocContainerChecker', ->
 						single: ->
 						deps:
 							barProperty: 'bar'
+
+	describe 'getElement', ->
+		it 'checks that schema is set and contains element', ->
+			getFoo = -> iocContainer.getElement 'foo'
+			expectAssertFail 'Dependency schema is not set', getFoo
+			iocContainer.setSchema
+				bar:
+					single: ->
+			expectAssertFail 'Element \'foo\' not found in dependency schema', getFoo

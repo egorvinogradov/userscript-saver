@@ -1,3 +1,5 @@
 class IocContainer extends IocContainerBare
 
-IocContainerChecker.applyToIocContainerPrototype IocContainer
+do ->
+	checker = new IocContainerChecker
+	checker.applyToIocContainerPrototype IocContainer

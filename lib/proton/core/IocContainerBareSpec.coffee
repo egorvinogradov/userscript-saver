@@ -62,13 +62,8 @@ describe 'IocContainer', ->
 				expect(fooInstance._barProperty).toBe iocContainer.getElement('barInstance')
 
 	describe 'setSchema: sets dependency schema to use', ->
+		#TODO: добавить позитивные спеки
 
 	describe 'getElement: gets element by its name in schema', ->
-		it 'checks that schema is set and contains element', ->
-			getFoo = -> iocContainer.getElement 'foo'
-			expectAssertFail 'Dependency schema is not set', getFoo
-			iocContainer.setSchema
-				bar:
-					single: ->
-			expectAssertFail 'Element \'foo\' not found in dependency schema', getFoo
+		#TODO: добавить позитивные спеки
 
