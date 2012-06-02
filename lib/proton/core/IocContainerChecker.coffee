@@ -65,9 +65,7 @@ class IocContainerChecker
 		_assertElement: (condition, message) -> assert condition, "invalid element '#{@elementName}': " + message
 
 		_checkPartsNames: ->
-			#TODO: убрать константу 'deps'
-			#TODO: проверять, что ровно одна часть создания элемента
-			allAllowedParts = @_getAllowedTypes().concat 'deps'
+			allAllowedParts = @_getAllowedTypes().concat @_keyDependencies
 			unknownParts = (part for part of @elementDescription when part not in allAllowedParts)
 			@_assertElement unknownParts.length == 0, "unknown description parts: #{unknownParts.join ', '}. allowed parts: #{allAllowedParts.join ', '}"
 
