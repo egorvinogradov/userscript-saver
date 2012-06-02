@@ -13,18 +13,19 @@ class IocContainerChecker
 			check.apply checker, [checkedObject].concat argsArrayToConcat
 			decoratedMethod.apply checkedObject, arguments
 
-	_getChecks: ->
-		setSchema: (iocContainer, schema) ->
-			assert schema?, 'Dependency schema should be given'
-			elementNames = (elementName for elementName, elementDescription of schema)
-			assert elementNames.length > 0, 'Dependency schema should be non-empty'
+	_getChecks: -> {@setSchema, @_getElementDescriptor}
 
-			(new _schemaElementChecker elementName, schema).check() for elementName in elementNames
+	setSchema: (iocContainer, schema) ->
+		assert schema?, 'Dependency schema should be given'
+		elementNames = (elementName for elementName, elementDescription of schema)
+		assert elementNames.length > 0, 'Dependency schema should be non-empty'
 
-		_getElementDescriptor: (iocContainer, elementName) ->
-			assert iocContainer._schema?, 'Dependency schema is not set'
-			rawElementData = iocContainer._schema[elementName]
-			assert rawElementData?, 'Element \'' + elementName + '\' not found in dependency schema'
+		(new _schemaElementChecker elementName, schema).check() for elementName in elementNames
+
+	_getElementDescriptor: (iocContainer, elementName) ->
+		assert iocContainer._schema?, 'Dependency schema is not set'
+		rawElementData = iocContainer._schema[elementName]
+		assert rawElementData?, 'Element \'' + elementName + '\' not found in dependency schema'
 
 	class _schemaElementChecker
 		constructor: (@elementName, @schema) ->
