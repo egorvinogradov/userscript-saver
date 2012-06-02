@@ -30,30 +30,16 @@ class IocContainerChecker
 		constructor: (@elementName, @schema) ->
 			@elementDescription = @schema[@elementName]
 
+		#TODO: разобраться: с _allowedTypes - они не совсем в тему внутри самого контейнера, но и дублировать не хочется
 		allowedTypes: ['single', 'ref', 'factoryFunction']
 
 		check: ->
-			#TODO: разобраться: с _allowedTypes - они не совсем в тему внутри самого контейнера, но и дублировать не хочется
-
 			@_assertElement @elementDescription?, 'contents not set'
-	
 			elementType = @_getAndCheckElementType()
-	
 			@_checkSource elementType
-	
-			allAllowedParts = @allowedTypes.concat 'deps'
-			unknownParts = (part for part of @elementDescription when part not in allAllowedParts)
-			@_assertElement unknownParts.length == 0, "unknown description parts: #{unknownParts.join ', '}. allowed parts: #{allAllowedParts.join ', '}"
-	
-			if 'deps' of @elementDescription
-				deps = @elementDescription.deps
-				typeofDeps = if deps == null then 'null' else typeof @elementDescription.deps
-				@_assertElement typeofDeps == 'object' and (dep for dep of deps).length > 0, "deps should be non-empty dictionary, #{typeofDeps} given"
+			@_checkPartsNames()
+			@_checkDependencies()
 
-				for depName, depValue of deps
-					@_assertElement typeof depValue == 'string', "dependency '#{depName}' should be a string"
-					@_assertElement depValue in @schema, "dependency '#{depName}': schema doesn't have element '#{depValue}'"
-	
 		_getAndCheckElementType: ->
 			elementTypes = (elementPart for elementPart of @elementDescription when elementPart in @allowedTypes)
 	
@@ -71,3 +57,20 @@ class IocContainerChecker
 				@_assertElement typeof source == 'function', "part '#{elementType}' should be function"
 	
 		_assertElement: (condition, message) -> assert condition, "invalid element '#{@elementName}': " + message
+
+		_checkPartsNames: ->
+			#TODO: убрать константу 'deps'
+			#TODO: проверять, что ровно одна часть создания элемента
+			allAllowedParts = @allowedTypes.concat 'deps'
+			unknownParts = (part for part of @elementDescription when part not in allAllowedParts)
+			@_assertElement unknownParts.length == 0, "unknown description parts: #{unknownParts.join ', '}. allowed parts: #{allAllowedParts.join ', '}"
+
+		_checkDependencies: ->
+			if 'deps' of @elementDescription
+				deps = @elementDescription.deps
+				typeofDeps = if deps == null then 'null' else typeof @elementDescription.deps
+				@_assertElement typeofDeps == 'object' and (dep for dep of deps).length > 0, "deps should be non-empty dictionary, #{typeofDeps} given"
+
+				for depName, depValue of deps
+					@_assertElement typeof depValue == 'string', "dependency '#{depName}' should be a string"
+					@_assertElement depValue in @schema, "dependency '#{depName}': schema doesn't have element '#{depValue}'"
