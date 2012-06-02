@@ -19,6 +19,7 @@ describe 'IocContainerChecker', ->
 
 		describe 'it checks each element in schema', ->
 
+			#TODO: разбить на отдельные спеки по смыслу
 			assertInvalidSchema = (assertMessage, invalidSchema) ->
 				completeMessage = 'invalid element \'foo\': ' + assertMessage
 				expectAssertFail completeMessage, -> iocContainer.setSchema invalidSchema
