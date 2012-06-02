@@ -1,47 +1,47 @@
 class IocContainerBare
-	constructor: -> @_createdElements = {}
+	constructor: -> @_createdInstances = {}
 
 	setSchema: (schema) ->
 		@_schema = schema
 
-	getInstance: (elementName) ->
-		elementDescriptor = @_getElementDescriptor elementName
-		isCached = @_isCachedElement elementDescriptor
-		element = null
+	getInstance: (instanceName) ->
+		instanceDescriptor = @_getInstanceDescriptor instanceName
+		isCached = @_isCachedInstance instanceDescriptor
+		instance = null
 
 		if isCached
-			element = @_createdElements[elementName]
+			instance = @_createdInstances[instanceName]
 
-		if not element?
-			element = @_getNewElement elementDescriptor
+		if not instance
+			instance = @_getNewInstance instanceDescriptor
 			if isCached
-				@_createdElements[elementName] = element
+				@_createdInstances[instanceName] = instance
 
-		return element
+		return instance
 
-	_getNewElement: (elementDescriptor) ->
-		element = @_createElement elementDescriptor
-		@_addDependencies element, elementDescriptor.deps
+	_getNewInstance: (instanceDescriptor) ->
+		instance = @_createInstance instanceDescriptor
+		@_addDependencies instance, instanceDescriptor.deps
 
-		return element
+		return instance
 
-	_getElementDescriptor: (elementName) ->
-		rawElementData = @_schema[elementName]
+	_getInstanceDescriptor: (instanceName) ->
+		rawInstanceData = @_schema[instanceName]
 
-		elementDescriptor =
-			deps: rawElementData.deps
-			name: elementName
+		instanceDescriptor =
+			deps: rawInstanceData.deps
+			name: instanceName
 
-		elementDescriptor.type = @_getElementType rawElementData
+		instanceDescriptor.type = @_getInstanceType rawInstanceData
 
 		#in dependency schema, type/source are given as key/value pair
-		elementDescriptor.source = rawElementData[elementDescriptor.type]
+		instanceDescriptor.source = rawInstanceData[instanceDescriptor.type]
 
-		return elementDescriptor
+		return instanceDescriptor
 
-	_createElement: (elementDescriptor) ->
-		type = elementDescriptor.type
-		source = elementDescriptor.source
+	_createInstance: (instanceDescriptor) ->
+		type = instanceDescriptor.type
+		source = instanceDescriptor.source
 
 		if type == 'single'
 			return @_createFromConstructor source
@@ -51,26 +51,26 @@ class IocContainerBare
 
 		if type == 'factoryFunction'
 			return =>
-				assert arguments.length == 0, "factoryFunction '#{elementDescriptor.name}' should be called without arguments"
-				newElement = new source
-				@_addDependencies newElement, elementDescriptor.deps
-				return newElement
+				assert arguments.length == 0, "factoryFunction '#{instanceDescriptor.name}' should be called without arguments"
+				newInstance = new source
+				@_addDependencies newInstance, instanceDescriptor.deps
+				return newInstance
 
-	_addDependencies: (element, dependencies) ->
+	_addDependencies: (instance, dependencies) ->
 		if dependencies
 			for depName, dependency of dependencies
-				element[depName] = @getInstance dependency
+				instance[depName] = @getInstance dependency
 
 	_createFromConstructor: (ctor) ->
 		return new ctor
 
-	_isCachedElement: (elementDescriptor) -> elementDescriptor.type != 'prototype'
+	_isCachedInstance: (instanceDescriptor) -> instanceDescriptor.type != 'prototype'
 
 	_allowedTypes: ['single', 'ref', 'factoryFunction']
 
-	_getElementType: (rawElementData) ->
-		elementType = null
+	_getInstanceType: (rawInstanceData) ->
+		instanceType = null
 		for allowedType in @_allowedTypes
-			if rawElementData[allowedType]?
-				elementType = allowedType
-		return elementType
+			if rawInstanceData[allowedType]?
+				instanceType = allowedType
+		return instanceType

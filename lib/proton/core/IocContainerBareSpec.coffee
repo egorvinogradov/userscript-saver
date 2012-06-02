@@ -3,7 +3,7 @@ describe 'IocContainer', ->
 	beforeEach ->
 		iocContainer = new IocContainerBare
 
-	describe 'schema element contents meaning:', ->
+	describe 'schema instance contents meaning:', ->
 		describe 'single', ->
 			it 'returns the only instance of given class', ->
 				class Foo
@@ -42,14 +42,14 @@ describe 'IocContainer', ->
 
 		describe 'ref', ->
 			it 'gets existing object by direct reference', ->
-				foo = name: 'fooElement'
+				foo = name: 'fooInstance'
 				iocContainer.setSchema
 					fooInstance:
 						ref: foo
 
 				expect(iocContainer.getInstance 'fooInstance').toBe foo
 		describe 'deps', ->
-			it 'sets element dependencies with other schema elements using their names in schema', ->
+			it 'sets instance dependencies with other schema instances using their names in schema', ->
 				iocContainer.setSchema
 					fooInstance:
 						single: ->
@@ -64,6 +64,6 @@ describe 'IocContainer', ->
 	describe 'setSchema: sets dependency schema to use', ->
 		#TODO: добавить позитивные спеки
 
-	describe 'getInstance: gets element by its name in schema', ->
+	describe 'getInstance: gets instance by its name in schema', ->
 		#TODO: добавить позитивные спеки
 

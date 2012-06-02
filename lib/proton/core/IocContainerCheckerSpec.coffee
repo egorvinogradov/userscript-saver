@@ -17,11 +17,11 @@ describe 'IocContainerChecker', ->
 					expectAssertFail assertMessage, ->
 						iocContainer.setSchema invalidSchema
 
-		describe 'it checks each element in schema', ->
+		describe 'it checks each instance in schema', ->
 
 			#TODO: разбить на отдельные спеки по смыслу
 			assertInvalidSchema = (assertMessage, invalidSchema) ->
-				completeMessage = 'invalid element \'foo\': ' + assertMessage
+				completeMessage = 'invalid instance \'foo\': ' + assertMessage
 				expectAssertFail completeMessage, -> iocContainer.setSchema invalidSchema
 
 			itAssertsSchema = (specDescription, assertMessage, invalidSchema) ->
@@ -64,7 +64,7 @@ describe 'IocContainerChecker', ->
 								single: ->
 								deps: invalidDeps
 
-			it 'each dependency should be a string name of other element in schema', ->
+			it 'each dependency should be a string name of other instance in schema', ->
 				for invalidDep in [null, {}]
 					do (invalidDep) ->
 						assertInvalidSchema "dependency 'barProperty' should be a string",
@@ -72,17 +72,17 @@ describe 'IocContainerChecker', ->
 								single: ->
 								deps:
 									barProperty: invalidDep
-				assertInvalidSchema "dependency 'barProperty': schema doesn't have element 'bar'",
+				assertInvalidSchema "dependency 'barProperty': schema doesn't have instance 'bar'",
 					foo:
 						single: ->
 						deps:
 							barProperty: 'bar'
 
 	describe 'getInstance', ->
-		it 'checks that schema is set and contains element', ->
+		it 'checks that schema is set and contains instance', ->
 			getFoo = -> iocContainer.getInstance 'foo'
 			expectAssertFail 'Dependency schema is not set', getFoo
 			iocContainer.setSchema
 				bar:
 					single: ->
-			expectAssertFail 'Element \'foo\' not found in dependency schema', getFoo
+			expectAssertFail 'Instance \'foo\' not found in dependency schema', getFoo

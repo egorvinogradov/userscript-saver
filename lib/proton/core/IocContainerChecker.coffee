@@ -13,23 +13,23 @@ class IocContainerChecker
 			check.apply checker, [checkedObject].concat argsArrayToConcat
 			decoratedMethod.apply checkedObject, arguments
 
-	_getChecks: -> {@setSchema, @_getElementDescriptor}
+	_getChecks: -> {@setSchema, @_getInstanceDescriptor}
 
 	setSchema: (iocContainer, schema) ->
 		assert schema?, 'Dependency schema should be given'
-		elementNames = (elementName for elementName, elementDescription of schema)
-		assert elementNames.length > 0, 'Dependency schema should be non-empty'
+		instanceNames = (instanceName for instanceName, instanceDescription of schema)
+		assert instanceNames.length > 0, 'Dependency schema should be non-empty'
 
-		(new _schemaElementChecker elementName, schema).check() for elementName in elementNames
+		(new _schemaInstanceChecker instanceName, schema).check() for instanceName in instanceNames
 
-	_getElementDescriptor: (iocContainer, elementName) ->
+	_getInstanceDescriptor: (iocContainer, instanceName) ->
 		assert iocContainer._schema?, 'Dependency schema is not set'
-		rawElementData = iocContainer._schema[elementName]
-		assert rawElementData?, 'Element \'' + elementName + '\' not found in dependency schema'
+		rawInstanceData = iocContainer._schema[instanceName]
+		assert rawInstanceData?, 'Instance \'' + instanceName + '\' not found in dependency schema'
 
-	class _schemaElementChecker
-		constructor: (@elementName, @schema) ->
-			@elementDescription = @schema[@elementName]
+	class _schemaInstanceChecker
+		constructor: (@instanceName, @schema) ->
+			@instanceDescription = @schema[@instanceName]
 
 		_keySourceSingle: 'single'
 		_keySourceReference: 'ref'
@@ -39,42 +39,42 @@ class IocContainerChecker
 		_getAllowedTypes: -> [@_keySourceSingle, @_keySourceReference, @_keySourceFactoryFunction]
 
 		check: ->
-			@_assertElement @elementDescription?, 'contents not set'
-			elementType = @_getAndCheckElementType()
-			@_checkSource elementType
+			@_assertInstance @instanceDescription?, 'contents not set'
+			instanceType = @_getAndCheckInstanceType()
+			@_checkSource instanceType
 			@_checkPartsNames()
 			@_checkDependencies()
 
-		_getAndCheckElementType: ->
-			elementTypes = (elementPart for elementPart of @elementDescription when elementPart in @_getAllowedTypes())
+		_getAndCheckInstanceType: ->
+			instanceTypes = (instancePart for instancePart of @instanceDescription when instancePart in @_getAllowedTypes())
 	
-			@_assertElement elementTypes.length > 0, "has no type"
-			@_assertElement elementTypes.length == 1, "has several types: #{elementTypes.join ', '}"
+			@_assertInstance instanceTypes.length > 0, "has no type"
+			@_assertInstance instanceTypes.length == 1, "has several types: #{instanceTypes.join ', '}"
 	
-			return elementTypes[0]
+			return instanceTypes[0]
 	
-		_checkSource: (elementType) ->
-			source = @elementDescription[elementType]
+		_checkSource: (instanceType) ->
+			source = @instanceDescription[instanceType]
 
 			#TODO: исправить сообщение
-			@_assertElement source, "part '#{elementType}' should have value"
+			@_assertInstance source, "part '#{instanceType}' should have value"
 	
-			if elementType in [@_keySourceFactoryFunction, @_keySourceSingle]
-				@_assertElement typeof source == 'function', "part '#{elementType}' should be function"
+			if instanceType in [@_keySourceFactoryFunction, @_keySourceSingle]
+				@_assertInstance typeof source == 'function', "part '#{instanceType}' should be function"
 	
-		_assertElement: (condition, message) -> assert condition, "invalid element '#{@elementName}': " + message
+		_assertInstance: (condition, message) -> assert condition, "invalid instance '#{@instanceName}': " + message
 
 		_checkPartsNames: ->
 			allAllowedParts = @_getAllowedTypes().concat @_keyDependencies
-			unknownParts = (part for part of @elementDescription when part not in allAllowedParts)
-			@_assertElement unknownParts.length == 0, "unknown description parts: #{unknownParts.join ', '}. allowed parts: #{allAllowedParts.join ', '}"
+			unknownParts = (part for part of @instanceDescription when part not in allAllowedParts)
+			@_assertInstance unknownParts.length == 0, "unknown description parts: #{unknownParts.join ', '}. allowed parts: #{allAllowedParts.join ', '}"
 
 		_checkDependencies: ->
-			if @_keyDependencies of @elementDescription
-				dependencies = @elementDescription[@_keyDependencies]
-				typeofDeps = if dependencies == null then 'null' else typeof @elementDescription.deps
-				@_assertElement typeofDeps == 'object' and (dep for dep of dependencies).length > 0, "deps should be non-empty dictionary, #{typeofDeps} given"
+			if @_keyDependencies of @instanceDescription
+				dependencies = @instanceDescription[@_keyDependencies]
+				typeofDeps = if dependencies == null then 'null' else typeof @instanceDescription.deps
+				@_assertInstance typeofDeps == 'object' and (dep for dep of dependencies).length > 0, "deps should be non-empty dictionary, #{typeofDeps} given"
 
 				for depName, depValue of dependencies
-					@_assertElement typeof depValue == 'string', "dependency '#{depName}' should be a string"
-					@_assertElement depValue in @schema, "dependency '#{depName}': schema doesn't have element '#{depValue}'"
+					@_assertInstance typeof depValue == 'string', "dependency '#{depName}' should be a string"
+					@_assertInstance depValue in @schema, "dependency '#{depName}': schema doesn't have instance '#{depValue}'"
