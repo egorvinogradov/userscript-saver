@@ -12,9 +12,9 @@ describe 'IocContainer', ->
 					fooInstance:
 						single: Foo
 
-				foo1 = iocContainer.getElement 'fooInstance'
+				foo1 = iocContainer.getInstance 'fooInstance'
 				expect(foo1.hello).toEqual 'Foo!'
-				expect(iocContainer.getElement 'fooInstance').toBe foo1
+				expect(iocContainer.getInstance 'fooInstance').toBe foo1
 
 		describe 'factoryFunction', ->
 			it 'returns function to create new objects', ->
@@ -25,7 +25,7 @@ describe 'IocContainer', ->
 					fooFactory:
 						factoryFunction: Foo
 
-				fooFactory = iocContainer.getElement 'fooFactory'
+				fooFactory = iocContainer.getInstance 'fooFactory'
 				foo1 = fooFactory()
 				foo2 = fooFactory()
 
@@ -36,7 +36,7 @@ describe 'IocContainer', ->
 				iocContainer.setSchema
 					fooFactory:
 						factoryFunction: ->
-				fooFactory = iocContainer.getElement 'fooFactory'
+				fooFactory = iocContainer.getInstance 'fooFactory'
 				expectAssertFail "factoryFunction 'fooFactory' should be called without arguments", ->
 					fooFactory 'some argument'
 
@@ -47,7 +47,7 @@ describe 'IocContainer', ->
 					fooInstance:
 						ref: foo
 
-				expect(iocContainer.getElement 'fooInstance').toBe foo
+				expect(iocContainer.getInstance 'fooInstance').toBe foo
 		describe 'deps', ->
 			it 'sets element dependencies with other schema elements using their names in schema', ->
 				iocContainer.setSchema
@@ -58,12 +58,12 @@ describe 'IocContainer', ->
 					barInstance:
 						single: ->
 
-				fooInstance = iocContainer.getElement 'fooInstance'
-				expect(fooInstance._barProperty).toBe iocContainer.getElement('barInstance')
+				fooInstance = iocContainer.getInstance 'fooInstance'
+				expect(fooInstance._barProperty).toBe iocContainer.getInstance('barInstance')
 
 	describe 'setSchema: sets dependency schema to use', ->
 		#TODO: добавить позитивные спеки
 
-	describe 'getElement: gets element by its name in schema', ->
+	describe 'getInstance: gets element by its name in schema', ->
 		#TODO: добавить позитивные спеки
 

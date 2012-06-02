@@ -78,9 +78,9 @@ describe 'IocContainerChecker', ->
 						deps:
 							barProperty: 'bar'
 
-	describe 'getElement', ->
+	describe 'getInstance', ->
 		it 'checks that schema is set and contains element', ->
-			getFoo = -> iocContainer.getElement 'foo'
+			getFoo = -> iocContainer.getInstance 'foo'
 			expectAssertFail 'Dependency schema is not set', getFoo
 			iocContainer.setSchema
 				bar:

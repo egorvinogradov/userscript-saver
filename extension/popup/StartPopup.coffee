@@ -22,8 +22,8 @@ $ ->
 	# получать taistieList прямо из контейнера
 	# taistieCollection проставлять как зависимость
 	# для этого научить IoC передавать зависимости через параметры конструктора
-	taistieListConstructor = iocContainer.getElement 'taistieListConstructor'
-	tabApi = iocContainer.getElement 'tabApi'
+	taistieListConstructor = iocContainer.getInstance 'taistieListConstructor'
+	tabApi = iocContainer.getInstance 'tabApi'
 
 	tabApi.getCurrentUrl (url) ->
-		taistieList = new taistieListConstructor($(".taisties"), url, iocContainer.getElement 'taistieCollection')
+		taistieList = new taistieListConstructor($(".taisties"), url, iocContainer.getInstance 'taistieCollection')

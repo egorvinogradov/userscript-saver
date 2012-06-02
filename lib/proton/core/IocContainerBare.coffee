@@ -4,7 +4,7 @@ class IocContainerBare
 	setSchema: (schema) ->
 		@_schema = schema
 
-	getElement: (elementName) ->
+	getInstance: (elementName) ->
 		elementDescriptor = @_getElementDescriptor elementName
 		isCached = @_isCachedElement elementDescriptor
 		element = null
@@ -59,7 +59,7 @@ class IocContainerBare
 	_addDependencies: (element, dependencies) ->
 		if dependencies
 			for depName, dependency of dependencies
-				element[depName] = @getElement dependency
+				element[depName] = @getInstance dependency
 
 	_createFromConstructor: (ctor) ->
 		return new ctor

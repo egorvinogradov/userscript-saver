@@ -32,5 +32,5 @@ do ->
 				disabled: '../icons/browser_action_taistie_disabled.png'
 
 
-	tabTaister = iocContainer.getElement 'tabTaister'
+	tabTaister = iocContainer.getInstance 'tabTaister'
 	tabTaister.startListeningToTabChange()
