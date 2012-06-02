@@ -27,19 +27,15 @@ class IocContainerChecker
 			assert(rawElementData?, 'Element \'' + elementName + '\' not found in dependency schema')
 
 	_checkSchemaElement: (iocContainer, elementName, elementDescription, allElementNames) ->
+		#TODO: разобраться: с _allowedTypes - они не совсем в тему внутри самого контейнера, но и дублировать не хочется
+		allowedTypes = iocContainer._allowedTypes
 		assertElement = (condition, message) ->
 			assert condition, "invalid element '#{elementName}': " + message
 
 		assertElement elementDescription?, 'contents not set'
 
-		#TODO: разобраться: с _allowedTypes - они не совсем в тему внутри самого контейнера, но и дублировать не хочется
-		allowedTypes = iocContainer._allowedTypes
-		elementTypes = (elementPart for elementPart of elementDescription when elementPart in allowedTypes)
+		elementType = @_getAndCheckElementType elementDescription, allowedTypes, assertElement
 
-		assertElement elementTypes.length > 0, "has no type"
-		assertElement elementTypes.length == 1, "has several types: #{elementTypes.join ', '}"
-
-		elementType = elementTypes[0]
 		creator = elementDescription[elementType]
 		assertElement creator?, "part '#{elementType}' should have value"
 
@@ -58,4 +54,13 @@ class IocContainerChecker
 			for depName, depValue of deps
 				assertElement typeof depValue == 'string', "dependency '#{depName}' should be a string"
 				assertElement depValue in allElementNames, "dependency '#{depName}': schema doesn't have element '#{depValue}'"
+
+	_getAndCheckElementType: (elementDescription, allowedTypes, assertFunction) ->
+		elementTypes = (elementPart for elementPart of elementDescription when elementPart in allowedTypes)
+
+		assertFunction elementTypes.length > 0, "has no type"
+		assertFunction elementTypes.length == 1, "has several types: #{elementTypes.join ', '}"
+
+		return elementTypes[0]
+
 
