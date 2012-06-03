@@ -13,7 +13,7 @@ class IocContainerChecker
 			check.apply checker, [checkedObject].concat argsArrayToConcat
 			decoratedMethod.apply checkedObject, arguments
 
-	_getChecks: -> {@setSchema, @_getInstanceDescriptor}
+	_getChecks: -> {@setSchema, @getInstance}
 
 	setSchema: (iocContainer, schema) ->
 		assert schema?, 'Dependency schema should be given'
@@ -22,7 +22,7 @@ class IocContainerChecker
 
 		(new _schemaInstanceChecker instanceName, schema).check() for instanceName in instanceNames
 
-	_getInstanceDescriptor: (iocContainer, instanceName) ->
+	getInstance: (iocContainer, instanceName) ->
 		assert iocContainer._schema?, 'Dependency schema is not set'
 		rawInstanceData = iocContainer._schema[instanceName]
 		assert rawInstanceData?, 'Instance \'' + instanceName + '\' not found in dependency schema'

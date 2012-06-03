@@ -4,10 +4,7 @@ class IocContainerBare
 	setSchema: (schema) ->
 		@_schema = schema
 
-	getInstance: (instanceName) ->
-		descriptor = @_getInstanceDescriptor instanceName
-
-		return (@_getCachedInstance instanceName) ? @_getNewInstance instanceName
+	getInstance: (instanceName) -> (@_getCachedInstance instanceName) ? @_getNewInstance instanceName
 
 	_getCachedInstance: (instanceName) ->
 		if (@_canInstanceBeCached instanceName) then @_instanceCache[instanceName] else null
@@ -22,14 +19,6 @@ class IocContainerBare
 		@_cacheInstance instanceName, instance
 
 		return instance
-
-	_getInstanceDescriptor: (instanceName) ->
-		rawInstanceData = @_schema[instanceName]
-
-		descriptor =
-			name: instanceName
-
-		return descriptor
 
 	_createInstance: (instanceName) ->
 		type = @_getInstanceType instanceName
