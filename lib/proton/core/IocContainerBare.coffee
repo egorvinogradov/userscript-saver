@@ -7,7 +7,7 @@ class IocContainerBare
 	getInstance: (instanceName) ->
 		descriptor = @_getInstanceDescriptor instanceName
 
-		return (@_getCachedInstance instanceName) ? @_getNewInstance descriptor
+		return (@_getCachedInstance instanceName) ? @_getNewInstance instanceName
 
 	_getCachedInstance: (instanceName) ->
 		if (@_canInstanceBeCached instanceName) then @_instanceCache[instanceName] else null
@@ -16,10 +16,10 @@ class IocContainerBare
 		if @_canInstanceBeCached instanceName
 			@_instanceCache[instanceName] = instance
 
-	_getNewInstance: (descriptor) ->
-		instance = @_createInstance descriptor
-		@_addDependencies descriptor.name, instance
-		@_cacheInstance descriptor.name, instance
+	_getNewInstance: (instanceName) ->
+		instance = @_createInstance instanceName
+		@_addDependencies instanceName, instance
+		@_cacheInstance instanceName, instance
 
 		return instance
 
@@ -27,19 +27,14 @@ class IocContainerBare
 		rawInstanceData = @_schema[instanceName]
 
 		descriptor =
-			deps: rawInstanceData.deps
 			name: instanceName
-
-		descriptor.type = @_getInstanceType instanceName
-
-		#in dependency schema, type/source are given as key/value pair
-		descriptor.source = rawInstanceData[descriptor.type]
 
 		return descriptor
 
-	_createInstance: (descriptor) ->
-		type = descriptor.type
-		source = descriptor.source
+	_createInstance: (instanceName) ->
+		type = @_getInstanceType instanceName
+		#in dependency schema, type/source are given as key/value pair
+		source = (@_getInstanceData instanceName)[type]
 
 		#TODO: убрать magic values, переименовать single в sole
 		if type == 'single'
@@ -50,9 +45,11 @@ class IocContainerBare
 
 		if type == 'factoryFunction'
 			return =>
-				assert arguments.length == 0, "factoryFunction '#{descriptor.name}' should be called without arguments"
+				#TODO: как-то убрать отсюда assert в контракт
+				#вынести в метод контейнера
+				assert arguments.length == 0, "factoryFunction '#{instanceName}' should be called without arguments"
 				newInstance = new source
-				@_addDependencies descriptor.name, newInstance
+				@_addDependencies instanceName, newInstance
 				return newInstance
 
 	_addDependencies: (instanceName, instance) ->
