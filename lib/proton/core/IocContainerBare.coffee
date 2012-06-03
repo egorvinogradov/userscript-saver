@@ -24,23 +24,22 @@ class IocContainerBare
 		source = @_getInstanceSource instanceName
 		type = @_getInstanceType instanceName
 
-		#TODO: убрать magic values, переименовать single в sole
-		if type == 'single'
-			return @_createFromConstructor source
+		return @_createByType type, source, instanceName
 
-		if type == 'ref'
-			return @_useDirectReference source
-
-		if type == 'factoryFunction'
-			return @_createFactoryFunction source, instanceName
 
 	_addDependencies: (instanceName, instance) ->
-		#TODO: remove magic value 'deps'
-		dependencies = (@_getInstanceData instanceName).deps
+		dependencies = (@_getInstanceData instanceName)[@_keyDependencies]
 
 		if dependencies
 			for depName, dependency of dependencies
 				instance[depName] = @getInstance dependency
+
+	_createByType: (type, source, instanceName) ->
+		switch type
+			when @_keySourceSingle then @_createFromConstructor source
+			when @_keySourceReference then @_useDirectReference source
+			when @_keySourceFactoryFunction then @_createFactoryFunction source, instanceName
+
 
 	_createFromConstructor: (ctor) -> new ctor
 
@@ -56,14 +55,17 @@ class IocContainerBare
 			return newInstance
 
 
-	#TODO: убрать magic value
 	#TODO: реализовать вариант multiple
-	_canInstanceBeCached: (instanceName) -> (@_getInstanceType instanceName) != 'muptiple'
+	_canInstanceBeCached: (instanceName) -> (@_getInstanceType instanceName) != @_keySourceMultiple
 
-	_allowedTypes: ['single', 'ref', 'factoryFunction']
+	_keySourceSingle: 'single'
+	_keySourceReference: 'ref'
+	_keySourceFactoryFunction: 'factoryFunction'
+	_keySourceMultiple: 'multiple'
+	_keyDependencies: 'deps'
 
 	_getInstanceType: (instanceName) ->
-		for allowedType in @_allowedTypes
+		for allowedType in [@_keySourceSingle, @_keySourceReference, @_keySourceFactoryFunction, @_keySourceMultiple]
 			if (@_getInstanceData instanceName)[allowedType]?
 				return allowedType
 
