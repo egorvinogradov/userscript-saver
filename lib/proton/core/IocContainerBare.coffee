@@ -5,41 +5,41 @@ class IocContainerBare
 		@_schema = schema
 
 	getInstance: (instanceName) ->
-		instanceDescriptor = @_getInstanceDescriptor instanceName
+		descriptor = @_getInstanceDescriptor instanceName
 
-		return (@_getCachedInstance instanceDescriptor) ? @_getNewInstance instanceDescriptor
+		return (@_getCachedInstance descriptor) ? @_getNewInstance descriptor
 
-	_getCachedInstance: (instanceDescriptor) ->
-		if (@_canInstanceBeCached instanceDescriptor) then @_instanceCache[instanceDescriptor.name] else null
+	_getCachedInstance: (descriptor) ->
+		if (@_canInstanceBeCached descriptor) then @_instanceCache[descriptor.name] else null
 
-	_cacheInstance: (instanceDescriptor, instance) ->
-		if @_canInstanceBeCached instanceDescriptor
-			@_instanceCache[instanceDescriptor.name] = instance
+	_cacheInstance: (descriptor, instance) ->
+		if @_canInstanceBeCached descriptor
+			@_instanceCache[descriptor.name] = instance
 
-	_getNewInstance: (instanceDescriptor) ->
-		instance = @_createInstance instanceDescriptor
-		@_addDependencies instance, instanceDescriptor.deps
-		@_cacheInstance instanceDescriptor, instance
+	_getNewInstance: (descriptor) ->
+		instance = @_createInstance descriptor
+		@_addDependencies instance, descriptor.deps
+		@_cacheInstance descriptor, instance
 
 		return instance
 
 	_getInstanceDescriptor: (instanceName) ->
 		rawInstanceData = @_schema[instanceName]
 
-		instanceDescriptor =
+		descriptor =
 			deps: rawInstanceData.deps
 			name: instanceName
 
-		instanceDescriptor.type = @_getInstanceType rawInstanceData
+		descriptor.type = @_getInstanceType rawInstanceData
 
 		#in dependency schema, type/source are given as key/value pair
-		instanceDescriptor.source = rawInstanceData[instanceDescriptor.type]
+		descriptor.source = rawInstanceData[descriptor.type]
 
-		return instanceDescriptor
+		return descriptor
 
-	_createInstance: (instanceDescriptor) ->
-		type = instanceDescriptor.type
-		source = instanceDescriptor.source
+	_createInstance: (descriptor) ->
+		type = descriptor.type
+		source = descriptor.source
 
 		#TODO: убрать magic values, переименовать single в sole
 		if type == 'single'
@@ -50,9 +50,9 @@ class IocContainerBare
 
 		if type == 'factoryFunction'
 			return =>
-				assert arguments.length == 0, "factoryFunction '#{instanceDescriptor.name}' should be called without arguments"
+				assert arguments.length == 0, "factoryFunction '#{descriptor.name}' should be called without arguments"
 				newInstance = new source
-				@_addDependencies newInstance, instanceDescriptor.deps
+				@_addDependencies newInstance, descriptor.deps
 				return newInstance
 
 	_addDependencies: (instance, dependencies) ->
@@ -65,7 +65,7 @@ class IocContainerBare
 
 	#TODO: убрать magic value
 	#TODO: реализовать вариант multiple
-	_canInstanceBeCached: (instanceDescriptor) -> instanceDescriptor.type != 'muptiple'
+	_canInstanceBeCached: (descriptor) -> descriptor.type != 'muptiple'
 
 	_allowedTypes: ['single', 'ref', 'factoryFunction']
 
