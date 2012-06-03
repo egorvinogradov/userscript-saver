@@ -21,36 +21,40 @@ class IocContainerBare
 		return instance
 
 	_createInstance: (instanceName) ->
+		source = @_getInstanceSource instanceName
 		type = @_getInstanceType instanceName
-		#in dependency schema, type/source are given as key/value pair
-		source = (@_getInstanceData instanceName)[type]
 
 		#TODO: убрать magic values, переименовать single в sole
 		if type == 'single'
 			return @_createFromConstructor source
 
 		if type == 'ref'
-			return source
+			return @_useDirectReference source
 
 		if type == 'factoryFunction'
-			return =>
-				#TODO: как-то убрать отсюда assert в контракт
-				#вынести в метод контейнера
-				assert arguments.length == 0, "factoryFunction '#{instanceName}' should be called without arguments"
-				newInstance = new source
-				@_addDependencies instanceName, newInstance
-				return newInstance
+			return @_createFactoryFunction source, instanceName
 
 	_addDependencies: (instanceName, instance) ->
 		#TODO: remove magic value 'deps'
 		dependencies = (@_getInstanceData instanceName).deps
-		console.log instanceName, dependencies
+
 		if dependencies
 			for depName, dependency of dependencies
 				instance[depName] = @getInstance dependency
 
-	_createFromConstructor: (ctor) ->
-		return new ctor
+	_createFromConstructor: (ctor) -> new ctor
+
+	_useDirectReference: (reference) -> reference
+
+	_createFactoryFunction: (ctor, instanceName) ->
+		=>
+			#TODO: как-то убрать отсюда assert в контракт
+			#вынести в метод контейнера
+			assert arguments.length == 0, "factoryFunction '#{instanceName}' should be called without arguments"
+			newInstance = new ctor
+			@_addDependencies instanceName, newInstance
+			return newInstance
+
 
 	#TODO: убрать magic value
 	#TODO: реализовать вариант multiple
@@ -64,3 +68,8 @@ class IocContainerBare
 				return allowedType
 
 	_getInstanceData: (instanceName) -> @_schema[instanceName]
+
+	_getInstanceSource: (instanceName) ->
+		#in dependency schema, type/source are given as key/value pair
+		instanceType = @_getInstanceType instanceName
+		return (@_getInstanceData instanceName)[instanceType]
