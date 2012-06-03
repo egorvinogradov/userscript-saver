@@ -1,27 +1,25 @@
 class IocContainerBare
-	constructor: -> @_createdInstances = {}
+	constructor: -> @_instanceCache = {}
 
 	setSchema: (schema) ->
 		@_schema = schema
 
 	getInstance: (instanceName) ->
 		instanceDescriptor = @_getInstanceDescriptor instanceName
-		isCached = @_isCachedInstance instanceDescriptor
-		instance = null
 
-		if isCached
-			instance = @_createdInstances[instanceName]
+		return (@_getCachedInstance instanceDescriptor) ? @_getNewInstance instanceDescriptor
 
-		if not instance
-			instance = @_getNewInstance instanceDescriptor
-			if isCached
-				@_createdInstances[instanceName] = instance
+	_getCachedInstance: (instanceDescriptor) ->
+		if (@_canInstanceBeCached instanceDescriptor) then @_instanceCache[instanceDescriptor.name] else null
 
-		return instance
+	_cacheInstance: (instanceDescriptor, instance) ->
+		if @_canInstanceBeCached instanceDescriptor
+			@_instanceCache[instanceDescriptor.name] = instance
 
 	_getNewInstance: (instanceDescriptor) ->
 		instance = @_createInstance instanceDescriptor
 		@_addDependencies instance, instanceDescriptor.deps
+		@_cacheInstance instanceDescriptor, instance
 
 		return instance
 
@@ -43,6 +41,7 @@ class IocContainerBare
 		type = instanceDescriptor.type
 		source = instanceDescriptor.source
 
+		#TODO: убрать magic values, переименовать single в sole
 		if type == 'single'
 			return @_createFromConstructor source
 
@@ -64,7 +63,9 @@ class IocContainerBare
 	_createFromConstructor: (ctor) ->
 		return new ctor
 
-	_isCachedInstance: (instanceDescriptor) -> instanceDescriptor.type != 'prototype'
+	#TODO: убрать magic value
+	#TODO: реализовать вариант multiple
+	_canInstanceBeCached: (instanceDescriptor) -> instanceDescriptor.type != 'muptiple'
 
 	_allowedTypes: ['single', 'ref', 'factoryFunction']
 
