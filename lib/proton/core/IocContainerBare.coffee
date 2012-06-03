@@ -18,7 +18,7 @@ class IocContainerBare
 
 	_getNewInstance: (descriptor) ->
 		instance = @_createInstance descriptor
-		@_addDependencies instance, descriptor.deps
+		@_addDependencies descriptor.name, instance
 		@_cacheInstance descriptor.name, instance
 
 		return instance
@@ -52,10 +52,13 @@ class IocContainerBare
 			return =>
 				assert arguments.length == 0, "factoryFunction '#{descriptor.name}' should be called without arguments"
 				newInstance = new source
-				@_addDependencies newInstance, descriptor.deps
+				@_addDependencies descriptor.name, newInstance
 				return newInstance
 
-	_addDependencies: (instance, dependencies) ->
+	_addDependencies: (instanceName, instance) ->
+		#TODO: remove magic value 'deps'
+		dependencies = (@_getInstanceData instanceName).deps
+		console.log instanceName, dependencies
 		if dependencies
 			for depName, dependency of dependencies
 				instance[depName] = @getInstance dependency
