@@ -7,19 +7,19 @@ class IocContainerBare
 	getInstance: (instanceName) ->
 		descriptor = @_getInstanceDescriptor instanceName
 
-		return (@_getCachedInstance descriptor) ? @_getNewInstance descriptor
+		return (@_getCachedInstance instanceName) ? @_getNewInstance descriptor
 
-	_getCachedInstance: (descriptor) ->
-		if (@_canInstanceBeCached descriptor) then @_instanceCache[descriptor.name] else null
+	_getCachedInstance: (instanceName) ->
+		if (@_canInstanceBeCached instanceName) then @_instanceCache[instanceName] else null
 
-	_cacheInstance: (descriptor, instance) ->
-		if @_canInstanceBeCached descriptor
-			@_instanceCache[descriptor.name] = instance
+	_cacheInstance: (instanceName, instance) ->
+		if @_canInstanceBeCached instanceName
+			@_instanceCache[instanceName] = instance
 
 	_getNewInstance: (descriptor) ->
 		instance = @_createInstance descriptor
 		@_addDependencies instance, descriptor.deps
-		@_cacheInstance descriptor, instance
+		@_cacheInstance descriptor.name, instance
 
 		return instance
 
@@ -30,7 +30,7 @@ class IocContainerBare
 			deps: rawInstanceData.deps
 			name: instanceName
 
-		descriptor.type = @_getInstanceType rawInstanceData
+		descriptor.type = @_getInstanceType instanceName
 
 		#in dependency schema, type/source are given as key/value pair
 		descriptor.source = rawInstanceData[descriptor.type]
@@ -65,13 +65,13 @@ class IocContainerBare
 
 	#TODO: убрать magic value
 	#TODO: реализовать вариант multiple
-	_canInstanceBeCached: (descriptor) -> descriptor.type != 'muptiple'
+	_canInstanceBeCached: (instanceName) -> (@_getInstanceType instanceName) != 'muptiple'
 
 	_allowedTypes: ['single', 'ref', 'factoryFunction']
 
-	_getInstanceType: (rawInstanceData) ->
-		instanceType = null
+	_getInstanceType: (instanceName) ->
 		for allowedType in @_allowedTypes
-			if rawInstanceData[allowedType]?
-				instanceType = allowedType
-		return instanceType
+			if (@_getInstanceData instanceName)[allowedType]?
+				return allowedType
+
+	_getInstanceData: (instanceName) -> @_schema[instanceName]
