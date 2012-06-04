@@ -45,9 +45,9 @@ describe 'IocContainer', ->
 				expect(foo2).not.toBe foo1
 				expect(foo2.name).toEqual 'foo2'
 
-			it 'adds dependencies to created objects', ->
+			it 'adds dependencies to created objects, not to factory function', ->
 				class Foo
-				baz = {}
+				baz = 'baz'
 
 				iocContainer.setSchema
 					fooFactory:
@@ -60,6 +60,7 @@ describe 'IocContainer', ->
 				fooFactory = iocContainer.getInstance 'fooFactory'
 				foo1 = fooFactory 'foo1'
 				expect(foo1.bazDependency).toBe baz
+				expect(fooFactory.bazDependency).toBeUndefined()
 
 
 		describe 'deps', ->

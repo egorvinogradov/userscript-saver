@@ -8,14 +8,15 @@ class IocContainerBare
 	_getCachedInstance: (instanceName) ->
 		if (@_canInstanceBeCached instanceName) then @_instanceCache[instanceName] else null
 
-	_getNewInstance: (instanceName) -> @_getNewInstanceByType instanceName, (@_getInstanceType instanceName)
+	_getNewInstance: (instanceName) ->
+		instance = @_createInstance instanceName
 
-	#inject type parameter to use for 'factoryFunction' the same logic as for 'multiple'
-	_getNewInstanceByType: (instanceName, type) ->
-		instance = @_createByType instanceName, type
-		@_addDependencies instanceName, instance
+		#don't set up dependencies for factoryFunction itself
+		# - they will be set directly for objects created by it
+		if (@_getInstanceType instanceName) != @_keySourceFactoryFunction
+			@_addDependencies instanceName, instance
+
 		@_cacheInstance instanceName, instance
-
 		return instance
 
 	_addDependencies: (instanceName, instance) ->
@@ -30,9 +31,10 @@ class IocContainerBare
 		if @_canInstanceBeCached instanceName
 			@_instanceCache[instanceName] = instance
 
-	_createByType: (instanceName, type) ->
+	_createInstance: (instanceName) ->
+		instanceType = @_getInstanceType instanceName
 		source = @_getInstanceSource instanceName
-		switch type
+		switch instanceType
 			when @_keySourceSingle then @_createFromConstructor source
 			when @_keySourceReference then @_useDirectReference source
 			when @_keySourceFactoryFunction then @_createFactoryFunction source, instanceName
