@@ -22,7 +22,6 @@ class IocContainerBare
 	_addDependencies: (instanceName, instance) ->
 		dependencies = (@_getInstanceData instanceName)[@_keyDependencies]
 
-		#TODO: не добавлять dependencies в factoryFunction
 		if dependencies
 			for depName, dependency of dependencies
 				instance[depName] = @getInstance dependency

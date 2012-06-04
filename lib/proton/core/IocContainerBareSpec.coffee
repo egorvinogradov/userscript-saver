@@ -28,7 +28,6 @@ describe 'IocContainer', ->
 				expect(iocContainer.getInstance 'fooInstance').toBe foo
 
 		describe 'factoryFunction', ->
-			#TODO: спеки на работу с dependencies - должны проставляться самим экземплярам
 			it 'returns function to create new objects accepting any parameters', ->
 				class Foo
 					constructor: (@name) ->
