@@ -39,11 +39,28 @@ describe 'IocContainer', ->
 
 				fooFactory = iocContainer.getInstance 'fooFactory'
 				foo1 = fooFactory 'foo1'
-				foo2 = fooFactory 'foo2'
-
-				expect(foo2).not.toBe foo1
 				expect(foo1.name).toEqual 'foo1'
+
+				foo2 = fooFactory 'foo2'
+				expect(foo2).not.toBe foo1
 				expect(foo2.name).toEqual 'foo2'
+
+			it 'adds dependencies to created objects', ->
+				class Foo
+				baz = {}
+
+				iocContainer.setSchema
+					fooFactory:
+						factoryFunction: Foo
+						deps:
+							bazDependency: 'bazRef'
+					bazRef:
+						ref: baz
+
+				fooFactory = iocContainer.getInstance 'fooFactory'
+				foo1 = fooFactory 'foo1'
+				expect(foo1.bazDependency).toBe baz
+
 
 		describe 'deps', ->
 			it 'sets instance dependencies with other schema instances using their names in schema', ->
