@@ -1,14 +1,9 @@
 class IocContainerBare
-	constructor: -> @_instanceCache = {}
+	constructor: -> @_singleInstancesCache = {}
 
 	setSchema: (schema) -> @_schema = schema
 
-	getInstance: (instanceName) -> (@_getCachedInstance instanceName) ? @_getNewInstance instanceName
-
-	_getCachedInstance: (instanceName) ->
-		if (@_canInstanceBeCached instanceName) then @_instanceCache[instanceName] else null
-
-	_getNewInstance: (instanceName) ->
+	getInstance: (instanceName) ->
 		instance = @_createInstance instanceName
 
 		#don't set up dependencies for factoryFunction itself
@@ -16,7 +11,6 @@ class IocContainerBare
 		if (@_getInstanceType instanceName) != @_keySourceFactoryFunction
 			@_addDependencies instanceName, instance
 
-		@_cacheInstance instanceName, instance
 		return instance
 
 	_addDependencies: (instanceName, instance) ->
@@ -26,35 +20,31 @@ class IocContainerBare
 			for depName, dependency of dependencies
 				instance[depName] = @getInstance dependency
 
-	_cacheInstance: (instanceName, instance) ->
-		if @_canInstanceBeCached instanceName
-			@_instanceCache[instanceName] = instance
-
 	_createInstance: (instanceName) ->
 		instanceType = @_getInstanceType instanceName
 		source = @_getInstanceSource instanceName
 		switch instanceType
-			when @_keySourceSingle then @_createFromConstructor source
+			when @_keySourceSingle then @_getSingleInstance source, instanceName
 			when @_keySourceReference then @_useDirectReference source
 			when @_keySourceFactoryFunction then @_createFactoryFunction source, instanceName
 			when @_keySourceMultiple then @_createFromConstructor source
+
+	_getSingleInstance: (ctor, instanceName) ->
+		if not (instanceName of @_singleInstancesCache)
+			@_singleInstancesCache[instanceName] = @_createFromConstructor ctor
+
+		return @_singleInstancesCache[instanceName]
 
 	_createFromConstructor: (ctor) -> new ctor
 
 	_useDirectReference: (reference) -> reference
 
 	_createFactoryFunction: (ctor, instanceName) ->
-		=> @_useFactoryFunction ctor, instanceName, arguments
-
-	_useFactoryFunction: (ctor, instanceName, args) ->
-		newInstance = {}
-		ctor.apply newInstance, args
-		@_addDependencies instanceName, newInstance
-		return newInstance
-
-	#TODO: реализовать вариант multiple
-	#TODO: спеки на кеширование
-	_canInstanceBeCached: (instanceName) -> (@_getInstanceType instanceName) != @_keySourceMultiple
+		return =>
+			newInstance = {}
+			ctor.apply newInstance, arguments
+			@_addDependencies instanceName, newInstance
+			return newInstance
 
 	_keySourceSingle: 'single'
 	_keySourceReference: 'ref'
