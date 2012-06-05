@@ -1,8 +1,8 @@
-describe 'IocContainerChecker', ->
+describe 'IocContainerContract', ->
 
 	class CheckedIocContainer extends IocContainerBare
 
-	checker = new IocContainerChecker
+	checker = new IocContainerContract
 	checker.applyToIocContainerPrototype CheckedIocContainer
 
 	iocContainer = null

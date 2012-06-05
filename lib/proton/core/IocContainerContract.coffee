@@ -1,4 +1,4 @@
-class IocContainerChecker
+class IocContainerContract
 	#TODO: проверять соответствие методов в обоих сущностях
 	#TODO: вынести в отдельную сущность работы с АОП
 	applyToIocContainerPrototype: (iocContainerPrototype) ->
