@@ -16,16 +16,22 @@ class IocContainerChecker
 	_getChecks: -> {@setSchema, @getInstance}
 
 	setSchema: (iocContainer, schema) ->
-		assert schema?, 'Dependency schema should be given'
-		instanceNames = (instanceName for instanceName, instanceDescription of schema)
-		assert instanceNames.length > 0, 'Dependency schema should be non-empty'
-
-		(new _schemaInstanceChecker instanceName, schema).check() for instanceName in instanceNames
+		@_schemaShouldBeNonEmpty schema
+		@_checkEachInstanceData schema
 
 	getInstance: (iocContainer, instanceName) ->
 		assert iocContainer._schema?, 'Dependency schema is not set'
 		rawInstanceData = iocContainer._schema[instanceName]
 		assert rawInstanceData?, 'Instance \'' + instanceName + '\' not found in dependency schema'
+
+	_schemaShouldBeNonEmpty: (schema) ->
+		assert schema?, 'Dependency schema should be given'
+		assert (@_getInstancesData schema).length > 0, 'Dependency schema should be non-empty'
+
+	_checkEachInstanceData: (schema) ->
+		(new _schemaInstanceChecker instanceName, schema).check() for instanceName in (@_getInstancesData schema)
+
+	_getInstancesData: (schema) -> (instanceName for instanceName of schema)
 
 	class _schemaInstanceChecker
 		constructor: (@instanceName, @schema) ->
@@ -40,9 +46,10 @@ class IocContainerChecker
 
 		check: ->
 			@_assertInstance @instanceDescription?, 'contents not set'
+
+			@_checkAllowedFields()
 			instanceType = @_getAndCheckInstanceType()
 			@_checkSource instanceType
-			@_checkPartsNames()
 			@_checkDependencies()
 
 		_getAndCheckInstanceType: ->
@@ -56,18 +63,17 @@ class IocContainerChecker
 		_checkSource: (instanceType) ->
 			source = @instanceDescription[instanceType]
 
-			#TODO: исправить сообщение
-			@_assertInstance source, "part '#{instanceType}' should have value"
+			@_assertInstance source?, "source is undefined or null"
 	
 			if instanceType in [@_keySourceFactoryFunction, @_keySourceSingle]
-				@_assertInstance typeof source == 'function', "part '#{instanceType}' should be function"
+				@_assertInstance typeof source == 'function', "source for '#{instanceType}' should be function"
 	
 		_assertInstance: (condition, message) -> assert condition, "invalid instance '#{@instanceName}': " + message
 
-		_checkPartsNames: ->
+		_checkAllowedFields: ->
 			allAllowedParts = @_getAllowedTypes().concat @_keyDependencies
 			unknownParts = (part for part of @instanceDescription when part not in allAllowedParts)
-			@_assertInstance unknownParts.length == 0, "unknown description parts: #{unknownParts.join ', '}. allowed parts: #{allAllowedParts.join ', '}"
+			@_assertInstance unknownParts.length == 0, "unknown fields: #{unknownParts.join ', '}. allowed fields: #{allAllowedParts.join ', '}"
 
 		_checkDependencies: ->
 			if @_keyDependencies of @instanceDescription

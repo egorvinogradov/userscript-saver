@@ -11,11 +11,14 @@ describe 'IocContainerChecker', ->
 
 	describe 'setSchema', ->
 		it 'checks that schema is not empty', ->
-			for invalidSchema in [null, undefined, {}]
-				do (invalidSchema) ->
-					assertMessage = if not invalidSchema? then 'Dependency schema should be given' else 'Dependency schema should be non-empty'
-					expectAssertFail assertMessage, ->
-						iocContainer.setSchema invalidSchema
+			expectAssertFail 'Dependency schema should be given', ->
+				iocContainer.setSchema null
+
+			expectAssertFail 'Dependency schema should be given', ->
+				iocContainer.setSchema undefined
+
+			expectAssertFail 'Dependency schema should be non-empty', ->
+				iocContainer.setSchema {}
 
 		describe 'it checks each instance in schema', ->
 
@@ -24,36 +27,33 @@ describe 'IocContainerChecker', ->
 				completeMessage = 'invalid instance \'foo\': ' + assertMessage
 				expectAssertFail completeMessage, -> iocContainer.setSchema invalidSchema
 
-			itAssertsSchema = (specDescription, assertMessage, invalidSchema) ->
+			throwOnInvalidSchema = (specDescription, assertMessage, invalidSchema) ->
 				it specDescription, -> assertInvalidSchema assertMessage, invalidSchema
 
-			itAssertsSchema 'should have only one type', 'has several types: single, factoryFunction',
+			throwOnInvalidSchema 'should have only one type', 'has several types: single, factoryFunction',
 				foo:
 					single: ->
 					factoryFunction: ->
-			itAssertsSchema 'should have contents', 'contents not set', foo: null
-			itAssertsSchema 'type should be given', 'has no type', foo: {}
+			throwOnInvalidSchema 'should have contents', 'contents not set', foo: null
+			throwOnInvalidSchema 'type should be given', 'has no type', foo: {}
 
-			allAllowedTypes = ['single', 'ref', 'factoryFunction']
-			for creator in allAllowedTypes
-				do (creator) ->
-					nullDescription = foo: {}
+			throwOnInvalidSchema "source should be set", "source is undefined or null",
+				foo:
+					single: null
 
-					nullDescription.foo[creator] = null
-					itAssertsSchema "part '#{creator}' should have value", "part '#{creator}' should have value", nullDescription
+			throwOnInvalidSchema 'source for \'single\' should be function', 'source for \'single\' should be function',
+				foo:
+					single: {}
 
-					if creator != 'ref'
-						nonFunctionDescription = foo: {}
-						nonFunctionDescription.foo[creator] = {}
-						itAssertsSchema "part '#{creator}' should be function", "part '#{creator}' should be function", nonFunctionDescription
+			throwOnInvalidSchema 'source for \'factoryFunction\' should be function', 'source for \'factoryFunction\' should be function',
+				foo:
+					factoryFunction: {}
 
-			allowedParts = "allowed parts: #{allAllowedTypes.join ', '}, deps"
-			itAssertsSchema 'should have only allowed parts', "unknown description parts: bar, baz. " + allowedParts,
+			throwOnInvalidSchema 'should have only allowed fields', "unknown fields: bar, baz. allowed fields: single, ref, factoryFunction, deps",
 				foo:
 					single: ->
 					bar: null
 					baz: {}
-
 
 			it 'deps should be non-empty dictionary', ->
 				for invalidDeps in [undefined, null, 'invalid', {}]
@@ -80,9 +80,9 @@ describe 'IocContainerChecker', ->
 
 	describe 'getInstance', ->
 		it 'checks that schema is set and contains instance', ->
-			getFoo = -> iocContainer.getInstance 'foo'
-			expectAssertFail 'Dependency schema is not set', getFoo
+			expectAssertFail 'Dependency schema is not set', -> iocContainer.getInstance 'foo'
+
 			iocContainer.setSchema
 				bar:
 					single: ->
-			expectAssertFail 'Instance \'foo\' not found in dependency schema', getFoo
+			expectAssertFail 'Instance \'foo\' not found in dependency schema', -> iocContainer.getInstance 'foo'
