@@ -37,6 +37,7 @@ class IocContainerBare
 			when @_keySourceSingle then @_createFromConstructor source
 			when @_keySourceReference then @_useDirectReference source
 			when @_keySourceFactoryFunction then @_createFactoryFunction source, instanceName
+			when @_keySourceMultiple then @_createFromConstructor source
 
 	_createFromConstructor: (ctor) -> new ctor
 
@@ -52,6 +53,7 @@ class IocContainerBare
 		return newInstance
 
 	#TODO: реализовать вариант multiple
+	#TODO: спеки на кеширование
 	_canInstanceBeCached: (instanceName) -> (@_getInstanceType instanceName) != @_keySourceMultiple
 
 	_keySourceSingle: 'single'
@@ -62,7 +64,7 @@ class IocContainerBare
 
 	_getInstanceType: (instanceName) ->
 		for allowedType in [@_keySourceSingle, @_keySourceReference, @_keySourceFactoryFunction, @_keySourceMultiple]
-			if (@_getInstanceData instanceName)[allowedType]?
+			if allowedType of (@_getInstanceData instanceName)
 				return allowedType
 
 	_getInstanceData: (instanceName) -> @_schema[instanceName]

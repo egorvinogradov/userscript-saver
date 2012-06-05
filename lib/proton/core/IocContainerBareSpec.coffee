@@ -27,6 +27,17 @@ describe 'IocContainer', ->
 			foo2 = iocContainer.getInstance 'fooInstance'
 			expect(foo2).toBe foo1
 
+		it 'multiple: returns new instance for each call; doesn\'t accept parameters', ->
+			class Foo
+
+			iocContainer.setSchema
+				fooInstance:
+					multiple: Foo
+
+			foo1 = iocContainer.getInstance 'fooInstance'
+			foo2 = iocContainer.getInstance 'fooInstance'
+			expect(foo2).not.toBe foo1
+
 		it 'ref: gets existing object by direct reference', ->
 			foo = {}
 			iocContainer.setSchema
