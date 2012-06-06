@@ -6,11 +6,11 @@ class IocContainerContract
 
 	_addCheck: (checkedPrototype, methodName) ->
 		decoratedMethod = checkedPrototype::[methodName]
-		checker = this
+		contract = this
 		checkedPrototype::[methodName] = ->
 			checkedObject = this
 			argsArrayToConcat = (arg for arg in arguments)
-			checker[methodName].apply checker, [checkedObject].concat argsArrayToConcat
+			contract[methodName].apply contract, [checkedObject].concat argsArrayToConcat
 			decoratedMethod.apply checkedObject, arguments
 
 	_getCheckedMethodNames: -> ['setSchema', 'getInstance']
