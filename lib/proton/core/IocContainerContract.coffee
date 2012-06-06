@@ -2,18 +2,18 @@ class IocContainerContract
 	#TODO: проверять соответствие методов в обоих сущностях
 	#TODO: вынести в отдельную сущность работы с АОП
 	applyToIocContainerPrototype: (iocContainerPrototype) ->
-		@_addCheck iocContainerPrototype, checkedMethodName, check for checkedMethodName, check of @_getChecks()
+		@_addCheck iocContainerPrototype, methodName for methodName in @_getCheckedMethodNames()
 
-	_addCheck: (checkedPrototype, methodName, check) ->
+	_addCheck: (checkedPrototype, methodName) ->
 		decoratedMethod = checkedPrototype::[methodName]
 		checker = this
 		checkedPrototype::[methodName] = ->
 			checkedObject = this
 			argsArrayToConcat = (arg for arg in arguments)
-			check.apply checker, [checkedObject].concat argsArrayToConcat
+			checker[methodName].apply checker, [checkedObject].concat argsArrayToConcat
 			decoratedMethod.apply checkedObject, arguments
 
-	_getChecks: -> {@setSchema, @getInstance}
+	_getCheckedMethodNames: -> ['setSchema', 'getInstance']
 
 	setSchema: (iocContainer, schema) ->
 		@_schemaShouldBeNonEmpty schema
@@ -26,12 +26,10 @@ class IocContainerContract
 
 	_schemaShouldBeNonEmpty: (schema) ->
 		assert schema?, 'Dependency schema should be given'
-		assert (@_getInstancesData schema).length > 0, 'Dependency schema should be non-empty'
+		assert (instanceName for instanceName of schema).length > 0, 'Dependency schema should be non-empty'
 
 	_checkEachInstanceData: (schema) ->
-		(new _schemaInstanceChecker instanceName, schema).check() for instanceName in (@_getInstancesData schema)
-
-	_getInstancesData: (schema) -> (instanceName for instanceName of schema)
+		(new _schemaInstanceChecker instanceName, schema).check() for instanceName of schema
 
 	class _schemaInstanceChecker
 		constructor: (@instanceName, @schema) ->
