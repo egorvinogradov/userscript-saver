@@ -1,5 +1,7 @@
 describe 'IocContainerContract', ->
 
+	#TODO: при проверке контракта прогонять спеки и для сущности, определяющей контракт,
+	#т.к. контракт может ошибочно менять поведение сущности даже при корректных входных данных
 	class CheckedIocContainer extends IocContainerBare
 
 	checker = new IocContainerContract
@@ -22,7 +24,6 @@ describe 'IocContainerContract', ->
 
 		describe 'it checks each instance in schema', ->
 
-			#TODO: разбить на отдельные спеки по смыслу
 			assertInvalidSchema = (assertMessage, invalidSchema) ->
 				completeMessage = 'invalid instance \'foo\': ' + assertMessage
 				expectAssertFail completeMessage, -> iocContainer.setSchema invalidSchema
