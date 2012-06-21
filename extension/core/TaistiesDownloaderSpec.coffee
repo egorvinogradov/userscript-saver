@@ -58,6 +58,7 @@ describe 'TaistiesDownloader', ->
 							description: 'script1_description'
 							js: "@include http://targetSite.com\nalert(\'script1\')"
 							rootUrl: 'targetSite.com'
+							css: 'css1'
 						}
 
 					expect(taisties[1]).toEqual {
@@ -66,6 +67,7 @@ describe 'TaistiesDownloader', ->
 							description: "script2_description\n\twith newline"
 							js: '@include http://targetSite.com\nalert(\'script2\')'
 							rootUrl: 'targetSite.com'
+							css: 'css2'
 						}
 
 			it 'gets no more than allowed maximum of taisties', ->
@@ -82,6 +84,7 @@ describe 'TaistiesDownloader', ->
 						description: 'script1_description'
 						js: '@include http://targetSite.com\nalert(\'script1\')'
 						rootUrl: 'targetSite.com'
+						css: 'css1'
 					},
 					{
 						id: 55502
@@ -89,5 +92,6 @@ describe 'TaistiesDownloader', ->
 						description: 'script2_description\n\twith newline'
 						js: '@include http://targetSite.com\nalert(\'script2\')'
 						rootUrl: 'targetSite.com'
+						css: 'css2'
 					}
 				]
