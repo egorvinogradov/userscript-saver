@@ -4,3 +4,6 @@
 [submodule "lib/spine"]
 	path = lib/spine
 	url = https://github.com/maccman/spine.git
+[submodule "lib/proton"]
+	path = lib/proton
+	url = git://github.com/abelousov/proton.git
