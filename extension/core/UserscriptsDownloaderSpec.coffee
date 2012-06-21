@@ -11,14 +11,13 @@ describe 'UserscriptsDownloader', ->
 			testUrls =
 				'accepts url without protocol': 'sitename.com'
 				'strips \'/\' at the end': 'sitename.com/'
-				'accepts url without top-level domain (may be in local network)': 'sitename/'
-				'strips http://': 'http://sitename/'
-				'strips \'www\'': 'http://www.sitename/'
+				'strips http://': 'http://sitename.com/'
+				'strips \'www\'': 'http://www.sitename.com/'
 				'strips secure protocol - https://': 'https://sitename.com/'
 				'strips subdomains leaving just root domain': 'http://sub2.sub1.sitename.com/'
-				'strips folders and parameters': 'sitename/folder1/folder2/?param1=value1'
+				'strips folders and parameters': 'sitename.com/folder1/folder2/?param1=value1'
 
-			searchUrl = 'http://tai.st/server/taisties/sitename'
+			searchUrl = 'http://tai.st/server/taisties/sitename.com'
 
 			expectedUrl = null
 			testUrl = (testedUrl) ->
@@ -84,7 +83,7 @@ describe 'UserscriptsDownloader', ->
 
 			getContentFixture = ->
 				content = {}
-				content['http://tai.st/server/taisties/targetSite'] = '<tr id=\'scripts-55501\'>
+				content['http://tai.st/server/taisties/targetSite.com'] = '<tr id=\'scripts-55501\'>
 					<td class=\'script-meat\'>
 					<a href=\'/scripts/show/55502\' class=\'title\' title=\'script1_title\'>script1_link_text</a>
 

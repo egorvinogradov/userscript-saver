@@ -16,7 +16,6 @@ class UserscriptsDownloader
 		else
 			siteName = @_getSiteNameByUrl url
 			searchUrl = UserscriptsDownloader._searchUrlTemplate.replace('%siteName%', siteName)
-			nakedDomain = @_getNakedDomain url
 			@_ajaxProvider.getUrlContent searchUrl, (scriptsListPageContent) =>
 
 				scriptRows = scriptsListPageContent.match /tr\sid='scripts-(\d+)'>([\s\S])+?<\/tr>/gm
@@ -28,7 +27,7 @@ class UserscriptsDownloader
 				checkJsRegexp = new RegExp "(\\s*)@include(\\s+)(?:.+?)#{siteName}", 'i'
 				getNextRowSerially = (rowIndex, scriptsCount) =>
 					if rowIndex < scriptRows.length and scriptsCount < UserscriptsDownloader._maxUserscriptsCount
-						@_getScriptFromScriptRow scriptRows[rowIndex], nakedDomain, (script) ->
+						@_getScriptFromScriptRow scriptRows[rowIndex], siteName, (script) ->
 							nextScriptsCount = undefined
 							if checkJsRegexp.test script.js
 								scripts.push script
@@ -55,7 +54,7 @@ class UserscriptsDownloader
 			userscript.js = js
 			callback userscript
 
-	_getNakedDomain: (url) ->
+	_getSiteNameByUrl: (url) ->
 		urlWithoutProtocol = url.replace /^https?:\/\//, ''
 
 		urlWithoutParams = urlWithoutProtocol
@@ -72,6 +71,5 @@ class UserscriptsDownloader
 
 		return nakedDomain
 
-	_getSiteNameByUrl: (url) -> @_getNakedDomain(url).split('.')[0]
 
 	_isValidUserscriptsUrl: (url) -> url.indexOf('http') is 0 or url.indexOf('://') is -1
