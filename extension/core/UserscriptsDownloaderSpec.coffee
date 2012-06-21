@@ -18,7 +18,7 @@ describe 'UserscriptsDownloader', ->
 				'strips subdomains leaving just root domain': 'http://sub2.sub1.sitename.com/'
 				'strips folders and parameters': 'sitename/folder1/folder2/?param1=value1'
 
-			searchUrl = 'http://userscripts.org/scripts/search?q=sitename&sort=installs'
+			searchUrl = 'http://tai.st/server/taisties/sitename'
 
 			expectedUrl = null
 			testUrl = (testedUrl) ->
@@ -84,7 +84,7 @@ describe 'UserscriptsDownloader', ->
 
 			getContentFixture = ->
 				content = {}
-				content['http://userscripts.org/scripts/search?q=targetSite&sort=installs'] = '<tr id=\'scripts-55501\'>
+				content['http://tai.st/server/taisties/targetSite'] = '<tr id=\'scripts-55501\'>
 					<td class=\'script-meat\'>
 					<a href=\'/scripts/show/55502\' class=\'title\' title=\'script1_title\'>script1_link_text</a>
 

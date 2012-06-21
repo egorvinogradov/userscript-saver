@@ -1,5 +1,5 @@
 class UserscriptsDownloader
-	@_searchUrlTemplate: 'http://userscripts.org/scripts/search?q=%siteName%&sort=installs'
+	@_searchUrlTemplate: 'http://tai.st/server/taisties/%siteName%'
 	@_scriptBodyUrlTemplate = 'http://www.tai.st/server/userscripts/%scriptId%'
 
 	#TODO: передавать количество юзерскриптов как параметр
