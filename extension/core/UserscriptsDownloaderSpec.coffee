@@ -38,37 +38,25 @@ describe 'UserscriptsDownloader', ->
 				testUrl 'chrome://somepath'
 				expect(expectedUrl).not.toBeDefined()
 
-		describe 'gathers all scripts content', ->
-			userscripts = null
-			callAndExpect = (expectFunction) ->
-				downloader.getUserscriptsForUrl 'targetSite.com', (results) ->
-					userscripts = results
-					expectFunction()
+		describe 'gets all taisties from server', ->
+			taistieFixturesCount = 2
 
 			beforeEach ->
-				UserscriptsDownloader._maxUserscriptsCount = 5
 				initDownloader
 					getUrlContent: (url, callback) ->
 						callback(getContentFixture()[url])
 
 			it 'creates a userscript from every row of scripts table', ->
-				contentFixturesCount = 2
-				callAndExpect ->
-					expect(userscripts.length).toEqual contentFixturesCount
+				largeTaistiesLimit = taistieFixturesCount + 1
+				UserscriptsDownloader._maxUserscriptsCount = largeTaistiesLimit
 
-			it 'gets no more than allowed maximum of userscripts', ->
-				UserscriptsDownloader._maxUserscriptsCount = 1
-				callAndExpect ->
-					expect(userscripts.length).toEqual 1
-
-			it 'gets script id, name and description from ids of rows of scripts table', ->
-				callAndExpect ->
+				downloader.getUserscriptsForUrl 'targetSite.com', (userscripts) ->
+					expect(userscripts.length).toEqual taistieFixturesCount
 					expect(userscripts[0]).toEqual {
 							id: 55501
 							name: 'script1_link_text'
 							description: 'script1_description'
 							js: "@include http://targetSite.com\nalert(\'script1\')"
-							usageCount: 18
 							rootUrl: 'targetSite.com'
 						}
 
@@ -77,51 +65,29 @@ describe 'UserscriptsDownloader', ->
 							name: 'script2_link_text',
 							description: "script2_description\n\twith newline"
 							js: '@include http://targetSite.com\nalert(\'script2\')'
-							usageCount: 132
 							rootUrl: 'targetSite.com'
 						}
 
+			it 'gets no more than allowed maximum of userscripts', ->
+				smallTaistiesLimit = taistieFixturesCount - 1
+				UserscriptsDownloader._maxUserscriptsCount = smallTaistiesLimit
+				downloader.getUserscriptsForUrl 'targetSite.com', (userscripts) ->
+					expect(userscripts.length).toEqual smallTaistiesLimit
+
 			getContentFixture = ->
-				content = {}
-				content['http://tai.st/server/taisties/targetSite.com'] = '<tr id=\'scripts-55501\'>
-					<td class=\'script-meat\'>
-					<a href=\'/scripts/show/55502\' class=\'title\' title=\'script1_title\'>script1_link_text</a>
-
-					<p class=\'desc\'>script1_description</p>
-					</td>
-					<td class=\'inv lp\'>
-					<b>no&nbsp;reviews</b>
-					</td>
-					<td class=\'inv lp\'>0</td>
-					<td class=\'inv lp\'>0</td>
-					<td class=\'inv lp\'>18</td>
-					<td class=\'inv lp\'>
-					<abbr class=\'updated\' title=\'2012-05-01T08:17:06Z\'>
-					58 minutes ago
-					</abbr>
-					</td>
-					</tr>' +
-					'<tr id=\'scripts-55502\'>
-					<td class=\'script-meat\'>
-					<a href=\'/scripts/show/55501\' class=\'title\' title=\'script2_title\'>script2_link_text</a>
-
-					<p class=\'desc\'>script2_description\n\twith newline</p>
-					</td>
-					<td class=\'inv lp\'>
-					<b>no&nbsp;reviews</b>
-					</td>
-					<td class=\'inv lp\'>0</td>
-					<td class=\'inv lp\'>0</td>
-					<td class=\'inv lp\'>132</td>
-					<td class=\'inv lp\'>
-					<abbr class=\'updated\' title=\'2012-04-30T15:48:10Z\'>
-					17 hours ago
-					</abbr>
-					</td>
-					</tr>'
-
-				content['http://www.tai.st/server/userscripts/55501'] = "@include http://targetSite.com\nalert(\'script1\')"
-				content['http://www.tai.st/server/userscripts/55502'] = '@include http://targetSite.com\nalert(\'script2\')'
-
-				return content
-
+				'http://tai.st/server/taisties/targetSite.com': JSON.stringify [
+					{
+						id: 55501
+						name: 'script1_link_text'
+						description: 'script1_description'
+						js: '@include http://targetSite.com\nalert(\'script1\')'
+						rootUrl: 'targetSite.com'
+					},
+					{
+						id: 55502
+						name: 'script2_link_text'
+						description: 'script2_description\n\twith newline'
+						js: '@include http://targetSite.com\nalert(\'script2\')'
+						rootUrl: 'targetSite.com'
+					}
+				]

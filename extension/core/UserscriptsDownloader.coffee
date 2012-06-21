@@ -1,6 +1,5 @@
 class UserscriptsDownloader
 	@_searchUrlTemplate: 'http://tai.st/server/taisties/%siteName%'
-	@_scriptBodyUrlTemplate = 'http://www.tai.st/server/userscripts/%scriptId%'
 
 	#TODO: передавать количество юзерскриптов как параметр
 	@_maxUserscriptsCount = 5
@@ -9,50 +8,15 @@ class UserscriptsDownloader
 		@_ajaxProvider = null
 
 	getUserscriptsForUrl: (url, callback) ->
-
 		if not @_isValidUserscriptsUrl url
 			callback []
 
 		else
 			siteName = @_getSiteNameByUrl url
 			searchUrl = UserscriptsDownloader._searchUrlTemplate.replace('%siteName%', siteName)
-			@_ajaxProvider.getUrlContent searchUrl, (scriptsListPageContent) =>
-
-				scriptRows = scriptsListPageContent.match /tr\sid='scripts-(\d+)'>([\s\S])+?<\/tr>/gm
-				scriptRows ?= []
-
-				scripts = []
-
-				#TODO: добавить тесты на отсечение левых сайтов
-				checkJsRegexp = new RegExp "(\\s*)@include(\\s+)(?:.+?)#{siteName}", 'i'
-				getNextRowSerially = (rowIndex, scriptsCount) =>
-					if rowIndex < scriptRows.length and scriptsCount < UserscriptsDownloader._maxUserscriptsCount
-						@_getScriptFromScriptRow scriptRows[rowIndex], siteName, (script) ->
-							nextScriptsCount = undefined
-							if checkJsRegexp.test script.js
-								scripts.push script
-								nextScriptsCount = scriptsCount + 1
-							else
-								nextScriptsCount = scriptsCount
-							getNextRowSerially rowIndex + 1, nextScriptsCount
-					else
-						callback scripts
-
-				getNextRowSerially 0, 0
-
-	_getScriptFromScriptRow: (scriptRow, nakedDomain, callback) ->
-		userscript = {}
-		userscript.id = parseInt(scriptRow.match(/tr\sid='scripts-(\d+)/)[1])
-		userscript.name = scriptRow.match(/<a(?:.)+?>((?:.)+)<\/a>/)[1]
-		userscript.description = scriptRow.match(/class='desc'>(([\s\S])*?)<\/p>/)[1]
-		userscript.rootUrl = nakedDomain
-
-		userscript.usageCount = parseInt(scriptRow.match(/<td class='inv lp'>(\d+)<\/td>/g)[2].match(/>(\d+)</)[1])
-
-		scriptBodyUrl = UserscriptsDownloader._scriptBodyUrlTemplate.replace('%scriptId%', userscript.id)
-		@_ajaxProvider.getUrlContent scriptBodyUrl, (js) ->
-			userscript.js = js
-			callback userscript
+			@_ajaxProvider.getUrlContent searchUrl, (userscripts) =>
+				allUserscriptsArray = JSON.parse userscripts
+				callback (allUserscriptsArray.slice 0, UserscriptsDownloader._maxUserscriptsCount)
 
 	_getSiteNameByUrl: (url) ->
 		urlWithoutProtocol = url.replace /^https?:\/\//, ''
@@ -70,6 +34,5 @@ class UserscriptsDownloader
 		nakedDomain = domainsArray.slice(rootDomainPosition).join '.'
 
 		return nakedDomain
-
 
 	_isValidUserscriptsUrl: (url) -> url.indexOf('http') is 0 or url.indexOf('://') is -1
