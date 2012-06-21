@@ -16,7 +16,7 @@ class TaistieList extends Spine.Controller
 
 	addOne: (taistie) =>
 		view = new TaistieView(item: taistie)
-		list = if taistie.isOwnTaistie() then @own else @recommended
+		list = if taistie.isOwn() then @own else @recommended
 		list.append(view.render().el)
 		view
 

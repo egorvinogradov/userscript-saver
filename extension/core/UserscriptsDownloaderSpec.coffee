@@ -1,13 +1,13 @@
-describe 'UserscriptsDownloader', ->
+describe 'TaistiesDownloader', ->
 
 	downloader = null
 
 	initDownloader = (ajaxProvider) ->
-		downloader = new UserscriptsDownloader()
+		downloader = new TaistiesDownloader()
 		downloader._ajaxProvider = ajaxProvider
 
-	describe 'getUserscriptsForUrl', ->
-		describe 'searches userscripts by top site name without extension', ->
+	describe 'getTaistiesForUrl', ->
+		describe 'searches taisties by site name', ->
 			testUrls =
 				'accepts url without protocol': 'sitename.com'
 				'strips \'/\' at the end': 'sitename.com/'
@@ -26,7 +26,7 @@ describe 'UserscriptsDownloader', ->
 					getUrlContent: (url, callback) -> expectedUrl = url
 				initDownloader mockAjaxProvider
 
-				downloader.getUserscriptsForUrl testedUrl, ->
+				downloader.getTaistiesForUrl testedUrl, ->
 
 			for testDescription, testedUrl of testUrls
 				do(testDescription, testedUrl) ->
@@ -46,13 +46,13 @@ describe 'UserscriptsDownloader', ->
 					getUrlContent: (url, callback) ->
 						callback(getContentFixture()[url])
 
-			it 'creates a userscript from every row of scripts table', ->
+			it 'creates a remoteTaistie from every row of scripts table', ->
 				largeTaistiesLimit = taistieFixturesCount + 1
-				UserscriptsDownloader._maxUserscriptsCount = largeTaistiesLimit
+				TaistiesDownloader._maxTaistiesCount = largeTaistiesLimit
 
-				downloader.getUserscriptsForUrl 'targetSite.com', (userscripts) ->
-					expect(userscripts.length).toEqual taistieFixturesCount
-					expect(userscripts[0]).toEqual {
+				downloader.getTaistiesForUrl 'targetSite.com', (taisties) ->
+					expect(taisties.length).toEqual taistieFixturesCount
+					expect(taisties[0]).toEqual {
 							id: 55501
 							name: 'script1_link_text'
 							description: 'script1_description'
@@ -60,7 +60,7 @@ describe 'UserscriptsDownloader', ->
 							rootUrl: 'targetSite.com'
 						}
 
-					expect(userscripts[1]).toEqual {
+					expect(taisties[1]).toEqual {
 							id: 55502
 							name: 'script2_link_text',
 							description: "script2_description\n\twith newline"
@@ -68,11 +68,11 @@ describe 'UserscriptsDownloader', ->
 							rootUrl: 'targetSite.com'
 						}
 
-			it 'gets no more than allowed maximum of userscripts', ->
+			it 'gets no more than allowed maximum of taisties', ->
 				smallTaistiesLimit = taistieFixturesCount - 1
-				UserscriptsDownloader._maxUserscriptsCount = smallTaistiesLimit
-				downloader.getUserscriptsForUrl 'targetSite.com', (userscripts) ->
-					expect(userscripts.length).toEqual smallTaistiesLimit
+				TaistiesDownloader._maxTaistiesCount = smallTaistiesLimit
+				downloader.getTaistiesForUrl 'targetSite.com', (taisties) ->
+					expect(taisties.length).toEqual smallTaistiesLimit
 
 			getContentFixture = ->
 				'http://tai.st/server/taisties/targetSite.com': JSON.stringify [

@@ -14,18 +14,18 @@ load_static_file = (request, response) ->
 			response.writeHead error.status, error.headers
 			response.end 'Error: ' + error.status
 
-load_userscript = (request, response, userscriptId) ->
-	userscriptsClient = http.createClient 80, "userscripts.org"
+load_remote_taistie = (request, response, remoteTaistieId) ->
+	taistiesClient = http.createClient 80, "taisties.org"
 
-	userscriptUri = "/scripts/source/#{userscriptId}.user.js"
-	request = userscriptsClient.request "GET", userscriptUri, "host": "userscripts.org"
+	remoteTaistieUri = "/scripts/source/#{remoteTaistieId}.user.js"
+	request = taistiesClient.request "GET", remoteTaistieUri, "host": "taisties.org"
 
-	request.addListener "response", (userscriptsResponse) ->
+	request.addListener "response", (taistiesResponse) ->
 		body = ""
-		userscriptsResponse.addListener "data", (data) ->
+		taistiesResponse.addListener "data", (data) ->
 			body += data
 
-		userscriptsResponse.addListener "end", ->
+		taistiesResponse.addListener "end", ->
 			response.writeHead 200, "Content-Type" : "text/plain"
 			response.end body
 
@@ -34,12 +34,12 @@ load_userscript = (request, response, userscriptId) ->
 
 server = http.createServer (request, response) ->
 	request.addListener "end", ->
-		apiPath = "/server/userscripts/"
+		apiPath = "/server/taisties/"
 		path = url.parse(request.url).path
 		console.log path
 		if path.indexOf(apiPath) is 0
-			userscriptId = path.substr apiPath.length
-			load_userscript request, response, userscriptId
+			remoteTaistieId = path.substr apiPath.length
+			load_remote_taistie request, response, remoteTaistieId
 		else
 			load_static_file(request, response)
 

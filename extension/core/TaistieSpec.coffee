@@ -42,11 +42,11 @@ describe 'Taistie', ->
 		taistie = new Taistie externalId: 555
 		expect(taistie.getExternalId()).toEqual 555
 
-	it 'getExternalLink: gives link to userscript page for userscript and null otherwise', ->
-		userscriptTaistie = new Taistie
-			source: 'userscripts'
+	it 'getExternalLink: gives link to taistie page for remote taistie and null otherwise', ->
+		remoteTaistie = new Taistie
+			source: 'remote'
 			externalId: 555
-		expect(userscriptTaistie.getExternalLink()).toEqual('http://userscripts.org/scripts/show/555')
+		expect(remoteTaistie.getExternalLink()).toEqual('http://taisties.org/scripts/show/555')
 
 		expect((new Taistie {}).getExternalLink()).toBeNull()
 
@@ -58,23 +58,23 @@ describe 'Taistie', ->
 		expect(-> new Taistie).toThrow 'Taistie creation: field values data required (in dictionary)'
 
 	describe '\'source\' field', ->
-		it 'can be null or one of [\'own\', \'userscripts\']', ->
+		it 'can be null or one of [\'own\', \'taisties\']', ->
 			correctTaistie = new Taistie({})
 			correctTaistie = new Taistie source: 'own'
-			correctTaistie = new Taistie source: 'userscripts'
+			correctTaistie = new Taistie source: 'remote'
 
 			expect(-> new Taistie(source: 'other')).toThrow('Taistie creation: invalid \'source\' value \'other\'')
 
-		it 'either isOwnTaistie() or isUserscript() is true depending on given \'source\' field', ->
+		it 'either isOwnTaistie() or isRemote() is true depending on given \'source\' field', ->
 			for taistieData in [{}, {source: 'own'}]
 				do(taistieData) ->
 
 					ownTaistie = new Taistie taistieData
-					expect(ownTaistie.isOwnTaistie()).toBeTruthy()
-					expect(ownTaistie.isUserscript()).toBeFalsy()
+					expect(ownTaistie.isOwn()).toBeTruthy()
+					expect(ownTaistie.isRemote()).toBeFalsy()
 
-			userscriptTaistie = new Taistie source: 'userscripts'
-			expect(userscriptTaistie.isUserscript()).toBeTruthy()
+			remoteTaistie = new Taistie source: 'remote'
+			expect(remoteTaistie.isRemote()).toBeTruthy()
 
 	describe 'getTaistiesForUrl', ->
 		expectedUrl = undefined
@@ -82,7 +82,7 @@ describe 'Taistie', ->
 		beforeEach ->
 			mockedResults = []
 			expectedUrl = undefined
-			Taistie._userscriptsDownloader = getUserscriptsForUrl: (url, callback) ->
+			Taistie._taistiesDownloader = getTaistiesForUrl: (url, callback) ->
 				expectedUrl = url
 				callback mockedResults
 
@@ -95,9 +95,9 @@ describe 'Taistie', ->
 			Taistie.getTaistiesForUrl 'http://aaa.com', (taisties)->
 				expect(taisties).toEqual [fittingTaistie]
 
-		it 'doesn\'t load userscripts if any userscript for current url already exists', ->
-			userscript = Taistie.create
-				source: 'userscripts'
+		it 'doesn\'t load taisties if any remote taistie for current url already exists', ->
+			remoteTaistie = Taistie.create
+				source: 'remote'
 				rootUrl: 'aaa.com'
 
 			Taistie.getTaistiesForUrl 'http://aaa.com', (taisties) ->
@@ -107,14 +107,14 @@ describe 'Taistie', ->
 			expect(-> Taistie.getTaistiesForUrl null).toThrow new AssertException 'url should be given'
 			expect(-> Taistie.getTaistiesForUrl '').toThrow new AssertException 'url should be given'
 
-		it 'gets taisties from userstyles.org - saves them and omits duplicates', ->
-			userscript =
+		it 'gets remote taisties - saves them and omits duplicates', ->
+			remoteTaistie =
 				rootUrl: 'aaa\.com'
 				js: '<js here>'
-				name: 'userscript1'
+				name: 'remoteTaistie1'
 				id: 1
 				description: 'some description'
-			mockedResults = [userscript]
+			mockedResults = [remoteTaistie]
 
 			Taistie.getTaistiesForUrl 'http://aaa.com', (taisties) ->
 				expect(expectedUrl).toEqual 'http://aaa.com'
@@ -123,8 +123,8 @@ describe 'Taistie', ->
 				taistie = taisties[0]
 				expect([taistie.name, taistie.js, taistie.rootUrl, taistie.source, taistie.externalId,
 					taistie.description]).
-					toEqual [userscript.name, userscript.js, userscript.rootUrl, 'userscripts', userscript.id,
-					userscript.description]
+					toEqual [remoteTaistie.name, remoteTaistie.js, remoteTaistie.rootUrl, 'remote', remoteTaistie.id,
+					remoteTaistie.description]
 
 				Taistie.getTaistiesForUrl 'http://aaa.com', (taisties) ->
 					expect(taisties.length).toEqual 1
@@ -147,7 +147,7 @@ describe 'Taistie', ->
 		ownActive = Taistie.create {active: true}
 		ownInactive = Taistie.create {source: 'own', active: false}
 
-		userscriptActive = Taistie.create {source: 'userscripts', active: true}
-		userscriptInactive = Taistie.create {source: 'userscripts', active: false}
+		remoteTaistieActive = Taistie.create {source: 'remote', active: true}
+		remoteTaistieInactive = Taistie.create {source: 'remote', active: false}
 
 		expect(Taistie.getAllOwnTaisties()).toEqual [defaultOwnTaistie, ownActive, ownInactive]

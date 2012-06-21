@@ -15,9 +15,9 @@ do ->
 		Taistie:
 			ref: Taistie
 			deps:
-				_userscriptsDownloader: 'userscriptsDownloader'
-		userscriptsDownloader:
-			single: UserscriptsDownloader
+				_taistiesDownloader: 'taistiesDownloader'
+		taistiesDownloader:
+			single: TaistiesDownloader
 			deps:
 				_ajaxProvider: 'jqueryAjaxProvider'
 		jqueryAjaxProvider:

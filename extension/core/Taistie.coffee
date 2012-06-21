@@ -1,5 +1,5 @@
 class Taistie extends Spine.Model
-	@_userscriptsDownloader = null
+	@_taistiesDownloader = null
 
 	@configure "Taistie", "name", "active", "rootUrl", "css", "js", "source", "externalId", "description", "usageCount"
 
@@ -7,7 +7,7 @@ class Taistie extends Spine.Model
 		msgPrefix = 'Taistie creation: '
 		assert options?, "#{msgPrefix}field values data required (in dictionary)"
 		options.source ?= 'own'
-		assert ['own', 'userscripts'].indexOf(options.source) >= 0, "#{msgPrefix}invalid \'source\' value \'#{options.source}\'"
+		assert ['own', 'remote'].indexOf(options.source) >= 0, "#{msgPrefix}invalid \'source\' value \'#{options.source}\'"
 		super options
 
 	@extend Spine.Model.Local
@@ -27,15 +27,15 @@ class Taistie extends Spine.Model
 
 	isActive: -> @active
 
-	isOwnTaistie: -> @source == 'own'
+	isOwn: -> @source == 'own'
 
-	isUserscript: -> @source == 'userscripts'
+	isRemote: -> @source == 'remote'
 
 	getDescription: -> @description
 
 	getExternalId: -> @externalId
 
-	getExternalLink: ->	if @isUserscript() then "http://userscripts.org/scripts/show/#{@getExternalId()}" else null
+	getExternalLink: ->	if @isRemote() then "http://taisties.org/scripts/show/#{@getExternalId()}" else null
 
 	getUsageCount: -> @usageCount
 
@@ -45,13 +45,13 @@ class Taistie extends Spine.Model
 		assert url? and url != '', 'url should be given'
 		localTaisties = @getLocalTaistiesForUrl(url)
 
-		localUserscriptExists = false
-		localUserscriptExists = true for taistie in localTaisties when taistie.isUserscript()
+		localTaistieExists = false
+		localTaistieExists = true for taistie in localTaisties when taistie.isRemote()
 
-		if localUserscriptExists
+		if localTaistieExists
 			callback localTaisties
 		else
-			@_getUserscriptsForUrl url, localTaisties, (userscripts) -> callback(localTaisties.concat userscripts)
+			@_getRemoteTaistiesForUrl url, localTaisties, (taisties) -> callback(localTaisties.concat taisties)
 
 	@getActiveTaistiesForUrl: (url) ->
 		taistie for taistie in @getLocalTaistiesForUrl(url) when taistie.isActive()
@@ -59,27 +59,27 @@ class Taistie extends Spine.Model
 	@getLocalTaistiesForUrl: (url) ->
 		@select (taistie) -> taistie.fitsUrl url
 
-	@_getUserscriptsForUrl: (url, existingTaisties, callback) ->
-		@_userscriptsDownloader.getUserscriptsForUrl url, (userscripts) ->
-			taistiesFromUserScripts = []
-			for userscript in userscripts
-				do (userscript) ->
+	@_getRemoteTaistiesForUrl: (url, existingTaisties, callback) ->
+		@_taistiesDownloader.getTaistiesForUrl url, (taisties) ->
+			localTaistiesFromRemote = []
+			for remoteTaistie in taisties
+				do (remoteTaistie) ->
 					taistieExists = false
-					taistieExists = true for taistie in existingTaisties when taistie.source is 'userscripts' and taistie.externalId is userscript.id
+					taistieExists = true for taistie in existingTaisties when taistie.isRemote() and taistie.externalId is remoteTaistie.id
 
 					if not taistieExists
-						taistieFromUserscript = Taistie.create
-							name: userscript.name
-							js: userscript.js
-							description: userscript.description
+						localTaistieFromRemote = Taistie.create
+							name: remoteTaistie.name
+							js: remoteTaistie.js
+							description: remoteTaistie.description
 
 							#TODO: проставлять url здесь, в Taistie
-							rootUrl: userscript.rootUrl
-							source: 'userscripts'
-							externalId: userscript.id
-							usageCount: userscript.usageCount
-						taistiesFromUserScripts.push taistieFromUserscript
-			callback taistiesFromUserScripts
+							rootUrl: remoteTaistie.rootUrl
+							source: 'remote'
+							externalId: remoteTaistie.id
+							usageCount: remoteTaistie.usageCount
+						localTaistiesFromRemote.push localTaistieFromRemote
+			callback localTaistiesFromRemote
 
-	@getAllOwnTaisties: -> @select (taistie) -> taistie.isOwnTaistie()
+	@getAllOwnTaisties: -> @select (taistie) -> taistie.isOwn()
 
