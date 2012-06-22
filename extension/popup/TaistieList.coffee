@@ -16,16 +16,12 @@ class TaistieList extends Spine.Controller
 
 	addOne: (taistie) =>
 		view = new TaistieView(item: taistie)
-		list = if taistie.isOwn() then @own else @recommended
+		list = @recommended
 		list.append(view.render().el)
 		view
 
 	addAll: =>
-		@addOne taistie for taistie in @_taistieCollection.getLocalTaistiesForUrl @_url
-
-	addOwn: =>
-		@_taistieCollection.getAllOwnTaisties() =>
-			@addOne taistie for taistie in taisties
+		@addOne taistie for taistie in @_taistieCollection.getCachedTaistiesForUrl @_url
 
 	create: =>
 		newTaistie = @_taistieCollection.create
@@ -35,10 +31,10 @@ class TaistieList extends Spine.Controller
 		newView = @addOne newTaistie
 		newView.startEditing()
 
+	#TODO: убрать - нет больше собственных taistie
 	showOwn: =>
 			@own.empty()
 			@recommended.empty()
-			@addOwn
 			@.el.addClass 'm-own'
 
 	showRecommended: =>

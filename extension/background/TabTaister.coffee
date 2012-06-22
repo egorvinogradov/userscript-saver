@@ -40,7 +40,7 @@ class TabTaister
 		allTaistiesForUrl ?= []
 
 		#TODO: вынести в логику и покрыть тестами
-		recommended = (taistie for taistie in allTaistiesForUrl when taistie.isRemote() and not taistie.isActive())
+		recommended = (taistie for taistie in allTaistiesForUrl when not taistie.isActive())
 		badgeText = if recommended.length > 0 then recommended.length.toString() else ''
 		@_tabApi.setBadgeText text: badgeText
 

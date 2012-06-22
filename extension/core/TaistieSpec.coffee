@@ -44,11 +44,8 @@ describe 'Taistie', ->
 
 	it 'getExternalLink: gives link to taistie page for remote taistie and null otherwise', ->
 		remoteTaistie = new Taistie
-			source: 'remote'
 			externalId: 555
-		expect(remoteTaistie.getExternalLink()).toEqual('http://taisties.org/scripts/show/555')
-
-		expect((new Taistie {}).getExternalLink()).toBeNull()
+		expect(remoteTaistie.getExternalLink()).toEqual('http://tai.st/server/taisties/show/555')
 
 	it 'gives current usage count with getUsageCount', ->
 		taistie = new Taistie usageCount: 134
@@ -56,25 +53,6 @@ describe 'Taistie', ->
 
 	it 'constructor requires field values', ->
 		expect(-> new Taistie).toThrow 'Taistie creation: field values data required (in dictionary)'
-
-	describe '\'source\' field', ->
-		it 'can be null or one of [\'own\', \'taisties\']', ->
-			correctTaistie = new Taistie({})
-			correctTaistie = new Taistie source: 'own'
-			correctTaistie = new Taistie source: 'remote'
-
-			expect(-> new Taistie(source: 'other')).toThrow('Taistie creation: invalid \'source\' value \'other\'')
-
-		it 'either isOwnTaistie() or isRemote() is true depending on given \'source\' field', ->
-			for taistieData in [{}, {source: 'own'}]
-				do(taistieData) ->
-
-					ownTaistie = new Taistie taistieData
-					expect(ownTaistie.isOwn()).toBeTruthy()
-					expect(ownTaistie.isRemote()).toBeFalsy()
-
-			remoteTaistie = new Taistie source: 'remote'
-			expect(remoteTaistie.isRemote()).toBeTruthy()
 
 	describe 'getTaistiesForUrl', ->
 		expectedUrl = undefined
@@ -95,14 +73,6 @@ describe 'Taistie', ->
 			Taistie.getTaistiesForUrl 'http://aaa.com', (taisties)->
 				expect(taisties).toEqual [fittingTaistie]
 
-		it 'doesn\'t load taisties if any remote taistie for current url already exists', ->
-			remoteTaistie = Taistie.create
-				source: 'remote'
-				rootUrl: 'aaa.com'
-
-			Taistie.getTaistiesForUrl 'http://aaa.com', (taisties) ->
-				expect(expectedUrl).not.toBeDefined()
-
 		it 'takes valid non-empty url', ->
 			expect(-> Taistie.getTaistiesForUrl null).toThrow new AssertException 'url should be given'
 			expect(-> Taistie.getTaistiesForUrl '').toThrow new AssertException 'url should be given'
@@ -121,9 +91,9 @@ describe 'Taistie', ->
 				expect(taisties.length).toEqual(1)
 
 				taistie = taisties[0]
-				expect([taistie.name, taistie.js, taistie.rootUrl, taistie.source, taistie.externalId,
+				expect([taistie.name, taistie.js, taistie.rootUrl, taistie.externalId,
 					taistie.description]).
-					toEqual [remoteTaistie.name, remoteTaistie.js, remoteTaistie.rootUrl, 'remote', remoteTaistie.id,
+					toEqual [remoteTaistie.name, remoteTaistie.js, remoteTaistie.rootUrl, remoteTaistie.id,
 					remoteTaistie.description]
 
 				Taistie.getTaistiesForUrl 'http://aaa.com', (taisties) ->
@@ -141,13 +111,3 @@ describe 'Taistie', ->
 			rootUrl: 'other.com'
 
 		expect(Taistie.getActiveTaistiesForUrl 'http://current.com').toEqual [activeFittingTaistie]
-
-	it 'getAllOwnTaisties: gets all own taisties', ->
-		defaultOwnTaistie = Taistie.create {}
-		ownActive = Taistie.create {active: true}
-		ownInactive = Taistie.create {source: 'own', active: false}
-
-		remoteTaistieActive = Taistie.create {source: 'remote', active: true}
-		remoteTaistieInactive = Taistie.create {source: 'remote', active: false}
-
-		expect(Taistie.getAllOwnTaisties()).toEqual [defaultOwnTaistie, ownActive, ownInactive]

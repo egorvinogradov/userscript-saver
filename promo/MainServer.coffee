@@ -20,7 +20,8 @@ taistiePartNames = ['id', 'name', 'description', 'js', 'css']
 
 loadTaistie = (request, response, siteName) ->
 
-	taistie = {}
+	taistie =
+		rootUrl: siteName
 
 	for partName in taistiePartNames
 		do (partName) ->

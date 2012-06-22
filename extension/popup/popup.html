@@ -38,13 +38,13 @@
             </label>
             <div class="taisties__description">
                 ${description}
-								<a class="taisties__description-link" href="${externalLink}" target="_blank" tabindex="-1">Подробнее на userscripts.org</a>
+								<a class="taisties__description-link"  style="display: none" href="${externalLink}" target="_blank" tabindex="-1">Подробнее на userscripts.org</a>
             </div>
             <div class="taisties__settings">
                 <div class="taisties__edit">изменить</div>
                 <div class="taisties__remove">удалить</div>
             </div>
-            <div class="taisties__downloads" title="${usageCount} загрузок">${usageCount}</div>
+            <div class="taisties__downloads"  style="display: none" title="${usageCount} загрузок">${usageCount}</div>
 						<div class="taisties__editing">
 								<div class="taisties__editing-header">Новое улучшение</div>
 								<div class="taisties__editing-row">
@@ -70,7 +70,7 @@
 </head>
 <body class="popup">
     <div class="taisties">
-        <div class="taisties__developer">
+        <div class="taisties__developer" style="display: none">
             <div class="taisties__create"><span class="taisties__create-icon">+</span>создать улучшение</div>
             <div class="taisties__show-own taisties__link">посмотреть уже созданные</div>
 						<div class="taisties__show-recommended taisties__link">посмотреть рекомендуемые</div>
