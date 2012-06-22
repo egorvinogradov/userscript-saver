@@ -1,5 +1,5 @@
 class TaistiesDownloader
-	@_searchUrlTemplate: 'http://tai.st/server/taisties/%siteName%'
+	@_searchUrlTemplate: 'http://localhost:5000/server/taisties/%siteName%'
 
 	#TODO: передавать количество юзерскриптов как параметр
 	@_maxTaistiesCount = 5
