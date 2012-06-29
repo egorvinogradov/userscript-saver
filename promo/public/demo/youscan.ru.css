@@ -1,36 +1,36 @@
-body,
-.mention_link,
-.mention_text,
-.mention_date,
-.mention_author_text,
-.mention_source_link a,
-.mention_bottompannel_text {
+.taist_active body,
+.taist_active .mention_link,
+.taist_active .mention_text,
+.taist_active .mention_date,
+.taist_active .mention_author_text,
+.taist_active .mention_source_link a,
+.taist_active .mention_bottompannel_text {
     font-family: Tahoma, Arial, sans-serif;
 }
 
-.mention_item {
+.taist_active .mention_item {
     overflow: hidden;
 }
 
-.mention_simple_tags_title {
+.taist_active .mention_simple_tags_title {
     float: left;
     padding: 4px 12px 0 0;
     color: #000;
     font: 12px/18px Tahoma, Arial, sans-serif;
 }
 
-.mention_simple_tags {
+.taist_active .mention_simple_tags {
     margin: -129px 32px 53px 19px;
     overflow: hidden;
     clear: both;
 }
 
-.mention_simple_tags_list {
+.taist_active .mention_simple_tags_list {
     overflow: hidden;
     padding: 4px 2px 2px 2px;
 }
 
-.mention_simple_tags_item {
+.taist_active .mention_simple_tags_item {
     display: inline-block;
     font-family: Tahoma, sans-serif;
     position: relative;
@@ -44,7 +44,7 @@ body,
             transition: background-color ease 1.5s;
 }
 
-.mention_simple_tags_item.tag_selected {
+.taist_active .mention_simple_tags_item.tag_selected {
     margin: -3px 12px 5px -3px;
     padding: 3px;
     border-bottom: 0;
@@ -52,45 +52,17 @@ body,
     color: #676767;
 }
 
-.mention_simple_tags_item.tag_highlighted {
+.taist_active .mention_simple_tags_item.tag_highlighted {
     background-color: #FFF379;
 }
 
-/*
-
-.mention_simple_tags_remove {
-    display: none;
-    position: absolute;
-    top: -1px;
-    right: -12px;
-    width: 9px;
-    height: 9px;
-    background-image: url('http://www.youscan.ru/Content/Images/Tags/tag_remove.png');
-    cursor: pointer;
-    margin-top: 4px;
-}
-
-.mention_simple_tags_remove:hover {
-    background-image: url('http://www.youscan.ru/Content/Images/Tags/tag_remove_red.png');
-}
-
-.mention_simple_tags_item.tag_selected {
-    margin-left: 27px;
-}
-
-.mention_simple_tags_item.tag_selected .mention_simple_tags_remove {
-    display: block;
-}
-
-*/
-
-.mention_simple_tags_add {
+.taist_active .mention_simple_tags_add {
     overflow: hidden;
     float: left;
     padding: 2px 0 2px 40px;
 }
 
-.mention_simple_tags_input {
+.taist_active .mention_simple_tags_input {
     width: 150px;
     font: 12px/18px Tahoma, Arial, sans-serif !important;
     height: 20px;
@@ -99,7 +71,7 @@ body,
             box-sizing: border-box;
 }
 
-.mention_simple_tags_button {
+.taist_active .mention_simple_tags_button {
     margin-left: 7px;
     font: 12px/18px Tahoma, sans-serif;
     color: #fff;
@@ -118,7 +90,7 @@ body,
             border-radius: 4px;
 }
 
-.mention_simple_tags_button:hover {
+.taist_active .mention_simple_tags_button:hover {
     background-color: #8C8C8C;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#8C8C8C), to(#323332));
     background-image: -webkit-linear-gradient(top, #8C8C8C, #323332);
@@ -127,6 +99,43 @@ body,
     background-image:         linear-gradient(to bottom, #8C8C8C, #323332);
 }
 
-.mention_middle_block {
+.taist_active .mention_middle_block {
     padding-bottom: 86px;
 }
+
+
+/* settings */
+
+.cornerBottomR {
+    position: relative;
+}
+
+.violet_right {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.link_active {
+    cursor: pointer;
+}
+
+.taist__settings-block {
+    position: absolute;
+    margin-top: 103px;
+    background: #fff;
+    padding: 6px 15px;
+    min-height: 82px;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.taist__settings-checkbox {
+    vertical-align: top;
+    margin-right: 5px;
+}
+
+/* / settings */

@@ -1,0 +1,15 @@
+{
+    "name": "Улучшенные тэги YouScan",
+    "version": "1.0",
+    "description": "Расширение делает более удобной работу с тэгами упоминаний YouScan.",
+    "icons": {
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "permissions": [
+        "tabs",
+        "http://*.youscan.ru/",
+        "http://*.youscan.biz/"
+    ],
+	"background_page": "background.html"
+}
