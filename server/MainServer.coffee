@@ -4,7 +4,7 @@ url = require "url"
 path = require "path"
 fs = require "fs"
 
-webroot = './promo/public'
+webroot = './server/public'
 port = process.env.PORT || 3000
 
 fileServer = new(staticServer.Server) webroot, cache: 600

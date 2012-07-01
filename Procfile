@@ -1,1 +1,1 @@
-web: coffee promo/MainServer.coffee
+web: coffee server/MainServer.coffee

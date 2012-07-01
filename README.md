@@ -7,5 +7,5 @@ Taist contents:
 
 1. Repository structure
 /demo_extension - Chrome extension to demonstrate Taist before embedding it directly into the target site
-/promo - all code for Taist server, responsible both for promo page and taisties
+/server - all code for Taist server, responsible both for promo page and taisties
 /lib - libraries used by server
