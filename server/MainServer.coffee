@@ -5,6 +5,7 @@ path = require "path"
 fs = require "fs"
 
 webroot = './server/public'
+taistiesFolder = './server/taisties'
 port = process.env.PORT || 3000
 
 fileServer = new(staticServer.Server) webroot, cache: 600
@@ -31,9 +32,8 @@ loadTaistie = (request, response, siteName) ->
 					sendTaistie taistie, response
 
 getTaistiePartForSiteName = (siteName, taistiePartName, callback) ->
-	taistiePartsFolder = 'demo'
 	partFileName = siteName + '.' + taistiePartName
-	filePath = path.join webroot, taistiePartsFolder, partFileName
+	filePath = path.join  taistiesFolder, partFileName
 	path.exists filePath, (exists) ->
 		if exists
 			fs.readFile filePath, (error, fileContent) -> callback fileContent.toString()
@@ -44,7 +44,7 @@ taistieIsCompletelyLoaded = (taistie) ->
 
 sendTaistie = (taistie, response) ->
 	response.writeHead 200, "Content-Type" : "text/plain"
-	response.end JSON.stringify [taistie]
+	response.end  'Taist.applyTaisties(' + (JSON.stringify [taistie]) + ');'
 
 server = http.createServer (request, response) ->
 	request.addListener "end", ->
