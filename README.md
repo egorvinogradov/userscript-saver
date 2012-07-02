@@ -13,3 +13,6 @@ Taist contents:
 	/public - static files used on public part of tai.st web site and accessible by everyone directly by url
 	/taisties - taistie data not accessible directly
 	MainServer.coffee - single starting point for the whole site - both promo page and taisties API
+
+/package.json - project description for Heroku
+/Procfile - description of entry point used by foreman on Heroku and locally
