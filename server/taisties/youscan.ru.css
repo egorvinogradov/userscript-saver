@@ -129,13 +129,23 @@
     top: 0;
     left: 0;
     width: 100%;
-    box-sizing: border-box;
     -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
 }
 
 .taist__settings-checkbox {
     vertical-align: top;
     margin-right: 5px;
+}
+
+.taist__settings_label {
+    font-weight: bold;
+}
+
+.taist__settings-description {
+    font-style: italic;
+    padding: 3px 0 0 18px;
 }
 
 /* / settings */

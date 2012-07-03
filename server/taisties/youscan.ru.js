@@ -3,7 +3,9 @@ if ( !console || !console.log ) {
 }
 
 
-console.log('start');
+var taistie = typeof taistie !== 'undefined' ? taistie : null;
+
+console.log('Taist: start', taistie);
 
 var getState = function(){
     return localStorage.getItem('taist_taistieState') === 'active';
@@ -55,17 +57,26 @@ var MentionTags = {
                 id = el.attr('data-id'),
                 selected = el.hasClass(mention.classes.selected),
                 checkBoxes = this.els.popup.tags.parent().find('input[type=checkbox]'),
-                checkbox = checkBoxes.filter('[value=' + id + ']');
+                checkbox = checkBoxes.filter('[value=' + id + ']'),
+                selectedTags = mention.taist.list.find('.' + mention.classes.tag + '.' + mention.classes.selected);
 
-            if ( mention.taist.list.find('.' + mention.classes.tag + '.' + mention.classes.selected).length >= this.maxMentionTagCount && !selected ) {
+            if ( selectedTags.length >= this.maxMentionTagCount && !selected ) {
                 alert('Достигнут лимит выбранных тэгов для одного упоминания.');
+                return false;
+            }
+
+            if ( selectedTags.length === 1 && selected ) {
+                mention.el
+                    .find(this.selectors.mention.tags)
+                    .siblings(this.selectors.mention.remove)
+                    .trigger('click');
+                selectedTags.removeClass(mention.classes.selected);
                 return false;
             }
 
             mention.addButton.trigger('click');
 
-            mention.taist.list
-                .find('.' + mention.classes.tag + '.' + mention.classes.selected)
+            selectedTags
                 .each(function(i, e){
                     checkBoxes.filter('[value=' + $(e).attr('data-id') + ']').attr({ checked: true });
                 });
@@ -186,7 +197,7 @@ var MentionTags = {
             this.checkErrors();
         }
 
-        console.log('add new tag:',
+        console.log('Taist: add new tag:',
             +new Date(),
             new Date().toString(),
             value
@@ -194,7 +205,7 @@ var MentionTags = {
 
         newTagReady = setInterval($.proxy(function(){
 
-            console.log('check new tag:',
+            console.log('Taist: check new tag:',
                 +new Date(),
                 new Date().toString(),
                 mention.el.find(this.selectors.mention.tags).length,
@@ -216,7 +227,7 @@ var MentionTags = {
                     .filter(':contains("' + value + '")')
                     .attr({ 'data-id': newTagId });
 
-                console.log('new tag ready:',
+                console.log('Taist: new tag ready:',
                     +new Date(),
                     new Date().toString(),
                     newTagId,
@@ -349,12 +360,13 @@ var Settings = {
         inactive:   'violet_right',
         block:      'taist__settings-block',
         label:      'taist__settings_label',
-        checkbox:   'taist__settings-checkbox'
+        checkbox:   'taist__settings-checkbox',
+        description:'taist__settings-description'
     },
     config: {
         hash:       '#interface',
         tabText:    'Интерфейс',
-        label:      'Включить улучшенные тэги упоминаний'
+        label:      'Включить улучшение &laquo;' + taistie.name + '&raquo;'
     },
     init: function(){
 
@@ -362,11 +374,12 @@ var Settings = {
         this.els.menu =         $(this.selectors.menu);
         this.els.header =       this.els.container.find('h2');
 
-        this.els.tabLink =  $('<a></a>').addClass(this.classes.inactive).html(this.config.tabText);
-        this.els.tab =      $('<li></li>');
-        this.els.block =    $('<div></div>').addClass(this.classes.block);
-        this.els.label =    $('<label></label>').addClass(this.classes.label);
-        this.els.checkbox = $('<input type="checkbox">').addClass(this.classes.checkbox).attr({ checked: getState() });
+        this.els.tabLink =      $('<a></a>').addClass(this.classes.inactive).html(this.config.tabText);
+        this.els.tab =          $('<li></li>');
+        this.els.block =        $('<div></div>').addClass(this.classes.block);
+        this.els.label =        $('<label></label>').addClass(this.classes.label);
+        this.els.description =  $('<div></div>').addClass(this.classes.description).html(taistie.description);
+        this.els.checkbox =     $('<input type="checkbox">').addClass(this.classes.checkbox).attr({ checked: getState() });
 
         this.render();
         setTimeout($.proxy(this.bindEvents, this), 0);
@@ -380,7 +393,10 @@ var Settings = {
             .append(this.els.checkbox)
             .append(this.config.label);
 
-        this.els.block.append(this.els.label);
+        this.els.block
+            .append(this.els.label)
+            .append(this.els.description);
+
         this.els.container.prepend(this.els.block);
     },
     bindEvents: function(){
@@ -412,6 +428,9 @@ var Settings = {
         this.els.block.show();
     }
 };
+
+
+    
 
 if ( getState() ) {
     $('body').addClass('taist_active');
