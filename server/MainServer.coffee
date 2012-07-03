@@ -27,7 +27,7 @@ loadTaistie = (request, response, siteName) ->
 	for partName in taistiePartNames
 		do (partName) ->
 			getTaistiePartForSiteName siteName, partName, (partContent) ->
-				taistie[partName] = partContent
+				taistie[partName] = partContent.replace /\s+$/, ''
 				if taistieIsCompletelyLoaded taistie
 					sendTaistie taistie, response
 
