@@ -8,8 +8,8 @@
     },
     "permissions": [
         "tabs",
-        "http://*.youscan.ru/",
-        "http://*.youscan.biz/"
+        "http://*.youscan.biz/",
+        "http://*.youscan.ru/"
     ],
 	"background_page": "background.html"
 }
