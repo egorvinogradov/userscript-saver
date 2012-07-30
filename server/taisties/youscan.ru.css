@@ -1,36 +1,36 @@
-.taist_active body,
-.taist_active .mention_link,
-.taist_active .mention_text,
-.taist_active .mention_date,
-.taist_active .mention_author_text,
-.taist_active .mention_source_link a,
-.taist_active .mention_bottompannel_text {
+.taist_MentionTags body,
+.taist_MentionTags .mention_link,
+.taist_MentionTags .mention_text,
+.taist_MentionTags .mention_date,
+.taist_MentionTags .mention_author_text,
+.taist_MentionTags .mention_source_link a,
+.taist_MentionTags .mention_bottompannel_text {
     font-family: Tahoma, Arial, sans-serif;
 }
 
-.taist_active .mention_item {
+.taist_MentionTags .mention_item {
     overflow: hidden;
 }
 
-.taist_active .mention_simple_tags_title {
+.taist_MentionTags .mention_simple_tags_title {
     float: left;
     padding: 4px 12px 0 0;
     color: #000;
     font: 12px/18px Tahoma, Arial, sans-serif;
 }
 
-.taist_active .mention_simple_tags {
+.taist_MentionTags .mention_simple_tags {
     margin: -129px 32px 53px 19px;
     overflow: hidden;
     clear: both;
 }
 
-.taist_active .mention_simple_tags_list {
+.taist_MentionTags .mention_simple_tags_list {
     overflow: hidden;
     padding: 4px 2px 2px 2px;
 }
 
-.taist_active .mention_simple_tags_item {
+.taist_MentionTags .mention_simple_tags_item {
     display: inline-block;
     font-family: Tahoma, sans-serif;
     position: relative;
@@ -44,7 +44,7 @@
             transition: background-color ease 1.5s;
 }
 
-.taist_active .mention_simple_tags_item.tag_selected {
+.taist_MentionTags .mention_simple_tags_item.tag_selected {
     margin: -3px 12px 5px -3px;
     padding: 3px;
     border-bottom: 0;
@@ -52,17 +52,17 @@
     color: #676767;
 }
 
-.taist_active .mention_simple_tags_item.tag_highlighted {
+.taist_MentionTags .mention_simple_tags_item.tag_highlighted {
     background-color: #FFF379;
 }
 
-.taist_active .mention_simple_tags_add {
+.taist_MentionTags .mention_simple_tags_add {
     overflow: hidden;
     float: left;
     padding: 2px 0 2px 40px;
 }
 
-.taist_active .mention_simple_tags_input {
+.taist_MentionTags .mention_simple_tags_input {
     width: 150px;
     font: 12px/18px Tahoma, Arial, sans-serif !important;
     height: 20px;
@@ -71,7 +71,7 @@
             box-sizing: border-box;
 }
 
-.taist_active .mention_simple_tags_button {
+.taist_MentionTags .mention_simple_tags_button {
     margin-left: 7px;
     font: 12px/18px Tahoma, sans-serif;
     color: #fff;
@@ -90,7 +90,7 @@
             border-radius: 4px;
 }
 
-.taist_active .mention_simple_tags_button:hover {
+.taist_MentionTags .mention_simple_tags_button:hover {
     background-color: #8C8C8C;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#8C8C8C), to(#323332));
     background-image: -webkit-linear-gradient(top, #8C8C8C, #323332);
@@ -99,7 +99,7 @@
     background-image:         linear-gradient(to bottom, #8C8C8C, #323332);
 }
 
-.taist_active .mention_middle_block {
+.taist_MentionTags .mention_middle_block {
     padding-bottom: 86px;
 }
 

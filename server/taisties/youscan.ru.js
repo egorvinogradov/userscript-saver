@@ -1,18 +1,18 @@
-if ( !console || !console.log ) {
-    console = { log: function(){} };
-}
+//if ( !console || !console.log ) {
+//    console = { log: function(){} };
+//}
 
-
-var taistie = typeof taistie !== 'undefined' ? taistie : null;
+var taistie = typeof taistie !== 'undefined' ? taistie : null,
+    isActive = function(){
+        return Taist.utils.getTaistieState(taistie.id) === 'active';
+    };
 
 console.log('Taist: start', taistie);
 
-var getState = function(){
-    return localStorage.getItem('taist_taistieState') === 'active';
-};
 
-var MentionTags = {
+Taist.MentionTags = {
     els: {
+        body: $('body'),
         mention: {
             container: $('.mention_item')
         },
@@ -34,6 +34,9 @@ var MentionTags = {
     maxMentionTagCount: 5,
 
     init: function(){
+
+        if ( !isActive() ) return;
+        this.els.body.addClass('taist_MentionTags');
 
         this.els.popup.tags = this.els.popup.container.find('.textTag');
         this.els.popup.input = this.els.popup.container.find('.tagsInputReset');
@@ -349,7 +352,46 @@ var MentionTags = {
 
 
 
-var Settings = {
+Taist.MentionsToNotes = {
+    els: {},
+    selectors: {
+        mention: '.mention_item',
+        comment: '.mention_text:first',
+        invisibleNoteText: '.mentionNoteText'
+    },
+    init: function(){
+
+        this.els.mentions = $(this.selectors.mention);
+        this.els.mentions.each($.proxy(function(i, e){
+
+            var els = {},
+                data = {};
+
+            els.mention = $(e);
+            els.comment = els.mention.find(this.selectors.comment);
+            els.invisibleNoteText = els.mention.find(this.selectors.invisibleNoteText);
+
+            data.id = +els.mention.attr('id').replace(/mention/, '');
+            data.comment = $.trim(els.comment.text());
+
+            console.log(data.id, data.comment);
+
+            $.ajax({
+                type: 'POST',
+                url: '/Mention/SaveComment',
+                data: data,
+                success: function () {
+                    els.invisibleNoteText.html(data.comment);
+                }
+            });
+
+        }, this));
+    }
+};
+
+
+
+Taist.Settings = {
     els: {},
     selectors: {
         container:  '.cornerBottomR',
@@ -379,7 +421,7 @@ var Settings = {
         this.els.block =        $('<div></div>').addClass(this.classes.block);
         this.els.label =        $('<label></label>').addClass(this.classes.label);
         this.els.description =  $('<div></div>').addClass(this.classes.description).html(taistie.description);
-        this.els.checkbox =     $('<input type="checkbox">').addClass(this.classes.checkbox).attr({ checked: getState() });
+        this.els.checkbox =     $('<input type="checkbox">').addClass(this.classes.checkbox).attr({ checked: isActive() });
 
         this.render();
         setTimeout($.proxy(this.bindEvents, this), 0);
@@ -430,18 +472,160 @@ var Settings = {
 };
 
 
-    
 
-if ( getState() ) {
-    $('body').addClass('taist_active');
-    MentionTags.init();
-}
+Taist.Tests = {
+    pages: {
+        mentionTags: {
+            path: /^\/ThemeDetails\/(?:All|AnswerNeeded|Favorite)\/[0-9]+\/[0-9]+(?:\/)?$/,
+            method: Taist.MentionTags,
+            selectors: {
+                mention: {
+                    container:          '.mention_item',
+                    selectors: {
+                        tagContainer:   '[id^="mentionIdForTags"]',
+                        middleBlock:    '.mention_middle_block',
+                        addButton:      '.mention_addtags, .mention_item .mention_edittags:visible'
+                    }
+                },
+                popUp: {
+                    container:      '.mentionTagsList',
+                    selectors: {
+                        tags:       '.textTag',
+                        input:      '.tagsInputReset',
+                        addButton:  '.addTagButton',
+                        save:       '.activePanelButton'
+                    }
+                }
+            }
+        },
+        mentionsToNotes: {
+            path: /^\/ThemeDetails\/(?:All|AnswerNeeded|Favorite)\/[0-9]+\/[0-9]+(?:\/)?$/,
+            method: Taist.MentionsToNotes,
+            selectors: {}
+        },
+        settings: {
+            path: /^\/Workplace\/Details(?:\/)?$/,
+            method: Taist.Settings,
+            selectors: {
+                container:      '.cornerBottomR',
+                selectors: {
+                    menu:       '.links_right',
+                    header:     '.cornerBottomR h2'
+                }
+            }
+        }
+    },
+    init: function(){
 
-if ( document.location.pathname === '/Workplace/Details' ) {
-    Settings.init();
-}
+        var nodes = this.checkNodes();
 
-// for debug
-window.MentionTags = MentionTags;
-window.Settings = Settings;
-window.getState = getState;
+        if ( nodes.status !== 'ok' ) {
+
+            Taist.utils.sendError(taistie.id, {
+                testType: 'checkNodes',
+                errorMessage: nodes.message,
+                errorData: nodes.data,
+                browser: navigator.userAgent
+            });
+        }
+        else {
+
+            for ( var page in this.pages ) {
+                if ( this.pages[page].path.test(document.location.pathname) ) {
+                    this.pages[page].method.init();
+                    break;
+                }
+            }
+        }
+    },
+    checkNodes: function(){
+
+        var checkNested = function(element, parent){
+
+            var parent = parent || document,
+                container = element.container ? $(element.container, parent) : $('body', parent),
+                selectors = element.selectors;
+
+            console.log('\n--- Beginning >',
+                '\n     container:', element.container, container.length,
+                '\n     parent:', parent,
+                '\n     selectors:', selectors
+            );
+
+            if ( container.length ) {
+
+                for ( var s in selectors ) {
+
+                    var nested = selectors[s];
+
+                    console.log('\n--- Type of nested >',
+                        '\n     nested:', nested,
+                        '\n     typeof nested:', typeof nested,
+                        '\n     nested name:', s);
+
+                    if ( typeof nested === 'string' ) {
+
+                        container.each(function(i, e){
+                            var _container = $(e);
+                            if ( !_container.find(nested).length ) {
+                                generateError(nested, _container.attr('class'));
+                            }
+                            else {
+                                console.log('\n--- Nested is ELEMENT >',
+                                    '\n     container:', element.container,
+                                    '\n     nested:', nested,
+                                    '\n     container element:', _container,
+                                    '\n     nested element:', _container.find(nested));
+                            }
+                        });
+                    }
+                    else {
+
+                        if ( nested instanceof Object &&
+                             nested.container &&
+                             nested.selectors )
+                        {
+                            console.log('\n--- Nested is COLLECTION >',
+                                '\n     container:', element.container,
+                                '\n     nested:', nested,
+                                '\n     nested.container:', nested.container,
+                                '\n     nested.container element:', $(nested.container),
+                                '\n     nested.selectors:', nested.selectors);
+
+                            checkNested(nested, container);
+                        }
+                    }
+                }
+            }
+            else {
+                generateError(element.container, parent);
+            }
+        },
+        generateError = function(selector, container){
+            return {
+                status: 'failed',
+                message: 'node doesn\'t exist',
+                data: {
+                    selector: selector,
+                    container: container
+                }
+            }
+        };
+
+        for ( var page in this.pages ) {
+            if ( this.pages[page].path.test(document.location.pathname) ) {
+                checkNested({
+                    container: 'body',
+                    selectors: this.pages[page].selectors
+                });
+            }
+        }
+
+        return {
+            status: 'ok'
+        }
+
+    }
+};
+
+Taist.Tests.init();

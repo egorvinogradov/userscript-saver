@@ -1,7 +1,8 @@
 YouScan =
 	config:
 	    urlRe: /^(?:http|https):\/\/(?:www\.)?youscan\.(?:ru|biz)/
-	    downloader: 'http://www.tai.st/server/downloader.js'
+	    #downloader: 'http://www.tai.st/server/downloader.js'
+	    downloader: 'http://127.0.0.1:3000/server/downloader.js'
 	init: ->
 		console.log 'Taist extension: init'
 		_this = @

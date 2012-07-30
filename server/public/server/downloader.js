@@ -2,7 +2,8 @@ var Taist = {
     taisties: [],
     utils: {
         getTaistiesUrl: function(){
-            return 'http://www.tai.st/server/taisties/' + document.location.hostname.replace(/www\./, '');
+            //return 'http://www.tai.st/server/taisties/' + document.location.hostname.replace(/www\./, '');
+            return 'http://127.0.0.1:3000/server/taisties/' + document.location.hostname.replace(/www\./, '');
         },
         getTaistieState: function(id){
             return localStorage.getItem(
@@ -14,6 +15,9 @@ var Taist = {
                 this.tmpl('taist_taistie_#{id}_state', { id: id }),
                 state
             );
+        },
+        sendError: function(id, data){
+            console && console.error && console.error('Taistie error (id: ' + id + ')', data);
         },
         tmpl: function(template, data){
             var re = /#\{(?:\s+)?([a-zA-Z0-9_]+)(?:\s+)?\}/g,
