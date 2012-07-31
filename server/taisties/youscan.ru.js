@@ -374,7 +374,7 @@ Taist.MentionsToNotes = {
             data.id = +els.mention.attr('id').replace(/mention/, '');
             data.comment = $.trim(els.comment.text());
 
-            console.log(data.id, data.comment);
+            console.log('Taist: mentions to notes:', data.id, data.comment);
 
             $.ajax({
                 type: 'POST',
