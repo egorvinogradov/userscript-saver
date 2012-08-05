@@ -19,9 +19,10 @@ module.exports = loadTaistie =  (siteName, callback) ->
 getTaistiePartForSiteName = (siteName, taistiePartName, callback) ->
 	partFileName = siteName + '.' + taistiePartName
 	filePath = path.join  taistiesFolder, partFileName
-	path.exists filePath, (exists) ->
+	fs.exists filePath, (exists) ->
 		if exists
-			fs.readFile filePath, (error, fileContent) -> callback fileContent.toString()
+			fs.readFile filePath, (error, fileContent) ->
+				callback fileContent.toString()
 
 taistieIsCompletelyLoaded = (taistie) ->
 	unloadedParts = (partName for partName in taistiePartNames when not (partName of taistie))
