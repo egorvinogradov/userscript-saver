@@ -23,9 +23,19 @@ server = http.createServer (request, response) ->
 
 		if requestPath.indexOf(apiPath) is 0
 			siteName = requestPath.substr apiPath.length
-			loadTaistie siteName, (taistie)->
+
+			loadTaistieSuccess = (taistie) ->
 				response.writeHead 200, "Content-Type" : "text/plain"
 				response.end  'Taist.applyTaisties(' + (JSON.stringify [taistie]) + ');'
+
+			loadTaistieError = (error) ->
+				console.error 'Error calling loadTaistie: %s - %s', request.url, error.message
+				response.writeHead 404, "Content-Type" : "text/plain"
+				response.end 'Error: taistie not found'
+
+			loadTaistie siteName,
+				success: loadTaistieSuccess
+				error: loadTaistieError
 		else
 			loadStaticFile(request, response)
 

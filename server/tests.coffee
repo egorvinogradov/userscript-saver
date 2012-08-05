@@ -11,7 +11,9 @@ expected = {
 	description: 'testdescription'
 }
 
-loadTaistie 'example.ru', (actual)->
+# Unit test (returns taistie as an object)
+
+loadTaistieSuccess = (actual) ->
 
 	actualElementsCount = ( element for element of actual ).length
 	expectedElementsCount = 6
@@ -25,12 +27,33 @@ loadTaistie 'example.ru', (actual)->
 	console.log 'Unit test OK'
 
 
+loadTaistie 'example.ru',
+	success: loadTaistieSuccess
+
+
+# Returns error on unexisting taistie
+
+callbackWasCalled = false
+
+loadTaistie 'unexisting.ru',
+	error: (error) ->
+		callbackWasCalled = true
+		assert.equal(error.message, 'Taistie for unexisting.ru not found', 'Wrong error message')
+		console.log 'Test for unexisting OK'
+
+checkState = ->
+	assert.ok(callbackWasCalled, 'Error callback wasn\'t called')
+
+setTimeout checkState, 100
+
+###########################################
+# Functional test (Server returns taisties)
+
 options =
 	host: 'localhost'
 	port: 3000
 	path: '/server/taisties/example.ru'
 	method: 'GET'
-
 
 request = http.request options, (taistiesResponse)->
 
