@@ -17,6 +17,7 @@ expected = [{
 }]
 
 request = http.request options, (taistiesResponse)->
+
 	taistiesResponse.on "data", (data) ->
 
 		cleanedData = data.toString().substr('Taist.applyTaisties('.length).replace(/\);$/, '')
@@ -32,5 +33,9 @@ request = http.request options, (taistiesResponse)->
 		for key, value of expected[0]
 			do (key, value)->
 				assert.equal(actual[0][key], value, 'Wrong taistie content: ' + key)
+
+
+request.on "error", (error) ->
+	console.log 'On error', error
 
 request.end()

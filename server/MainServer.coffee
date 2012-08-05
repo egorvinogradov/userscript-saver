@@ -1,11 +1,9 @@
 staticServer = require "node-static"
 http = require "http"
 url = require "url"
-path = require "path"
-fs = require "fs"
+loadTaistie = require "./LoadTaistie"
 
 webroot = './server/public'
-taistiesFolder = './server/taisties'
 port = process.env.PORT || 3000
 
 fileServer = new(staticServer.Server) webroot, cache: 600
@@ -17,34 +15,6 @@ loadStaticFile = (request, response) ->
 			response.writeHead error.status, error.headers
 			response.end 'Error: ' + error.status
 
-taistiePartNames = ['id', 'name', 'description', 'js', 'css']
-
-loadTaistie = (request, response, siteName) ->
-
-	taistie =
-		rootUrl: siteName
-
-	for partName in taistiePartNames
-		do (partName) ->
-			getTaistiePartForSiteName siteName, partName, (partContent) ->
-				taistie[partName] = partContent.replace /\s+$/, ''
-				if taistieIsCompletelyLoaded taistie
-					sendTaistie taistie, response
-
-getTaistiePartForSiteName = (siteName, taistiePartName, callback) ->
-	partFileName = siteName + '.' + taistiePartName
-	filePath = path.join  taistiesFolder, partFileName
-	path.exists filePath, (exists) ->
-		if exists
-			fs.readFile filePath, (error, fileContent) -> callback fileContent.toString()
-
-taistieIsCompletelyLoaded = (taistie) ->
-	unloadedParts = (partName for partName in taistiePartNames when not (partName of taistie))
-	return unloadedParts.length is 0
-
-sendTaistie = (taistie, response) ->
-	response.writeHead 200, "Content-Type" : "text/plain"
-	response.end  'Taist.applyTaisties(' + (JSON.stringify [taistie]) + ');'
 
 server = http.createServer (request, response) ->
 	request.addListener "end", ->
