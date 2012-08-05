@@ -13,6 +13,18 @@ expected = {
 
 # Unit test (returns taistie as an object)
 
+fs =
+	data:
+		'server/taisties/example.ru.css': 'testcss'
+		'server/taisties/example.ru.js': 'testjs'
+		'server/taisties/example.ru.id': 'testid'
+		'server/taisties/example.ru.name': 'testname'
+		'server/taisties/example.ru.description': 'testdescription'
+	exists: (filePath, callback)->
+		callback filePath of @data
+	readFile: (filePath, callback)->
+		callback null, @data[filePath]
+
 loadTaistieSuccess = (actual) ->
 
 	actualElementsCount = ( element for element of actual ).length
@@ -26,16 +38,20 @@ loadTaistieSuccess = (actual) ->
 
 	console.log 'Unit test OK'
 
+loadTaistieError = (error) ->
+	assert.fail('Unxpected error', error.message)
 
-loadTaistie 'example.ru',
+
+loadTaistie fs, 'example.ru',
 	success: loadTaistieSuccess
+	error: loadTaistieError
 
 
 # Returns error on unexisting taistie
 
 callbackWasCalled = false
 
-loadTaistie 'unexisting.ru',
+loadTaistie fs, 'unexisting.ru',
 	error: (error) ->
 		callbackWasCalled = true
 		assert.equal(error.message, 'Taistie for unexisting.ru not found', 'Wrong error message')
@@ -45,37 +61,3 @@ checkState = ->
 	assert.ok(callbackWasCalled, 'Error callback wasn\'t called')
 
 setTimeout checkState, 100
-
-###########################################
-# Functional test (Server returns taisties)
-
-options =
-	host: 'localhost'
-	port: 3000
-	path: '/server/taisties/example.ru'
-	method: 'GET'
-
-request = http.request options, (taistiesResponse)->
-
-	taistiesResponse.on "data", (data) ->
-
-		cleanedData = data.toString().substr('Taist.applyTaisties('.length).replace(/\);$/, '')
-		actual = JSON.parse cleanedData
-
-		assert.equal(actual.length, 1, 'Wrong taistie count: ' + actual.length)
-
-		actualElementsCount = ( element for element of actual[0] ).length
-		expectedElementsCount = 6
-
-		assert.equal(actualElementsCount, expectedElementsCount, 'Different elements count: ' + actualElementsCount + ', ' + expectedElementsCount)
-
-		for key, value of expected
-			do (key, value)->
-				assert.equal(actual[0][key], value, 'Wrong taistie content: ' + key)
-
-		console.log 'Functional test OK'
-
-request.on "error", (error) ->
-	console.log 'On error', error
-
-request.end()

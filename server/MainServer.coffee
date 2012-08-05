@@ -1,6 +1,7 @@
 staticServer = require "node-static"
 http = require "http"
 url = require "url"
+fs = require "fs"
 loadTaistie = require "./LoadTaistie"
 
 webroot = './server/public'
@@ -33,7 +34,7 @@ server = http.createServer (request, response) ->
 				response.writeHead 404, "Content-Type" : "text/plain"
 				response.end 'Error: taistie not found'
 
-			loadTaistie siteName,
+			loadTaistie fs, siteName,
 				success: loadTaistieSuccess
 				error: loadTaistieError
 		else

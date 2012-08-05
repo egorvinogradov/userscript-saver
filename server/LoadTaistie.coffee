@@ -1,17 +1,15 @@
 path = require "path"
-fs = require "fs"
 
 taistiePartNames = ['id', 'name', 'description', 'js', 'css']
 taistiesFolder = './server/taisties'
 
-#module.exports = loadTaistie =  (request, response, siteName) ->
-module.exports = loadTaistie =  (siteName, callbacks) ->
+module.exports = loadTaistie =  (fs, siteName, callbacks) ->
 	taistie =
 		rootUrl: siteName
 
 	for partName in taistiePartNames
 		do (partName) ->
-			getTaistiePartForSiteName siteName, partName,
+			getTaistiePartForSiteName fs, siteName, partName,
 				success: (partContent) ->
 					taistie[partName] = partContent.replace /\s+$/, ''
 					if taistieIsCompletelyLoaded taistie
@@ -19,7 +17,7 @@ module.exports = loadTaistie =  (siteName, callbacks) ->
 				error: ->
 					callbacks.error new Error "Taistie for #{siteName} not found"
 
-getTaistiePartForSiteName = (siteName, taistiePartName, callbacks) ->
+getTaistiePartForSiteName = (fs, siteName, taistiePartName, callbacks) ->
 	partFileName = siteName + '.' + taistiePartName
 	filePath = path.join  taistiesFolder, partFileName
 	fs.exists filePath, (exists) ->
