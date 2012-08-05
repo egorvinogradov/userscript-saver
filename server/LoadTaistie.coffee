@@ -4,8 +4,8 @@ fs = require "fs"
 taistiePartNames = ['id', 'name', 'description', 'js', 'css']
 taistiesFolder = './server/taisties'
 
-module.exports = loadTaistie =  (request, response, siteName) ->
-
+#module.exports = loadTaistie =  (request, response, siteName) ->
+module.exports = loadTaistie =  (siteName, callback) ->
 	taistie =
 		rootUrl: siteName
 
@@ -14,7 +14,7 @@ module.exports = loadTaistie =  (request, response, siteName) ->
 			getTaistiePartForSiteName siteName, partName, (partContent) ->
 				taistie[partName] = partContent.replace /\s+$/, ''
 				if taistieIsCompletelyLoaded taistie
-					sendTaistie taistie, response
+					callback taistie
 
 getTaistiePartForSiteName = (siteName, taistiePartName, callback) ->
 	partFileName = siteName + '.' + taistiePartName
@@ -26,8 +26,4 @@ getTaistiePartForSiteName = (siteName, taistiePartName, callback) ->
 taistieIsCompletelyLoaded = (taistie) ->
 	unloadedParts = (partName for partName in taistiePartNames when not (partName of taistie))
 	return unloadedParts.length is 0
-
-sendTaistie = (taistie, response) ->
-	response.writeHead 200, "Content-Type" : "text/plain"
-	response.end  'Taist.applyTaisties(' + (JSON.stringify [taistie]) + ');'
 

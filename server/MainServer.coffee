@@ -23,7 +23,9 @@ server = http.createServer (request, response) ->
 
 		if requestPath.indexOf(apiPath) is 0
 			siteName = requestPath.substr apiPath.length
-			loadTaistie request, response, siteName
+			loadTaistie siteName, (taistie)->
+				response.writeHead 200, "Content-Type" : "text/plain"
+				response.end  'Taist.applyTaisties(' + (JSON.stringify [taistie]) + ');'
 		else
 			loadStaticFile(request, response)
 
