@@ -13,6 +13,10 @@ expected = {
 
 # Unit test (returns taistie as an object)
 
+path =
+  join: (folder, file) ->
+    folder + '/' + file
+
 fs =
 	data:
 		'server/taisties/example.ru.css': 'testcss'
@@ -36,13 +40,13 @@ loadTaistieSuccess = (actual) ->
 		do (key, value)->
 			assert.equal(actual[key], value, 'Wrong taistie content: ' + key)
 
-	console.log 'Unit test OK'
+	console.log 'Unit test for exanple.ru complete'
 
 loadTaistieError = (error) ->
 	assert.fail('Unxpected error', error.message)
 
 
-loadTaistie fs, 'example.ru',
+loadTaistie fs, path, 'example.ru',
 	success: loadTaistieSuccess
 	error: loadTaistieError
 
@@ -51,7 +55,7 @@ loadTaistie fs, 'example.ru',
 
 callbackWasCalled = false
 
-loadTaistie fs, 'unexisting.ru',
+loadTaistie fs, path, 'unexisting.ru',
 	error: (error) ->
 		callbackWasCalled = true
 		assert.equal(error.message, 'Taistie for unexisting.ru not found', 'Wrong error message')
@@ -61,3 +65,4 @@ checkState = ->
 	assert.ok(callbackWasCalled, 'Error callback wasn\'t called')
 
 setTimeout checkState, 100
+
