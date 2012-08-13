@@ -21,30 +21,56 @@ Taist.MassReassignment = {
     },
     classes: {},
     config: {
-        tabText: 'Массовое перегазначение',
+        // tabText: 'Массовое переназначение',
+        tabText: 'Mass reassignment',
         tabHash: '#reassingnment',
+        tabRel: 'reassignment',
         tabActiveClass: 'act',
         initialRel: 'initial'
     },
     init: function(){
 
-        console.log('init');
+        $.extend({
+            proxy: function(func, context){
+                return function(){
+                    func.apply(context, arguments);
+                };
+            }
+        });
+
+
+        console.log(
+            '>>> init:',
+            '\n ---', '<\a href="/profile/' + this.config.tabHash + '">' + this.config.tabText + '<\/a>',
+            '\n ---', Taist.utils.tmpl('<\a rel="#{tabRel}" href="/profile/#{tabHash}">#{tabText}<\/a>', this.config),
+            '\n ---', '<\a href="/profile/"><\/a>'
+        );
+
+
+        if ( $(this.selectors.tabContainer).find('[rel="' + this.config.tabRel + '"]').length ) {
+            console.log('button exists', this.els.tabContainer.find('[rel="' + this.config.tabRel + '"]'));
+            return;
+        }
 
         this.els.tabContainer = $(this.selectors.tabContainer);
-        this.els.button = $(Taist.utils.tmpl('<a href="/profile/#{tabHash}">#{tabText}</a>', this.config));
+        this.els.button = $(Taist.utils.tmpl('<\a rel="#{tabRel}" href="/profile/#{tabHash}">#{tabText}<\/a>', this.config));
+
         this.els.tabs = $(this.selectors.tabs);
-        this.els.tabContainer.append(this.els.button);
 
         this.els.tabs
             .filter('.' + this.config.tabActiveClass)
-            .attr({ rel: 'initial' });
+            .attr({ rel: this.config.initialRel });
 
         this.render();
 
-        this.els.button.on('click', $.proxy(this.show, this));
+        this.els.button
+            .unbind('click')
+            .bind('click', $.proxy(this.show, this));
+
         this.els.tabs
             .not(this.els.button)
-            .on('click', $.proxy(this.hide, this));
+            .unbind('click')
+            .bind('click', $.proxy(this.hide, this));
 
         document.location.hash === this.config.tabHash
             ? this.show()
