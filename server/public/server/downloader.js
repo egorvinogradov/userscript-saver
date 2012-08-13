@@ -2,8 +2,8 @@ var Taist = {
     taisties: [],
     utils: {
         getTaistiesUrl: function(){
-            //return 'http://www.tai.st/server/taisties/' + document.location.hostname.replace(/www\./, '');
-            return 'http://127.0.0.1:3000/server/taisties/' + document.location.hostname.replace(/www\./, '');
+            //return 'http://www.tai.st/server/taisties/' + document.location.hostname.replace(/(?:[a-z0-9\-\.]+)(?:\.)([a-z0-9\-]+)\.([a-z0-9\-]{2,4})/, '$1.$2');
+            return 'http://127.0.0.1:3000/server/taisties/' + document.location.hostname.replace(/(?:[a-z0-9\-\.]+)(?:\.)([a-z0-9\-]+)\.([a-z0-9\-]{2,4})/, '$1.$2');
         },
         getTaistieState: function(id){
             return localStorage.getItem(
@@ -28,6 +28,8 @@ var Taist = {
         }
     },
     init: function(){
+
+        console.log('oloo');
 
         $('<script></script>')
             .attr({ src: this.utils.getTaistiesUrl() })

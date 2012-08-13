@@ -52,7 +52,7 @@ server = http.createServer (request, response) ->
 		requestPath = url.parse(request.url).path
 
 		if requestPath.indexOf(apiPath) is 0
-			siteName = requestPath.substr apiPath.length
+			siteName = requestPath.substr(apiPath.length).replace(/\?.+/, '')
 			loadTaistie request, response, siteName
 		else
 			loadStaticFile(request, response)
