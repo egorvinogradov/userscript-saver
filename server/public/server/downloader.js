@@ -29,8 +29,6 @@ var Taist = {
     },
     init: function(){
 
-        console.log('oloo');
-
         $('<script></script>')
             .attr({ src: this.utils.getTaistiesUrl() })
             .appendTo('body');
