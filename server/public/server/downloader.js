@@ -35,8 +35,7 @@
       }).appendTo('body');
     },
     applyTaisties: function(data) {
-      var scriptData, taistie, _i, _len, _results;
-      _results = [];
+      var scriptData, taistie, _i, _len;
       for (_i = 0, _len = data.length; _i < _len; _i++) {
         taistie = data[_i];
         scriptData = {
@@ -48,9 +47,8 @@
           this.utils.setTaistieState(taistie.id, 'active');
         }
         $('<script></script>').html(this.utils.tmpl('(function(taistie){#{jsCode}}(#{jsVars}))', scriptData).appendTo('body'));
-        _results.push($('<style></style>').html(taistie.css.appendTo('head')));
+        $('<style></style>').html(taistie.css.appendTo('head'));
       }
-      return _results;
     }
   };
 

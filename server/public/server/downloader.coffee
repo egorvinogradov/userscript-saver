@@ -38,6 +38,7 @@ Taist = {
         .appendTo 'body'
       $('<style></style>').html taistie.css
         .appendTo 'head'
+    return
 }
 
 Taist.init()
