@@ -16,10 +16,6 @@ console.log('Taist: start', taistie);
 Taist.MassReassignment = {
     els: {},
     selectors: {
-        
-//        tabContainer: '#title_tabs',
-//        tabs: '#title_tabs a',
-        
         tabs: {
             container: '#title_tabs',
             items: '#title_tabs a'
@@ -29,7 +25,11 @@ Taist.MassReassignment = {
             container: '#tasks'
         }
     },
-    classes: {},
+    classes: {
+        tasks: {
+            ajaxContainer: 'taist__ajax-container'
+        }
+    },
     config: {
         tab: {
             // text: 'Массовое переназначение',
@@ -42,7 +42,14 @@ Taist.MassReassignment = {
         tasks: {
             url: '/ajax/?action=my_tasks',
             load: '/ajax/?action=my_tasks .list',
-            container: '.list'
+            ajaxSelectors: {
+                projects: '.indrop > div',
+                projectName: '.proj',
+                tasks: '.list > div',
+                taskName: '.list a',
+                taskPriority: '.list .priorb',
+                users: 'select[name="seluser"] option'
+            }
         }
     },
     templates: {
@@ -51,7 +58,7 @@ Taist.MassReassignment = {
         },
         tasks: {
             wrapper: '<\div class="task task1st">#{html}<\/div>',
-            ajaxContainer: '<\div class="taist__ajax-container taist_hidden"><\/div>'
+            ajaxContainer: '<\div class="#{ajaxContainer} taist_hidden"><\/div>'
         }
     },
     init: function(){
@@ -64,11 +71,6 @@ Taist.MassReassignment = {
             },
             tmpl: Taist.utils.tmpl
         });
-
-
-        //this.els.tabContainer = $(this.selectors.tabContainer);
-        //this.els.tabs = $(this.selectors.tabs);
-
         
         this.detach();
         this.getNodesFromSelectors(this.selectors, this.els);
@@ -77,11 +79,11 @@ Taist.MassReassignment = {
         this.els.tabs.button = $($.tmpl(this.templates.tabs.item, this.config.tabs));
         this.els.tabs.container.append(this.els.tabs.button);
 
+        this.render( this.getData() );
+
         this.els.tabs.items
             .filter('.' + this.config.tabs.activeClass)
             .attr({ rel: this.config.tabs.initialRel });
-
-        this.render();
 
         this.els.tabs.button
             .unbind('click')
@@ -114,29 +116,93 @@ Taist.MassReassignment = {
         };
         iterateSelectors(selectors, nodes);
         return nodes;
+
     },
-    render: function(){
+    getData: function(){
 
-        console.log('render');
-        
-        
+        console.log('get data');
+
+        var config = this.config.tasks.ajaxSelectors,
+            getProjects = function(container){
+
+                var projects = [];
+
+                container.find(config.projects).each(function(i, e){
+
+                    var project = {},
+                        el = $(e);
+
+                    project.name = $.trim( el.find(config.projectName).html().replace(/(<.+>)/ig, '') );
+                    project.href = el.attr('href');
+                    project.tasks = getTasks(el.find(config.tasks));
+                    projects.push(project);
+                });
+
+                return projects;
+
+            },
+            getTasks = function(container){
+
+                var projects = [],
+                    tasks = [];
+
+                container.find(config.tasks).each(function(i, e){
+
+                    var task = {},
+                        el = $(e),
+                        name = el.find(config.taskName),
+                        priority = el.find(config.taskPriority);
+
+                    task.href = name.attr('href');
+                    task.priority = +priority.html();
+                    task.name = $.trim( name.html().replace(/(<.+>)/ig, '') );
+                    tasks.push(task);
+                });
+
+                return tasks;
+
+            },
+            getUsers = function(container){
+
+                var users = [];
+
+                container.find(config.users).each(function(i,e){
+
+                    var user = {},
+                        el = $(e);
+
+                    user.name = el.html();
+                    user.id = el.attr('value');
+                    users.push(user);
+                });
+
+                return users;
+
+            },
+            tasks,
+            users;
 
 
-        this.els.tasks.ajaxContainer = $($.tmpl(this.templates.tasks.ajaxContainer));
-        
+        this.els.tasks.ajaxContainer = $($.tmpl(this.templates.tasks.ajaxContainer, this.classes.tasks));
+
         this.els.tasks.ajaxContainer
             .appendTo(this.els.tasks.container)
             .load(this.config.tasks.load);
-        
-        
 
 
-        $.ajax({
-            url: this.config.tasks.url
-        });
+        tasks = getProjects(this.els.tasks.ajaxContainer);
+        users = getUsers(this.els.tasks.ajaxContainer);
 
-        
+        return {
+            tasks: tasks,
+            users: users
+        };
 
+    },
+
+    render: function(data){
+
+        console.log('>>> render', data);
 
     },
     show: function(){
