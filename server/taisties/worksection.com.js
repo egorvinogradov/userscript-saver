@@ -13,232 +13,240 @@ console.log('Taist: start', taistie);
 
 
 
-Taist.MassReassignment = {
-    els: {},
-    selectors: {
-        tabs: {
-            container: '#title_tabs',
-            items: '#title_tabs a'
-        },
-        tasks: {
-            ajaxContainer: '',
-            container: '#tasks'
-        }
-    },
-    classes: {
-        tasks: {
-            ajaxContainer: 'taist__ajax-container'
-        }
-    },
-    config: {
-        tab: {
-            // text: 'Массовое переназначение',
-            text: 'Mass reassignment',
-            hash: '#reassingnment',
-            rel: 'reassignment',
-            activeClass: 'act',
-            initialRel: 'initial'
-        },
-        tasks: {
-            url: '/ajax/?action=my_tasks',
-            load: '/ajax/?action=my_tasks .list',
-            ajaxSelectors: {
-                projects: '.indrop > div',
-                projectName: '.proj',
-                tasks: '.list > div',
-                taskName: '.list a',
-                taskPriority: '.list .priorb',
-                users: 'select[name="seluser"] option'
-            }
-        }
-    },
-    templates: {
-        tabs: {
-            item: '<\a rel="#{rel}" href="/profile/#{hash}">#{text}<\/a>'
-        },
-        tasks: {
-            wrapper: '<\div class="task task1st">#{html}<\/div>',
-            ajaxContainer: '<\div class="#{ajaxContainer} taist_hidden"><\/div>'
-        }
-    },
-    init: function(){
 
-        $.extend({
-            proxy: function(func, context){
-                return function(){
-                    func.apply(context, arguments);
-                };
+
+var MassReassignment = function() {
+
+    this.settings = {
+        selectors: {
+            tabs: {
+                container: '#title_tabs',
+                items: '#title_tabs a'
             },
-            tmpl: Taist.utils.tmpl
-        });
-        
-        this.detach();
-        this.getNodesFromSelectors(this.selectors, this.els);
-        
-
-        this.els.tabs.button = $($.tmpl(this.templates.tabs.item, this.config.tabs));
-        this.els.tabs.container.append(this.els.tabs.button);
-
-        this.render( this.getData() );
-
-        this.els.tabs.items
-            .filter('.' + this.config.tabs.activeClass)
-            .attr({ rel: this.config.tabs.initialRel });
-
-        this.els.tabs.button
-            .unbind('click')
-            .bind('click', $.proxy(this.show, this));
-
-        this.els.tabs.items
-            .not(this.els.tabs.button)
-            .unbind('click')
-            .bind('click', $.proxy(this.hide, this));
-
-        if ( document.location.hash === this.config.tabs.hash ) {
-            this.show();
-        }
-
-    },
-    getNodesFromSelectors: function(selectors, nodes){
-        
-        var iterateSelectors = function(obj, parent){
-            for ( var key in obj ) {
-                var value = obj[key];
-                parent = parent || nodes;
-                if ( typeof value === 'string' ) {
-                    parent[key] = $(value);
-                }
-                else {
-                    parent[key] = {};
-                    iterateSelectors(value, parent[key]);
+            tasks: {
+                ajaxContainer: '',
+                container: '#tasks'
+            }
+        },
+        classes: {
+            tabs: {
+                active: 'act'
+            },
+            tasks: {
+                ajaxContainer: 'taist__ajax-container'
+            }
+        },
+        config: {
+            tabs: {
+                // text: 'Массовое переназначение', // todo: resolve encoding problem
+                text: 'Mass reassignment',
+                hash: '#reassingnment',
+                rel: 'reassignment',
+                activeClass: 'act',
+                initialRel: 'initial'
+            },
+            tasks: {
+                url: '/ajax/?action=my_tasks',
+                load: '/ajax/?action=my_tasks .list',
+                ajaxSelectors: {
+                    projects: '.indrop > div',
+                    projectName: '.proj',
+                    tasks: '.list > div',
+                    taskName: '.list a',
+                    taskPriority: '.list .priorb',
+                    users: 'select[name="seluser"] option'
                 }
             }
-        };
-        iterateSelectors(selectors, nodes);
-        return nodes;
-
-    },
-    getData: function(){
-
-        console.log('get data');
-
-        var config = this.config.tasks.ajaxSelectors,
-            getProjects = function(container){
-
-                var projects = [];
-
-                container.find(config.projects).each(function(i, e){
-
-                    var project = {},
-                        el = $(e);
-
-                    project.name = $.trim( el.find(config.projectName).html().replace(/(<.+>)/ig, '') );
-                    project.href = el.attr('href');
-                    project.tasks = getTasks(el.find(config.tasks));
-                    projects.push(project);
-                });
-
-                return projects;
-
+        },
+        templates: {
+            tabs: {
+                item: '<\a rel="#{rel}" href="/profile/#{hash}">#{text}<\/a>'
             },
-            getTasks = function(container){
-
-                var projects = [],
-                    tasks = [];
-
-                container.find(config.tasks).each(function(i, e){
-
-                    var task = {},
-                        el = $(e),
-                        name = el.find(config.taskName),
-                        priority = el.find(config.taskPriority);
-
-                    task.href = name.attr('href');
-                    task.priority = +priority.html();
-                    task.name = $.trim( name.html().replace(/(<.+>)/ig, '') );
-                    tasks.push(task);
-                });
-
-                return tasks;
-
-            },
-            getUsers = function(container){
-
-                var users = [];
-
-                container.find(config.users).each(function(i,e){
-
-                    var user = {},
-                        el = $(e);
-
-                    user.name = el.html();
-                    user.id = el.attr('value');
-                    users.push(user);
-                });
-
-                return users;
-
-            },
-            tasks,
-            users;
+            tasks: {
+                wrapper: '<\div class="task task1st">#{html}<\/div>',
+                ajaxContainer: '<\div class="#{ajaxContainer} taist_hidden"><\/div>'
+            }
+        }
+    };
+};
 
 
-        this.els.tasks.ajaxContainer = $($.tmpl(this.templates.tasks.ajaxContainer, this.classes.tasks));
+MassReassignment.prototype.init = function(){
 
-        this.els.tasks.ajaxContainer
-            .appendTo(this.els.tasks.container)
-            .load(this.config.tasks.load);
+    $.extend({
+        proxy: function(func, context){
+            return function(){
+                func.apply(context, arguments);
+            };
+        },
+        tmpl: Taist.utils.tmpl
+    });
 
+    this.detach();
 
-        tasks = getProjects(this.els.tasks.ajaxContainer);
-        users = getUsers(this.els.tasks.ajaxContainer);
+    this.els = this.getNodesFromSelectors(this.settings.selectors);
+    this.els.tabs.button = $($.tmpl(this.settings.templates.tabs.item, this.settings.config.tabs));
+    this.els.tabs.container.append(this.els.tabs.button);
 
-        return {
-            tasks: tasks,
-            users: users
-        };
+    this.render( this.getData() );
 
-    },
+    this.els.tabs.button
+        .unbind('click')
+        .bind('click', $.proxy(this.show, this));
 
-    render: function(data){
-
-        console.log('>>> render', data);
-
-    },
-    show: function(){
-
-        console.log('show');
-
-        this.els.tabs.removeClass(this.config.tabs.activeClass);
-        this.els.button.addClass(this.config.tabs.activeClass);
-
-        // show block
-
-    },
-    hide: function(){
-
-        console.log('hide');
-
-        this.els.tabs
-            .removeClass(this.config.tabs.activeClass)
-            .filter($.tmpl('[rel="#{initialRel}"]', this.config.tabs))
-            .addClass(this.config.tabs.activeClass);
-
-        // hide block
-
-    },
-    detach: function(){
-
-        console.log('detach');
-
-        $(this.selectors.tabs)
-            .filter($.tmpl('[rel="#{rel}"]', this.config.tabs))
-            .remove();
-
-        // todo: remove block
-
+    if ( document.location.hash === this.settings.config.tabs.hash ) {
+        this.show();
     }
 };
+
+
+MassReassignment.prototype.getNodesFromSelectors = function(selectors){
+
+    var nodes = {},
+        iterateSelectors = function(obj, parent){
+        for ( var key in obj ) {
+            var value = obj[key];
+            parent = parent || nodes;
+            if ( typeof value === 'string' ) {
+                parent[key] = $(value);
+            }
+            else {
+                parent[key] = {};
+                iterateSelectors(value, parent[key]);
+            }
+        }
+    };
+    iterateSelectors(selectors, nodes);
+    return nodes;
+};
+
+
+MassReassignment.prototype.getData = function(){
+
+    var selectors = this.settings.config.tasks.ajaxSelectors,
+        getTasks = function(container){
+
+            var projects = [];
+
+            container.find(selectors.projects).each(function(i, e){
+
+                var project = {},
+                    el = $(e);
+
+                project.name = $.trim( el.find(selectors.projectName).html().replace(/(<.+>)/ig, '') );
+                project.href = el.attr('href');
+                project.tasks = getTasksOfProject(el.find(selectors.tasks));
+                projects.push(project);
+            });
+
+            return projects;
+
+        },
+        getTasksOfProject = function(container){
+
+            var tasks = [];
+
+            container.find(selectors.tasks).each(function(i, e){
+
+                var task = {},
+                    el = $(e),
+                    name = el.find(selectors.taskName),
+                    priority = el.find(selectors.taskPriority);
+
+                task.href = name.attr('href');
+                task.priority = +priority.html();
+                task.name = $.trim( name.html().replace(/(<.+>)/ig, '') );
+                tasks.push(task);
+            });
+
+            return tasks;
+
+        },
+        getUsers = function(container){
+
+            var users = [];
+
+            container.find(selectors.users).each(function(i,e){
+
+                var user = {},
+                    el = $(e);
+
+                user.name = el.html();
+                user.id = el.attr('value');
+                users.push(user);
+            });
+
+            return users;
+
+        };
+
+    this.els.tasks.ajaxContainer = $( $.tmpl(this.settings.templates.tasks.ajaxContainer, this.settings.classes.tasks) );
+
+    this.els.tasks.ajaxContainer
+        .appendTo(this.els.tasks.container)
+        .load(this.settings.config.tasks.load);
+
+    return {
+        tasks: getTasks(this.els.tasks.ajaxContainer),
+        users: getUsers(this.els.tasks.ajaxContainer)
+    };
+};
+
+
+MassReassignment.prototype.render = function(data){
+
+    console.log('>>> render', data);
+
+    // todo: make render
+
+};
+
+
+MassReassignment.prototype.show = function(){
+
+    console.log('show');
+
+    this.els.tabs.items.removeClass(this.settings.classes.tabs.active);
+    this.els.tabs.button.addClass(this.settings.classes.tabs.active);
+
+    // show block
+
+};
+
+
+MassReassignment.prototype.detach = function(){
+
+    console.log('detach');
+
+    var tabsConfig = this.settings.config.tabs,
+        tabsClasses = this.settings.classes.tabs,
+        tabs = {};
+
+    tabs.all = $(this.settings.selectors.tabs.items);
+    tabs.reassignment = tabs.all.filter($.tmpl('[rel="#{rel}"]', tabsConfig));
+    tabs.initial = tabs.all.not(tabs.reassignment);
+    tabs.firstSelected = tabs.initial.filter($.tmpl('[rel="#{initialRel}"]', tabsConfig));
+
+    if ( !tabs.firstSelected.length ) {
+        tabs.firstSelected = tabs.initial.filter('.' + tabsClasses.active);
+        tabs.firstSelected.attr({ rel: tabsConfig.initialRel });
+    }
+    else {
+        tabs.all.removeClass(tabsClasses.active);
+        tabs.firstSelected.addClass(tabsClasses.active);
+    }
+
+    tabs.reassignment.remove();
+
+    // todo: remove block
+};
+
+
+Taist.MassReassignment = new MassReassignment();
+//Taist.MassReassignment.init();
+
+
+
 
 
 
