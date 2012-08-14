@@ -12,9 +12,6 @@ var taistie = typeof taistie !== 'undefined' ? taistie : null,
 console.log('Taist: start', taistie);
 
 
-
-
-
 var MassReassignment = function() {
 
     this.settings = {
@@ -47,7 +44,7 @@ var MassReassignment = function() {
             },
             tasks: {
                 url: '/ajax/?action=my_tasks',
-                load: '/ajax/?action=my_tasks .list',
+                load: '/ajax/?action=my_tasks .indrop',
                 ajaxSelectors: {
                     projects: '.indrop > div',
                     projectName: '.proj',
@@ -88,7 +85,7 @@ MassReassignment.prototype.init = function(){
     this.els.tabs.button = $($.tmpl(this.settings.templates.tabs.item, this.settings.config.tabs));
     this.els.tabs.container.append(this.els.tabs.button);
 
-    this.render( this.getData() );
+    this.getData($.proxy(this.render, this));
 
     this.els.tabs.button
         .unbind('click')
@@ -121,10 +118,12 @@ MassReassignment.prototype.getNodesFromSelectors = function(selectors){
 };
 
 
-MassReassignment.prototype.getData = function(){
+MassReassignment.prototype.getData = function(callback){
 
     var selectors = this.settings.config.tasks.ajaxSelectors,
         getTasks = function(container){
+
+            console.log('>>', selectors.projects, container.find(selectors.projects)[0]);
 
             var projects = [];
 
@@ -137,6 +136,12 @@ MassReassignment.prototype.getData = function(){
                 project.href = el.attr('href');
                 project.tasks = getTasksOfProject(el.find(selectors.tasks));
                 projects.push(project);
+
+                console.log(
+                    '>>> project:',
+                    project
+                );
+
             });
 
             return projects;
@@ -157,6 +162,12 @@ MassReassignment.prototype.getData = function(){
                 task.priority = +priority.html();
                 task.name = $.trim( name.html().replace(/(<.+>)/ig, '') );
                 tasks.push(task);
+
+                console.log(
+                    '>>> task:',
+                    task
+                );
+
             });
 
             return tasks;
@@ -183,13 +194,13 @@ MassReassignment.prototype.getData = function(){
     this.els.tasks.ajaxContainer = $( $.tmpl(this.settings.templates.tasks.ajaxContainer, this.settings.classes.tasks) );
 
     this.els.tasks.ajaxContainer
-        .appendTo(this.els.tasks.container)
-        .load(this.settings.config.tasks.load);
-
-    return {
-        tasks: getTasks(this.els.tasks.ajaxContainer),
-        users: getUsers(this.els.tasks.ajaxContainer)
-    };
+        .prependTo(this.els.tasks.container)
+        .load(this.settings.config.tasks.load, $.proxy(function(){
+            callback ({
+                tasks: getTasks(this.els.tasks.ajaxContainer),
+                users: getUsers(this.els.tasks.ajaxContainer)
+            });
+        }, this));
 };
 
 
