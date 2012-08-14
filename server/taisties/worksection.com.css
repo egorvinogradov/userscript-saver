@@ -1,3 +1,195 @@
-.taist_MassReassignment {
+.taist-mass-reassignment_hidden {
+    display: none;
+}
 
+.taist-mass-reassignment__ajax-container {
+
+}
+
+.taist-mass-reassignment {
+    font: 12px/16px Arial, sans-serif;
+    color: #000;
+}
+
+
+.taist-mass-reassignment li {
+    list-style: none;
+}
+
+.taist-mass-reassignment__user {
+    font-size: 14px;
+    background: #60A4D3;
+    color: #fff;
+    padding: 15px;
+}
+
+.taist-mass-reassignment__user-select {
+    margin-left: 5px;
+}
+
+.taist-mass-reassignment__tasks {
+    padding: 5px 15px 15px 15px;
+}
+
+.taist-mass-reassignment__project {
+    padding-top: 15px;
+}
+
+.taist-mass-reassignment__project-title {
+    position: relative;
+    border-bottom:1px solid #f4f4f4;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 36px;
+}
+
+/*.taist-mass-reassignment__project-title-checkbox-wrapper {*/
+    /*display: inline-block;*/
+    /*background: #EBEBEB;*/
+    /*text-align: center;*/
+    /*height: 21px;*/
+    /*width: 21px;*/
+    /*line-height: 18px;*/
+    /*vertical-align: middle;*/
+    /*margin-right: 6px;*/
+    /*-webkit-border-radius: 5px;*/
+       /*-moz-border-radius: 5px;*/
+            /*border-radius: 5px;*/
+/*}*/
+
+
+.taist-mass-reassignment__project-title-checkbox-wrapper {
+    zoom: 1;
+    display: inline;
+    display: inline-block;
+    text-align: center;
+    width: 29px;
+    vertical-align: middle;
+    margin-right: 7px;
+    border-right: 1px solid #f4f4f4;
+}
+
+
+.taist-mass-reassignment__project-title-checkbox {
+    vertical-align: middle;
+}
+
+.taist-mass-reassignment__project-title-link {
+    zoom: 1;
+    display: inline;
+    display: inline-block;
+    vertical-align: middle;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.taist-mass-reassignment__project-title-link:hover {
+    color: #06c;
+    text-decoration: none;
+}
+
+.taist-mass-reassignment__task-list {
+    margin: 0;
+    padding: 0;
+}
+
+.taist-mass-reassignment__task-item {
+    border-bottom:1px solid #f4f4f4;
+    position: relative;
+    margin: 0;
+    line-height: 30px;
+}
+
+/*.taist-mass-reassignment__task-item-checkbox-wrapper {*/
+    /*display: inline-block;*/
+    /*background: #EBEBEB;*/
+    /*text-align: center;*/
+    /*height: 21px;*/
+    /*width: 21px;*/
+    /*line-height: 18px;*/
+    /*vertical-align: middle;*/
+    /*margin-right: 24px;*/
+    /*-webkit-border-radius: 5px;*/
+       /*-moz-border-radius: 5px;*/
+            /*border-radius: 5px;*/
+/*}*/
+
+
+.taist-mass-reassignment__task-item-checkbox-wrapper {
+    zoom: 1;
+    display: inline;
+    display: inline-block;
+    text-align: center;
+    width: 29px;
+    vertical-align: middle;
+    margin-right: 27px;
+    border-right: 1px solid #f4f4f4;
+    /*line-height: 30px;*/
+}
+
+.taist-mass-reassignment__task-item-checkbox {
+    vertical-align: middle;
+}
+
+.taist-mass-reassignment__task-item-link {
+    zoom: 1;
+    display: inline;
+    display: inline-block;
+    vertical-align: middle;
+    color: #333;
+    text-decoration: none;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.taist-mass-reassignment__task-item-link:hover {
+    color: #06c;
+    text-decoration: none;
+}
+
+.taist-mass-reassignment__task-priority {
+    padding: 1px 5px 1px 5px;
+    font: 11px/14px Tahoma, Arial, sans-serif;
+    color: #fff;
+    position: relative;
+    top: -1px;
+    margin-left: 8px;
+    display: inline-block;
+
+    display: none; /* todo: remove later */
+}
+
+.taist-mass-reassignment__task-priority_value_0 {
+    background: #C6C6C6;
+}
+.taist-mass-reassignment__task-priority_value_1 {
+    background: #E6E6E6;
+}
+.taist-mass-reassignment__task-priority_value_2 {
+    background: #A0BCD4;
+}
+.taist-mass-reassignment__task-priority_value_3 {
+    background: #7DC5D3;
+}
+.taist-mass-reassignment__task-priority_value_4 {
+    background: #5EBCAC;
+}
+.taist-mass-reassignment__task-priority_value_5 {
+    background: #B8CA00;
+}
+.taist-mass-reassignment__task-priority_value_6 {
+    background: #FFCB00;
+}
+.taist-mass-reassignment__task-priority_value_7 {
+    background: #FFA300;
+}
+.taist-mass-reassignment__task-priority_value_8 {
+    background: #FF7300;
+}
+.taist-mass-reassignment__task-priority_value_9 {
+    background: #FF4B00;
+}
+.taist-mass-reassignment__task-priority_value_10 {
+    background: #F21700;
 }
