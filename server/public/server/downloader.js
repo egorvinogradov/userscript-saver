@@ -20,6 +20,7 @@ var Taist = {
             console && console.error && console.error('Taistie error (id: ' + id + ')', data);
         },
         tmpl: function(template, data){
+            data = data || {};
             var re = /#\{(?:\s+)?([a-zA-Z0-9_]+)(?:\s+)?\}/g,
                 replace = function(str, property){
                     return data[property] || '';
