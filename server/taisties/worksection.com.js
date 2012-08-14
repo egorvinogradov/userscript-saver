@@ -44,13 +44,12 @@ var MassReassignment = function() {
             },
             tasks: {
                 url: '/ajax/?action=my_tasks',
-                load: '/ajax/?action=my_tasks .indrop',
                 ajaxSelectors: {
                     projects: '.indrop > div',
                     projectName: '.proj',
                     tasks: '.list > div',
-                    taskName: '.list a',
-                    taskPriority: '.list .priorb',
+                    taskName: '> a',
+                    taskPriority: '.priorb',
                     users: 'select[name="seluser"] option'
                 }
             }
@@ -123,25 +122,18 @@ MassReassignment.prototype.getData = function(callback){
     var selectors = this.settings.config.tasks.ajaxSelectors,
         getTasks = function(container){
 
-            console.log('>>', selectors.projects, container.find(selectors.projects)[0]);
-
             var projects = [];
 
             container.find(selectors.projects).each(function(i, e){
 
                 var project = {},
-                    el = $(e);
+                    el = $(e),
+                    name = el.find(selectors.projectName);
 
-                project.name = $.trim( el.find(selectors.projectName).html().replace(/(<.+>)/ig, '') );
-                project.href = el.attr('href');
-                project.tasks = getTasksOfProject(el.find(selectors.tasks));
+                project.name = $.trim( name.html().replace(/(<.+>)/ig, '') );
+                project.href = name.attr('href');
+                project.tasks = getTasksOfProject(el);
                 projects.push(project);
-
-                console.log(
-                    '>>> project:',
-                    project
-                );
-
             });
 
             return projects;
@@ -162,12 +154,6 @@ MassReassignment.prototype.getData = function(callback){
                 task.priority = +priority.html();
                 task.name = $.trim( name.html().replace(/(<.+>)/ig, '') );
                 tasks.push(task);
-
-                console.log(
-                    '>>> task:',
-                    task
-                );
-
             });
 
             return tasks;
@@ -192,10 +178,9 @@ MassReassignment.prototype.getData = function(callback){
         };
 
     this.els.tasks.ajaxContainer = $( $.tmpl(this.settings.templates.tasks.ajaxContainer, this.settings.classes.tasks) );
-
     this.els.tasks.ajaxContainer
         .prependTo(this.els.tasks.container)
-        .load(this.settings.config.tasks.load, $.proxy(function(){
+        .load(this.settings.config.tasks.url, $.proxy(function(){
             callback ({
                 tasks: getTasks(this.els.tasks.ajaxContainer),
                 users: getUsers(this.els.tasks.ajaxContainer)
