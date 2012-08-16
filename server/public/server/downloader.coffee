@@ -34,10 +34,8 @@ Taist = {
       if not this.utils.getTaistieState taistie.id
         this.utils.setTaistieState taistie.id, 'active'
 
-      $('<script></script>').html this.utils.tmpl('(function(taistie){#{jsCode}}(#{jsVars}))', scriptData)
-        .appendTo 'body'
-      $('<style></style>').html taistie.css
-        .appendTo 'head'
+      $('<script></script>').html(this.utils.tmpl('(function(taistie){#{jsCode}}(#{jsVars}))', scriptData)).appendTo 'body'
+      $('<style></style>').html(taistie.css).appendTo 'head'
     return
 }
 
