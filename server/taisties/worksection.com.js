@@ -196,26 +196,53 @@ MassReassignment.prototype.render = function(data){
     console.log('>>> render:', data);
 
     var taskClasses = this.settings.classes.tasks,
-        taskTemplates = this.settings.templates.tasks;
+        taskTemplates = this.settings.templates.tasks,
+        users = [],
+        projects = [],
+        container;
+
+    data.user.each(function(i, user){
+        users.push($.tmpl(taskTemplates.user, {
+            userId: user.id,
+            userName: user.name
+        }));
+    });
+
+    data.projects.each(function(i, project){
+
+        var tasks = [];
+
+        project.tasks.each(function(i, task){
+            tasks.push($.tmpl(taskTemplates.task, {
+                taskName:       task.name,
+                taskPriority:   task.priority,
+                taskId:         task.id, // todo: get id from 'href'
+                projectId:      project.id
+            }));
+        });
+
+        projects.push($.tmpl(taskTemplates.project, {
+            projectId:      project.id, // todo: get id
+            projectName:    project.name,
+            tasks: tasks.join('\n')
+        }));
+    });
+
+    container = $.tmpl(taskTemplates.container, {
+        users: users.join('\n'),
+        projects: projects.join('\n')
+    });
 
 
-//    data.projects.each(function(i, project){
-//        project.tasks.each(function(j, task){
-//
-//        });
-//    });
+    // this.els.tasks.wrapper = $( $.tmpl(taskTemplates.wrapper, taskClasses.wrapper) ); todo: fix
+    this.els.tasks.wrapper = $( $.tmpl(taskTemplates.wrapper, { wrapper: 'taist-mass-reassignment' }) );
 
 
-
-//    // this.els.tasks.wrapper = $( $.tmpl(taskTemplates.wrapper, taskClasses.wrapper) ); todo: fix
-//    this.els.tasks.wrapper = $( $.tmpl(taskTemplates.wrapper, { wrapper: 'taist-mass-reassignment' }) );
-//
-//
-//    this.els.tasks.wrapper
-//        .appendTo(this.els.tasks.container)
-//        //.append(taskTemplates.projects);
-//        .append(decodeURIComponent(taskTemplates.projects111));
-//        //.append('11111' + JSON.stringify(data));
+    this.els.tasks.wrapper
+        .appendTo(this.els.tasks.container)
+        //.append(taskTemplates.projects);
+        .append(decodeURIComponent(taskTemplates.projects111));
+        //.append('11111' + JSON.stringify(data));
 
     this.els.tasks.editForm.hide();
 
