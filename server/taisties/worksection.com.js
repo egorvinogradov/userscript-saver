@@ -60,6 +60,13 @@ var MassReassignment = function() {
                 item: '<\a rel="#{rel}" href="/profile/#{hash}">#{text}<\/a>'
             },
             tasks: {
+
+
+
+                project: decodeURIComponent(''),
+                item: '%3Cli%20class%3D%22taist-mass-reassignment__task-item%22%3E%3Cspan%20class%3D%22taist-mass-reassignment__task-item-checkbox-wrapper%22%3E%3Cinput%20class%3D%22taist-mass-reassignment__task-item-checkbox%22%20type%3D%22checkbox%22%3E%3C%2Fspan%3E%3Ca%20class%3D%22taist-mass-reassignment__task-item-link%22%3E#{task}%3Cspan%20title%3D%22%D0%9F%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%3A%20#{priority}%22%20class%3D%22taist-mass-reassignment__task-priority%20taist-mass-reassignment__task-priority_value_#{priority}%22%3E#{priority}%3C%2Fspan%3E%3C%2Fa%3E%3C%2Fli%3E',
+
+
                 wrapper: '<\div class="#{wrapper} task task1st"><\/div>',
                 projects: '<div class=taist-mass-reassignment__user><span class=taist-mass-reassignment__user-text>\u041F\u0435\u0440\u0435\u043D\u0430\u0437\u043D\u0430\u0447\u0438\u0442\u044C \u043D\u0430 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F</span><select class=taist-mass-reassignment__user-select><option>\u0418\u0432\u0430\u043D \u041F\u0435\u0442\u0440\u043E\u0432<option>\u041F\u0435\u0442\u0440 \u0418\u0432\u0430\u043D\u043E\u0432</select></div><div class=taist-mass-reassignment__tasks><div class=taist-mass-reassignment__project><div class=taist-mass-reassignment__project-title><span class=taist-mass-reassignment__project-title-checkbox-wrapper><input class=taist-mass-reassignment__project-title-checkbox type=checkbox></span><a class=taist-mass-reassignment__project-title-link>Taist \u0438\u0437\u0431\u0430\u0432\u043B\u044F\u0435\u0442 \u043A\u043E\u043C\u0430\u043D\u0434\u044B b2b \u0432\u0435\u0431-\u0441\u0435\u0440\u0432\u0438\u0441\u043E\u0432</a></div><ul class=taist-mass-reassignment__task-list><li class=taist-mass-reassignment__task-item><span class=taist-mass-reassignment__task-item-checkbox-wrapper><input class=taist-mass-reassignment__task-item-checkbox type=checkbox></span><a class=taist-mass-reassignment__task-item-link>Taist \u0438\u0437\u0431\u0430\u0432\u043B\u044F\u0435\u0442 \u043A\u043E\u043C\u0430\u043D\u0434\u044B b2b \u0432\u0435\u0431-\u0441\u0435\u0440\u0432\u0438\u0441\u043E\u0432<span title=\"\u041F\u0440\u0438\u043E\u0440\u0438\u0442\u0435\u0442: 9\" class=\"taist-mass-reassignment__task-priority taist-mass-reassignment__task-priority_value_8\">8</span></a></li><li class=taist-mass-reassignment__task-item><span class=taist-mass-reassignment__task-item-checkbox-wrapper><input class=taist-mass-reassignment__task-item-checkbox type=checkbox></span><a class=taist-mass-reassignment__task-item-link>Taist \u0438\u0437\u0431\u0430\u0432\u043B\u044F\u0435\u0442 \u043A\u043E\u043C\u0430\u043D\u0434\u044B b2b \u0432\u0435\u0431-\u0441\u0435\u0440\u0432\u0438\u0441\u043E\u0432<span title=\"\u041F\u0440\u0438\u043E\u0440\u0438\u0442\u0435\u0442: 9\" class=\"taist-mass-reassignment__task-priority taist-mass-reassignment__task-priority_value_7\">7</span></a></li><li class=taist-mass-reassignment__task-item><span class=taist-mass-reassignment__task-item-checkbox-wrapper><input class=taist-mass-reassignment__task-item-checkbox type=checkbox></span><a class=taist-mass-reassignment__task-item-link>Taist \u0438\u0437\u0431\u0430\u0432\u043B\u044F\u0435\u0442 \u043A\u043E\u043C\u0430\u043D\u0434\u044B b2b \u0432\u0435\u0431-\u0441\u0435\u0440\u0432\u0438\u0441\u043E\u0432<span title=\"\u041F\u0440\u0438\u043E\u0440\u0438\u0442\u0435\u0442: 9\" class=\"taist-mass-reassignment__task-priority taist-mass-reassignment__task-priority_value_10\">10</span></a></li></ul></div><div class=taist-mass-reassignment__project><div class=taist-mass-reassignment__project-title><span class=taist-mass-reassignment__project-title-checkbox-wrapper><input class=taist-mass-reassignment__project-title-checkbox type=checkbox></span><a class=taist-mass-reassignment__project-title-link>Taist \u0438\u0437\u0431\u0430\u0432\u043B\u044F\u0435\u0442 \u043A\u043E\u043C\u0430\u043D\u0434\u044B b2b \u0432\u0435\u0431-\u0441\u0435\u0440\u0432\u0438\u0441\u043E\u0432</a></div><ul class=taist-mass-reassignment__task-list><li class=taist-mass-reassignment__task-item><span class=taist-mass-reassignment__task-item-checkbox-wrapper><input class=taist-mass-reassignment__task-item-checkbox type=checkbox></span><a class=taist-mass-reassignment__task-item-link>Taist \u0438\u0437\u0431\u0430\u0432\u043B\u044F\u0435\u0442 \u043A\u043E\u043C\u0430\u043D\u0434\u044B b2b \u0432\u0435\u0431-\u0441\u0435\u0440\u0432\u0438\u0441\u043E\u0432<span title=\"\u041F\u0440\u0438\u043E\u0440\u0438\u0442\u0435\u0442: 9\" class=\"taist-mass-reassignment__task-priority taist-mass-reassignment__task-priority_value_8\">8</span></a></li><li class=taist-mass-reassignment__task-item><span class=taist-mass-reassignment__task-item-checkbox-wrapper><input class=taist-mass-reassignment__task-item-checkbox type=checkbox></span><a class=taist-mass-reassignment__task-item-link>Taist \u0438\u0437\u0431\u0430\u0432\u043B\u044F\u0435\u0442 \u043A\u043E\u043C\u0430\u043D\u0434\u044B b2b \u0432\u0435\u0431-\u0441\u0435\u0440\u0432\u0438\u0441\u043E\u0432<span title=\"\u041F\u0440\u0438\u043E\u0440\u0438\u0442\u0435\u0442: 9\" class=\"taist-mass-reassignment__task-priority taist-mass-reassignment__task-priority_value_7\">7</span></a></li><li class=taist-mass-reassignment__task-item><span class=taist-mass-reassignment__task-item-checkbox-wrapper><input class=taist-mass-reassignment__task-item-checkbox type=checkbox></span><a class=taist-mass-reassignment__task-item-link>Taist \u0438\u0437\u0431\u0430\u0432\u043B\u044F\u0435\u0442 \u043A\u043E\u043C\u0430\u043D\u0434\u044B b2b \u0432\u0435\u0431-\u0441\u0435\u0440\u0432\u0438\u0441\u043E\u0432<span title=\"\u041F\u0440\u0438\u043E\u0440\u0438\u0442\u0435\u0442: 9\" class=\"taist-mass-reassignment__task-priority taist-mass-reassignment__task-priority_value_10\">10</span></a></li></ul></div></div>',
                 projects111: '%3Cdiv%20class%3Dtaist-mass-reassignment__user%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-text%3E%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%BD%D0%B0%20%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F%3C%2Fspan%3E%3Cselect%20class%3Dtaist-mass-reassignment__user-select%3E%3Coption%3E%D0%98%D0%B2%D0%B0%D0%BD%20%D0%9F%D0%B5%D1%82%D1%80%D0%BE%D0%B2%3Coption%3E%D0%9F%D0%B5%D1%82%D1%80%20%D0%98%D0%B2%D0%B0%D0%BD%D0%BE%D0%B2%3C%2Fselect%3E%3C%2Fdiv%3E%3Cdiv%20class%3Dtaist-mass-reassignment__tasks%3E%3Cdiv%20class%3Dtaist-mass-reassignment__project%3E%3Cdiv%20class%3Dtaist-mass-reassignment__project-title%3E%3Cspan%20class%3Dtaist-mass-reassignment__project-title-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__project-title-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20class%3Dtaist-mass-reassignment__project-title-link%3ETaist%20%D0%B8%D0%B7%D0%B1%D0%B0%D0%B2%D0%BB%D1%8F%D0%B5%D1%82%20%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4%D1%8B%20b2b%20%D0%B2%D0%B5%D0%B1-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%BE%D0%B2%3C%2Fa%3E%3C%2Fdiv%3E%3Cul%20class%3Dtaist-mass-reassignment__task-list%3E%3Cli%20class%3Dtaist-mass-reassignment__task-item%3E%3Cspan%20class%3Dtaist-mass-reassignment__task-item-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__task-item-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20class%3Dtaist-mass-reassignment__task-item-link%3ETaist%20%D0%B8%D0%B7%D0%B1%D0%B0%D0%B2%D0%BB%D1%8F%D0%B5%D1%82%20%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4%D1%8B%20b2b%20%D0%B2%D0%B5%D0%B1-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%BE%D0%B2%3Cspan%20title%3D%22%D0%9F%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%3A%209%22%20class%3D%22taist-mass-reassignment__task-priority%20taist-mass-reassignment__task-priority_value_8%22%3E8%3C%2Fspan%3E%3C%2Fa%3E%3C%2Fli%3E%3Cli%20class%3Dtaist-mass-reassignment__task-item%3E%3Cspan%20class%3Dtaist-mass-reassignment__task-item-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__task-item-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20class%3Dtaist-mass-reassignment__task-item-link%3ETaist%20%D0%B8%D0%B7%D0%B1%D0%B0%D0%B2%D0%BB%D1%8F%D0%B5%D1%82%20%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4%D1%8B%20b2b%20%D0%B2%D0%B5%D0%B1-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%BE%D0%B2%3Cspan%20title%3D%22%D0%9F%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%3A%209%22%20class%3D%22taist-mass-reassignment__task-priority%20taist-mass-reassignment__task-priority_value_7%22%3E7%3C%2Fspan%3E%3C%2Fa%3E%3C%2Fli%3E%3Cli%20class%3Dtaist-mass-reassignment__task-item%3E%3Cspan%20class%3Dtaist-mass-reassignment__task-item-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__task-item-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20class%3Dtaist-mass-reassignment__task-item-link%3ETaist%20%D0%B8%D0%B7%D0%B1%D0%B0%D0%B2%D0%BB%D1%8F%D0%B5%D1%82%20%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4%D1%8B%20b2b%20%D0%B2%D0%B5%D0%B1-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%BE%D0%B2%3Cspan%20title%3D%22%D0%9F%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%3A%209%22%20class%3D%22taist-mass-reassignment__task-priority%20taist-mass-reassignment__task-priority_value_10%22%3E10%3C%2Fspan%3E%3C%2Fa%3E%3C%2Fli%3E%3C%2Ful%3E%3C%2Fdiv%3E%3Cdiv%20class%3Dtaist-mass-reassignment__project%3E%3Cdiv%20class%3Dtaist-mass-reassignment__project-title%3E%3Cspan%20class%3Dtaist-mass-reassignment__project-title-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__project-title-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20class%3Dtaist-mass-reassignment__project-title-link%3ETaist%20%D0%B8%D0%B7%D0%B1%D0%B0%D0%B2%D0%BB%D1%8F%D0%B5%D1%82%20%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4%D1%8B%20b2b%20%D0%B2%D0%B5%D0%B1-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%BE%D0%B2%3C%2Fa%3E%3C%2Fdiv%3E%3Cul%20class%3Dtaist-mass-reassignment__task-list%3E%3Cli%20class%3Dtaist-mass-reassignment__task-item%3E%3Cspan%20class%3Dtaist-mass-reassignment__task-item-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__task-item-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20class%3Dtaist-mass-reassignment__task-item-link%3ETaist%20%D0%B8%D0%B7%D0%B1%D0%B0%D0%B2%D0%BB%D1%8F%D0%B5%D1%82%20%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4%D1%8B%20b2b%20%D0%B2%D0%B5%D0%B1-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%BE%D0%B2%3Cspan%20title%3D%22%D0%9F%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%3A%209%22%20class%3D%22taist-mass-reassignment__task-priority%20taist-mass-reassignment__task-priority_value_8%22%3E8%3C%2Fspan%3E%3C%2Fa%3E%3C%2Fli%3E%3Cli%20class%3Dtaist-mass-reassignment__task-item%3E%3Cspan%20class%3Dtaist-mass-reassignment__task-item-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__task-item-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20class%3Dtaist-mass-reassignment__task-item-link%3ETaist%20%D0%B8%D0%B7%D0%B1%D0%B0%D0%B2%D0%BB%D1%8F%D0%B5%D1%82%20%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4%D1%8B%20b2b%20%D0%B2%D0%B5%D0%B1-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%BE%D0%B2%3Cspan%20title%3D%22%D0%9F%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%3A%209%22%20class%3D%22taist-mass-reassignment__task-priority%20taist-mass-reassignment__task-priority_value_7%22%3E7%3C%2Fspan%3E%3C%2Fa%3E%3C%2Fli%3E%3Cli%20class%3Dtaist-mass-reassignment__task-item%3E%3Cspan%20class%3Dtaist-mass-reassignment__task-item-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__task-item-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20class%3Dtaist-mass-reassignment__task-item-link%3ETaist%20%D0%B8%D0%B7%D0%B1%D0%B0%D0%B2%D0%BB%D1%8F%D0%B5%D1%82%20%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4%D1%8B%20b2b%20%D0%B2%D0%B5%D0%B1-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%BE%D0%B2%3Cspan%20title%3D%22%D0%9F%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%3A%209%22%20class%3D%22taist-mass-reassignment__task-priority%20taist-mass-reassignment__task-priority_value_10%22%3E10%3C%2Fspan%3E%3C%2Fa%3E%3C%2Fli%3E%3C%2Ful%3E%3C%2Fdiv%3E%3C%2Fdiv%3E',
@@ -395,106 +402,3 @@ Taist.Tests = {
 };
 
 Taist.Tests.init();
-
-
-
-
-/*
-
-    <div class="taist-mass-reassignment__user">
-        <span class="taist-mass-reassignment__user-text">Переназначить на пользователя</span>
-        <select class="taist-mass-reassignment__user-select">
-            <option>Иван Петров</option>
-            <option>Петр Иванов</option>
-        </select>
-    </div>
-
-    <div class="taist-mass-reassignment__tasks">
-
-        <div class="taist-mass-reassignment__project">
-
-            <div class="taist-mass-reassignment__project-title">
-                <span class="taist-mass-reassignment__project-title-checkbox-wrapper">
-                    <input class="taist-mass-reassignment__project-title-checkbox" type="checkbox">
-                </span>
-                <a class="taist-mass-reassignment__project-title-link">Taist избавляет команды b2b веб-сервисов</a>
-            </div>
-
-            <ul class="taist-mass-reassignment__task-list">
-                <li class="taist-mass-reassignment__task-item">
-                    <span class="taist-mass-reassignment__task-item-checkbox-wrapper">
-                        <input class="taist-mass-reassignment__task-item-checkbox" type="checkbox">
-                    </span>
-                    <a class="taist-mass-reassignment__task-item-link">
-                        Taist избавляет команды b2b веб-сервисов
-                        <span title="Приоритет: 9" class="taist-mass-reassignment__task-priority taist-mass-reassignment__task-priority_value_8">8</span>
-                    </a>
-                </li>
-                <li class="taist-mass-reassignment__task-item">
-                    <span class="taist-mass-reassignment__task-item-checkbox-wrapper">
-                        <input class="taist-mass-reassignment__task-item-checkbox" type="checkbox">
-                    </span>
-                    <a class="taist-mass-reassignment__task-item-link">
-                        Taist избавляет команды b2b веб-сервисов
-                        <span title="Приоритет: 9" class="taist-mass-reassignment__task-priority taist-mass-reassignment__task-priority_value_7">7</span>
-                    </a>
-                </li>
-                <li class="taist-mass-reassignment__task-item">
-                    <span class="taist-mass-reassignment__task-item-checkbox-wrapper">
-                        <input class="taist-mass-reassignment__task-item-checkbox" type="checkbox">
-                    </span>
-                    <a class="taist-mass-reassignment__task-item-link">
-                        Taist избавляет команды b2b веб-сервисов
-                        <span title="Приоритет: 9" class="taist-mass-reassignment__task-priority taist-mass-reassignment__task-priority_value_10">10</span>
-                    </a>
-                </li>
-            </ul>
-
-        </div>
-
-
-        <div class="taist-mass-reassignment__project">
-
-            <div class="taist-mass-reassignment__project-title">
-                <span class="taist-mass-reassignment__project-title-checkbox-wrapper">
-                    <input class="taist-mass-reassignment__project-title-checkbox" type="checkbox">
-                </span>
-                <a class="taist-mass-reassignment__project-title-link">Taist избавляет команды b2b веб-сервисов</a>
-            </div>
-
-            <ul class="taist-mass-reassignment__task-list">
-                <li class="taist-mass-reassignment__task-item">
-                    <span class="taist-mass-reassignment__task-item-checkbox-wrapper">
-                        <input class="taist-mass-reassignment__task-item-checkbox" type="checkbox">
-                    </span>
-                    <a class="taist-mass-reassignment__task-item-link">
-                        Taist избавляет команды b2b веб-сервисов
-                        <span title="Приоритет: 9" class="taist-mass-reassignment__task-priority taist-mass-reassignment__task-priority_value_8">8</span>
-                    </a>
-                </li>
-                <li class="taist-mass-reassignment__task-item">
-                    <span class="taist-mass-reassignment__task-item-checkbox-wrapper">
-                        <input class="taist-mass-reassignment__task-item-checkbox" type="checkbox">
-                    </span>
-                    <a class="taist-mass-reassignment__task-item-link">
-                        Taist избавляет команды b2b веб-сервисов
-                        <span title="Приоритет: 9" class="taist-mass-reassignment__task-priority taist-mass-reassignment__task-priority_value_7">7</span>
-                    </a>
-                </li>
-                <li class="taist-mass-reassignment__task-item">
-                    <span class="taist-mass-reassignment__task-item-checkbox-wrapper">
-                        <input class="taist-mass-reassignment__task-item-checkbox" type="checkbox">
-                    </span>
-                    <a class="taist-mass-reassignment__task-item-link">
-                        Taist избавляет команды b2b веб-сервисов
-                        <span title="Приоритет: 9" class="taist-mass-reassignment__task-priority taist-mass-reassignment__task-priority_value_10">10</span>
-                    </a>
-                </li>
-            </ul>
-
-        </div>
-
-
-    </div>
-
-*/
