@@ -2,8 +2,8 @@ var Taist = {
     taisties: [],
     utils: {
         getTaistiesUrl: function(){
-            //return 'http://www.tai.st/server/taisties/' + document.location.hostname.replace(/(?:[a-z0-9\-\.]+)(?:\.)([a-z0-9\-]+)\.([a-z0-9\-]{2,4})/, '$1.$2');
-            return 'http://127.0.0.1:3000/server/taisties/' + document.location.hostname.replace(/(?:[a-z0-9\-\.]+)(?:\.)([a-z0-9\-]+)\.([a-z0-9\-]{2,4})/, '$1.$2');
+            //return 'http://www.tai.st/server/taisties/' + document.location.hostname.replace(/(?:[a-z0-9\-\.]+)([a-z0-9\-]+)\.([a-z]{2,4})/, '$1.$2');
+            return 'http://127.0.0.1:3000/server/taisties/' + document.location.hostname.replace(/(?:[a-z0-9\-\.]+)([a-z0-9\-]+)\.([a-z]{2,4})/, '$1.$2');
         },
         getTaistieState: function(id){
             return localStorage.getItem(
@@ -30,9 +30,12 @@ var Taist = {
     },
     init: function(){
 
-        $('<script></script>')
-            .attr({ src: this.utils.getTaistiesUrl() })
-            .appendTo('body');
+        // todo: use pure js
+
+        typeof $ !== 'undefined' &&
+            $('<script></script>')
+                .attr({ src: this.utils.getTaistiesUrl() })
+                .appendTo('body');
     },
     applyTaisties: function(data){
 
@@ -50,9 +53,12 @@ var Taist = {
                 this.utils.setTaistieState(taistie.id, 'active');
             }
 
-            $('<script></script>').html(this.utils.tmpl('(function(taistie){#{jsCode}}(#{jsVars}))', scriptData)).appendTo('body');
-            $('<style></style>').html(taistie.css).appendTo('head');
+            // todo: use pure js
 
+            if ( typeof $ !== 'undefined' ) {
+                $('<script></script>').html(this.utils.tmpl('(function(taistie){#{jsCode}}(#{jsVars}))', scriptData)).appendTo('body');
+                $('<style></style>').html(taistie.css).appendTo('head');
+            }
         }
     }
 };
