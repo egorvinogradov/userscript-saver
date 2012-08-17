@@ -291,8 +291,6 @@ MassReassignment.prototype.bindEvents = function(){
 
     }, this));
 
-
-
 };
 
 
@@ -313,13 +311,17 @@ MassReassignment.prototype.detach = function(){
 
     var tabsConfig = this.settings.config.tabs,
         tabsClasses = this.settings.classes.tabs,
+        tasksSelectors = this.settings.selectors.tasks,
         tabs = {},
-        tasks = $(this.settings.selectors.tasks.container)
+        tasks = {};
 
     tabs.all = $(this.settings.selectors.tabs.items);
     tabs.reassignment = tabs.all.filter($.tmpl('[rel="#{rel}"]', tabsConfig));
     tabs.initial = tabs.all.not(tabs.reassignment);
     tabs.firstSelected = tabs.initial.filter($.tmpl('[rel="#{initialRel}"]', tabsConfig));
+
+    tasks.container = $(tasksSelectors.reassignment.container);
+    tasks.editForm = $(tasksSelectors.editForm);
 
     if ( !tabs.firstSelected.length ) {
         tabs.firstSelected = tabs.initial.filter('.' + tabsClasses.active);
@@ -331,8 +333,8 @@ MassReassignment.prototype.detach = function(){
     }
 
     tabs.reassignment.remove();
-    this.els.tasks.reassignment.container.remove();
-    this.els.tasks.editForm.show();
+    tasks.container.remove();
+    tasks.editForm.show();
 };
 
 
