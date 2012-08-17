@@ -133,7 +133,7 @@ MassReassignment.prototype.getData = function(callback){
                     name = el.find(selectors.projectName);
 
                 project.name = $.trim( name.html().replace(/(<.+>)/ig, '') );
-                project.href = name.attr('href');
+                project.id = +name.attr('href').replace(/\/projects\/([0-9]+)]/, '$1');
                 project.tasks = getTasks(el);
                 projects.push(project);
             });
@@ -152,7 +152,7 @@ MassReassignment.prototype.getData = function(callback){
                     name = el.find(selectors.taskName),
                     priority = el.find(selectors.taskPriority);
 
-                task.href = name.attr('href');
+                task.id = +name.attr('href').replace(/\/projects\/[0-9]+\/([0-9]+)]/, '$1');
                 task.priority = +priority.html();
                 task.name = $.trim( name.html().replace(/(<.+>)/ig, '') );
                 tasks.push(task);
