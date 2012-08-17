@@ -23,7 +23,17 @@ var MassReassignment = function() {
             tasks: {
                 editForm: '#edit_form',
                 container: '#tasks',
-                reassignment: '.taist-mass-reassignment'
+                reassignment: {
+                    container: '.taist-mass-reassignment',
+                    projects: {
+                        item: '.taist-mass-reassignment__project',
+                        input: '.taist-mass-reassignment__project-title-checkbox'
+                    },
+                    tasks: {
+                        item: '.taist-mass-reassignment__task-item',
+                        input: '.taist-mass-reassignment__task-item-checkbox'
+                    }
+                }
             }
         },
         classes: {
@@ -245,9 +255,43 @@ MassReassignment.prototype.bindEvents = function(){
 
     console.log('bind events');
 
+        var reassignment1 = {
+            container: '.taist-mass-reassignment',
+            projects: {
+                item: '.taist-mass-reassignment__project',
+                input: '.taist-mass-reassignment__project-title-checkbox'
+            },
+            tasks: {
+                item: '.taist-mass-reassignment__task-item',
+                input: '.taist-mass-reassignment__task-item-checkbox'
+            }
+        };
+
     // checkboxes
     // select
     // button
+
+
+    var selectors = this.settings.selectors.tasks.reassignment,
+        projects = {},
+        tasks = {};
+
+    projects.input = $(selectors.projects.input);
+    projects.item = $(selectors.projects.item);
+    tasks.input = $(selectors.tasks.input);
+    tasks.item = $(selectors.tasks.item);
+
+    projects.input.click($.proxy(function(i, element){
+
+        var input = $(element),
+            project = input.parents(projects.item);
+
+        projects.input.not(input).attr({ disabled: true });
+        
+
+    }, this));
+
+
 
 };
 
@@ -258,7 +302,7 @@ MassReassignment.prototype.show = function(){
 
     this.els.tabs.items.removeClass(this.settings.classes.tabs.active);
     this.els.tabs.button.addClass(this.settings.classes.tabs.active);
-    this.els.tasks.reassignment.show();
+    this.els.tasks.reassignment.container.show();
     this.els.tasks.editForm.hide();
 };
 
@@ -287,7 +331,7 @@ MassReassignment.prototype.detach = function(){
     }
 
     tabs.reassignment.remove();
-    this.els.tasks.reassignment.remove();
+    this.els.tasks.reassignment.container.remove();
     this.els.tasks.editForm.show();
 };
 
