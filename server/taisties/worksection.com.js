@@ -22,7 +22,8 @@ var MassReassignment = function() {
             },
             tasks: {
                 editForm: '#edit_form',
-                container: '#tasks'
+                container: '#tasks',
+                reassignment: '.taist-mass-reassignment'
             }
         },
         classes: {
@@ -30,7 +31,6 @@ var MassReassignment = function() {
                 active: 'act'
             },
             tasks: {
-                wrapper: 'taist-mass-reassignment',
                 ajaxContainer: 'taist-mass-reassignment__ajax-container'
             }
         },
@@ -58,10 +58,10 @@ var MassReassignment = function() {
                 link: decodeURIComponent('%3Ca%20rel%3D%22%23%7Brel%7D%22%20href%3D%22%2Fprofile%2F%23%7Bhash%7D%22%3E%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%3C%2Fa%3E')
             },
             tasks: {
-                container: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment__user%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-text%3E%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%BD%D0%B0%20%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F%3C%2Fspan%3E%3Cselect%20class%3Dtaist-mass-reassignment__user-select%3E%23%7Busers%7D%3C%2Fselect%3E%3Cbutton%20class%3Dtaist-mass-reassignment__user-button%20class%3D%22%D0%93%D0%BE%D1%82%D0%BE%D0%B2%D0%BE%22%3E%3C%2Fbutton%3E%3C%2Fdiv%3E%3Cdiv%20class%3Dtaist-mass-reassignment__tasks%3E%23%7Bprojects%7D%3C%2Fdiv%3E'),
-                user: decodeURIComponent('%3Coption%20value%3D%22%23%7Bid%7D%22%3E%23%7Bname%7D%3C%2Foption%3E'),
-                project: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment__project%20data-id%3D%22%23%7Bid%7D%22%3E%3Cdiv%20class%3Dtaist-mass-reassignment__project-title%3E%3Cspan%20class%3Dtaist-mass-reassignment__project-title-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__project-title-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20class%3Dtaist-mass-reassignment__project-title-link%3E%23%7Bname%7D%3C%2Fa%3E%3C%2Fdiv%3E%3Cul%20class%3Dtaist-mass-reassignment__task-list%3E%23%7Btasks%7D%3C%2Ful%3E%3C%2Fdiv%3E'),
-                task: decodeURIComponent('%3Cli%20class%3Dtaist-mass-reassignment__task-item%20data-id%3D%22%23%7Bid%7D%22%3E%3Cspan%20class%3Dtaist-mass-reassignment__task-item-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__task-item-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20class%3Dtaist-mass-reassignment__task-item-link%3E%23%7Bname%7D%3Cspan%20title%3D%22%D0%9F%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%3A%20%23%7Bpriority%7D%22%20class%3D%22taist-mass-reassignment__task-priority%20taist-mass-reassignment__task-priority_value_%23%7Bpriority%7D%22%3E%23%7Bpriority%7D%3C%2Fspan%3E%3C%2Fa%3E%3C%2Fli%3E'),
+                container: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment%3E%3Cdiv%20class%3Dtaist-mass-reassignment__user%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-text%3E%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%BD%D0%B0%20%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F%3C%2Fspan%3E%3Cselect%20class%3Dtaist-mass-reassignment__user-select%3E%23%7Busers%7D%3C%2Fselect%3E%3Cbutton%20class%3Dtaist-mass-reassignment__user-button%3E%D0%93%D0%BE%D1%82%D0%BE%D0%B2%D0%BE%3C%2Fbutton%3E%3C%2Fdiv%3E%3Cdiv%20class%3Dtaist-mass-reassignment__tasks%3E%23%7Bprojects%7D%3C%2Fdiv%3E%3C%2Fdiv%3E'),
+                user: decodeURIComponent('%3Coption%20value%3D%22%23%7BuserId%7D%22%3E%23%7BuserName%7D%3C%2Foption%3E'),
+                project: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment__project%20data-id%3D%22%23%7BprojectId%7D%22%3E%3Cdiv%20class%3Dtaist-mass-reassignment__project-title%3E%3Cspan%20class%3Dtaist-mass-reassignment__project-title-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__project-title-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20href%3D%22%2Fproject%2F%23%7BprojectId%7D%2F%22%20class%3Dtaist-mass-reassignment__project-title-link%3E%23%7BprojectName%7D%3C%2Fa%3E%3C%2Fdiv%3E%3Cul%20class%3Dtaist-mass-reassignment__task-list%3E%23%7Btasks%7D%3C%2Ful%3E%3C%2Fdiv%3E'),
+                task: decodeURIComponent('%3Cli%20class%3Dtaist-mass-reassignment__task-item%20data-id%3D%22%23%7BtaskId%7D%22%3E%3Cspan%20class%3Dtaist-mass-reassignment__task-item-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__task-item-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20href%3D%22%2Fproject%2F%23%7BprojectId%7D%2F%23%7BtaskId%7D%2F%22%20class%3Dtaist-mass-reassignment__task-item-link%3E%23%7BtaskName%7D%3Cspan%20title%3D%22%D0%9F%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%3A%20%23%7BtaskPriority%7D%22%20class%3D%22taist-mass-reassignment__task-priority%20taist-mass-reassignment__task-priority_value_%23%7BtaskPriority%7D%22%3E%23%7BtaskPriority%7D%3C%2Fspan%3E%3C%2Fa%3E%3C%2Fli%3E'),
                 ajaxContainer: decodeURIComponent('%3Cdiv%20class%3D%22%23%7BajaxContainer%7D%20taist-mass-reassignment_hidden%22%3E%3C%2Fdiv%3E')
             }
         }
@@ -133,7 +133,7 @@ MassReassignment.prototype.getData = function(callback){
                     name = el.find(selectors.projectName);
 
                 project.name = $.trim( name.html().replace(/(<.+>)/ig, '') );
-                project.id = +name.attr('href').replace(/\/projects\/([0-9]+)]/, '$1');
+                project.id = +name.attr('href').replace(/\/project\/([0-9]+)\//, '$1');
                 project.tasks = getTasks(el);
                 projects.push(project);
             });
@@ -152,7 +152,7 @@ MassReassignment.prototype.getData = function(callback){
                     name = el.find(selectors.taskName),
                     priority = el.find(selectors.taskPriority);
 
-                task.id = +name.attr('href').replace(/\/projects\/[0-9]+\/([0-9]+)]/, '$1');
+                task.id = +name.attr('href').replace(/\/project\/[0-9]+\/([0-9]+)\//, '$1');
                 task.priority = +priority.html();
                 task.name = $.trim( name.html().replace(/(<.+>)/ig, '') );
                 tasks.push(task);
@@ -171,7 +171,7 @@ MassReassignment.prototype.getData = function(callback){
                     el = $(e);
 
                 user.name = el.html();
-                user.id = el.attr('value');
+                user.id = +el.attr('value');
                 users.push(user);
             });
 
@@ -193,7 +193,7 @@ MassReassignment.prototype.getData = function(callback){
 
 MassReassignment.prototype.render = function(data){
 
-    console.log('>>> render:', data);
+    console.log('render:', data);
 
     var taskClasses = this.settings.classes.tasks,
         taskTemplates = this.settings.templates.tasks,
@@ -201,28 +201,29 @@ MassReassignment.prototype.render = function(data){
         projects = [],
         container;
 
-    data.user.each(function(i, user){
+    $.each(data.users, function(i, user){
         users.push($.tmpl(taskTemplates.user, {
             userId: user.id,
             userName: user.name
         }));
     });
 
-    data.projects.each(function(i, project){
+    $.each(data.projects, function(i, project){
 
         var tasks = [];
 
-        project.tasks.each(function(i, task){
+        $.each(project.tasks, function(i, task){
             tasks.push($.tmpl(taskTemplates.task, {
                 taskName:       task.name,
                 taskPriority:   task.priority,
-                taskId:         task.id, // todo: get id from 'href'
-                projectId:      project.id
+                taskId:         task.id,
+                projectId:      project.id,
+                name: task.name
             }));
         });
 
         projects.push($.tmpl(taskTemplates.project, {
-            projectId:      project.id, // todo: get id
+            projectId:      project.id,
             projectName:    project.name,
             tasks: tasks.join('\n')
         }));
@@ -233,18 +234,20 @@ MassReassignment.prototype.render = function(data){
         projects: projects.join('\n')
     });
 
-
-    // this.els.tasks.wrapper = $( $.tmpl(taskTemplates.wrapper, taskClasses.wrapper) ); todo: fix
-    this.els.tasks.wrapper = $( $.tmpl(taskTemplates.wrapper, { wrapper: 'taist-mass-reassignment' }) );
-
-
-    this.els.tasks.wrapper
-        .appendTo(this.els.tasks.container)
-        //.append(taskTemplates.projects);
-        .append(decodeURIComponent(taskTemplates.projects111));
-        //.append('11111' + JSON.stringify(data));
-
+    this.els.tasks.container.append(container);
     this.els.tasks.editForm.hide();
+    setTimeout($.proxy(this.bindEvents, this));
+
+};
+
+
+MassReassignment.prototype.bindEvents = function(){
+
+    console.log('bind events');
+
+    // checkboxes
+    // select
+    // button
 
 };
 
@@ -255,9 +258,8 @@ MassReassignment.prototype.show = function(){
 
     this.els.tabs.items.removeClass(this.settings.classes.tabs.active);
     this.els.tabs.button.addClass(this.settings.classes.tabs.active);
-
-    // show block
-
+    this.els.tasks.reassignment.show();
+    this.els.tasks.editForm.hide();
 };
 
 
@@ -267,7 +269,8 @@ MassReassignment.prototype.detach = function(){
 
     var tabsConfig = this.settings.config.tabs,
         tabsClasses = this.settings.classes.tabs,
-        tabs = {};
+        tabs = {},
+        tasks = $(this.settings.selectors.tasks.container)
 
     tabs.all = $(this.settings.selectors.tabs.items);
     tabs.reassignment = tabs.all.filter($.tmpl('[rel="#{rel}"]', tabsConfig));
@@ -284,8 +287,8 @@ MassReassignment.prototype.detach = function(){
     }
 
     tabs.reassignment.remove();
-
-    // todo: remove block
+    this.els.tasks.reassignment.remove();
+    this.els.tasks.editForm.show();
 };
 
 
@@ -419,5 +422,4 @@ Taist.Tests = {
 
     }
 };
-
 Taist.Tests.init();
