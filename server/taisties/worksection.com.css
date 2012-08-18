@@ -44,11 +44,19 @@
     /*height: 24px;*/
 }
 
+.taist-mass-reassignment__user-select[disabled] {
+    opacity: .7;
+}
+
 .taist-mass-reassignment__user-button {
     /*height: 24px;*/
     /*padding: 0 10px;*/
     padding: 2px;
     margin-left: 20px;
+}
+
+.taist-mass-reassignment__user-button[disabled] {
+    opacity: .7;
 }
 
 .taist-mass-reassignment__tasks {
@@ -60,11 +68,11 @@
 }
 
 .taist-mass-reassignment__project {
-    padding-top: 15px;
+    margin-top: 15px;
 }
 
 .taist-mass-reassignment__project:first-child {
-    padding-top: 0;
+    margin-top: 0;
 }
 
 .taist-mass-reassignment__project-title {
@@ -123,6 +131,21 @@
     color: #B6D5EB;
     text-decoration: none;
 }
+
+.taist-mass-reassignment__project_active {
+    background: #EDF3FE;
+}
+
+.taist-mass-reassignment__project_active .taist-mass-reassignment__task-item {
+    border-bottom-color: #E0E5F0;
+}
+
+
+
+
+
+
+
 
 .taist-mass-reassignment__task-list {
     margin: 0;

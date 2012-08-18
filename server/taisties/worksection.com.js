@@ -25,6 +25,8 @@ var MassReassignment = function() {
                 container: '#tasks',
                 reassignment: {
                     container: '.taist-mass-reassignment',
+                    users: '.taist-mass-reassignment__user-select',
+                    submit: '.taist-mass-reassignment__user-button',
                     projects: {
                         item: '.taist-mass-reassignment__project',
                         input: '.taist-mass-reassignment__project-title-checkbox'
@@ -41,7 +43,7 @@ var MassReassignment = function() {
                 active: 'act'
             },
             tasks: {
-                ajaxContainer: 'taist-mass-reassignment__ajax-container'
+                projectActive: 'taist-mass-reassignment__project_active'
             }
         },
         config: {
@@ -68,11 +70,11 @@ var MassReassignment = function() {
                 link: decodeURIComponent('%3Ca%20rel%3D%22%23%7Brel%7D%22%20href%3D%22%2Fprofile%2F%23%7Bhash%7D%22%3E%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%3C%2Fa%3E')
             },
             tasks: {
-                container: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment%3E%3Cdiv%20class%3Dtaist-mass-reassignment__user%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-text%3E%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%BD%D0%B0%20%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F%3C%2Fspan%3E%3Cselect%20class%3Dtaist-mass-reassignment__user-select%3E%23%7Busers%7D%3C%2Fselect%3E%3Cbutton%20class%3Dtaist-mass-reassignment__user-button%3E%D0%93%D0%BE%D1%82%D0%BE%D0%B2%D0%BE%3C%2Fbutton%3E%3C%2Fdiv%3E%3Cdiv%20class%3Dtaist-mass-reassignment__tasks%3E%23%7Bprojects%7D%3C%2Fdiv%3E%3C%2Fdiv%3E'),
+                container: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment%3E%3Cdiv%20class%3Dtaist-mass-reassignment__user%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-text%3E%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%20%D0%BD%D0%B0%20%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F%3C%2Fspan%3E%3Cselect%20class%3Dtaist-mass-reassignment__user-select%3E%23%7Busers%7D%3C%2Fselect%3E%3Cbutton%20class%3Dtaist-mass-reassignment__user-button%3E%D0%93%D0%BE%D1%82%D0%BE%D0%B2%D0%BE%3C%2Fbutton%3E%3C%2Fdiv%3E%3Cdiv%20class%3Dtaist-mass-reassignment__tasks%3E%23%7Bprojects%7D%3C%2Fdiv%3E%3C%2Fdiv%3E'),
                 user: decodeURIComponent('%3Coption%20value%3D%22%23%7BuserId%7D%22%3E%23%7BuserName%7D%3C%2Foption%3E'),
                 project: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment__project%20data-id%3D%22%23%7BprojectId%7D%22%3E%3Cdiv%20class%3Dtaist-mass-reassignment__project-title%3E%3Cspan%20class%3Dtaist-mass-reassignment__project-title-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__project-title-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20href%3D%22%2Fproject%2F%23%7BprojectId%7D%2F%22%20class%3Dtaist-mass-reassignment__project-title-link%3E%23%7BprojectName%7D%3C%2Fa%3E%3C%2Fdiv%3E%3Cul%20class%3Dtaist-mass-reassignment__task-list%3E%23%7Btasks%7D%3C%2Ful%3E%3C%2Fdiv%3E'),
                 task: decodeURIComponent('%3Cli%20class%3Dtaist-mass-reassignment__task-item%20data-id%3D%22%23%7BtaskId%7D%22%3E%3Cspan%20class%3Dtaist-mass-reassignment__task-item-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__task-item-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20href%3D%22%2Fproject%2F%23%7BprojectId%7D%2F%23%7BtaskId%7D%2F%22%20class%3Dtaist-mass-reassignment__task-item-link%3E%23%7BtaskName%7D%3Cspan%20title%3D%22%D0%9F%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%3A%20%23%7BtaskPriority%7D%22%20class%3D%22taist-mass-reassignment__task-priority%20taist-mass-reassignment__task-priority_value_%23%7BtaskPriority%7D%22%3E%23%7BtaskPriority%7D%3C%2Fspan%3E%3C%2Fa%3E%3C%2Fli%3E'),
-                ajaxContainer: decodeURIComponent('%3Cdiv%20class%3D%22%23%7BajaxContainer%7D%20taist-mass-reassignment_hidden%22%3E%3C%2Fdiv%3E')
+                ajaxContainer: decodeURIComponent('%3Cdiv%20class%3D%22taist-mass-reassignment__ajax-container%20taist-mass-reassignment_hidden%22%3E%3C%2Fdiv%3E')
             }
         }
     };
@@ -189,7 +191,7 @@ MassReassignment.prototype.getData = function(callback){
 
         };
 
-    this.els.tasks.ajaxContainer = $( $.tmpl(this.settings.templates.tasks.ajaxContainer, this.settings.classes.tasks) );
+    this.els.tasks.ajaxContainer = $( $.tmpl(this.settings.templates.tasks.ajaxContainer) );
     this.els.tasks.ajaxContainer
         .prependTo(this.els.tasks.container)
         .load(this.settings.config.tasks.url, $.proxy(function(){
@@ -255,32 +257,84 @@ MassReassignment.prototype.bindEvents = function(){
 
     console.log('bind events');
 
-        var reassignment1 = {
-            container: '.taist-mass-reassignment',
-            users: '.taist-mass-reassignment__user-select',
-            submit: '.taist-mass-reassignment__user-button',
-            projects: {
-                item: '.taist-mass-reassignment__project',
-                input: '.taist-mass-reassignment__project-title-checkbox'
-            },
-            tasks: {
-                item: '.taist-mass-reassignment__task-item',
-                input: '.taist-mass-reassignment__task-item-checkbox'
-            }
-        };
+//        var reassignment1 = {
+//            container: '.taist-mass-reassignment',
+//            users: '.taist-mass-reassignment__user-select',
+//            submit: '.taist-mass-reassignment__user-button',
+//            projects: {
+//                item: '.taist-mass-reassignment__project',
+//                input: '.taist-mass-reassignment__project-title-checkbox'
+//            },
+//            tasks: {
+//                item: '.taist-mass-reassignment__task-item',
+//                input: '.taist-mass-reassignment__task-item-checkbox'
+//            }
+//        };
 
     // checkboxes
     // select
     // button
 
 
-    var els = this.getNodesFromSelectors(this.settings.selectors.tasks.reassignment),
-        activeProject = 'zzz';
 
-    els.submit.click($.proxy(function(){
 
-        els.projects.item.filter('.' + activeProject);
 
+
+//    var selectors = this.settings.selectors.tasks.reassignment,
+//        projectActive = this.settings.classes.tasks.projectActive,
+//        els = this.getNodesFromSelectors(selectors);
+
+
+
+    this.els.tasks.reassignment = this.getNodesFromSelectors(this.settings.selectors.tasks.reassignment);
+
+
+    //$('.taist-mass-reassignment__project').eq(1).addClass(projectActive);
+    //console.log('--- els', els);
+    //window.zzz = els;
+
+//    this.els.tasks.reassignment.projects.input
+//        .add(this.els.tasks.reassignment.tasks.input)
+//        .change($.proxy(function(event){
+//
+//            this.toggleProjectHighlighting( $(event.currentTarget) );
+//
+//            // this.selectActiveProject($(event.currentTarget));
+//        }, this));
+
+
+    this.els.tasks.reassignment.projects.input.change($.proxy(function(event){
+
+        var checkbox = $(event.currentTarget),
+            checked = !!checkbox.filter(':checked').length,
+            project = checkbox.parents(this.settings.selectors.tasks.reassignment.projects.item),
+            projectCheckboxes = project.find(this.settings.selectors.tasks.reassignment.tasks.input);
+
+        projectCheckboxes.attr({ checked: checked });
+        this.toggleProjectHighlighting(checkbox);
+
+    }, this));
+
+
+    this.els.tasks.reassignment.tasks.input.change($.proxy(function(event){
+
+        this.toggleProjectHighlighting( $(event.currentTarget) );
+
+//        var checkbox = $(event.currentTarget),
+//            checked = !!checkbox.filter(':checked').length,
+//            project = checkbox.parents(this.settings.selectors.tasks.reassignment.projects.item),
+//            projectCheckboxes = project.find(this.settings.selectors.tasks.reassignment.tasks.input);
+//
+//        projectCheckboxes.attr({ checked: checked });
+//        this.toggleProjectHighlighting(checkbox);
+
+    }, this));
+
+
+    this.els.tasks.reassignment.submit.click($.proxy(function(){
+        var taskIds = this.getSelectedTasks(),
+            userId = this.getSelectedUser();
+        this.reassign(taskIds, userId);
     }, this));
 
 
@@ -296,32 +350,122 @@ MassReassignment.prototype.bindEvents = function(){
 
 
 
-    var projects = {},
-        tasks = {};
-
-    projects.input = $(selectors.projects.input);
-    projects.item = $(selectors.projects.item);
-    tasks.input = $(selectors.tasks.input);
-    tasks.item = $(selectors.tasks.item);
-
-    projects.input.click($.proxy(function(i, element){
-
-        var input = $(element),
-            project = input.parents(projects.item);
-
-        projects.input.not(input).attr({ disabled: true });
-        
-
-    }, this));
+//    var projects = {},
+//        tasks = {};
+//
+//    projects.input = $(selectors.projects.input);
+//    projects.item = $(selectors.projects.item);
+//    tasks.input = $(selectors.tasks.input);
+//    tasks.item = $(selectors.tasks.item);
+//
+//    projects.input.click($.proxy(function(i, element){
+//
+//        var input = $(element),
+//            project = input.parents(projects.item);
+//
+//        projects.input.not(input).attr({ disabled: true });
+//
+//
+//    }, this));
 
 };
 
 
+MassReassignment.prototype.selectProject = function(element){
 
-MassReassignment.prototype.reassign = function(taskId, userId){
-    console.log('reassigned: ', taskId, userId);
+    element = element instanceof $
+        ? element
+        : $(element);
+
+    element
+        .parents(this.settings.selectors.tasks.reassignment.projects.item)
+        .addClass(this.settings.classes.tasks.projectActive);
 };
 
+
+MassReassignment.prototype.toggleProjectHighlighting = function(element, removeHighlighting){
+
+    element = element instanceof $
+        ? element
+        : $(element);
+
+    var project = element.parents(this.settings.selectors.tasks.reassignment.projects.item),
+        checkboxes = project.find('input[type=checkbox]');
+
+    project[ removeHighlighting ? 'removeClass' : 'addClass' ](this.settings.classes.tasks.projectActive);
+    checkboxes.attr({ disabled: !removeHighlighting });
+};
+
+
+MassReassignment.prototype.deselectProject = function(element){
+    element = element instanceof $ ? element : $(element);
+    element
+        .parents(this.settings.selectors.tasks.reassignment.projects.item)
+        .removeClass(this.settings.classes.tasks.projectActive);
+};
+
+
+MassReassignment.prototype.selectActiveProject = function(checkbox){
+
+    var projectActiveClass = this.settings.classes.tasks.projectActive,
+        projectsAll = this.els.tasks.reassignment.projects.item,
+        projectActive = checkbox
+            .parents(this.settings.selectors.tasks.reassignment.projects.item),
+        checkboxesAllProjects = projectsAll.find('input[type=checkbox]'),
+        checkboxesActiveProject = projectActive.find('input[type=checkbox]'),
+        checkboxesActiveProjectChecked = !!checkboxesActiveProject.filter(':checked').length;
+
+    if ( checkboxesActiveProjectChecked ) {
+        projectsAll.removeClass(projectActiveClass);
+        checkboxesAllProjects.attr({ disabled: true });
+        projectActive.addClass(projectActiveClass);
+        checkboxesActiveProject.attr({ disabled: false });
+    }
+    else {
+        projectsAll.removeClass(projectActiveClass);
+        checkboxesAllProjects.attr({ disabled: false });
+    }
+};
+
+
+
+MassReassignment.prototype.getSelectedUser = function(){
+
+    var id = this.els.tasks.reassignment.users.val(),
+        name = this.els.tasks.reassignment.users.find('[value="' + id + '"]').html();
+    return {
+        id: id,
+        name: name
+    };
+};
+
+
+MassReassignment.prototype.getSelectedTasks = function(){
+
+    var ids = [];
+    this.els.tasks.reassignment.projects.item
+        .filter('.' + this.settings.classes.tasks.projectActive)
+        .find(this.els.tasks.reassignment.tasks.item)
+        .filter(':checked')
+        .each(function(i, element){
+            var id = $(element)
+                .parents(this.settings.selectors.tasks.reassignment.tasks.item)
+                .data('id');
+            ids.push(+id);
+        });
+    return ids;
+};
+
+
+MassReassignment.prototype.reassign = function(taskIds, userId){
+
+    taskIds = taskIds instanceof Array
+        ? taskIds
+        : [taskIds];
+
+    console.log('reassigned: ', taskIds, userId);
+
+};
 
 
 MassReassignment.prototype.show = function(){
@@ -372,6 +516,8 @@ Taist.MassReassignment = new MassReassignment();
 //Taist.MassReassignment.init();
 
 
+
+window._this = Taist.MassReassignment; // todo: remove when done
 
 
 
