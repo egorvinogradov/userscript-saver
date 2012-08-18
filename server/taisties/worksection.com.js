@@ -257,6 +257,8 @@ MassReassignment.prototype.bindEvents = function(){
 
         var reassignment1 = {
             container: '.taist-mass-reassignment',
+            users: '.taist-mass-reassignment__user-select',
+            submit: '.taist-mass-reassignment__user-button',
             projects: {
                 item: '.taist-mass-reassignment__project',
                 input: '.taist-mass-reassignment__project-title-checkbox'
@@ -272,8 +274,29 @@ MassReassignment.prototype.bindEvents = function(){
     // button
 
 
-    var selectors = this.settings.selectors.tasks.reassignment,
-        projects = {},
+    var els = this.getNodesFromSelectors(this.settings.selectors.tasks.reassignment),
+        activeProject = 'zzz';
+
+    els.submit.click($.proxy(function(){
+
+        els.projects.item.filter('.' + activeProject);
+
+    }, this));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var projects = {},
         tasks = {};
 
     projects.input = $(selectors.projects.input);
@@ -292,6 +315,13 @@ MassReassignment.prototype.bindEvents = function(){
     }, this));
 
 };
+
+
+
+MassReassignment.prototype.reassign = function(taskId, userId){
+    console.log('reassigned: ', taskId, userId);
+};
+
 
 
 MassReassignment.prototype.show = function(){

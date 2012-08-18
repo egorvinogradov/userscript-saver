@@ -1,17 +1,8 @@
-/* todo: remove */
-
-#client_name2 {
-    visibility: hidden;
-}
-
-/* / todo: remove */
-
-
 .taist-mass-reassignment {
-    background: #fff;
-    padding: 20px;
-    position: relative;
-    height: 1%;
+    /*background: #fff;*/
+    /*padding: 20px;*/
+    /*position: relative;*/
+    /*height: 1%;*/
 }
 
 .taist-mass-reassignment_hidden {
@@ -32,29 +23,48 @@
 }
 
 .taist-mass-reassignment__user {
-    font-size: 14px;
-    background: #60A4D3;
-    color: #fff;
-    padding: 15px;
+    /*font-size: 14px;*/
+    /*background: #60A4D3;*/
+    /*color: #fff;*/
+    /*padding: 15px;*/
+
+    font-weight: bold;
+    background: #FBEDAA;
+    padding: 7px 10px;
+    line-height: 30px;
+    height: 30px;
+    border-top: 3px solid #FFF6D7;
+    border-bottom: 3px solid #FFF6D7;
+
 }
 
 .taist-mass-reassignment__user-select {
-    margin-left: 15px;
+    margin-left: 10px;
     width: 200px;
+    /*height: 24px;*/
 }
 
 .taist-mass-reassignment__user-button {
-    height: 24px;
-    padding: 0 10px;
-    margin-left: 15px;
+    /*height: 24px;*/
+    /*padding: 0 10px;*/
+    padding: 2px;
+    margin-left: 20px;
 }
 
 .taist-mass-reassignment__tasks {
-    padding: 5px 15px 15px 15px;
+    /*padding: 5px 15px 15px 15px;*/
+    /*padding-top: 12px;*/
+    background: #fff;
+    margin-top: 15px;
+    padding: 10px;
 }
 
 .taist-mass-reassignment__project {
     padding-top: 15px;
+}
+
+.taist-mass-reassignment__project:first-child {
+    padding-top: 0;
 }
 
 .taist-mass-reassignment__project-title {
@@ -62,7 +72,8 @@
     border-bottom:1px solid #f4f4f4;
     font-size: 14px;
     font-weight: bold;
-    line-height: 36px;
+    line-height: 30px;
+    background: #60A4D3;
 }
 
 /*.taist-mass-reassignment__project-title-checkbox-wrapper {*/
@@ -85,10 +96,10 @@
     display: inline;
     display: inline-block;
     text-align: center;
-    width: 29px;
+    width: 32px;
     vertical-align: middle;
-    margin-right: 7px;
-    border-right: 1px solid #f4f4f4;
+    /*margin-right: 7px;*/
+    /*border-right: 1px solid #f4f4f4;*/
 }
 
 
@@ -101,13 +112,15 @@
     display: inline;
     display: inline-block;
     vertical-align: middle;
-    color: #333;
+    /*color: #333;*/
     text-decoration: none;
     cursor: pointer;
+    color: #fff;
 }
 
 .taist-mass-reassignment__project-title-link:hover {
-    color: #06c;
+    /*color: #06c;*/
+    color: #B6D5EB;
     text-decoration: none;
 }
 
@@ -120,7 +133,7 @@
     border-bottom:1px solid #f4f4f4;
     position: relative;
     margin: 0;
-    line-height: 30px;
+    line-height: 28px;
 }
 
 /*.taist-mass-reassignment__task-item-checkbox-wrapper {*/
@@ -143,10 +156,10 @@
     display: inline;
     display: inline-block;
     text-align: center;
-    width: 29px;
+    width: 32px;
     vertical-align: middle;
-    margin-right: 27px;
-    border-right: 1px solid #f4f4f4;
+    /*margin-right: 27px;*/
+    /*border-right: 1px solid #f4f4f4;*/
     /*line-height: 30px;*/
 }
 
