@@ -278,58 +278,26 @@ MassReassignment.prototype.bindEvents = function(){
 
 
 
-
-
-//    var selectors = this.settings.selectors.tasks.reassignment,
-//        projectActive = this.settings.classes.tasks.projectActive,
-//        els = this.getNodesFromSelectors(selectors);
-
-
-
     this.els.tasks.reassignment = this.getNodesFromSelectors(this.settings.selectors.tasks.reassignment);
 
-
-    //$('.taist-mass-reassignment__project').eq(1).addClass(projectActive);
-    //console.log('--- els', els);
-    //window.zzz = els;
-
-//    this.els.tasks.reassignment.projects.input
-//        .add(this.els.tasks.reassignment.tasks.input)
-//        .change($.proxy(function(event){
-//
-//            this.toggleProjectHighlighting( $(event.currentTarget) );
-//
-//            // this.selectActiveProject($(event.currentTarget));
-//        }, this));
-
-
     this.els.tasks.reassignment.projects.input.change($.proxy(function(event){
-
         var checkbox = $(event.currentTarget),
             checked = !!checkbox.filter(':checked').length,
             project = checkbox.parents(this.settings.selectors.tasks.reassignment.projects.item),
-            projectCheckboxes = project.find(this.settings.selectors.tasks.reassignment.tasks.input);
-
-        projectCheckboxes.attr({ checked: checked });
-        this.toggleProjectHighlighting(checkbox);
-
+            projectTaskCheckboxes = project.find(this.settings.selectors.tasks.reassignment.tasks.input);
+        projectTaskCheckboxes.attr({ checked: checked });
+        this.highlightProject(checkbox);
     }, this));
-
 
     this.els.tasks.reassignment.tasks.input.change($.proxy(function(event){
-
-        this.toggleProjectHighlighting( $(event.currentTarget) );
-
-//        var checkbox = $(event.currentTarget),
-//            checked = !!checkbox.filter(':checked').length,
-//            project = checkbox.parents(this.settings.selectors.tasks.reassignment.projects.item),
-//            projectCheckboxes = project.find(this.settings.selectors.tasks.reassignment.tasks.input);
-//
-//        projectCheckboxes.attr({ checked: checked });
-//        this.toggleProjectHighlighting(checkbox);
-
+        var checkbox = $(event.currentTarget),
+            project = checkbox.parents(this.settings.selectors.tasks.reassignment.projects.item),
+            projectCheckbox = project.find(this.settings.selectors.tasks.reassignment.projects.input),
+            projectTaskCheckboxes = project.find(this.settings.selectors.tasks.reassignment.tasks.input),
+            allChecked = projectTaskCheckboxes.length === projectTaskCheckboxes.filter(':checked').length;
+        projectCheckbox.attr({ checked: allChecked });
+        this.highlightProject(checkbox);
     }, this));
-
 
     this.els.tasks.reassignment.submit.click($.proxy(function(){
         var taskIds = this.getSelectedTasks(),
@@ -337,36 +305,6 @@ MassReassignment.prototype.bindEvents = function(){
         this.reassign(taskIds, userId);
     }, this));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    var projects = {},
-//        tasks = {};
-//
-//    projects.input = $(selectors.projects.input);
-//    projects.item = $(selectors.projects.item);
-//    tasks.input = $(selectors.tasks.input);
-//    tasks.item = $(selectors.tasks.item);
-//
-//    projects.input.click($.proxy(function(i, element){
-//
-//        var input = $(element),
-//            project = input.parents(projects.item);
-//
-//        projects.input.not(input).attr({ disabled: true });
-//
-//
-//    }, this));
 
 };
 
@@ -383,34 +321,15 @@ MassReassignment.prototype.selectProject = function(element){
 };
 
 
-MassReassignment.prototype.toggleProjectHighlighting = function(element, removeHighlighting){
+MassReassignment.prototype.highlightProject = function(element){
 
     element = element instanceof $
         ? element
         : $(element);
 
-    var project = element.parents(this.settings.selectors.tasks.reassignment.projects.item),
-        checkboxes = project.find('input[type=checkbox]');
-
-    project[ removeHighlighting ? 'removeClass' : 'addClass' ](this.settings.classes.tasks.projectActive);
-    checkboxes.attr({ disabled: !removeHighlighting });
-};
-
-
-MassReassignment.prototype.deselectProject = function(element){
-    element = element instanceof $ ? element : $(element);
-    element
-        .parents(this.settings.selectors.tasks.reassignment.projects.item)
-        .removeClass(this.settings.classes.tasks.projectActive);
-};
-
-
-MassReassignment.prototype.selectActiveProject = function(checkbox){
-
     var projectActiveClass = this.settings.classes.tasks.projectActive,
         projectsAll = this.els.tasks.reassignment.projects.item,
-        projectActive = checkbox
-            .parents(this.settings.selectors.tasks.reassignment.projects.item),
+        projectActive = element.parents(this.settings.selectors.tasks.reassignment.projects.item),
         checkboxesAllProjects = projectsAll.find('input[type=checkbox]'),
         checkboxesActiveProject = projectActive.find('input[type=checkbox]'),
         checkboxesActiveProjectChecked = !!checkboxesActiveProject.filter(':checked').length;
@@ -426,7 +345,6 @@ MassReassignment.prototype.selectActiveProject = function(checkbox){
         checkboxesAllProjects.attr({ disabled: false });
     }
 };
-
 
 
 MassReassignment.prototype.getSelectedUser = function(){
