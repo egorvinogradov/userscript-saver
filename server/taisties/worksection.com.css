@@ -6,7 +6,13 @@
 }
 
 .taist-mass-reassignment_hidden {
-    display: none;
+
+    /* todo: remove*/
+
+    /*display: none;*/
+    width: 100%;
+    height: 700px;
+
 }
 
 .taist-mass-reassignment {

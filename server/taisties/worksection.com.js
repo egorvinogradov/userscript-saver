@@ -70,20 +70,10 @@ var MassReassignment = function() {
                     windowName: 'taist-iframe-reassignment-#{projectId}-#{taskId}',
                     selectors: {
                         form: 'form',
-                        select: 'select[name="id_user_to"]',
+                        user: 'select[name="id_user_to"]',
                         mail: 'input[name="is_mail"]'
                     }
                 }
-
-//                url: '/ajax/?action=my_tasks',
-//                ajaxSelectors: {
-//                    projects: '.indrop > div',
-//                    projectName: '.proj',
-//                    tasks: '.list > div',
-//                    taskName: '> a',
-//                    taskPriority: '.priorb',
-//                    users: 'select[name="seluser"] option'
-//                }
             }
         },
         templates: {
@@ -96,7 +86,7 @@ var MassReassignment = function() {
                 project: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment__project%20data-id%3D%22%23%7BprojectId%7D%22%3E%3Cdiv%20class%3Dtaist-mass-reassignment__project-title%3E%3Cspan%20class%3Dtaist-mass-reassignment__project-title-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__project-title-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20href%3D%22%2Fproject%2F%23%7BprojectId%7D%2F%22%20class%3Dtaist-mass-reassignment__project-title-link%3E%23%7BprojectName%7D%3C%2Fa%3E%3C%2Fdiv%3E%3Cul%20class%3Dtaist-mass-reassignment__task-list%3E%23%7Btasks%7D%3C%2Ful%3E%3C%2Fdiv%3E'),
                 task: decodeURIComponent('%3Cli%20class%3Dtaist-mass-reassignment__task-item%20data-id%3D%22%23%7BtaskId%7D%22%3E%3Cspan%20class%3Dtaist-mass-reassignment__task-item-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__task-item-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20href%3D%22%2Fproject%2F%23%7BprojectId%7D%2F%23%7BtaskId%7D%2F%22%20class%3Dtaist-mass-reassignment__task-item-link%3E%23%7BtaskName%7D%3Cspan%20title%3D%22%D0%9F%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%3A%20%23%7BtaskPriority%7D%22%20class%3D%22taist-mass-reassignment__task-priority%20taist-mass-reassignment__task-priority_value_%23%7BtaskPriority%7D%22%3E%23%7BtaskPriority%7D%3C%2Fspan%3E%3C%2Fa%3E%3C%2Fli%3E'),
                 ajaxTasks: decodeURIComponent('%3Cdiv%20class%3D%22taist-mass-reassignment__ajax-tasks%20taist-mass-reassignment_hidden%22%3E%3C%2Fdiv%3E'),
-                iFrameReassignment: decodeURIComponent('%3Ciframe%20class%3D%22taist-mass-reassignment__iframe-reassignment%20taist-mass-reassignment_hidden%22%20name%3D%22taist_iframe_reassignment%22%20src%3D%22%23%7Burl%7D%22%3E%3C%2Fiframe%3E')
+                iFrameReassignment: decodeURIComponent('%3Ciframe%20class%3D%22taist-mass-reassignment__iframe-reassignment%20taist-mass-reassignment_hidden%22%20name%3D%22%23%7BwindowName%7D%22%20src%3D%22%23%7Burl%7D%22%3E%3C%2Fiframe%3E')
             }
         }
     };
@@ -199,6 +189,8 @@ MassReassignment.prototype.getData = function(callback){
 
             var users = [];
 
+            // TODO: remove current user
+
             container.find(selectors.users).each(function(i,e){
 
                 var user = {},
@@ -296,9 +288,9 @@ MassReassignment.prototype.bindEvents = function(){
     }, this));
 
     this.els.tasks.reassignment.submit.click($.proxy(function(){
-        var taskIds = this.getSelectedTasks(),
-            userId = this.getSelectedUser();
-        this.reassign(taskIds, userId);
+        var tasks = this.getSelectedTasks(),
+            user = this.getSelectedUser();
+        this.reassign(tasks, user);
     }, this));
 
 };
@@ -332,7 +324,7 @@ MassReassignment.prototype.highlightProject = function(element){
 
 MassReassignment.prototype.getSelectedUser = function(){
 
-    var id = this.els.tasks.reassignment.users.val(),
+    var id = +this.els.tasks.reassignment.users.val(),
         name = this.els.tasks.reassignment.users.find('[value="' + id + '"]').html();
     return {
         id: id,
@@ -365,103 +357,61 @@ MassReassignment.prototype.getSelectedTasks = function(){
 };
 
 
-MassReassignment.prototype.reassign = function(tasks, userId){
+MassReassignment.prototype.createReassignmentFrame = function(params, callback){
 
-//    this.settings.config.tasks.reassignmentFrame = {
-//        url: '/project/38649/640488/?action=set_user_to'
-//    };
+    var windowName = $.tmpl(this.settings.config.tasks.iFrameReassignment.windowName, params),
+        frameHtml = $.tmpl(this.settings.templates.tasks.iFrameReassignment, {
+            windowName: windowName,
+            url: $.tmpl(this.settings.config.tasks.iFrameReassignment.url, params)
+        });
 
-//    iFrameReassignment: {
-//        url: '/project/#{projectId}/#{taskId}/?action=set_user_to',
-//        windowName: 'taist_iframe_reassignment',
-//        selectors: {
-//            form: 'form',
-//            select: 'select[name="id_user_to"]',
-//            mail: 'input[name="is_mail"]'
-//        }
-//    }
-
-//    var iFrameContainer = $('div').appendTo('body'),
-//        iFrame = $('<iframe src="">')
-//
-//
-//    iFrameContainer.append()
+    this.els.tasks.container.append(frameHtml);
+    $(window[windowName]).load(callback);
+};
 
 
+MassReassignment.prototype.reassign = function(tasks, user){
 
-    var onFrameLoaded = function(params){
-
-        // set user and trigger submit
-
-    };
-
+    console.log('reassigned: ', tasks, user);
 
     $.each(tasks.taskIds, $.proxy(function(i, taskId){
 
-        var config = this.settings.config.tasks.iFrameReassignment,
-            ids = {
-                projectId: tasks.projectId,
-                taskId: taskId
-            },
-            params = {
-                windowName: $.tmpl(this.settings.config.tasks.iFrameReassignment.windowName, ids),
-                url: $.tmpl(this.settings.config.tasks.iFrameReassignment.url, ids)
-            },
-            html = $.tmpl(this.settings.templates.tasks.iFrameReassignment, params);
+        var selectors = this.settings.config.tasks.iFrameReassignment.selectors,
+            frame = {
+                name: $.tmpl(this.settings.config.tasks.iFrameReassignment.windowName, {
+                    projectId:  tasks.projectId,
+                    taskId:     taskId
+                })
+            };
 
-        this.els.tasks.container.append(html);
-        $(window[params.windowName]).load($.proxy(function(e){
-            console.log(ids.taskId, 'loaded', arguments);
-            onFrameLoaded(ids);
+        $( $.tmpl('[name="#{name}"]', {
+            name: frame.name
+        })).remove();
+
+        this.createReassignmentFrame({ projectId: tasks.projectId, taskId: taskId }, $.proxy(function(){
+
+            frame.el = $($.tmpl('[name="#{name}"]', {
+                name: frame.name
+            }));
+
+            frame.document = window[frame.name].document;
+            frame.form = $(selectors.form, frame.document);
+            frame.user = $(selectors.user, frame.document);
+            frame.mail = $(selectors.mail, frame.document);
+
+            frame.form.css({
+                backgroundColor: 'rg' + 'ba(0,0,0,' + Math.random() + ')' // TODO: remove
+            });
+
+            frame.mail.val(1); // TODO: get mail value
+            frame.user.val(user.id);
+
+            setTimeout(function(){
+                frame.form.submit();
+            }, 2500);
+
         }, this));
-
     }, this));
-
-//             frame = $(html).appendTo(this.els.tasks.container);
-
-
-
-
-
-
-
-
-
-
-
-
-    console.log('reassigned: ', taskIds, userId);
-
-
-    $.ajax({
-        type: 'POST',
-        url: '/project/38649/640488/',
-        contentType: 'application/x-www-form-urlencoded',
-        data: {
-            id_user_to: 42454, // Иван Петров
-            is_mail: 1
-        },
-        complete: function(data){
-            console.log('complete', data);
-            window.complete = data;
-        },
-        success: function(data){
-            console.log('success', data);
-            window.success = data;
-        },
-        error: function(data){
-            console.log('error', data);
-            window.error = data;
-        }
-    });
-
-
-/*
-http://test123.worksection.com/project/38649/640488/?id_user_to=42454&is_mail=1
-*/
-
-
-
 };
 
 
