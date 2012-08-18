@@ -309,18 +309,6 @@ MassReassignment.prototype.bindEvents = function(){
 };
 
 
-MassReassignment.prototype.selectProject = function(element){
-
-    element = element instanceof $
-        ? element
-        : $(element);
-
-    element
-        .parents(this.settings.selectors.tasks.reassignment.projects.item)
-        .addClass(this.settings.classes.tasks.projectActive);
-};
-
-
 MassReassignment.prototype.highlightProject = function(element){
 
     element = element instanceof $
@@ -363,14 +351,14 @@ MassReassignment.prototype.getSelectedTasks = function(){
     var ids = [];
     this.els.tasks.reassignment.projects.item
         .filter('.' + this.settings.classes.tasks.projectActive)
-        .find(this.els.tasks.reassignment.tasks.item)
+        .find(this.settings.selectors.tasks.reassignment.tasks.input)
         .filter(':checked')
-        .each(function(i, element){
+        .each($.proxy(function(i, element){
             var id = $(element)
                 .parents(this.settings.selectors.tasks.reassignment.tasks.item)
-                .data('id');
+                .attr('data-id');
             ids.push(+id);
-        });
+        }, this));
     return ids;
 };
 
