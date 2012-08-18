@@ -5,14 +5,17 @@
     /*height: 1%;*/
 }
 
-.taist-mass-reassignment_hidden {
 
-    /* todo: remove*/
+/* todo: clean up */
 
-    /*display: none;*/
-    width: 100%;
+
+iframe {
+    width: 100%;  /* todo: remove */
     height: 700px;
+}
 
+.taist-mass-reassignment_hidden {
+    /*display: none;*/ /* todo: restore */
 }
 
 .taist-mass-reassignment {
@@ -32,7 +35,7 @@
 
     font-weight: bold;
     background: #FBEDAA;
-    padding: 7px 10px;
+    padding: 7px 0 7px 10px;
     line-height: 30px;
     height: 30px;
     border-top: 3px solid #FFF6D7;
@@ -40,15 +43,41 @@
 
 }
 
+@media all and (max-width: 1050px) {
+    .taist-mass-reassignment__user-newline {
+        display: none;
+    }
+}
+
+
 .taist-mass-reassignment__user-select {
     margin-left: 10px;
     width: 200px;
     /*height: 24px;*/
 }
 
-.taist-mass-reassignment__user-select[disabled] {
-    opacity: .7;
+/*.taist-mass-reassignment__user-select[disabled] {*/
+    /*opacity: .7;*/
+/*}*/
+
+
+
+.taist-mass-reassignment__user-notification {
+    margin-left: 20px;
 }
+
+.taist-mass-reassignment__user-notification-checkbox {
+    vertical-align: text-top;
+}
+
+.taist-mass-reassignment__user-notification-text {
+    margin-left: 3px;
+    font-weight: normal;
+}
+
+
+
+
 
 .taist-mass-reassignment__user-button {
     /*height: 24px;*/
@@ -57,9 +86,9 @@
     margin-left: 20px;
 }
 
-.taist-mass-reassignment__user-button[disabled] {
-    opacity: .7;
-}
+/*.taist-mass-reassignment__user-button[disabled] {*/
+    /*opacity: .7;*/
+/*}*/
 
 .taist-mass-reassignment__tasks {
     /*padding: 5px 15px 15px 15px;*/

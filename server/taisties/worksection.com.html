@@ -16,10 +16,23 @@
 <!-- main -->
     <div class="taist-mass-reassignment">
         <div class="taist-mass-reassignment__user">
-            <span class="taist-mass-reassignment__user-text">Переназначить задачи на пользователя</span>
+            <span class="taist-mass-reassignment__user-text">
+                Переназначить задачи на
+                <span class="taist-mass-reassignment__user-newline">
+                    пользователя
+                </span>
+            </span>
             <select class="taist-mass-reassignment__user-select">
                 #{users}
             </select>
+            <label class="taist-mass-reassignment__user-notification">
+                <span class="taist-mass-reassignment__user-notification-checkbox-wrapper">
+                    <input class="taist-mass-reassignment__user-notification-checkbox" type="checkbox">
+                </span>
+                <span class="taist-mass-reassignment__user-notification-text" title="Отправить участникам e-mail уведомление о внесенных изменениях">
+                    Оповестить по e-mail
+                </span>
+            </label>
             <button class="taist-mass-reassignment__user-button">Готово</button>
         </div>
         <div class="taist-mass-reassignment__tasks">
