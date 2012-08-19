@@ -25,7 +25,7 @@ var MassReassignment = function() {
                 container: '#tasks',
                 counter: '#dropMT',
                 reassignment: {
-                    container: '.taist-mass-reassignment',
+                    wrapper: '.taist-mass-reassignment',
                     users: '.taist-mass-reassignment__user-select',
                     notify: '.taist-mass-reassignment__user-notification-checkbox',
                     submit: '.taist-mass-reassignment__user-button',
@@ -88,13 +88,14 @@ var MassReassignment = function() {
                 link: decodeURIComponent('%3Ca%20rel%3D%22%23%7Brel%7D%22%20href%3D%22%2Fprofile%2F%23%7Bhash%7D%22%3E%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%3C%2Fa%3E')
             },
             tasks: {
-                container: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment%3E%3Cdiv%20class%3Dtaist-mass-reassignment__user%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-text%3E%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%20%D0%BD%D0%B0%3Cspan%20class%3Dtaist-mass-reassignment__user-newline%3E%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F%3C%2Fspan%3E%3C%2Fspan%3E%3Cselect%20class%3Dtaist-mass-reassignment__user-select%3E%23%7Busers%7D%3C%2Fselect%3E%3Clabel%20class%3Dtaist-mass-reassignment__user-notification%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-notification-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__user-notification-checkbox%20type%3Dcheckbox%20checked%3E%3C%2Fspan%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-notification-text%20title%3D%22%D0%9E%D1%82%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D1%82%D1%8C%20%D1%83%D1%87%D0%B0%D1%81%D1%82%D0%BD%D0%B8%D0%BA%D0%B0%D0%BC%20e-mail%20%D1%83%D0%B2%D0%B5%D0%B4%D0%BE%D0%BC%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BE%20%D0%B2%D0%BD%D0%B5%D1%81%D0%B5%D0%BD%D0%BD%D1%8B%D1%85%20%D0%B8%D0%B7%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%D1%85%22%3E%D0%9E%D0%BF%D0%BE%D0%B2%D0%B5%D1%81%D1%82%D0%B8%D1%82%D1%8C%20%D0%BF%D0%BE%20e-mail%3C%2Fspan%3E%3C%2Flabel%3E%3Cbutton%20class%3Dtaist-mass-reassignment__user-button%3E%D0%93%D0%BE%D1%82%D0%BE%D0%B2%D0%BE%3C%2Fbutton%3E%3C%2Fdiv%3E%3Cdiv%20class%3Dtaist-mass-reassignment__tasks%3E%23%7Bprojects%7D%3C%2Fdiv%3E%3C%2Fdiv%3E'),
+                wrapper: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment%3E%3C%2Fdiv%3E'),
+                container: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment__user%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-text%3E%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%20%D0%BD%D0%B0%3Cspan%20class%3Dtaist-mass-reassignment__user-newline%3E%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F%3C%2Fspan%3E%3C%2Fspan%3E%3Cselect%20class%3Dtaist-mass-reassignment__user-select%3E%23%7Busers%7D%3C%2Fselect%3E%3Clabel%20class%3Dtaist-mass-reassignment__user-notification%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-notification-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__user-notification-checkbox%20type%3Dcheckbox%20checked%3E%3C%2Fspan%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-notification-text%20title%3D%22%D0%9E%D1%82%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D1%82%D1%8C%20%D1%83%D1%87%D0%B0%D1%81%D1%82%D0%BD%D0%B8%D0%BA%D0%B0%D0%BC%20e-mail%20%D1%83%D0%B2%D0%B5%D0%B4%D0%BE%D0%BC%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BE%20%D0%B2%D0%BD%D0%B5%D1%81%D0%B5%D0%BD%D0%BD%D1%8B%D1%85%20%D0%B8%D0%B7%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%D1%85%22%3E%D0%9E%D0%BF%D0%BE%D0%B2%D0%B5%D1%81%D1%82%D0%B8%D1%82%D1%8C%20%D0%BF%D0%BE%20e-mail%3C%2Fspan%3E%3C%2Flabel%3E%3Cbutton%20class%3Dtaist-mass-reassignment__user-button%3E%D0%93%D0%BE%D1%82%D0%BE%D0%B2%D0%BE%3C%2Fbutton%3E%3C%2Fdiv%3E%3Cdiv%20class%3Dtaist-mass-reassignment__tasks%3E%23%7Bprojects%7D%3C%2Fdiv%3E'),
                 user: decodeURIComponent('%3Coption%20value%3D%22%23%7BuserId%7D%22%3E%23%7BuserName%7D%3C%2Foption%3E'),
                 project: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment__project%20data-id%3D%22%23%7BprojectId%7D%22%3E%3Cdiv%20class%3Dtaist-mass-reassignment__project-title%3E%3Cspan%20class%3Dtaist-mass-reassignment__project-title-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__project-title-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20href%3D%22%2Fproject%2F%23%7BprojectId%7D%2F%22%20class%3Dtaist-mass-reassignment__project-title-link%3E%23%7BprojectName%7D%3C%2Fa%3E%3C%2Fdiv%3E%3Cul%20class%3Dtaist-mass-reassignment__task-list%3E%23%7Btasks%7D%3C%2Ful%3E%3C%2Fdiv%3E'),
                 task: decodeURIComponent('%3Cli%20class%3Dtaist-mass-reassignment__task-item%20data-id%3D%22%23%7BtaskId%7D%22%3E%3Cspan%20class%3Dtaist-mass-reassignment__task-item-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__task-item-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20href%3D%22%2Fproject%2F%23%7BprojectId%7D%2F%23%7BtaskId%7D%2F%22%20class%3Dtaist-mass-reassignment__task-item-link%3E%23%7BtaskName%7D%3Cspan%20title%3D%22%D0%9F%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%3A%20%23%7BtaskPriority%7D%22%20class%3D%22taist-mass-reassignment__task-priority%20taist-mass-reassignment__task-priority_value_%23%7BtaskPriority%7D%22%3E%23%7BtaskPriority%7D%3C%2Fspan%3E%3C%2Fa%3E%3C%2Fli%3E'),
                 ajaxTasks: decodeURIComponent('%3Cdiv%20class%3D%22taist-mass-reassignment__ajax-tasks%20taist-mass-reassignment_hidden%22%3E%3C%2Fdiv%3E'),
                 iFrameReassignment: decodeURIComponent('%3Ciframe%20class%3D%22taist-mass-reassignment__iframe-reassignment%20taist-mass-reassignment_hidden%22%20name%3D%22%23%7BwindowName%7D%22%20src%3D%22%23%7Burl%7D%22%3E%3C%2Fiframe%3E'),
-                error: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment__error-tooltip%3E%3Ci%20class%3Dtaist-mass-reassignment__error-tooltip-close%3EX%3C%2Fi%3E%D0%9D%D0%B5%D0%BB%D1%8C%D0%B7%D1%8F%20%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%83%D1%8E%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D1%83%20%D0%BD%D0%B0%20%D1%8D%D1%82%D0%BE%D0%B3%D0%BE%20%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F.%3C%2Fdiv%3E')
+                error: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment__error-tooltip%3E%3Ci%20class%3Dtaist-mass-reassignment__error-tooltip-close%3EX%3C%2Fi%3E%D0%9D%D0%B5%D0%BB%D1%8C%D0%B7%D1%8F%20%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D1%8D%D1%82%D1%83%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D1%83%20%D0%BD%D0%B0%20%D0%B4%D0%B0%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F.%3C%2Fdiv%3E')
             }
         }
     };
@@ -112,11 +113,16 @@ MassReassignment.prototype.init = function(){
         tmpl: Taist.utils.tmpl
     });
 
+    console.log('Taist Mass reassignment: init');
+
     this.detach();
 
     this.els = this.getNodesFromSelectors(this.settings.selectors);
     this.els.tabs.button = $($.tmpl(this.settings.templates.tabs.link, this.settings.config.tabs));
     this.els.tabs.container.append(this.els.tabs.button);
+
+    this.els.tasks.reassignment.wrapper = $($.tmpl(this.settings.templates.tasks.wrapper));
+    this.els.tasks.reassignment.wrapper.appendTo(this.els.tasks.container).hide();
 
     this.getData($.proxy(this.render, this));
 
@@ -269,10 +275,8 @@ MassReassignment.prototype.render = function(data){
             : this.settings.config.tasks.noTasksMessage
     });
 
-    this.els.tasks.container.append(container);
-    this.els.tasks.editForm.hide();
+    this.els.tasks.reassignment.wrapper.append(container);
     setTimeout($.proxy(this.bindEvents, this));
-
 };
 
 
@@ -401,7 +405,7 @@ MassReassignment.prototype.createReassignmentFrame = function(params, callback){
 
 MassReassignment.prototype.reassign = function(tasks, user, notify){
 
-    console.log('reassigned: ', tasks, user);
+    console.log('Taist Mass reassignment: tasks reassigned: ', tasks, user);
 
     $.each(tasks.taskIds, $.proxy(function(i, taskId){
 
@@ -442,7 +446,6 @@ MassReassignment.prototype.reassign = function(tasks, user, notify){
                 this.removeTasksFromList(tasks.projectId, taskId);
             }, this), 1000);
 
-
         }, this));
     }, this));
 };
@@ -463,6 +466,7 @@ MassReassignment.prototype.removeTasksFromList = function(projectId, taskId){
     counter.html(counterText);
 
     project.removeClass(this.settings.classes.tasks.projectActive);
+    $(this.settings.selectors.tasks.reassignment.projects.input).attr({ disabled: false });
     $(this.settings.selectors.tasks.reassignment.tasks.input).attr({ disabled: false });
 
     this.toggleUserBarState({ disabled: true });
@@ -504,19 +508,17 @@ MassReassignment.prototype.generateError = function(){
 
 
 MassReassignment.prototype.show = function(){
-
-    console.log('show');
-
+    console.log('Taist Mass reassignment: show');
     this.els.tabs.items.removeClass(this.settings.classes.tabs.active);
     this.els.tabs.button.addClass(this.settings.classes.tabs.active);
-    this.els.tasks.reassignment.container.show();
+    this.els.tasks.reassignment.wrapper.show();
     this.els.tasks.editForm.hide();
 };
 
 
 MassReassignment.prototype.detach = function(){
 
-    console.log('detach');
+    console.log('Taist Mass reassignment: detach');
 
     var tabsConfig = this.settings.config.tabs,
         tabsClasses = this.settings.classes.tabs,
@@ -529,7 +531,7 @@ MassReassignment.prototype.detach = function(){
     tabs.initial = tabs.all.not(tabs.reassignment);
     tabs.firstSelected = tabs.initial.filter($.tmpl('[rel="#{initialRel}"]', tabsConfig));
 
-    tasks.container = $(tasksSelectors.reassignment.container);
+    tasks.container = $(tasksSelectors.reassignment.wrapper);
     tasks.editForm = $(tasksSelectors.editForm);
 
     if ( !tabs.firstSelected.length ) {

@@ -13,31 +13,34 @@
 <!-- / iframe reassignment -->
 
 
+<!-- wrapper -->
+    <div class="taist-mass-reassignment"></div>
+<!-- / wrapper -->
+
+
 <!-- main -->
-    <div class="taist-mass-reassignment">
-        <div class="taist-mass-reassignment__user">
-            <span class="taist-mass-reassignment__user-text">
-                Переназначить задачи на
-                <span class="taist-mass-reassignment__user-newline">
-                    пользователя
-                </span>
+    <div class="taist-mass-reassignment__user">
+        <span class="taist-mass-reassignment__user-text">
+            Переназначить задачи на
+            <span class="taist-mass-reassignment__user-newline">
+                пользователя
             </span>
-            <select class="taist-mass-reassignment__user-select">
-                #{users}
-            </select>
-            <label class="taist-mass-reassignment__user-notification">
-                <span class="taist-mass-reassignment__user-notification-checkbox-wrapper">
-                    <input class="taist-mass-reassignment__user-notification-checkbox" type="checkbox" checked>
-                </span>
-                <span class="taist-mass-reassignment__user-notification-text" title="Отправить участникам e-mail уведомление о внесенных изменениях">
-                    Оповестить по e-mail
-                </span>
-            </label>
-            <button class="taist-mass-reassignment__user-button">Готово</button>
-        </div>
-        <div class="taist-mass-reassignment__tasks">
-            #{projects}
-        </div>
+        </span>
+        <select class="taist-mass-reassignment__user-select">
+            #{users}
+        </select>
+        <label class="taist-mass-reassignment__user-notification">
+            <span class="taist-mass-reassignment__user-notification-checkbox-wrapper">
+                <input class="taist-mass-reassignment__user-notification-checkbox" type="checkbox" checked>
+            </span>
+            <span class="taist-mass-reassignment__user-notification-text" title="Отправить участникам e-mail уведомление о внесенных изменениях">
+                Оповестить по e-mail
+            </span>
+        </label>
+        <button class="taist-mass-reassignment__user-button">Готово</button>
+    </div>
+    <div class="taist-mass-reassignment__tasks">
+        #{projects}
     </div>
 <!-- / main -->
 
@@ -80,6 +83,6 @@
 <!-- error tooltip -->
     <div class="taist-mass-reassignment__error-tooltip">
         <i class="taist-mass-reassignment__error-tooltip-close">X</i>
-        Нельзя назначить данную задачу на этого пользователя.
+        Нельзя назначить эту задачу на данного пользователя.
     </div>
 <!-- / error tooltip -->
