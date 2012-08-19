@@ -352,45 +352,6 @@ Taist.MentionTags = {
 
 
 
-Taist.MentionsToNotes = {
-    els: {},
-    selectors: {
-        mention: '.mention_item',
-        comment: '.mention_text:first',
-        invisibleNoteText: '.mentionNoteText'
-    },
-    init: function(){
-
-        this.els.mentions = $(this.selectors.mention);
-        this.els.mentions.each($.proxy(function(i, e){
-
-            var els = {},
-                data = {};
-
-            els.mention = $(e);
-            els.comment = els.mention.find(this.selectors.comment);
-            els.invisibleNoteText = els.mention.find(this.selectors.invisibleNoteText);
-
-            data.id = +els.mention.attr('id').replace(/mention/, '');
-            data.comment = $.trim(els.comment.text());
-
-            console.log('Taist: mentions to notes:', data.id, data.comment);
-
-            $.ajax({
-                type: 'POST',
-                url: '/Mention/SaveComment',
-                data: data,
-                success: function () {
-                    els.invisibleNoteText.html(data.comment);
-                }
-            });
-
-        }, this));
-    }
-};
-
-
-
 Taist.Settings = {
     els: {},
     selectors: {
@@ -497,11 +458,6 @@ Taist.Tests = {
                     }
                 }
             }
-        },
-        mentionsToNotes: {
-            path: /^\/ThemeDetails\/(?:All|AnswerNeeded|Favorite)\/[0-9]+\/[0-9]+(?:\/)?$/,
-            method: Taist.MentionsToNotes,
-            selectors: {}
         },
         settings: {
             path: /^\/Workplace\/Details(?:\/)?$/,
