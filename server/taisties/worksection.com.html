@@ -1,0 +1,88 @@
+<!-- menu link -->
+    <a rel="#{rel}" href="/profile/#{hash}">Переназначить задачи</a>
+<!-- / menu link -->
+
+
+<!-- ajax tasks -->
+    <div class="taist-mass-reassignment__ajax-tasks taist-mass-reassignment_hidden"></div>
+<!-- / ajax tasks -->
+
+
+<!-- iframe reassignment -->
+    <iframe class="taist-mass-reassignment__iframe-reassignment taist-mass-reassignment_hidden" name="#{windowName}" src="#{url}"></iframe>
+<!-- / iframe reassignment -->
+
+
+<!-- wrapper -->
+    <div class="taist-mass-reassignment"></div>
+<!-- / wrapper -->
+
+
+<!-- main -->
+    <div class="taist-mass-reassignment__user">
+        <span class="taist-mass-reassignment__user-text">
+            Переназначить задачи на
+            <span class="taist-mass-reassignment__user-newline">
+                пользователя
+            </span>
+        </span>
+        <select class="taist-mass-reassignment__user-select">
+            #{users}
+        </select>
+        <label class="taist-mass-reassignment__user-notification">
+            <span class="taist-mass-reassignment__user-notification-checkbox-wrapper">
+                <input class="taist-mass-reassignment__user-notification-checkbox" type="checkbox" checked>
+            </span>
+            <span class="taist-mass-reassignment__user-notification-text" title="Отправить участникам e-mail уведомление о внесенных изменениях">
+                Оповестить по e-mail
+            </span>
+        </label>
+        <button class="taist-mass-reassignment__user-button">Готово</button>
+    </div>
+    <div class="taist-mass-reassignment__tasks">
+        #{projects}
+    </div>
+<!-- / main -->
+
+
+<!-- user -->
+    <option value="#{userId}">#{userName}</option>
+<!-- / user -->
+
+
+<!-- project -->
+    <div class="taist-mass-reassignment__project" data-id="#{projectId}">
+        <div class="taist-mass-reassignment__project-title">
+            <span class="taist-mass-reassignment__project-title-checkbox-wrapper">
+                <input class="taist-mass-reassignment__project-title-checkbox" type="checkbox">
+            </span>
+            <a href="/project/#{projectId}/" class="taist-mass-reassignment__project-title-link">#{projectName}</a>
+        </div>
+        <ul class="taist-mass-reassignment__task-list">
+            #{tasks}
+        </ul>
+    </div>
+<!-- / project -->
+
+
+<!-- task -->
+    <li class="taist-mass-reassignment__task-item" data-id="#{taskId}">
+        <span class="taist-mass-reassignment__task-item-checkbox-wrapper">
+            <input class="taist-mass-reassignment__task-item-checkbox" type="checkbox">
+        </span>
+        <a href="/project/#{projectId}/#{taskId}/" class="taist-mass-reassignment__task-item-link">
+            #{taskName}
+            <span title="Приоритет: #{taskPriority}" class="taist-mass-reassignment__task-priority taist-mass-reassignment__task-priority_value_#{taskPriority}">
+                #{taskPriority}
+            </span>
+        </a>
+    </li>
+<!-- / task -->
+
+
+<!-- error tooltip -->
+    <div class="taist-mass-reassignment__error-tooltip">
+        <i class="taist-mass-reassignment__error-tooltip-close">X</i>
+        Нельзя назначить эту задачу на данного пользователя.
+    </div>
+<!-- / error tooltip -->

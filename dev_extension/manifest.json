@@ -1,0 +1,11 @@
+{
+    "name": "TAIST DEV EXTENSION",
+    "version": "0.1.1",
+    "description": "Вставляет скрипт http://127.0.0.1:3000/server/downloader.js на любой сайт.",
+    "icons": {
+        "48": "icon_48.png",
+        "128": "icon_128.png"
+    },
+    "permissions": ["tabs", "<all_urls>"],
+	"background_page": "background.html"
+}
