@@ -23,6 +23,7 @@ var MassReassignment = function() {
             tasks: {
                 editForm: '#edit_form',
                 container: '#tasks',
+                counter: '#dropMT',
                 reassignment: {
                     container: '.taist-mass-reassignment',
                     users: '.taist-mass-reassignment__user-select',
@@ -66,7 +67,8 @@ var MassReassignment = function() {
                         tasks: '.list > div',
                         taskName: '> a',
                         taskPriority: '.priorb',
-                        users: 'select[name="seluser"] option'
+                        users: 'select[name="seluser"] option',
+                        currentUser: '.also a:first'
                     }
                 },
                 iFrameReassignment: {
@@ -193,9 +195,11 @@ MassReassignment.prototype.getData = function(callback){
         },
         getUsers = function(container){
 
-            var users = [];
-
-            // TODO: remove current user
+            var users = [],
+                currentUser = +container
+                    .find(selectors.currentUser)
+                    .attr('href')
+                    .split('sel_user=')[1];
 
             container.find(selectors.users).each(function(i,e){
 
@@ -204,7 +208,7 @@ MassReassignment.prototype.getData = function(callback){
 
                 user.name = el.html();
                 user.id = +el.attr('value');
-                users.push(user);
+                user.id !== currentUser && users.push(user);
             });
 
             return users;
@@ -433,16 +437,43 @@ MassReassignment.prototype.reassign = function(tasks, user, notify){
             }
 
             frame.submit.trigger('click');
-            setTimeout(function(){
 
-                // update task count
-                // remove reassigned tasks from list
-
-            }, 1000);
+            setTimeout($.proxy(function(){
+                this.removeTasksFromList(tasks.projectId, taskId);
+            }, this), 1000);
 
 
         }, this));
     }, this));
+};
+
+
+MassReassignment.prototype.removeTasksFromList = function(projectId, taskId){
+
+    var task = this.els.tasks.reassignment.tasks.item.filter($.tmpl('[data-id="#{id}"]', { id: taskId })),
+        project = this.els.tasks.reassignment.projects.item.filter($.tmpl('[data-id="#{id}"]', { id: projectId })),
+        counter = this.els.tasks.counter,
+        counterText,
+        count;
+
+    task.remove();
+
+    count = $(this.settings.selectors.tasks.reassignment.tasks.item).length;
+    counterText = counter.html().replace(/\([0-9]+\)/, count ? $.tmpl('(#{c})', { c: count }) : '');
+    counter.html(counterText);
+
+    project.removeClass(this.settings.classes.tasks.projectActive);
+    $(this.settings.selectors.tasks.reassignment.tasks.input).attr({ disabled: false });
+
+    this.toggleUserBarState({ disabled: true });
+
+    if ( !count ) {
+        project.parent().append(this.settings.config.tasks.noTasksMessage);
+    }
+
+    if ( !project.find(this.settings.selectors.tasks.reassignment.tasks.item).length ) {
+        project.remove();
+    }
 };
 
 
