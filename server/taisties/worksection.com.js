@@ -1,4 +1,4 @@
-if ( !console || !console.log ) {
+if ( !window.console || !window.console.log ) {
     console = {
         log: function(){}
     };
@@ -26,7 +26,10 @@ var MassReassignment = function() {
                 reassignment: {
                     container: '.taist-mass-reassignment',
                     users: '.taist-mass-reassignment__user-select',
+                    notify: '.taist-mass-reassignment__user-notification-checkbox',
                     submit: '.taist-mass-reassignment__user-button',
+                    error: '.taist-mass-reassignment__error-tooltip',
+                    errorClose: '.taist-mass-reassignment__error-tooltip-close',
                     projects: {
                         item: '.taist-mass-reassignment__project',
                         input: '.taist-mass-reassignment__project-title-checkbox'
@@ -54,6 +57,7 @@ var MassReassignment = function() {
                 initialRel: 'initial'
             },
             tasks: {
+                noTasksMessage: decodeURIComponent('%D0%9D%D0%B5%D1%82%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87'),
                 ajaxTasks: {
                     url: '/ajax/?action=my_tasks',
                     selectors: {
@@ -82,12 +86,13 @@ var MassReassignment = function() {
                 link: decodeURIComponent('%3Ca%20rel%3D%22%23%7Brel%7D%22%20href%3D%22%2Fprofile%2F%23%7Bhash%7D%22%3E%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%3C%2Fa%3E')
             },
             tasks: {
-                container: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment%3E%3Cdiv%20class%3Dtaist-mass-reassignment__user%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-text%3E%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%20%D0%BD%D0%B0%3Cspan%20class%3Dtaist-mass-reassignment__user-newline%3E%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F%3C%2Fspan%3E%3C%2Fspan%3E%3Cselect%20class%3Dtaist-mass-reassignment__user-select%3E%23%7Busers%7D%3C%2Fselect%3E%3Clabel%20class%3Dtaist-mass-reassignment__user-notification%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-notification-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__user-notification-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-notification-text%20title%3D%22%D0%9E%D1%82%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D1%82%D1%8C%20%D1%83%D1%87%D0%B0%D1%81%D1%82%D0%BD%D0%B8%D0%BA%D0%B0%D0%BC%20e-mail%20%D1%83%D0%B2%D0%B5%D0%B4%D0%BE%D0%BC%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BE%20%D0%B2%D0%BD%D0%B5%D1%81%D0%B5%D0%BD%D0%BD%D1%8B%D1%85%20%D0%B8%D0%B7%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%D1%85%22%3E%D0%9E%D0%BF%D0%BE%D0%B2%D0%B5%D1%81%D1%82%D0%B8%D1%82%D1%8C%20%D0%BF%D0%BE%20e-mail%3C%2Fspan%3E%3C%2Flabel%3E%3Cbutton%20class%3Dtaist-mass-reassignment__user-button%3E%D0%93%D0%BE%D1%82%D0%BE%D0%B2%D0%BE%3C%2Fbutton%3E%3C%2Fdiv%3E%3Cdiv%20class%3Dtaist-mass-reassignment__tasks%3E%23%7Bprojects%7D%3C%2Fdiv%3E%3C%2Fdiv%3E'),
+                container: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment%3E%3Cdiv%20class%3Dtaist-mass-reassignment__user%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-text%3E%D0%9F%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8%20%D0%BD%D0%B0%3Cspan%20class%3Dtaist-mass-reassignment__user-newline%3E%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F%3C%2Fspan%3E%3C%2Fspan%3E%3Cselect%20class%3Dtaist-mass-reassignment__user-select%3E%23%7Busers%7D%3C%2Fselect%3E%3Clabel%20class%3Dtaist-mass-reassignment__user-notification%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-notification-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__user-notification-checkbox%20type%3Dcheckbox%20checked%3E%3C%2Fspan%3E%3Cspan%20class%3Dtaist-mass-reassignment__user-notification-text%20title%3D%22%D0%9E%D1%82%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D1%82%D1%8C%20%D1%83%D1%87%D0%B0%D1%81%D1%82%D0%BD%D0%B8%D0%BA%D0%B0%D0%BC%20e-mail%20%D1%83%D0%B2%D0%B5%D0%B4%D0%BE%D0%BC%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BE%20%D0%B2%D0%BD%D0%B5%D1%81%D0%B5%D0%BD%D0%BD%D1%8B%D1%85%20%D0%B8%D0%B7%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%D1%85%22%3E%D0%9E%D0%BF%D0%BE%D0%B2%D0%B5%D1%81%D1%82%D0%B8%D1%82%D1%8C%20%D0%BF%D0%BE%20e-mail%3C%2Fspan%3E%3C%2Flabel%3E%3Cbutton%20class%3Dtaist-mass-reassignment__user-button%3E%D0%93%D0%BE%D1%82%D0%BE%D0%B2%D0%BE%3C%2Fbutton%3E%3C%2Fdiv%3E%3Cdiv%20class%3Dtaist-mass-reassignment__tasks%3E%23%7Bprojects%7D%3C%2Fdiv%3E%3C%2Fdiv%3E'),
                 user: decodeURIComponent('%3Coption%20value%3D%22%23%7BuserId%7D%22%3E%23%7BuserName%7D%3C%2Foption%3E'),
                 project: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment__project%20data-id%3D%22%23%7BprojectId%7D%22%3E%3Cdiv%20class%3Dtaist-mass-reassignment__project-title%3E%3Cspan%20class%3Dtaist-mass-reassignment__project-title-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__project-title-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20href%3D%22%2Fproject%2F%23%7BprojectId%7D%2F%22%20class%3Dtaist-mass-reassignment__project-title-link%3E%23%7BprojectName%7D%3C%2Fa%3E%3C%2Fdiv%3E%3Cul%20class%3Dtaist-mass-reassignment__task-list%3E%23%7Btasks%7D%3C%2Ful%3E%3C%2Fdiv%3E'),
                 task: decodeURIComponent('%3Cli%20class%3Dtaist-mass-reassignment__task-item%20data-id%3D%22%23%7BtaskId%7D%22%3E%3Cspan%20class%3Dtaist-mass-reassignment__task-item-checkbox-wrapper%3E%3Cinput%20class%3Dtaist-mass-reassignment__task-item-checkbox%20type%3Dcheckbox%3E%3C%2Fspan%3E%3Ca%20href%3D%22%2Fproject%2F%23%7BprojectId%7D%2F%23%7BtaskId%7D%2F%22%20class%3Dtaist-mass-reassignment__task-item-link%3E%23%7BtaskName%7D%3Cspan%20title%3D%22%D0%9F%D1%80%D0%B8%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%3A%20%23%7BtaskPriority%7D%22%20class%3D%22taist-mass-reassignment__task-priority%20taist-mass-reassignment__task-priority_value_%23%7BtaskPriority%7D%22%3E%23%7BtaskPriority%7D%3C%2Fspan%3E%3C%2Fa%3E%3C%2Fli%3E'),
                 ajaxTasks: decodeURIComponent('%3Cdiv%20class%3D%22taist-mass-reassignment__ajax-tasks%20taist-mass-reassignment_hidden%22%3E%3C%2Fdiv%3E'),
-                iFrameReassignment: decodeURIComponent('%3Ciframe%20class%3D%22taist-mass-reassignment__iframe-reassignment%20taist-mass-reassignment_hidden%22%20name%3D%22%23%7BwindowName%7D%22%20src%3D%22%23%7Burl%7D%22%3E%3C%2Fiframe%3E')
+                iFrameReassignment: decodeURIComponent('%3Ciframe%20class%3D%22taist-mass-reassignment__iframe-reassignment%20taist-mass-reassignment_hidden%22%20name%3D%22%23%7BwindowName%7D%22%20src%3D%22%23%7Burl%7D%22%3E%3C%2Fiframe%3E'),
+                error: decodeURIComponent('%3Cdiv%20class%3Dtaist-mass-reassignment__error-tooltip%3E%3Ci%20class%3Dtaist-mass-reassignment__error-tooltip-close%3EX%3C%2Fi%3E%D0%9D%D0%B5%D0%BB%D1%8C%D0%B7%D1%8F%20%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D1%82%D1%8C%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%83%D1%8E%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D1%83%20%D0%BD%D0%B0%20%D1%8D%D1%82%D0%BE%D0%B3%D0%BE%20%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F.%3C%2Fdiv%3E')
             }
         }
     };
@@ -255,7 +260,9 @@ MassReassignment.prototype.render = function(data){
 
     container = $.tmpl(taskTemplates.container, {
         users: users.join('\n'),
-        projects: projects.join('\n')
+        projects: projects.length
+            ? projects.join('\n')
+            : this.settings.config.tasks.noTasksMessage
     });
 
     this.els.tasks.container.append(container);
@@ -268,6 +275,7 @@ MassReassignment.prototype.render = function(data){
 MassReassignment.prototype.bindEvents = function(){
 
     this.els.tasks.reassignment = this.getNodesFromSelectors(this.settings.selectors.tasks.reassignment);
+    this.toggleUserBarState({ disabled: true });
 
     this.els.tasks.reassignment.projects.input.change($.proxy(function(event){
         var checkbox = $(event.currentTarget),
@@ -290,8 +298,9 @@ MassReassignment.prototype.bindEvents = function(){
 
     this.els.tasks.reassignment.submit.click($.proxy(function(){
         var tasks = this.getSelectedTasks(),
-            user = this.getSelectedUser();
-        this.reassign(tasks, user);
+            user = this.getSelectedUser(),
+            notify = this.getSelectedNotificationPolicy();
+        this.reassign(tasks, user, notify);
     }, this));
 
 };
@@ -315,11 +324,21 @@ MassReassignment.prototype.highlightProject = function(element){
         checkboxesAllProjects.attr({ disabled: true });
         projectActive.addClass(projectActiveClass);
         checkboxesActiveProject.attr({ disabled: false });
+        this.toggleUserBarState({ disabled: false });
     }
     else {
         projectsAll.removeClass(projectActiveClass);
         checkboxesAllProjects.attr({ disabled: false });
+        this.toggleUserBarState({ disabled: true });
     }
+};
+
+
+MassReassignment.prototype.toggleUserBarState = function(options){
+    var els = this.els.tasks.reassignment;
+    els.users.attr(options);
+    els.notify.attr(options);
+    els.submit.attr(options);
 };
 
 
@@ -358,6 +377,11 @@ MassReassignment.prototype.getSelectedTasks = function(){
 };
 
 
+MassReassignment.prototype.getSelectedNotificationPolicy = function(){
+    return this.els.tasks.reassignment.notify.filter(':checked').length;
+};
+
+
 MassReassignment.prototype.createReassignmentFrame = function(params, callback){
 
     var windowName = $.tmpl(this.settings.config.tasks.iFrameReassignment.windowName, params),
@@ -371,7 +395,7 @@ MassReassignment.prototype.createReassignmentFrame = function(params, callback){
 };
 
 
-MassReassignment.prototype.reassign = function(tasks, user){
+MassReassignment.prototype.reassign = function(tasks, user, notify){
 
     console.log('reassigned: ', tasks, user);
 
@@ -396,28 +420,55 @@ MassReassignment.prototype.reassign = function(tasks, user){
             }));
 
             frame.document = window[frame.name].document;
-            frame.form = $(selectors.form, frame.document);
             frame.user = $(selectors.user, frame.document);
             frame.mail = $(selectors.mail, frame.document);
             frame.submit = $(selectors.submit, frame.document);
 
-            frame.form.css({
-                backgroundColor: 'rg' + 'ba(0,0,0,' + Math.random() + ')' // TODO: remove
-            });
-
-            frame.mail.val(1); // TODO: get mail value
+            frame.mail.attr({ checked: notify });
             frame.user.val(user.id);
-            //frame.submit.trigger('click');
 
+            if ( !frame.user.length || !frame.submit.length ) {
+                this.generateError();
+                return;
+            }
+
+            frame.submit.trigger('click');
             setTimeout(function(){
 
+                // update task count
+                // remove reassigned tasks from list
 
-                //frame.form.submit();
+            }, 1000);
 
-            }, 2500);
 
         }, this));
     }, this));
+};
+
+
+MassReassignment.prototype.generateError = function(){
+
+    var tooltip = $(this.settings.templates.tasks.error),
+        close;
+
+    tooltip
+        .insertAfter(this.els.tasks.reassignment.submit)
+        .hide().fadeIn(400);
+
+    close = tooltip.find(this.settings.selectors.tasks.reassignment.errorClose);
+
+    close.click(function(){
+        tooltip.fadeOut(200, function(){
+            tooltip.remove();
+        });
+    });
+
+    setTimeout(function(){
+        tooltip.fadeOut(400, function(){
+            tooltip.remove();
+        });
+    }, 10000);
+
 };
 
 
