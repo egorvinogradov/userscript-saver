@@ -1,0 +1,13 @@
+{
+    "name": "Worksection.com: массовое переназначение задач",
+    "version": "1.0",
+    "description": "Пользователь может быстро переназначить все свои задачи на других людей.",
+    "icons": {
+        "48": "icon48.png"
+    },
+    "permissions": [
+        "tabs",
+        "http://*.worksection.com/"
+    ],
+	"background_page": "background.html"
+}

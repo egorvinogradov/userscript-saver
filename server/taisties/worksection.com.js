@@ -102,7 +102,7 @@ var MassReassignment = function() {
 };
 
 
-MassReassignment.prototype.init = function(){
+MassReassignment.prototype.init = function(options){
 
     $.extend({
         proxy: function(func, context){
@@ -117,6 +117,16 @@ MassReassignment.prototype.init = function(){
 
     this.detach();
 
+
+    // other_user
+    // own_profile
+
+    if ( options.page === 'other_user' ) {
+        this.els.tabs.container = $();
+    }
+
+
+
     this.els = this.getNodesFromSelectors(this.settings.selectors);
     this.els.tabs.button = $($.tmpl(this.settings.templates.tabs.link, this.settings.config.tabs));
     this.els.tabs.container.append(this.els.tabs.button);
@@ -130,9 +140,146 @@ MassReassignment.prototype.init = function(){
         .unbind('click')
         .bind('click', $.proxy(this.show, this));
 
-    if ( document.location.hash === this.settings.config.tabs.hash ) {
+    if ( location.hash === this.settings.config.tabs.hash ) {
         this.show();
     }
+};
+
+
+MassReassignment.prototype.show = function(){
+    console.log('Taist Mass reassignment: show');
+    this.els.tabs.items.removeClass(this.settings.classes.tabs.active);
+    this.els.tabs.button.addClass(this.settings.classes.tabs.active);
+    this.els.tasks.reassignment.wrapper.show();
+    this.els.tasks.editForm.hide();
+};
+
+
+MassReassignment.prototype.detach = function(){
+
+    console.log('Taist Mass reassignment: detach');
+
+    var tabsConfig = this.settings.config.tabs,
+        tabsClasses = this.settings.classes.tabs,
+        tasksSelectors = this.settings.selectors.tasks,
+        tabs = {},
+        tasks = {};
+
+    tabs.all = $(this.settings.selectors.tabs.items);
+    tabs.reassignment = tabs.all.filter($.tmpl('[rel="#{rel}"]', tabsConfig));
+    tabs.initial = tabs.all.not(tabs.reassignment);
+    tabs.firstSelected = tabs.initial.filter($.tmpl('[rel="#{initialRel}"]', tabsConfig));
+
+    tasks.container = $(tasksSelectors.reassignment.wrapper);
+    tasks.editForm = $(tasksSelectors.editForm);
+
+    if ( !tabs.firstSelected.length ) {
+        tabs.firstSelected = tabs.initial.filter('.' + tabsClasses.active);
+        tabs.firstSelected.attr({ rel: tabsConfig.initialRel });
+    }
+    else {
+        tabs.all.removeClass(tabsClasses.active);
+        tabs.firstSelected.addClass(tabsClasses.active);
+    }
+
+    tabs.reassignment.remove();
+    tasks.container.remove();
+    tasks.editForm.show();
+};
+
+
+MassReassignment.prototype.renderTabs = function(){
+
+
+    this.els.tabs.button = $($.tmpl(this.settings.templates.tabs.link, this.settings.config.tabs));
+    this.els.tabs.container.append(this.els.tabs.button);
+
+    this.els.tasks.reassignment.wrapper = $($.tmpl(this.settings.templates.tasks.wrapper));
+    this.els.tasks.reassignment.wrapper.appendTo(this.els.tasks.container).hide();
+
+
+
+};
+
+
+MassReassignment.prototype.render = function(data){
+
+    var taskTemplates = this.settings.templates.tasks,
+        users = [],
+        projects = [],
+        container;
+
+    $.each(data.users, function(i, user){
+        users.push($.tmpl(taskTemplates.user, {
+            userId: user.id,
+            userName: user.name
+        }));
+    });
+
+    $.each(data.projects, function(i, project){
+
+        var tasks = [];
+
+        $.each(project.tasks, function(i, task){
+            tasks.push($.tmpl(taskTemplates.task, {
+                taskName:       task.name,
+                taskPriority:   task.priority,
+                taskId:         task.id,
+                projectId:      project.id,
+                name: task.name
+            }));
+        });
+
+        projects.push($.tmpl(taskTemplates.project, {
+            projectId:      project.id,
+            projectName:    project.name,
+            tasks: tasks.join('\n')
+        }));
+    });
+
+    container = $.tmpl(taskTemplates.container, {
+        users: users.join('\n'),
+        projects: projects.length
+            ? projects.join('\n')
+            : this.settings.config.tasks.noTasksMessage
+    });
+
+    this.els.tasks.reassignment.wrapper.append(container);
+    setTimeout($.proxy(this.bindEvents, this));
+};
+
+
+MassReassignment.prototype.bindEvents = function(){
+
+    this.els.tasks.reassignment = this.getNodesFromSelectors(this.settings.selectors.tasks.reassignment);
+    this.toggleUserBarState({ disabled: true });
+
+    this.els.tasks.reassignment.projects.input.change($.proxy(function(event){
+        var checkbox = $(event.currentTarget),
+            checked = !!checkbox.filter(':checked').length,
+            project = checkbox.parents(this.settings.selectors.tasks.reassignment.projects.item),
+            projectTaskCheckboxes = project.find(this.settings.selectors.tasks.reassignment.tasks.input);
+        projectTaskCheckboxes.attr({ checked: checked });
+        this.highlightProject(checkbox);
+    }, this));
+
+    this.els.tasks.reassignment.tasks.input.change($.proxy(function(event){
+        var checkbox = $(event.currentTarget),
+            project = checkbox.parents(this.settings.selectors.tasks.reassignment.projects.item),
+            projectCheckbox = project.find(this.settings.selectors.tasks.reassignment.projects.input),
+            projectTaskCheckboxes = project.find(this.settings.selectors.tasks.reassignment.tasks.input),
+            allChecked = projectTaskCheckboxes.length === projectTaskCheckboxes.filter(':checked').length;
+        projectCheckbox.attr({ checked: allChecked });
+        this.highlightProject(checkbox);
+    }, this));
+
+    this.els.tasks.reassignment.submit.click($.proxy(function(){
+        var tasks = this.getSelectedTasks(),
+            user = this.getSelectedUser(),
+            notify = this.getSelectedNotificationPolicy();
+        this.reassign(tasks, user, notify);
+    }, this));
+
 };
 
 
@@ -230,87 +377,6 @@ MassReassignment.prototype.getData = function(callback){
                 users: getUsers(this.els.tasks.ajaxTasks)
             });
         }, this));
-};
-
-
-MassReassignment.prototype.render = function(data){
-
-    var taskTemplates = this.settings.templates.tasks,
-        users = [],
-        projects = [],
-        container;
-
-    $.each(data.users, function(i, user){
-        users.push($.tmpl(taskTemplates.user, {
-            userId: user.id,
-            userName: user.name
-        }));
-    });
-
-    $.each(data.projects, function(i, project){
-
-        var tasks = [];
-
-        $.each(project.tasks, function(i, task){
-            tasks.push($.tmpl(taskTemplates.task, {
-                taskName:       task.name,
-                taskPriority:   task.priority,
-                taskId:         task.id,
-                projectId:      project.id,
-                name: task.name
-            }));
-        });
-
-        projects.push($.tmpl(taskTemplates.project, {
-            projectId:      project.id,
-            projectName:    project.name,
-            tasks: tasks.join('\n')
-        }));
-    });
-
-    container = $.tmpl(taskTemplates.container, {
-        users: users.join('\n'),
-        projects: projects.length
-            ? projects.join('\n')
-            : this.settings.config.tasks.noTasksMessage
-    });
-
-    this.els.tasks.reassignment.wrapper.append(container);
-    setTimeout($.proxy(this.bindEvents, this));
-};
-
-
-MassReassignment.prototype.bindEvents = function(){
-
-    this.els.tasks.reassignment = this.getNodesFromSelectors(this.settings.selectors.tasks.reassignment);
-    this.toggleUserBarState({ disabled: true });
-
-    this.els.tasks.reassignment.projects.input.change($.proxy(function(event){
-        var checkbox = $(event.currentTarget),
-            checked = !!checkbox.filter(':checked').length,
-            project = checkbox.parents(this.settings.selectors.tasks.reassignment.projects.item),
-            projectTaskCheckboxes = project.find(this.settings.selectors.tasks.reassignment.tasks.input);
-        projectTaskCheckboxes.attr({ checked: checked });
-        this.highlightProject(checkbox);
-    }, this));
-
-    this.els.tasks.reassignment.tasks.input.change($.proxy(function(event){
-        var checkbox = $(event.currentTarget),
-            project = checkbox.parents(this.settings.selectors.tasks.reassignment.projects.item),
-            projectCheckbox = project.find(this.settings.selectors.tasks.reassignment.projects.input),
-            projectTaskCheckboxes = project.find(this.settings.selectors.tasks.reassignment.tasks.input),
-            allChecked = projectTaskCheckboxes.length === projectTaskCheckboxes.filter(':checked').length;
-        projectCheckbox.attr({ checked: allChecked });
-        this.highlightProject(checkbox);
-    }, this));
-
-    this.els.tasks.reassignment.submit.click($.proxy(function(){
-        var tasks = this.getSelectedTasks(),
-            user = this.getSelectedUser(),
-            notify = this.getSelectedNotificationPolicy();
-        this.reassign(tasks, user, notify);
-    }, this));
-
 };
 
 
@@ -507,48 +573,6 @@ MassReassignment.prototype.generateError = function(){
 };
 
 
-MassReassignment.prototype.show = function(){
-    console.log('Taist Mass reassignment: show');
-    this.els.tabs.items.removeClass(this.settings.classes.tabs.active);
-    this.els.tabs.button.addClass(this.settings.classes.tabs.active);
-    this.els.tasks.reassignment.wrapper.show();
-    this.els.tasks.editForm.hide();
-};
-
-
-MassReassignment.prototype.detach = function(){
-
-    console.log('Taist Mass reassignment: detach');
-
-    var tabsConfig = this.settings.config.tabs,
-        tabsClasses = this.settings.classes.tabs,
-        tasksSelectors = this.settings.selectors.tasks,
-        tabs = {},
-        tasks = {};
-
-    tabs.all = $(this.settings.selectors.tabs.items);
-    tabs.reassignment = tabs.all.filter($.tmpl('[rel="#{rel}"]', tabsConfig));
-    tabs.initial = tabs.all.not(tabs.reassignment);
-    tabs.firstSelected = tabs.initial.filter($.tmpl('[rel="#{initialRel}"]', tabsConfig));
-
-    tasks.container = $(tasksSelectors.reassignment.wrapper);
-    tasks.editForm = $(tasksSelectors.editForm);
-
-    if ( !tabs.firstSelected.length ) {
-        tabs.firstSelected = tabs.initial.filter('.' + tabsClasses.active);
-        tabs.firstSelected.attr({ rel: tabsConfig.initialRel });
-    }
-    else {
-        tabs.all.removeClass(tabsClasses.active);
-        tabs.firstSelected.addClass(tabsClasses.active);
-    }
-
-    tabs.reassignment.remove();
-    tasks.container.remove();
-    tasks.editForm.show();
-};
-
-
 Taist.MassReassignment = new MassReassignment();
 
 
@@ -560,13 +584,29 @@ Taist.MassReassignment = new MassReassignment();
 
 Taist.Tests = {
     pages: {
-        massReassignment: {
+        massReassignmentOwnProfile: {
             path: /^\/(?:profile|profile_tune)(?:\/)?$/,
-            method: Taist.MassReassignment,
+            method: function(){
+                Taist.MassReassignment.init({
+                    page: 'own_profile'
+                });
+            },
             selectors: {
                 titleTabs: '#title_tabs'
             }
+        },
+        massReassignmentOtherUser: {
+            path: /^\/users\/[0-9]+\/edit(?:\/)?$/,
+            method: function(){
+                Taist.MassReassignment.init({
+                    page: 'other_user'
+                });
+            },
+            selectors: {
+                titleContainer: '#title'
+            }
         }
+
     },
     init: function(){
 
@@ -585,7 +625,7 @@ Taist.Tests = {
 
             for ( var page in this.pages ) {
                 if ( this.pages[page].path.test(document.location.pathname) ) {
-                    this.pages[page].method.init();
+                    this.pages[page].method();
                     break;
                 }
             }
