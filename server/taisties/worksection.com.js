@@ -551,10 +551,6 @@ MassReassignment.prototype.detach = function(){
 
 Taist.MassReassignment = new MassReassignment();
 
-window._this = Taist.MassReassignment; // todo: remove when done
-
-
-
 
 
 

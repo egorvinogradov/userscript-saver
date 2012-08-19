@@ -27,6 +27,10 @@
     }
 }
 
+.taist-mass-reassignment__user-newline:before {
+    content: ' ';
+}
+
 .taist-mass-reassignment__user-select {
     margin-left: 10px;
     width: 200px;

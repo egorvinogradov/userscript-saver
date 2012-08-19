@@ -21,5 +21,5 @@ InsertDownloader = ->
 
 	console.log 'Taist extension: init'
 	bindTabUpdate (tabId, url) ->
-		if not '^https'.test url # or Chrome'll show warning about unsafe contents
+		if not /^https/.test url # or Chrome'll show warning about unsafe contents
 			insertJS tabId, downloaderUrl
